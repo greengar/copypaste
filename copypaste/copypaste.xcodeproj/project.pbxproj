@@ -37,6 +37,8 @@
 		A99F71F51717535000172B13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CD1717535000172B13 /* Foundation.framework */; };
 		A99F71FD1717535000172B13 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A99F71FB1717535000172B13 /* InfoPlist.strings */; };
 		A99F72001717535000172B13 /* copypasteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A99F71FF1717535000172B13 /* copypasteTests.m */; };
+		A99F720A17177F0100172B13 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F720917177F0100172B13 /* Parse.framework */; };
+		A99F720C17179B2E00172B13 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F720B17179B2E00172B13 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +102,8 @@
 		A99F71FC1717535000172B13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A99F71FE1717535000172B13 /* copypasteTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = copypasteTests.h; sourceTree = "<group>"; };
 		A99F71FF1717535000172B13 /* copypasteTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = copypasteTests.m; sourceTree = "<group>"; };
+		A99F720917177F0100172B13 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = copypaste/SDKs/Parse.framework; sourceTree = "<group>"; };
+		A99F720B17179B2E00172B13 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,9 +112,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B346730171CE81900B73449 /* QuartzCore.framework in Frameworks */,
+				A99F720C17179B2E00172B13 /* AudioToolbox.framework in Frameworks */,
 				A99F71CC1717535000172B13 /* UIKit.framework in Frameworks */,
 				A99F71CE1717535000172B13 /* Foundation.framework in Frameworks */,
 				A99F71D01717535000172B13 /* CoreGraphics.framework in Frameworks */,
+				A99F720A17177F0100172B13 /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +213,7 @@
 		A99F71BF1717534F00172B13 = {
 			isa = PBXGroup;
 			children = (
+				A99F720B17179B2E00172B13 /* AudioToolbox.framework */,
 				A99F71D11717535000172B13 /* copypaste */,
 				A99F71F81717535000172B13 /* copypasteTests */,
 				A99F71CA1717535000172B13 /* Frameworks */,
@@ -227,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				7B34672F171CE81900B73449 /* QuartzCore.framework */,
+				A99F720917177F0100172B13 /* Parse.framework */,
 				A99F71CB1717535000172B13 /* UIKit.framework */,
 				A99F71CD1717535000172B13 /* Foundation.framework */,
 				A99F71CF1717535000172B13 /* CoreGraphics.framework */,
@@ -532,6 +540,10 @@
 		A99F72041717535000172B13 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/copypaste/SDKs\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "copypaste/copypaste-Prefix.pch";
 				INFOPLIST_FILE = "copypaste/copypaste-Info.plist";
@@ -543,6 +555,10 @@
 		A99F72051717535000172B13 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/copypaste/SDKs\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "copypaste/copypaste-Prefix.pch";
 				INFOPLIST_FILE = "copypaste/copypaste-Info.plist";
