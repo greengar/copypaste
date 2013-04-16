@@ -7,11 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CPUser.h"
 
 @interface DataManager : NSObject
 
 + (DataManager *) sharedManager;
 
 - (NSObject *) getThingsFromClipboard;
+
+@property (nonatomic, retain) NSMutableArray *nearByUserList;
+@property (nonatomic, retain) NSMutableArray *recentUserList;
 
 @end

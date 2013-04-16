@@ -8,11 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "DataManager.h"
+#import "GMGridView.h"
+#import "EGOImageView.h"
+#import "CPUser.h"
 
-@interface CPViewController : UIViewController
+@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate>
 
 @property (nonatomic, retain) UIView *displayView;
 @property (nonatomic, retain) UITextView *stringLabel;
 @property (nonatomic, retain) UIImageView *imageHolderView;
+
+@property (nonatomic, retain) GMGridView *availableUsersGridView;
 
 @end
