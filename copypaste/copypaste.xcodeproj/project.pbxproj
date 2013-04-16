@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B38C65A171CA43F00B53A52 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B38C659171CA43F00B53A52 /* DataManager.m */; };
 		A99F71CC1717535000172B13 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CB1717535000172B13 /* UIKit.framework */; };
 		A99F71CE1717535000172B13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CD1717535000172B13 /* Foundation.framework */; };
 		A99F71D01717535000172B13 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CF1717535000172B13 /* CoreGraphics.framework */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B38C658171CA43F00B53A52 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		7B38C659171CA43F00B53A52 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		A99F71C81717535000172B13 /* copypaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = copypaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99F71CB1717535000172B13 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A99F71CD1717535000172B13 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -125,6 +128,8 @@
 				A99F71E61717535000172B13 /* MainStoryboard_iPad.storyboard */,
 				A99F71E91717535000172B13 /* CPViewController.h */,
 				A99F71EA1717535000172B13 /* CPViewController.m */,
+				7B38C658171CA43F00B53A52 /* DataManager.h */,
+				7B38C659171CA43F00B53A52 /* DataManager.m */,
 				A99F71D21717535000172B13 /* Supporting Files */,
 			);
 			path = copypaste;
@@ -278,6 +283,7 @@
 				A99F71D81717535000172B13 /* main.m in Sources */,
 				A99F71DC1717535000172B13 /* CPAppDelegate.m in Sources */,
 				A99F71EB1717535000172B13 /* CPViewController.m in Sources */,
+				7B38C65A171CA43F00B53A52 /* DataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,7 +366,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -385,7 +391,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -468,6 +474,7 @@
 				A99F72051717535000172B13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A99F72061717535000172B13 /* Build configuration list for PBXNativeTarget "copypasteTests" */ = {
 			isa = XCConfigurationList;
@@ -476,6 +483,7 @@
 				A99F72081717535000172B13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

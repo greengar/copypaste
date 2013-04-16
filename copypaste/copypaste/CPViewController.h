@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataManager.h"
 
 @interface CPViewController : UIViewController
+
+@property (nonatomic, retain) UIView *displayView;
+@property (nonatomic, retain) UITextView *stringLabel;
+@property (nonatomic, retain) UIImageView *imageHolderView;
 
 @end
