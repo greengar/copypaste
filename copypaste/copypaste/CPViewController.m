@@ -8,6 +8,7 @@
 
 #import "CPViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import <Parse/Parse.h>
 #import "GMGridViewLayoutStrategies.h"
 
 #define kUserHolderWidth 60
