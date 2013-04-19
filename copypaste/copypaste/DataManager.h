@@ -8,12 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "CPUser.h"
-#import "GSSAuthenticationManager.h"
 
 @interface DataManager : NSObject
 
 + (DataManager *) sharedManager;
-+ (BOOL) isAuthenticated;
 - (NSObject *) getThingsFromClipboard;
 
 @property (nonatomic, retain) CPUser *myUser;

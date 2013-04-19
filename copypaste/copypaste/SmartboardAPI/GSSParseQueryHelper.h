@@ -13,6 +13,8 @@
 
 + (void)setAdminRoleForUser:(PFUser *)user;
 + (void)removeAdminRoleFromUser:(PFUser *)user;
++ (void)updateCurrentUserLocation;
++ (PFGeoPoint *)getCurrentUserLocation;
 //+ (void)getAllUser;
 
 @end

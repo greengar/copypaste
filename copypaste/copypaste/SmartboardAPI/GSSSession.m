@@ -7,13 +7,12 @@
 //
 
 #import "GSSSession.h"
-#import "LogInViewController.h"
 #import "GSSParseQueryHelper.h"
 
 static GSSSession *activeSession = nil;
 
 @interface GSSSession()
-@property (nonatomic, retain) GSSAppInfo *appInfo;
+
 @end
 
 @implementation GSSSession
@@ -28,25 +27,13 @@ static GSSSession *activeSession = nil;
 
 - (id)init {
     if (self = [super init]) {
-        self.appInfo = [[GSSAppInfo alloc] init];
+        
     }
     return self;
 }
 
-+ (void)setClientId:(NSString *)clientId {
-    [[[GSSSession activeSession] appInfo] setClientId:clientId];
-}
-
-+ (void)setClientSecret:(NSString *)clientSecret {
-    [[[GSSSession activeSession] appInfo] setClientSecret:clientSecret];
-}
-
-+ (NSString *)clientId {
-    return [[[GSSSession activeSession] appInfo] clientId];
-}
-
-+ (NSString *)clientSecret {
-    return [[[GSSSession activeSession] appInfo] clientSecret];
++ (BOOL)isAuthenticated {
+    return ([PFUser currentUser] != nil);
 }
 
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate {
@@ -58,34 +45,24 @@ static GSSSession *activeSession = nil;
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
-    DLog(@"User: %@", user);
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self.delegate didLoginSucceeded];
     }
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
-    DLog(@"Error: %@", error);
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
         [self.delegate didLoginFailed:error];
     }
 }
 
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
-    DLog(@"User: %@", user);
-}
-
-- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
-    DLog(@"Error: %@", error);
-}
-
-- (void)didLoginSucceeded {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self.delegate didLoginSucceeded];
     }
 }
 
-- (void)didLoginFailed:(NSError *)error {
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
         [self.delegate didLoginFailed:error];
     }

@@ -8,25 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
-#import "GSSAppInfo.h"
-#import "GSSEndpoint.h"
-#import "LogInViewController.h"
 
 @protocol GSSSessionDelegate
 - (void)didLoginSucceeded;
 - (void)didLoginFailed:(NSError *)error;
 @end
 
-@interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate, LogInViewControllerDelegate>
+@interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 + (GSSSession *) activeSession;
-
-+ (void)setClientId:(NSString *)clientId;
-+ (void)setClientSecret:(NSString *)clientSecret;
++ (BOOL)isAuthenticated;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate;
-
-+ (NSString *)clientId;
-+ (NSString *)clientSecret;
 
 @property (nonatomic, assign) id<GSSSessionDelegate> delegate;
 @end

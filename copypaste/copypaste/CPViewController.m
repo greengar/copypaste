@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <Parse/Parse.h>
 #import "GMGridViewLayoutStrategies.h"
+#import "GSSParseQueryHelper.h"
 
 #define kUserHolderWidth 60
 #define kUserHolderHeight 80
@@ -81,11 +82,10 @@
     [super viewDidAppear:animated];
     [self updateUI];
     
-    //if ([DataManager isAuthenticated]) {
-    if ([PFUser currentUser]) {
-
+    if ([GSSSession isAuthenticated]) {
+        [GSSParseQueryHelper updateCurrentUserLocation];
+        [self updateUI];
     } else {
-        // Hector: call this to authenticate with Smartboard API
         [[GSSSession activeSession] authenticateSmartboardAPIFromViewController:self delegate:self];
     }
 }
@@ -93,8 +93,8 @@
 - (void)updateUI {
     [self hideOldCopiedContent];
     
-    if ([DataManager isAuthenticated]) {
-        NSString *username = [[DataManager sharedManager] myUser].name;
+    if ([GSSSession isAuthenticated]) {
+        NSString *username = [[PFUser currentUser] username];
         self.pasteTitleLabel.text = [NSString stringWithFormat:@"%@ has copied", username];
     } else {
         self.pasteTitleLabel.text = @"You have copied: ";
@@ -117,6 +117,7 @@
 
 - (void)didLoginSucceeded {
     [self dismissModalViewControllerAnimated:YES];
+    [GSSParseQueryHelper updateCurrentUserLocation];
     [self updateUI];
 }
 

@@ -27,6 +27,22 @@
     [user saveInBackground];
 }
 
++ (void) updateCurrentUserLocation {
+    [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
+        [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
+        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                PFGeoPoint *userGeoPoint = [[PFUser currentUser] objectForKey:@"location"];
+                DLog(@"Geo: %@", userGeoPoint);
+            }
+        }];
+    }];
+}
+
++ (PFGeoPoint *)getCurrentUserLocation {
+    return [[PFUser currentUser] objectForKey:@"location"];
+}
+
 //+ (void)getAllUser {
 //    PFQuery *appIdQuery = [PFQuery queryWithClassName:@"App"];
 //    static NSString *desiredAppIdString = nil;

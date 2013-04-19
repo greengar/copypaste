@@ -24,17 +24,10 @@ static DataManager *shareManager = nil;
     return sharedManager;
 }
 
-+ (BOOL) isAuthenticated {
-    return [GSSAuthenticationManager isAuthenticated];
-}
-
 - (id) init {
     self = [super init];
     if (self) {
         self.myUser = [[CPUser alloc] init];
-        [GSSSession setClientId:@"copypaste"];
-        [GSSSession setClientSecret:@"copypaste"];
-        
         self.nearByUserList = [[NSMutableArray alloc] init];
         for (int i = 0; i < 10; i++) {
             CPUser *user = [[CPUser alloc] init];

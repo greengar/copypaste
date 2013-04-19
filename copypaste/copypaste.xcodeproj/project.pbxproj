@@ -45,8 +45,6 @@
 		7BD2222F171F324500E66FD5 /* NXOAuth2PostBodyPart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22221171F324500E66FD5 /* NXOAuth2PostBodyPart.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7BD22230171F324500E66FD5 /* NXOAuth2PostBodyStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22223171F324500E66FD5 /* NXOAuth2PostBodyStream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7BD22238171F33ED00E66FD5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD22237171F33ED00E66FD5 /* Security.framework */; };
-		7BD22246171F365E00E66FD5 /* GSSAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22243171F365E00E66FD5 /* GSSAuthenticationManager.m */; };
-		7BD2224A171F391500E66FD5 /* GSSAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22249171F391500E66FD5 /* GSSAppInfo.m */; };
 		7BD2224D171F396100E66FD5 /* GSSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD2224C171F396100E66FD5 /* GSSUser.m */; };
 		7BD22268171F40E900E66FD5 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22250171F40E900E66FD5 /* NSObject+SBJson.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7BD22269171F40E900E66FD5 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22253171F40E900E66FD5 /* SBJsonParser.m */; };
@@ -61,8 +59,6 @@
 		7BD22272171F40E900E66FD5 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22265171F40E900E66FD5 /* SBJsonUTF8Stream.m */; };
 		7BD22273171F40E900E66FD5 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22267171F40E900E66FD5 /* SBJsonWriter.m */; };
 		7BD2227C171F435600E66FD5 /* GSSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD2227B171F435600E66FD5 /* GSSSession.m */; };
-		7BD22280171F539A00E66FD5 /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD2227F171F539A00E66FD5 /* LogInViewController.m */; };
-		7BD22283171F60D700E66FD5 /* GSSRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22282171F60D700E66FD5 /* GSSRequest.m */; };
 		A99F71CC1717535000172B13 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CB1717535000172B13 /* UIKit.framework */; };
 		A99F71CE1717535000172B13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CD1717535000172B13 /* Foundation.framework */; };
 		A99F71D01717535000172B13 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CF1717535000172B13 /* CoreGraphics.framework */; };
@@ -178,10 +174,6 @@
 		7BD22223171F324500E66FD5 /* NXOAuth2PostBodyStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXOAuth2PostBodyStream.m; sourceTree = "<group>"; };
 		7BD22224171F324500E66FD5 /* OAuth2Client_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuth2Client_Prefix.pch; sourceTree = "<group>"; };
 		7BD22237171F33ED00E66FD5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		7BD22242171F365E00E66FD5 /* GSSAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSAuthenticationManager.h; sourceTree = "<group>"; };
-		7BD22243171F365E00E66FD5 /* GSSAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSAuthenticationManager.m; sourceTree = "<group>"; };
-		7BD22248171F391500E66FD5 /* GSSAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSAppInfo.h; sourceTree = "<group>"; };
-		7BD22249171F391500E66FD5 /* GSSAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSAppInfo.m; sourceTree = "<group>"; };
 		7BD2224B171F396100E66FD5 /* GSSUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSUser.h; sourceTree = "<group>"; };
 		7BD2224C171F396100E66FD5 /* GSSUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSUser.m; sourceTree = "<group>"; };
 		7BD2224F171F40E900E66FD5 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
@@ -209,13 +201,8 @@
 		7BD22265171F40E900E66FD5 /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonUTF8Stream.m; sourceTree = "<group>"; };
 		7BD22266171F40E900E66FD5 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		7BD22267171F40E900E66FD5 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		7BD22277171F41D600E66FD5 /* GSSEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSEndpoint.h; sourceTree = "<group>"; };
 		7BD2227A171F435600E66FD5 /* GSSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSSession.h; sourceTree = "<group>"; };
 		7BD2227B171F435600E66FD5 /* GSSSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSSession.m; sourceTree = "<group>"; };
-		7BD2227E171F539A00E66FD5 /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
-		7BD2227F171F539A00E66FD5 /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
-		7BD22281171F60D600E66FD5 /* GSSRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSRequest.h; sourceTree = "<group>"; };
-		7BD22282171F60D700E66FD5 /* GSSRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSRequest.m; sourceTree = "<group>"; };
 		A99F71C81717535000172B13 /* copypaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = copypaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99F71CB1717535000172B13 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A99F71CD1717535000172B13 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -462,15 +449,8 @@
 			children = (
 				7BD2227D171F539100E66FD5 /* ViewController */,
 				7BD2224E171F40E900E66FD5 /* SBJSON */,
-				7BD22277171F41D600E66FD5 /* GSSEndpoint.h */,
-				7BD22242171F365E00E66FD5 /* GSSAuthenticationManager.h */,
-				7BD22243171F365E00E66FD5 /* GSSAuthenticationManager.m */,
-				7BD22248171F391500E66FD5 /* GSSAppInfo.h */,
-				7BD22249171F391500E66FD5 /* GSSAppInfo.m */,
 				7BD2224B171F396100E66FD5 /* GSSUser.h */,
 				7BD2224C171F396100E66FD5 /* GSSUser.m */,
-				7BD22281171F60D600E66FD5 /* GSSRequest.h */,
-				7BD22282171F60D700E66FD5 /* GSSRequest.m */,
 				7BD2227A171F435600E66FD5 /* GSSSession.h */,
 				7BD2227B171F435600E66FD5 /* GSSSession.m */,
 				7BA18EEA1721C5E000B88255 /* GSSParseQueryHelper.h */,
@@ -514,8 +494,6 @@
 		7BD2227D171F539100E66FD5 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7BD2227E171F539A00E66FD5 /* LogInViewController.h */,
-				7BD2227F171F539A00E66FD5 /* LogInViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -778,8 +756,6 @@
 				7BD2222E171F324500E66FD5 /* NXOAuth2FileStreamWrapper.m in Sources */,
 				7BD2222F171F324500E66FD5 /* NXOAuth2PostBodyPart.m in Sources */,
 				7BD22230171F324500E66FD5 /* NXOAuth2PostBodyStream.m in Sources */,
-				7BD22246171F365E00E66FD5 /* GSSAuthenticationManager.m in Sources */,
-				7BD2224A171F391500E66FD5 /* GSSAppInfo.m in Sources */,
 				7BD2224D171F396100E66FD5 /* GSSUser.m in Sources */,
 				7BD22268171F40E900E66FD5 /* NSObject+SBJson.m in Sources */,
 				7BD22269171F40E900E66FD5 /* SBJsonParser.m in Sources */,
@@ -794,8 +770,6 @@
 				7BD22272171F40E900E66FD5 /* SBJsonUTF8Stream.m in Sources */,
 				7BD22273171F40E900E66FD5 /* SBJsonWriter.m in Sources */,
 				7BD2227C171F435600E66FD5 /* GSSSession.m in Sources */,
-				7BD22280171F539A00E66FD5 /* LogInViewController.m in Sources */,
-				7BD22283171F60D700E66FD5 /* GSSRequest.m in Sources */,
 				7BA18EEC1721C5E000B88255 /* GSSParseQueryHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
