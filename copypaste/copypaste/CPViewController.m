@@ -28,7 +28,8 @@
 @end
 
 @implementation CPViewController
-@synthesize  displayView = _displayView;
+@synthesize pasteTitleLabel = _pasteTitleLabel;
+@synthesize displayView = _displayView;
 @synthesize stringLabel = _stringLabel;
 @synthesize imageHolderView = _imageHolderView;
 @synthesize availableUsersGridView = _availableUsersGridView;
@@ -36,11 +37,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UILabel *pasteTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-    pasteTitleLabel.backgroundColor = [UIColor clearColor];
-    pasteTitleLabel.textAlignment = UITextAlignmentCenter;
-    pasteTitleLabel.text = @"You have copied: ";
-    [self.view addSubview:pasteTitleLabel];
+    
+    self.pasteTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    self.pasteTitleLabel.backgroundColor = [UIColor clearColor];
+    self.pasteTitleLabel.textAlignment = UITextAlignmentCenter;
+    [self.view addSubview:self.pasteTitleLabel];
     
     self.displayView = [[UIView alloc] initWithFrame:CGRectMake(0, 50, 320, 320)];
     self.displayView.backgroundColor = [UIColor clearColor];
@@ -78,10 +79,24 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self updateUI];
+    
+    if ([DataManager isAuthenticated]) {
+
+    } else {
+        // Hector: call this to authenticate with Smartboard API
+        // [[GSSSession activeSession] authenticateSmartboardAPIFromViewController:self delegate:self];
+    }
 }
 
 - (void)updateUI {
     [self hideOldCopiedContent];
+    
+    if ([DataManager isAuthenticated]) {
+        NSString *username = [[DataManager sharedManager] myUser].name;
+        self.pasteTitleLabel.text = [NSString stringWithFormat:@"%@ has copied", username];
+    } else {
+        self.pasteTitleLabel.text = @"You have copied: ";
+    }
     
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     if ([itemToPaste isKindOfClass:[NSString class]]) {
@@ -96,6 +111,14 @@
 - (void)hideOldCopiedContent {
     self.stringLabel.hidden = YES;
     self.imageHolderView.hidden = YES;
+}
+
+- (void)didLoginSucceeded {
+    [self updateUI];
+}
+
+- (void)didLoginFailed:(NSError *)error {
+    // I think we have nothing to do now
 }
 
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {

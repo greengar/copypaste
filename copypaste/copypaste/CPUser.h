@@ -12,5 +12,7 @@
 
 @property (nonatomic, retain) NSString *uid;
 @property (nonatomic, retain) NSString *username;
+@property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *email;
 @property (nonatomic, retain) NSString *avatarURLString;
 @end

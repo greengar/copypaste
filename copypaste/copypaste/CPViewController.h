@@ -11,9 +11,11 @@
 #import "GMGridView.h"
 #import "EGOImageView.h"
 #import "CPUser.h"
+#import "GSSSession.h"
 
-@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate>
+@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSSessionDelegate>
 
+@property (nonatomic, retain) UILabel *pasteTitleLabel;
 @property (nonatomic, retain) UIView *displayView;
 @property (nonatomic, retain) UITextView *stringLabel;
 @property (nonatomic, retain) UIImageView *imageHolderView;

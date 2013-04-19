@@ -7,6 +7,7 @@
 //
 
 #import "CPAppDelegate.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @implementation CPAppDelegate
 
@@ -42,6 +43,11 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [FBSession.activeSession handleOpenURL:url];
 }
 
 @end

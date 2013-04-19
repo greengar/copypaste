@@ -11,6 +11,8 @@
 @implementation CPUser
 @synthesize uid;
 @synthesize username;
+@synthesize name;
+@synthesize email;
 @synthesize avatarURLString;
 
 @end
