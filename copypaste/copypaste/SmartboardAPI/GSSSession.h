@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Parse/Parse.h>
 #import "GSSAppInfo.h"
 #import "GSSEndpoint.h"
 #import "LogInViewController.h"
@@ -16,7 +17,7 @@
 - (void)didLoginFailed:(NSError *)error;
 @end
 
-@interface GSSSession : NSObject <LogInViewControllerDelegate>
+@interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate, LogInViewControllerDelegate>
 
 + (GSSSession *) activeSession;
 

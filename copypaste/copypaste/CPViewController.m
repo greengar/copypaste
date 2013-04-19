@@ -81,11 +81,12 @@
     [super viewDidAppear:animated];
     [self updateUI];
     
-    if ([DataManager isAuthenticated]) {
+    //if ([DataManager isAuthenticated]) {
+    if ([PFUser currentUser]) {
 
     } else {
         // Hector: call this to authenticate with Smartboard API
-        // [[GSSSession activeSession] authenticateSmartboardAPIFromViewController:self delegate:self];
+        [[GSSSession activeSession] authenticateSmartboardAPIFromViewController:self delegate:self];
     }
 }
 
@@ -115,6 +116,7 @@
 }
 
 - (void)didLoginSucceeded {
+    [self dismissModalViewControllerAnimated:YES];
     [self updateUI];
 }
 

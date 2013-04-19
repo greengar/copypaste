@@ -8,15 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <Parse/Parse.h>
 #import "Reachability.h"
 #import "GSSAuthenticationManager.h"
+#import "GSSParseQueryHelper.h"
 
 @protocol LogInViewControllerDelegate
 - (void)didLoginSucceeded;
 - (void)didLoginFailed:(NSError *)error;
 @end
 
-@interface LogInViewController : UIViewController <FBLoginViewDelegate, GSSAuthenticationDelegate>
+@interface LogInViewController : UIViewController <FBLoginViewDelegate, GSSAuthenticationDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 @property (nonatomic, retain) UIButton *logInWithEmailBtn;
 @property (nonatomic, retain) UIButton *logInWithFacebookBtn;

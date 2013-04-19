@@ -31,6 +31,7 @@
 		7B73788A171E04FC004A16F4 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B737889171E04FC004A16F4 /* FacebookSDKResources.bundle */; };
 		7B737896171E109D004A16F4 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B737895171E109D004A16F4 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B73789A171E1148004A16F4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737899171E1148004A16F4 /* SystemConfiguration.framework */; };
+		7BA18EEC1721C5E000B88255 /* GSSParseQueryHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA18EEB1721C5E000B88255 /* GSSParseQueryHelper.m */; };
 		7BD22225171F324500E66FD5 /* .gitmodules in Resources */ = {isa = PBXBuildFile; fileRef = 7BD22206171F324500E66FD5 /* .gitmodules */; };
 		7BD22226171F324500E66FD5 /* OAuth2Client.framework-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7BD22207171F324500E66FD5 /* OAuth2Client.framework-Info.plist */; };
 		7BD22227171F324500E66FD5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7BD2220B171F324500E66FD5 /* README.md */; };
@@ -147,6 +148,8 @@
 		7B737894171E109D004A16F4 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		7B737895171E109D004A16F4 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		7B737899171E1148004A16F4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		7BA18EEA1721C5E000B88255 /* GSSParseQueryHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSParseQueryHelper.h; sourceTree = "<group>"; };
+		7BA18EEB1721C5E000B88255 /* GSSParseQueryHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSParseQueryHelper.m; sourceTree = "<group>"; };
 		7BD22206171F324500E66FD5 /* .gitmodules */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitmodules; sourceTree = "<group>"; };
 		7BD22207171F324500E66FD5 /* OAuth2Client.framework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OAuth2Client.framework-Info.plist"; sourceTree = "<group>"; };
 		7BD22208171F324500E66FD5 /* OAuth2Client.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = OAuth2Client.xcodeproj; sourceTree = "<group>"; };
@@ -470,6 +473,8 @@
 				7BD22282171F60D700E66FD5 /* GSSRequest.m */,
 				7BD2227A171F435600E66FD5 /* GSSSession.h */,
 				7BD2227B171F435600E66FD5 /* GSSSession.m */,
+				7BA18EEA1721C5E000B88255 /* GSSParseQueryHelper.h */,
+				7BA18EEB1721C5E000B88255 /* GSSParseQueryHelper.m */,
 			);
 			path = SmartboardAPI;
 			sourceTree = "<group>";
@@ -791,6 +796,7 @@
 				7BD2227C171F435600E66FD5 /* GSSSession.m in Sources */,
 				7BD22280171F539A00E66FD5 /* LogInViewController.m in Sources */,
 				7BD22283171F60D700E66FD5 /* GSSRequest.m in Sources */,
+				7BA18EEC1721C5E000B88255 /* GSSParseQueryHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

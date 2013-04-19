@@ -77,8 +77,8 @@
                      DLog(@"User display name: %@", user.username);
                      
                      [[GSSAuthenticationManager sharedManager] logInWithFacebookEmail:[user objectForKey:@"email"]
-                                                                          username:user.name
-                                                                          delegate:self];
+                                                                             username:user.name
+                                                                             delegate:self];
 
                  }];
              }   break;

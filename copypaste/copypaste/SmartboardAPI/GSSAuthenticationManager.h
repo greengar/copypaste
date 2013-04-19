@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CPUser.h"
 #import "NXOAuth2.h"
+#import "GSSParseQueryHelper.h"
 
 typedef enum {
     GSSActionNone = 0,

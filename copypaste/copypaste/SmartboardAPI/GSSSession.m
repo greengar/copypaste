@@ -8,6 +8,7 @@
 
 #import "GSSSession.h"
 #import "LogInViewController.h"
+#import "GSSParseQueryHelper.h"
 
 static GSSSession *activeSession = nil;
 
@@ -51,9 +52,31 @@ static GSSSession *activeSession = nil;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate {
     self.delegate = delegate;
     
-    LogInViewController *logInViewController = [[LogInViewController alloc] init];
-    [logInViewController setDelegate:self];
-    [viewController presentModalViewController:logInViewController animated:YES];
+    PFLogInViewController *logInController = [[PFLogInViewController alloc] init];
+    logInController.delegate = self;
+    [viewController presentModalViewController:logInController animated:YES];
+}
+
+- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+    DLog(@"User: %@", user);
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
+        [self.delegate didLoginSucceeded];
+    }
+}
+
+- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
+    DLog(@"Error: %@", error);
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
+        [self.delegate didLoginFailed:error];
+    }
+}
+
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
+    DLog(@"User: %@", user);
+}
+
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
+    DLog(@"Error: %@", error);
 }
 
 - (void)didLoginSucceeded {
