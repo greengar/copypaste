@@ -144,8 +144,18 @@
 }
 
 - (void)didGetNearbyUserSucceeded:(NSArray *)listOfUsers {
-    [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
-    [self updateUI];
+    if ([listOfUsers count] == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No nearby user"
+                                                            message:nil
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        
+    } else {
+        [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
+        [self updateUI];
+    }
 }
 
 - (void)didGetNearbyUserFailed:(NSError *)error {
@@ -202,16 +212,22 @@
         [cell addSubview:pasteLabel];
     }
     
-    CPUser * user = [[[DataManager sharedManager] nearByUserList] objectAtIndex:index];
-    EGOImageView *contentView = (EGOImageView *) [cell viewWithTag:kContentViewTag];
-    UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
-    
-    if (user != nil) {
-        [contentView setImageURL:[NSURL URLWithString:user.avatarURLString]];
-        [contentView setDelegate:self];
+    if ([[[DataManager sharedManager] nearByUserList] count] == 0) {
+        UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
+        [contentLabel setText:@"No available user"];
+        
+    } else {
+        CPUser * user = [[[DataManager sharedManager] nearByUserList] objectAtIndex:index];
+        EGOImageView *contentView = (EGOImageView *) [cell viewWithTag:kContentViewTag];
+        UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
+        
+        if (user != nil) {
+            [contentView setImageURL:[NSURL URLWithString:user.avatarURLString]];
+            [contentView setDelegate:self];
+        }
+        
+        [contentLabel setText:user.username];
     }
-    
-    [contentLabel setText:user.username];
     
     return cell;
 }
