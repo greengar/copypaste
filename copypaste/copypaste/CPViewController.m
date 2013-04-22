@@ -65,6 +65,13 @@
     [self.view addSubview:self.settingButton];
     
     // The avatar image view of the logged in user
+    self.avatarImageView = [[EGOImageView alloc] init];
+    self.avatarImageView.frame = CGRectMake(10, 10, 43, 43);
+    self.avatarImageView.image = [UIImage imageNamed:@"pasteboard.png"];
+    self.avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.avatarImageView.layer.cornerRadius = 3;
+    self.avatarImageView.clipsToBounds = YES;
+    [self.view addSubview:self.avatarImageView];
     
     // The "my pasteboard holder view"
     self.myPasteboardHolderView = [[UIView alloc] initWithFrame:CGRectMake(8, 6+52+6, 304, 200)];
@@ -142,6 +149,15 @@
         [self.imageHolderView setImage:((UIImage *) itemToPaste)];
     }
     
+    if ([GSSSession isAuthenticated]) {
+        GSSUser *currentUser = [[GSSSession activeSession] currentUser];
+        if ([currentUser isAvatarCached]) {
+            [self.avatarImageView setImage:currentUser.avatarImage];
+        } else if ([currentUser avatarURLString]) {
+            [self.avatarImageView setImageURL:[NSURL URLWithString:currentUser.avatarURLString]];
+            [self.avatarImageView setDelegate:self];
+        }
+    }
     [self.availableUsersGridView reloadData];
 }
 
