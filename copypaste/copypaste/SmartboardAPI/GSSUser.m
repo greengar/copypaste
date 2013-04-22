@@ -20,12 +20,12 @@
 
 - (id)initWithDictionary:(NSDictionary *)userInfo {
     if (self = [super init]) {
-        self.uid = [userInfo objectForKey:@"uid"];
-        self.username = [userInfo objectForKey:@"username"];
-        self.firstname = [userInfo objectForKey:@"firstname"];
-        self.lastname = [userInfo objectForKey:@"lastname"];
-        self.email = [userInfo objectForKey:@"email"];
-        self.avatarURLString = [userInfo objectForKey:@"avatar_url"];
+        self.uid = userInfo[@"uid"];
+        self.username = userInfo[@"username"];
+        self.firstname = userInfo[@"firstname"];
+        self.lastname = userInfo[@"lastname"];
+        self.email = userInfo[@"email"];
+        self.avatarURLString = userInfo[@"avatar_url"];
         
         dispatch_async(dispatch_get_current_queue(), ^{
             if (self.avatarURLString) {
