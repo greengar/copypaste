@@ -13,7 +13,6 @@
 static DataManager *shareManager = nil;
 
 @implementation DataManager
-@synthesize myUser = _myUser;
 @synthesize nearByUserList = _nearByUserList;
 @synthesize recentUserList = _recentUserList;
 
@@ -27,14 +26,7 @@ static DataManager *shareManager = nil;
 - (id) init {
     self = [super init];
     if (self) {
-        self.myUser = [[CPUser alloc] init];
         self.nearByUserList = [[NSMutableArray alloc] init];
-        for (int i = 0; i < 10; i++) {
-            CPUser *user = [[CPUser alloc] init];
-            user.avatarURLString = @"http://cdn.theatlantic.com/static/mt/assets/science/Screen%20Shot%202012-08-29%20at%201.45.48%20PM.png";
-            user.username = [NSString stringWithFormat:@"user %d", i];
-            [self.nearByUserList addObject:user];
-        }
         self.recentUserList = [[NSMutableArray alloc] init];
     }
     return self;
@@ -80,10 +72,8 @@ static DataManager *shareManager = nil;
 
 - (void)updateNearbyUsers:(NSArray *)nearbyList {
     [self.nearByUserList removeAllObjects];
-    for (PFUser *pfUser in nearbyList) {
-        CPUser *cpUser = [[CPUser alloc] init];
-        cpUser.username = pfUser.username;
-        [self.nearByUserList addObject:cpUser];
+    for (GSSUser *gsUser in nearbyList) {
+        [self.nearByUserList addObject:gsUser];
     }
 }
 

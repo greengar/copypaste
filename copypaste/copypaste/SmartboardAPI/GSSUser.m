@@ -13,19 +13,20 @@
 @synthesize username = _username;
 @synthesize firstname = _firstname;
 @synthesize lastname = _lastname;
+@synthesize fullname = _fullname;
 @synthesize email = _email;
 @synthesize avatarURLString = _avatarURLString;
 @synthesize isAvatarCached = _isAvatarCached;
 @synthesize avatarImage = _avatarImage;
 
-- (id)initWithDictionary:(NSDictionary *)userInfo {
+- (id)initWithPFUser:(PFUser *)pfUser {
     if (self = [super init]) {
-        self.uid = [userInfo objectForKey:@"uid"];
-        self.username = [userInfo objectForKey:@"username"];
-        self.firstname = [userInfo objectForKey:@"firstname"];
-        self.lastname = [userInfo objectForKey:@"lastname"];
-        self.email = [userInfo objectForKey:@"email"];
-        self.avatarURLString = [userInfo objectForKey:@"avatar_url"];
+        self.uid = [pfUser objectId];
+        self.username = [pfUser username];
+        self.fullname = [pfUser objectForKey:@"fullname"];
+        self.email = [pfUser objectForKey:@"email"];
+        self.avatarURLString = [pfUser objectForKey:@"avatar_url"];
+        DLog(@"Parse from %@ to %@", pfUser, self);
         
         dispatch_async(dispatch_get_current_queue(), ^{
             if (self.avatarURLString) {
@@ -36,6 +37,23 @@
         });
     }
     return self;
+}
+
+- (void)parseDataFromPFUser:(PFUser *)pfUser {
+    self.uid = [pfUser objectId];
+    self.username = [pfUser username];
+    self.fullname = [pfUser objectForKey:@"fullname"];
+    self.email = [pfUser objectForKey:@"email"];
+    self.avatarURLString = [pfUser objectForKey:@"avatar_url"];
+    DLog(@"Parse from %@ to %@", pfUser, self);
+    
+    dispatch_async(dispatch_get_current_queue(), ^{
+        if (self.avatarURLString) {
+            NSData *avatarData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.avatarURLString]];
+            self.avatarImage = [UIImage imageWithData:avatarData];
+            self.isAvatarCached = YES;
+        }
+    });
 }
 
 + (GSSUser *)userInfoFromDictionary:(NSDictionary *)userInfo {

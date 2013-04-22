@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Parse/Parse.h>
 
 @class GSSUser;
 
@@ -20,11 +21,13 @@
 @property (nonatomic, retain) NSString *username;
 @property (nonatomic, retain) NSString *firstname;
 @property (nonatomic, retain) NSString *lastname;
+@property (nonatomic, retain) NSString *fullname;
 @property (nonatomic, retain) NSString *email;
 @property (nonatomic, retain) NSString *avatarURLString;
 @property (nonatomic)         BOOL isAvatarCached;
 @property (nonatomic, retain) UIImage *avatarImage;
 
-- (id)initWithDictionary:(NSDictionary *)userInfo;
+- (id)initWithPFUser:(PFUser *)pfUser;
+- (void)parseDataFromPFUser:(PFUser *)pfUser;
 
 @end

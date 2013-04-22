@@ -257,7 +257,7 @@
         [contentLabel setText:@"No available user"];
         
     } else {
-        CPUser * user = [[[DataManager sharedManager] nearByUserList] objectAtIndex:index];
+        GSSUser * user = [[[DataManager sharedManager] nearByUserList] objectAtIndex:index];
         EGOImageView *contentView = (EGOImageView *) [cell viewWithTag:kContentViewTag];
         UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
         

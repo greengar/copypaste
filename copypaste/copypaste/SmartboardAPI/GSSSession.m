@@ -17,6 +17,7 @@ static GSSSession *activeSession = nil;
 
 @implementation GSSSession
 @synthesize delegate = _delegate;
+@synthesize currentUser = _currentUser;
 
 + (GSSSession *)activeSession {
     static GSSSession *activeSession;
@@ -27,7 +28,7 @@ static GSSSession *activeSession = nil;
 
 - (id)init {
     if (self = [super init]) {
-        
+        self.currentUser = [[GSSUser alloc] init];
     }
     return self;
 }
@@ -38,20 +39,20 @@ static GSSSession *activeSession = nil;
 }
 
 + (BOOL)isAuthenticated {
-    return ([PFUser currentUser] != nil);
+    return ([[GSSSession activeSession] currentUser] != nil);
 }
 
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate {
     self.delegate = delegate;
     
-    PFLogInViewController *logInController = [[PFLogInViewController alloc] init];
+    CPLogInViewController *logInController = [[CPLogInViewController alloc] init];
     logInController.delegate = self;
     
     // For next, we should allocate new Sign Up View Controller to be able to customize the UI
     logInController.signUpController.delegate = self;
     
     // We should check Facebook permissions for this
-    NSArray *permissions = [NSArray arrayWithObjects:@"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location", nil];
+    NSArray *permissions = [NSArray arrayWithObjects:@"user_about_me", @"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location", nil];
     [logInController setFacebookPermissions:permissions];
     [logInController setFields:PFLogInFieldsUsernameAndPassword
                              | PFLogInFieldsFacebook
@@ -62,6 +63,7 @@ static GSSSession *activeSession = nil;
 
 - (void)logOut {
     [PFUser logOut];
+    self.currentUser = nil;
 }
 
 - (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate {
@@ -79,7 +81,8 @@ static GSSSession *activeSession = nil;
                 NSMutableArray *nearByUserExceptMe = [[NSMutableArray alloc] init];
                 for (PFUser *user in objects) {
                     if (![[user objectId] isEqualToString:[[PFUser currentUser] objectId]]) {
-                        [nearByUserExceptMe addObject:user];
+                        GSSUser *gsUser = [[GSSUser alloc] initWithPFUser:user];
+                        [nearByUserExceptMe addObject:gsUser];
                     }
                 }
                 
@@ -118,7 +121,12 @@ static GSSSession *activeSession = nil;
 
 - (NSString *)currentUserName {
     if ([GSSSession isAuthenticated]) {
-        return [[PFUser currentUser] username];
+        if (self.currentUser.fullname != nil) {
+            return self.currentUser.fullname;
+        } else {
+            return self.currentUser.username;
+        }
+        
     } else {
         return @"";
     }
@@ -128,6 +136,39 @@ static GSSSession *activeSession = nil;
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self.delegate didLoginSucceeded];
         self.delegate = nil;
+        
+        if (self.currentUser == nil) {
+            self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
+        } else {
+            [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
+        }
+        
+        if ([PFFacebookUtils isLinkedWithUser:user]) {
+            // Create request for user's Facebook data
+            FBRequest *request = [FBRequest requestForMe];
+            
+            // Send request to Facebook
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    // result is a dictionary with the user's Facebook data
+                    NSDictionary *userData = (NSDictionary *)result;
+                    NSString *facebookID = userData[@"id"];
+                    NSString *name = userData[@"name"];
+                    NSString *pictureURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID];
+                    
+                    [[PFUser currentUser] setObject:name forKey:@"fullname"];
+                    [[PFUser currentUser] setObject:pictureURL forKey:@"avatar_url"];
+                    [[PFUser currentUser] saveInBackground];
+                    
+                    // Parse again with new data
+                    if (self.currentUser == nil) {
+                        self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
+                    } else {
+                        [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
+                    }
+                }
+            }];
+        }
     }
 }
 
@@ -142,6 +183,12 @@ static GSSSession *activeSession = nil;
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self.delegate didLoginSucceeded];
         self.delegate = nil;
+        
+        if (self.currentUser == nil) {
+            self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
+        } else {
+            [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
+        }
     }
 }
 

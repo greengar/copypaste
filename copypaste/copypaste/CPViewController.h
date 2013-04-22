@@ -10,7 +10,6 @@
 #import "DataManager.h"
 #import "GMGridView.h"
 #import "EGOImageView.h"
-#import "CPUser.h"
 #import "GSSSession.h"
 
 @interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSSessionDelegate, UIAlertViewDelegate>

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
+#import "CPLogInViewController.h"
+#import "GSSUser.h"
 
 @protocol GSSSessionDelegate
 - (void)didLoginSucceeded;
@@ -28,5 +30,6 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url;
 - (NSString *)currentUserName;
 
+@property (nonatomic, retain) GSSUser *currentUser;
 @property (nonatomic, assign) id<GSSSessionDelegate> delegate;
 @end

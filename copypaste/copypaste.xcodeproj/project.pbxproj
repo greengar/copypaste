@@ -33,7 +33,6 @@
 		7B346715171CDA0A00B73449 /* GMGridViewLayoutStrategies.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B34670E171CDA0A00B73449 /* GMGridViewLayoutStrategies.m */; };
 		7B346716171CDA0A00B73449 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346710171CDA0A00B73449 /* UIGestureRecognizer+GMGridViewAdditions.m */; };
 		7B346717171CDA0A00B73449 /* UIView+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346712171CDA0A00B73449 /* UIView+GMGridViewAdditions.m */; };
-		7B34671A171CE2E400B73449 /* CPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346719171CE2E400B73449 /* CPUser.m */; };
 		7B34672A171CE35E00B73449 /* EGOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B34671E171CE35E00B73449 /* EGOCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B34672B171CE35E00B73449 /* EGOImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346721171CE35E00B73449 /* EGOImageButton.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B34672C171CE35E00B73449 /* EGOImageLoadConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346724171CE35E00B73449 /* EGOImageLoadConnection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -152,8 +151,6 @@
 		7B346710171CDA0A00B73449 /* UIGestureRecognizer+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+GMGridViewAdditions.m"; sourceTree = "<group>"; };
 		7B346711171CDA0A00B73449 /* UIView+GMGridViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GMGridViewAdditions.h"; sourceTree = "<group>"; };
 		7B346712171CDA0A00B73449 /* UIView+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GMGridViewAdditions.m"; sourceTree = "<group>"; };
-		7B346718171CE2E400B73449 /* CPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPUser.h; sourceTree = "<group>"; };
-		7B346719171CE2E400B73449 /* CPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPUser.m; sourceTree = "<group>"; };
 		7B34671D171CE35E00B73449 /* EGOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOCache.h; sourceTree = "<group>"; };
 		7B34671E171CE35E00B73449 /* EGOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOCache.m; sourceTree = "<group>"; };
 		7B346720171CE35E00B73449 /* EGOImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOImageButton.h; sourceTree = "<group>"; };
@@ -487,8 +484,6 @@
 			children = (
 				7B38C658171CA43F00B53A52 /* DataManager.h */,
 				7B38C659171CA43F00B53A52 /* DataManager.m */,
-				7B346718171CE2E400B73449 /* CPUser.h */,
-				7B346719171CE2E400B73449 /* CPUser.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -805,7 +800,6 @@
 				7B346715171CDA0A00B73449 /* GMGridViewLayoutStrategies.m in Sources */,
 				7B346716171CDA0A00B73449 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */,
 				7B346717171CDA0A00B73449 /* UIView+GMGridViewAdditions.m in Sources */,
-				7B34671A171CE2E400B73449 /* CPUser.m in Sources */,
 				7B34672A171CE35E00B73449 /* EGOCache.m in Sources */,
 				7B34672B171CE35E00B73449 /* EGOImageButton.m in Sources */,
 				7B34672C171CE35E00B73449 /* EGOImageLoadConnection.m in Sources */,

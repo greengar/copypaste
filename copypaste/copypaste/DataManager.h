@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CPUser.h"
 
 @interface DataManager : NSObject
 
@@ -15,7 +14,6 @@
 - (NSObject *) getThingsFromClipboard;
 - (void)updateNearbyUsers:(NSArray *)nearbyList;
 
-@property (nonatomic, retain) CPUser *myUser;
 @property (nonatomic, retain) NSMutableArray *nearByUserList;
 @property (nonatomic, retain) NSMutableArray *recentUserList;
 
