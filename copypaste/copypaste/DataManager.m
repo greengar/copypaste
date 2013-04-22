@@ -78,6 +78,15 @@ static DataManager *shareManager = nil;
     return nil;
 }
 
+- (void)updateNearbyUsers:(NSArray *)nearbyList {
+    [self.nearByUserList removeAllObjects];
+    for (PFUser *pfUser in nearbyList) {
+        CPUser *cpUser = [[CPUser alloc] init];
+        cpUser.username = pfUser.username;
+        [self.nearByUserList addObject:cpUser];
+    }
+}
+
 + (id)allocWithZone:(NSZone *)zone {
     @synchronized(self) {
         if (shareManager == nil) {

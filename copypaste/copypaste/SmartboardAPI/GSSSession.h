@@ -12,7 +12,7 @@
 @protocol GSSSessionDelegate
 - (void)didLoginSucceeded;
 - (void)didLoginFailed:(NSError *)error;
-- (void)didGetNearbyUserSucceeded;
+- (void)didGetNearbyUserSucceeded:(NSArray *)listOfUsers;
 - (void)didGetNearbyUserFailed:(NSError *)error;
 @end
 

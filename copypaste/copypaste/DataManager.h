@@ -13,6 +13,7 @@
 
 + (DataManager *) sharedManager;
 - (NSObject *) getThingsFromClipboard;
+- (void)updateNearbyUsers:(NSArray *)nearbyList;
 
 @property (nonatomic, retain) CPUser *myUser;
 @property (nonatomic, retain) NSMutableArray *nearByUserList;

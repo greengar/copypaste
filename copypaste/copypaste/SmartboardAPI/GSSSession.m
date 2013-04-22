@@ -64,18 +64,51 @@ static GSSSession *activeSession = nil;
     PFGeoPoint *currentLocation = [[PFUser currentUser] objectForKey:@"location"];
     
     if (currentLocation != nil) {
-        PFQuery *query = [PFQuery queryWithClassName:@"Location"];
-        [query setLimit:1000];
+        // Query for locations near mine
+        PFQuery *query = [PFUser query];
+        [query setLimit:10];
         [query whereKey:@"location"
            nearGeoPoint:currentLocation];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
-                for (PFObject *object in objects) {
-                    DLog(@"Geo: %@", object);
+                NSMutableArray *nearByUserExceptMe = [[NSMutableArray alloc] init];
+                for (PFUser *user in objects) {
+                    if (![[user objectId] isEqualToString:[[PFUser currentUser] objectId]]) {
+                        [nearByUserExceptMe addObject:user];
+                    }
+                }
+                
+                DLog(@"Number of nearby users: %d", [nearByUserExceptMe count]);
+                if ([nearByUserExceptMe count] > 0) {
+                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didGetNearbyUserSucceeded:)]) {
+                        [self.delegate didGetNearbyUserSucceeded:nearByUserExceptMe];
+                    }
+                } else {
+                    
                 }
             }
         }];
+    } else {
+        [self getMyLocation];
     }
+}
+
+- (void)getMyLocation {
+    // Update my location
+    [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
+        [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
+        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                DLog(@" My location: %@", [[PFUser currentUser] objectForKey:@"location"]);
+                
+                [self getNearbyUserWithDelegate:self.delegate];
+            } else {
+                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didGetNearbyUserFailed:)]) {
+                    [self.delegate didGetNearbyUserFailed:error];
+                }
+            }
+        }];
+    }];
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {

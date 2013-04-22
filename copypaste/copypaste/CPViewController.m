@@ -12,13 +12,13 @@
 #import "GMGridViewLayoutStrategies.h"
 #import "GSSParseQueryHelper.h"
 
-#define kUserHolderWidth 60
+#define kUserHolderWidth 100
 #define kUserHolderHeight 80
-#define kUserAvatarWidth 60
+#define kUserAvatarWidth 100
 #define kUserAvatarHeight 60
-#define kUserNameWidth 60
+#define kUserNameWidth 100
 #define kUserNameHeight 20
-#define kPasteWidth 60
+#define kPasteWidth 100
 #define kPasteHeight 20
 
 #define kContentViewTag 777
@@ -120,6 +120,8 @@
         self.imageHolderView.hidden = NO;
         [self.imageHolderView setImage:((UIImage *) itemToPaste)];
     }
+    
+    [self.availableUsersGridView reloadData];
 }
 
 - (void)settingButtonTapped:(id)sender {
@@ -139,6 +141,15 @@
 
 - (void)didLoginFailed:(NSError *)error {
     // I think we have nothing to do now
+}
+
+- (void)didGetNearbyUserSucceeded:(NSArray *)listOfUsers {
+    [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
+    [self updateUI];
+}
+
+- (void)didGetNearbyUserFailed:(NSError *)error {
+
 }
 
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
