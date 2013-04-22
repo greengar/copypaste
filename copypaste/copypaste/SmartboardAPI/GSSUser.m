@@ -23,9 +23,11 @@
     if (self = [super init]) {
         self.uid = [pfUser objectId];
         self.username = [pfUser username];
-        self.fullname = [pfUser objectForKey:@"fullname"];
-        self.email = [pfUser objectForKey:@"email"];
-        self.avatarURLString = [pfUser objectForKey:@"avatar_url"];
+        self.firstname = pfUser[@"firstname"];
+        self.lastname = pfUser[@"lastname"];
+        self.fullname = pfUser[@"fullname"];
+        self.email = pfUser[@"email"];
+        self.avatarURLString = pfUser[@"avatar_url"];
         DLog(@"Parse from %@ to %@", pfUser, self);
         
         dispatch_async(dispatch_get_current_queue(), ^{
@@ -42,9 +44,11 @@
 - (void)parseDataFromPFUser:(PFUser *)pfUser {
     self.uid = [pfUser objectId];
     self.username = [pfUser username];
-    self.fullname = [pfUser objectForKey:@"fullname"];
-    self.email = [pfUser objectForKey:@"email"];
-    self.avatarURLString = [pfUser objectForKey:@"avatar_url"];
+    self.firstname = pfUser[@"firstname"];
+    self.lastname = pfUser[@"lastname"];
+    self.fullname = pfUser[@"fullname"];
+    self.email = pfUser[@"email"];
+    self.avatarURLString = pfUser[@"avatar_url"];
     DLog(@"Parse from %@ to %@", pfUser, self);
     
     dispatch_async(dispatch_get_current_queue(), ^{
@@ -64,6 +68,7 @@
 #define kGSSusername @"gssusername"
 #define kGSSfirstname @"gssfirstname"
 #define kGSSlastname @"gsslastname"
+#define kGSSfullname @"gssfullname"
 #define kGSSemail @"gssemail"
 #define kGSSavatarURLString @"gssavatarurl"
 #define kGSSavatarImage @"gssavatarimage"
@@ -72,6 +77,7 @@
 	[aCoder encodeObject:self.username forKey:kGSSusername];
     [aCoder encodeObject:self.firstname forKey:kGSSfirstname];
     [aCoder encodeObject:self.lastname forKey:kGSSlastname];
+    [aCoder encodeObject:self.fullname forKey:kGSSfullname];
     [aCoder encodeObject:self.email forKey:kGSSemail];
     [aCoder encodeObject:self.avatarURLString forKey:kGSSavatarURLString];
     if (self.isAvatarCached && self.avatarImage) {
@@ -86,6 +92,7 @@
 		self.username = [aDecoder decodeObjectForKey:kGSSusername];
         self.firstname = [aDecoder decodeObjectForKey:kGSSfirstname];
         self.lastname = [aDecoder decodeObjectForKey:kGSSlastname];
+        self.fullname = [aDecoder decodeObjectForKey:kGSSfullname];
         self.email = [aDecoder decodeObjectForKey:kGSSemail];
         self.avatarURLString = [aDecoder decodeObjectForKey:kGSSavatarURLString];
         self.avatarImage = [aDecoder decodeObjectForKey:kGSSavatarImage];
