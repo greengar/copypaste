@@ -146,8 +146,12 @@
 }
 
 - (void)settingButtonTapped:(id)sender {
-    [[GSSSession activeSession] logOut];
-    [self viewDidAppear:YES];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Log Out"
+                                                        message:[NSString stringWithFormat:@"You have logged in as %@. Do you want to log out?", [[GSSSession activeSession] currentUserName]]
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Log Out", nil];
+    [alertView show];
 }
 
 - (void)hideOldCopiedContent {
@@ -181,6 +185,20 @@
 
 - (void)didGetNearbyUserFailed:(NSError *)error {
 
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == alertView.firstOtherButtonIndex) {
+        [[GSSSession activeSession] logOut];
+        [self viewDidAppear:YES];
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Finish log out"
+                                                            message:nil
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {

@@ -116,6 +116,14 @@ static GSSSession *activeSession = nil;
     }];
 }
 
+- (NSString *)currentUserName {
+    if ([GSSSession isAuthenticated]) {
+        return [[PFUser currentUser] username];
+    } else {
+        return @"";
+    }
+}
+
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self.delegate didLoginSucceeded];

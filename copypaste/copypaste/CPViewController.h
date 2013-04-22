@@ -13,7 +13,7 @@
 #import "CPUser.h"
 #import "GSSSession.h"
 
-@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSSessionDelegate>
+@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSSessionDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) UIView *myPasteboardHolderView;
 @property (nonatomic, retain) UIImageView *myPasteboardBackgroundImageView;

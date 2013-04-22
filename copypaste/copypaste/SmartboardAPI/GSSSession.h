@@ -26,6 +26,7 @@
 - (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate;
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url;
+- (NSString *)currentUserName;
 
 @property (nonatomic, assign) id<GSSSessionDelegate> delegate;
 @end
