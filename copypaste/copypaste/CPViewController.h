@@ -15,10 +15,12 @@
 
 @interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSSessionDelegate>
 
-@property (nonatomic, retain) UILabel *pasteTitleLabel;
-@property (nonatomic, retain) UIView *displayView;
+@property (nonatomic, retain) UIView *myPasteboardHolderView;
+@property (nonatomic, retain) UIImageView *myPasteboardBackgroundImageView;
 @property (nonatomic, retain) UITextView *stringLabel;
 @property (nonatomic, retain) UIImageView *imageHolderView;
+
+@property (nonatomic, retain) EGOImageView *avatarImageView;
 @property (nonatomic, retain) UIButton *settingButton;
 
 @property (nonatomic, retain) GMGridView *availableUsersGridView;

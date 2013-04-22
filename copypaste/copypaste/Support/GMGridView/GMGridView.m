@@ -243,7 +243,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     
     self.mainSuperView = self;
     self.editing = NO;
-    self.itemSpacing = 3;
+    self.itemSpacing = 0;
     self.style = GMGridViewStyleSwap;
     self.minimumPressDuration = 0.2;
     self.showFullSizeViewWithAlphaWhenTransforming = YES;

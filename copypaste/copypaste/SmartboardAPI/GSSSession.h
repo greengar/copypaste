@@ -19,10 +19,13 @@
 @interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 + (GSSSession *) activeSession;
++ (void)setClientId:(NSString *)clientId clientSecret:(NSString *)clientSecret;
 + (BOOL)isAuthenticated;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate;
 - (void)logOut;
 - (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate;
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url;
 
 @property (nonatomic, assign) id<GSSSessionDelegate> delegate;
 @end

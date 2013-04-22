@@ -12,14 +12,16 @@
 #import "GMGridViewLayoutStrategies.h"
 #import "GSSParseQueryHelper.h"
 
-#define kUserHolderWidth 100
-#define kUserHolderHeight 80
-#define kUserAvatarWidth 100
-#define kUserAvatarHeight 60
-#define kUserNameWidth 100
+#define kUserHolderWidth 102
+#define kUserHolderHeight 128
+#define kUserBackgroundWidth 102
+#define kUserBackgroundHeight 128
+#define kUserAvatarWidth 98
+#define kUserAvatarHeight 98
+#define kUserNameWidth 102
 #define kUserNameHeight 20
-#define kPasteWidth 100
-#define kPasteHeight 20
+#define kPasteWidth 102
+#define kPasteHeight 48
 
 #define kContentViewTag 777
 #define kLabelViewTag 778
@@ -30,8 +32,7 @@
 @end
 
 @implementation CPViewController
-@synthesize pasteTitleLabel = _pasteTitleLabel;
-@synthesize displayView = _displayView;
+@synthesize myPasteboardHolderView = _displayView;
 @synthesize stringLabel = _stringLabel;
 @synthesize imageHolderView = _imageHolderView;
 @synthesize settingButton = _settingButton;
@@ -41,45 +42,72 @@
 {
     [super viewDidLoad];
     
-    self.pasteTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-    self.pasteTitleLabel.backgroundColor = [UIColor clearColor];
-    self.pasteTitleLabel.textAlignment = UITextAlignmentCenter;
-    [self.view addSubview:self.pasteTitleLabel];
+    // The background of the whole screen
+    UIImageView *backgroundImageView = [[UIImageView alloc] init];
+    backgroundImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    backgroundImageView.image = [UIImage imageNamed:@"background.png"];
+    [self.view addSubview:backgroundImageView];
     
-    self.settingButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    self.settingButton.frame = CGRectMake(300, 5, 20, 20);
+    // The header "copypaste"
+    UIImageView *headerImageView = [[UIImageView alloc] init];
+    headerImageView.frame = CGRectMake(6, 6, 308, 52);
+    headerImageView.image = [UIImage imageNamed:@"header.png"];
+    [self.view addSubview:headerImageView];
+    
+    // The gear button which means "setting"
+    self.settingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.settingButton.frame = CGRectMake(262, 10, 44, 44);
+    [self.settingButton setImage:[UIImage imageNamed:@"gear.png"]
+                        forState:UIControlStateNormal];
     [self.settingButton addTarget:self
                            action:@selector(settingButtonTapped:)
                  forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.settingButton];
     
-    self.displayView = [[UIView alloc] initWithFrame:CGRectMake(0, 50, 320, 320)];
-    self.displayView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:self.displayView];
+    // The avatar image view of the logged in user
     
-    self.stringLabel = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
+    // The "my pasteboard holder view"
+    self.myPasteboardHolderView = [[UIView alloc] initWithFrame:CGRectMake(8, 6+52+6, 304, 200)];
+    self.myPasteboardHolderView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.myPasteboardHolderView];
+    
+    // The "my pasteboard background image view"
+    self.myPasteboardBackgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 304, 200)];
+    self.myPasteboardBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.myPasteboardBackgroundImageView.image = [[UIImage imageNamed:@"pasteboard.png"] stretchableImageWithLeftCapWidth:30
+                                                                                                             topCapHeight:30];
+    [self.myPasteboardHolderView addSubview:self.myPasteboardBackgroundImageView];
+    
+    // The "pasteboard" header view
+    UILabel *pasteboardHeaderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 6, 304, 30)];
+    pasteboardHeaderLabel.text = @"pasteboard";
+    pasteboardHeaderLabel.backgroundColor = [UIColor clearColor];
+    pasteboardHeaderLabel.textColor = OPAQUE_HEXCOLOR(0xc8afa7);
+    pasteboardHeaderLabel.textAlignment = UITextAlignmentCenter;
+    pasteboardHeaderLabel.font = [UIFont fontWithName:@"Heiti SC" size:18.0f];
+    [self.myPasteboardHolderView addSubview:pasteboardHeaderLabel];
+    
+    // The "pasteboard" string content
+    self.stringLabel = [[UITextView alloc] initWithFrame:CGRectMake(0, 42, 304, 158)];
     self.stringLabel.backgroundColor = [UIColor clearColor];
+    self.stringLabel.textColor = [UIColor whiteColor];
     self.stringLabel.textAlignment = UITextAlignmentCenter;
     self.stringLabel.editable = NO;
-    self.stringLabel.font = [UIFont systemFontOfSize:15.0f];
+    self.stringLabel.font = [UIFont fontWithName:@"Heiti SC" size:16.0f];
     self.stringLabel.hidden = YES;
-    self.stringLabel.layer.borderColor = [UIColor darkGrayColor].CGColor;
-    self.stringLabel.layer.borderWidth = 1.0f;
-    [self.displayView addSubview:self.stringLabel];
+    [self.myPasteboardHolderView addSubview:self.stringLabel];
     
-    self.imageHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
+    self.imageHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 42, 304, 158)];
     self.imageHolderView.backgroundColor = [UIColor clearColor];
     self.imageHolderView.hidden = YES;
-    self.imageHolderView.layer.borderColor = [UIColor darkGrayColor].CGColor;
-    self.imageHolderView.layer.borderWidth = 1.0f;
-    [self.displayView addSubview:self.imageHolderView];
+    [self.myPasteboardHolderView addSubview:self.imageHolderView];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateUI)
                                                  name:kNotificationApplicationDidBecomeActive
                                                object:nil];
     
-    self.availableUsersGridView = [[GMGridView alloc] initWithFrame:CGRectMake(0, 380, 320, 100)];
+    self.availableUsersGridView = [[GMGridView alloc] initWithFrame:CGRectMake(6, 270, 308, 148)];
     self.availableUsersGridView.dataSource = self;
     self.availableUsersGridView.actionDelegate = self;
     self.availableUsersGridView.layoutStrategy = [GMGridViewLayoutStrategyFactory strategyFromType:GMGridViewLayoutHorizontalPagedLTR];
@@ -104,13 +132,6 @@
 
 - (void)updateUI {
     [self hideOldCopiedContent];
-    
-    if ([GSSSession isAuthenticated]) {
-        NSString *username = [[PFUser currentUser] username];
-        self.pasteTitleLabel.text = [NSString stringWithFormat:@"%@ has copied", username];
-    } else {
-        self.pasteTitleLabel.text = @"You have copied: ";
-    }
     
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     if ([itemToPaste isKindOfClass:[NSString class]]) {
@@ -168,7 +189,6 @@
 
 - (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return CGSizeMake(kUserHolderWidth, kUserHolderHeight);
-    
 }
 
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView_ cellForItemAtIndex:(NSInteger)index {
@@ -178,38 +198,40 @@
         cell = [[GMGridViewCell alloc] init];
         cell.clipsToBounds = YES;
         
-        EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                   0,
+        UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                                                    0,
+                                                                                    kUserBackgroundWidth,
+                                                                                    kUserBackgroundHeight)];
+        backgroundView.image = [UIImage imageNamed:@"person-background.png"];
+        [cell addSubview:backgroundView];
+        
+        EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake(4,
+                                                                                   4,
                                                                                    kUserAvatarWidth,
                                                                                    kUserAvatarHeight)];
-        contentView.layer.borderWidth = 1;
-        contentView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         contentView.tag = kContentViewTag;
+        contentView.image = [UIImage imageNamed:@"pasteboard.png"];
         contentView.delegate = self;
         [cell addSubview:contentView];
         
         UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                                                          kUserAvatarHeight - kUserNameHeight,
+                                                                          0,
                                                                           kUserNameWidth,
                                                                           kUserNameHeight)];
         contentLabel.textAlignment = UITextAlignmentCenter;
         contentLabel.backgroundColor = [UIColor clearColor];
-        contentLabel.textColor = [UIColor blackColor];
+        contentLabel.textColor = [UIColor whiteColor];
         contentLabel.tag = kLabelViewTag;
         [cell addSubview:contentLabel];
         
-        UILabel *pasteLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                                                        kUserHolderHeight - kPasteHeight,
-                                                                        kPasteWidth,
-                                                                        kPasteHeight)];
-        pasteLabel.textAlignment = UITextAlignmentCenter;
-        pasteLabel.backgroundColor = [UIColor orangeColor];
-        pasteLabel.textColor = [UIColor whiteColor];
-        pasteLabel.shadowColor = [UIColor grayColor];
-        pasteLabel.shadowOffset = CGSizeMake(0, -1);
-        pasteLabel.tag = kPasteLabelViewTag;
-        pasteLabel.text = @"Paste";
-        [cell addSubview:pasteLabel];
+        UIImageView *pasteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                                                    kUserHolderHeight - kPasteHeight,
+                                                                                    kPasteWidth,
+                                                                                    kPasteHeight)];
+        pasteImageView.backgroundColor = [UIColor clearColor];
+        pasteImageView.tag = kPasteLabelViewTag;
+        pasteImageView.image = [UIImage imageNamed:@"paste.png"];
+        [cell addSubview:pasteImageView];
     }
     
     if ([[[DataManager sharedManager] nearByUserList] count] == 0) {

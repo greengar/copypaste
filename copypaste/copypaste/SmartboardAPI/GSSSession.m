@@ -32,6 +32,11 @@ static GSSSession *activeSession = nil;
     return self;
 }
 
++ (void)setClientId:(NSString *)clientId clientSecret:(NSString *)clientSecret {
+    [Parse setApplicationId:clientId clientKey:clientSecret];
+    [PFFacebookUtils initializeFacebook];
+}
+
 + (BOOL)isAuthenticated {
     return ([PFUser currentUser] != nil);
 }
@@ -46,8 +51,8 @@ static GSSSession *activeSession = nil;
     logInController.signUpController.delegate = self;
     
     // We should check Facebook permissions for this
-    // And remmeber to add the Facebook App Id
-    [logInController setFacebookPermissions:[NSArray arrayWithObjects:@"friends_about_me", nil]];
+    NSArray *permissions = [NSArray arrayWithObjects:@"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location", nil];
+    [logInController setFacebookPermissions:permissions];
     [logInController setFields:PFLogInFieldsUsernameAndPassword
                              | PFLogInFieldsFacebook
                              | PFLogInFieldsSignUpButton
@@ -137,6 +142,14 @@ static GSSSession *activeSession = nil;
         [self.delegate didLoginFailed:error];
         self.delegate = nil;
     }
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [PFFacebookUtils handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [PFFacebookUtils handleOpenURL:url];
 }
 
 + (id)allocWithZone:(NSZone *)zone {

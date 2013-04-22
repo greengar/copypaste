@@ -7,15 +7,14 @@
 //
 
 #import "CPAppDelegate.h"
-#import <FacebookSDK/FacebookSDK.h>
-#import <Parse/Parse.h>
+#import "GSSSession.h"
 
 @implementation CPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Parse setApplicationId:@"UWaDpuZfLQvFpgVmz4LLvAPsy6bX9XG3D0mQrd7F"
-                  clientKey:@"jDyQOfa5IbHiY5cHbY1kouJMMwZWgGWX6RQhApIy"];
+    [GSSSession setClientId:@"UWaDpuZfLQvFpgVmz4LLvAPsy6bX9XG3D0mQrd7F"
+               clientSecret:@"jDyQOfa5IbHiY5cHbY1kouJMMwZWgGWX6RQhApIy"];
     return YES;
 }
 							
@@ -49,7 +48,15 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return [FBSession.activeSession handleOpenURL:url];
+    return [[GSSSession activeSession] application:application
+                                           openURL:url
+                                 sourceApplication:sourceApplication
+                                        annotation:annotation];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [[GSSSession activeSession] application:application
+                                     handleOpenURL:url];
 }
 
 @end
