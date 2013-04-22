@@ -14,6 +14,7 @@
 		7B0B98D31720EA86006B4EBA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0B98D21720EA86006B4EBA /* StoreKit.framework */; };
 		7B0B98D51720EA9B006B4EBA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0B98D41720EA9B006B4EBA /* CoreLocation.framework */; };
 		7B0B98D61720EADC006B4EBA /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0B98CC1720E9BB006B4EBA /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7B2CD3891725AADB006380F3 /* CPLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2CD3881725AADB006380F3 /* CPLogInViewController.m */; };
 		7B346713171CDA0A00B73449 /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346709171CDA0A00B73449 /* GMGridView.m */; };
 		7B346714171CDA0A00B73449 /* GMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B34670C171CDA0A00B73449 /* GMGridViewCell.m */; };
 		7B346715171CDA0A00B73449 /* GMGridViewLayoutStrategies.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B34670E171CDA0A00B73449 /* GMGridViewLayoutStrategies.m */; };
@@ -111,6 +112,8 @@
 		7B0B98D01720EA61006B4EBA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7B0B98D21720EA86006B4EBA /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		7B0B98D41720EA9B006B4EBA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		7B2CD3871725AADB006380F3 /* CPLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLogInViewController.h; sourceTree = "<group>"; };
+		7B2CD3881725AADB006380F3 /* CPLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLogInViewController.m; sourceTree = "<group>"; };
 		7B346707171CDA0A00B73449 /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
 		7B346708171CDA0A00B73449 /* GMGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridView.h; sourceTree = "<group>"; };
 		7B346709171CDA0A00B73449 /* GMGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridView.m; sourceTree = "<group>"; };
@@ -494,6 +497,8 @@
 		7BD2227D171F539100E66FD5 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				7B2CD3871725AADB006380F3 /* CPLogInViewController.h */,
+				7B2CD3881725AADB006380F3 /* CPLogInViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -771,6 +776,7 @@
 				7BD22273171F40E900E66FD5 /* SBJsonWriter.m in Sources */,
 				7BD2227C171F435600E66FD5 /* GSSSession.m in Sources */,
 				7BA18EEC1721C5E000B88255 /* GSSParseQueryHelper.m in Sources */,
+				7B2CD3891725AADB006380F3 /* CPLogInViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

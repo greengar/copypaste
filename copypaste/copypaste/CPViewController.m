@@ -34,6 +34,7 @@
 @synthesize displayView = _displayView;
 @synthesize stringLabel = _stringLabel;
 @synthesize imageHolderView = _imageHolderView;
+@synthesize settingButton = _settingButton;
 @synthesize availableUsersGridView = _availableUsersGridView;
 
 - (void)viewDidLoad
@@ -44,6 +45,13 @@
     self.pasteTitleLabel.backgroundColor = [UIColor clearColor];
     self.pasteTitleLabel.textAlignment = UITextAlignmentCenter;
     [self.view addSubview:self.pasteTitleLabel];
+    
+    self.settingButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
+    self.settingButton.frame = CGRectMake(300, 5, 20, 20);
+    [self.settingButton addTarget:self
+                           action:@selector(settingButtonTapped:)
+                 forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.settingButton];
     
     self.displayView = [[UIView alloc] initWithFrame:CGRectMake(0, 50, 320, 320)];
     self.displayView.backgroundColor = [UIColor clearColor];
@@ -83,11 +91,15 @@
     [self updateUI];
     
     if ([GSSSession isAuthenticated]) {
-        [GSSParseQueryHelper updateCurrentUserLocation];
-        [self updateUI];
+        [self finishAuthentication];
     } else {
         [[GSSSession activeSession] authenticateSmartboardAPIFromViewController:self delegate:self];
     }
+}
+
+- (void)finishAuthentication {
+    [[GSSSession activeSession] getNearbyUserWithDelegate:self];
+    [self updateUI];
 }
 
 - (void)updateUI {
@@ -110,6 +122,11 @@
     }
 }
 
+- (void)settingButtonTapped:(id)sender {
+    [[GSSSession activeSession] logOut];
+    [self viewDidAppear:YES];
+}
+
 - (void)hideOldCopiedContent {
     self.stringLabel.hidden = YES;
     self.imageHolderView.hidden = YES;
@@ -117,8 +134,7 @@
 
 - (void)didLoginSucceeded {
     [self dismissModalViewControllerAnimated:YES];
-    [GSSParseQueryHelper updateCurrentUserLocation];
-    [self updateUI];
+    [self finishAuthentication];
 }
 
 - (void)didLoginFailed:(NSError *)error {

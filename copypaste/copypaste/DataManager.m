@@ -48,8 +48,9 @@ static DataManager *shareManager = nil;
         NSData *data = [pasteboard dataForPasteboardType:firstDataType];
         DLog(@"Data type: %@", firstDataType);
         
-        if (([firstDataType compare:@"public.text" options:NSCaseInsensitiveSearch] == NSOrderedSame)
-            || ([firstDataType compare:@"public.utf8-plain-text" options:NSCaseInsensitiveSearch] == NSOrderedSame)) {
+        if (([firstDataType compare:@"public.text" options:NSCaseInsensitiveSearch] == NSOrderedSame) // Normal text
+            || ([firstDataType compare:@"public.utf8-plain-text" options:NSCaseInsensitiveSearch] == NSOrderedSame) // UTF8 text
+            || ([firstDataType compare:@"com.agilebits.onepassword" options:NSCaseInsensitiveSearch] == NSOrderedSame))  { // 1Password
             NSString *string = [NSString stringWithUTF8String:[data bytes]];
             return string;
             
@@ -63,8 +64,16 @@ static DataManager *shareManager = nil;
             UIImage *image = pasteboard.image;
             return image;
             
+        } else {
+            @try { // Try to parse all other kinds of object, catch the exception and return nil if not parsable
+                NSString *string = [NSString stringWithUTF8String:[data bytes]];
+                return string;
+            }
+            @catch (NSException *exception) {
+                DLog(@"Object from clipboard is not parsable");
+                return nil;
+            }
         }
-            
     }
     return nil;
 }

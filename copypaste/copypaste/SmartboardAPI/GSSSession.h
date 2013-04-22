@@ -12,6 +12,8 @@
 @protocol GSSSessionDelegate
 - (void)didLoginSucceeded;
 - (void)didLoginFailed:(NSError *)error;
+- (void)didGetNearbyUserSucceeded;
+- (void)didGetNearbyUserFailed:(NSError *)error;
 @end
 
 @interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
@@ -19,6 +21,8 @@
 + (GSSSession *) activeSession;
 + (BOOL)isAuthenticated;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate;
+- (void)logOut;
+- (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate;
 
 @property (nonatomic, assign) id<GSSSessionDelegate> delegate;
 @end

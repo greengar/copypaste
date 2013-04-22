@@ -41,30 +41,68 @@ static GSSSession *activeSession = nil;
     
     PFLogInViewController *logInController = [[PFLogInViewController alloc] init];
     logInController.delegate = self;
+    
+    // For next, we should allocate new Sign Up View Controller to be able to customize the UI
+    logInController.signUpController.delegate = self;
+    
+    // We should check Facebook permissions for this
+    // And remmeber to add the Facebook App Id
+    [logInController setFacebookPermissions:[NSArray arrayWithObjects:@"friends_about_me", nil]];
+    [logInController setFields:PFLogInFieldsUsernameAndPassword
+                             | PFLogInFieldsFacebook
+                             | PFLogInFieldsSignUpButton
+                             | PFLogInFieldsDismissButton];
     [viewController presentModalViewController:logInController animated:YES];
+}
+
+- (void)logOut {
+    [PFUser logOut];
+}
+
+- (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate {
+    self.delegate = delegate;
+    PFGeoPoint *currentLocation = [[PFUser currentUser] objectForKey:@"location"];
+    
+    if (currentLocation != nil) {
+        PFQuery *query = [PFQuery queryWithClassName:@"Location"];
+        [query setLimit:1000];
+        [query whereKey:@"location"
+           nearGeoPoint:currentLocation];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                for (PFObject *object in objects) {
+                    DLog(@"Geo: %@", object);
+                }
+            }
+        }];
+    }
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self.delegate didLoginSucceeded];
+        self.delegate = nil;
     }
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
         [self.delegate didLoginFailed:error];
+        self.delegate = nil;
     }
 }
 
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self.delegate didLoginSucceeded];
+        self.delegate = nil;
     }
 }
 
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
         [self.delegate didLoginFailed:error];
+        self.delegate = nil;
     }
 }
 

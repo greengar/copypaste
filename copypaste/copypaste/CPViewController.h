@@ -19,6 +19,7 @@
 @property (nonatomic, retain) UIView *displayView;
 @property (nonatomic, retain) UITextView *stringLabel;
 @property (nonatomic, retain) UIImageView *imageHolderView;
+@property (nonatomic, retain) UIButton *settingButton;
 
 @property (nonatomic, retain) GMGridView *availableUsersGridView;
 
