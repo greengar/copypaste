@@ -29,6 +29,9 @@ static GSSSession *activeSession = nil;
 - (id)init {
     if (self = [super init]) {
         self.currentUser = [[GSSUser alloc] init];
+        if ([PFUser currentUser]) {
+            [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
+        }
     }
     return self;
 }
