@@ -16,8 +16,8 @@
 #define kUserHolderHeight 128
 #define kUserBackgroundWidth 102
 #define kUserBackgroundHeight 128
-#define kUserAvatarWidth 98
-#define kUserAvatarHeight 98
+#define kUserAvatarWidth 60
+#define kUserAvatarHeight 60
 #define kUserNameWidth 102
 #define kUserNameHeight 20
 #define kPasteWidth 102
@@ -223,12 +223,14 @@
         backgroundView.image = [UIImage imageNamed:@"person-background.png"];
         [cell addSubview:backgroundView];
         
-        EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake(4,
-                                                                                   4,
+        EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake(21,
+                                                                                   21,
                                                                                    kUserAvatarWidth,
                                                                                    kUserAvatarHeight)];
         contentView.tag = kContentViewTag;
         contentView.image = [UIImage imageNamed:@"pasteboard.png"];
+        contentView.contentMode = UIViewContentModeScaleAspectFill;
+        contentView.clipsToBounds = YES;
         contentView.delegate = self;
         [cell addSubview:contentView];
         
@@ -239,6 +241,7 @@
         contentLabel.textAlignment = UITextAlignmentCenter;
         contentLabel.backgroundColor = [UIColor clearColor];
         contentLabel.textColor = [UIColor whiteColor];
+        contentLabel.font = [UIFont fontWithName:@"Heiti SC" size:13.0f];
         contentLabel.tag = kLabelViewTag;
         [cell addSubview:contentLabel];
         
@@ -262,8 +265,12 @@
         UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
         
         if (user != nil) {
-            [contentView setImageURL:[NSURL URLWithString:user.avatarURLString]];
-            [contentView setDelegate:self];
+            if (user.isAvatarCached) {
+                [contentView setImage:user.avatarImage];
+            } else if (user.avatarURLString) {
+                [contentView setImageURL:[NSURL URLWithString:user.avatarURLString]];
+                [contentView setDelegate:self];
+            }
         }
         
         [contentLabel setText:user.username];
