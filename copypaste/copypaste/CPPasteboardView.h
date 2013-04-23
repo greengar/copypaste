@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CPPasteboardView : UIView
+@interface CPPasteboardView : UIView <UIScrollViewDelegate, UITextViewDelegate>
 
 - (void)updateUIWithPasteObject:(NSObject *)objectFromClipboard;
 

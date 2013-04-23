@@ -12,9 +12,16 @@
 #define kOffset 6
 #define kHeaderViewHeight 52
 #define kPasteboardMinimumHeight 131
-#define kPasteboardContentTopOffset 22
+#define kPasteboardContentTopOffset 1 //22
 #define kPasteboardContentBottomOffset 2
 #define kPasteboardContentWidth 300
+#define kPasteboardEmptyContentTopGap 30
+#define kPasteboardTextContentTopGap 11
+#define kPasteboardImageContentTopGap 17
+
+@interface CPPasteboardView()
+
+@end
 
 @implementation CPPasteboardView
 @synthesize pasteboardBackgroundImageView = _myPasteboardBackgroundImageView;
@@ -39,11 +46,6 @@
         self.pasteboardBackgroundImageView.image = [[UIImage imageNamed:@"pasteboard.png"] stretchableImageWithLeftCapWidth:30
                                                                                                             topCapHeight:30];
         [self addSubview:self.pasteboardBackgroundImageView];
-
-        // The "pasteboard" header view
-        self.pasteboardHeaderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, kPasteboardContentTopOffset)];
-        self.pasteboardHeaderImageView.image = [UIImage imageNamed:@"header-clipboard.fw.png"];
-        [self addSubview:self.pasteboardHeaderImageView];
         
         // The "pasteboard" string content
         self.pasteboardTextView = [[UITextView alloc] initWithFrame:CGRectMake((frame.size.width-kPasteboardContentWidth)/2,
@@ -58,6 +60,7 @@
         self.pasteboardTextView.hidden = YES;
         self.pasteboardTextView.layer.cornerRadius = 3;
         self.pasteboardTextView.clipsToBounds = YES;
+        self.pasteboardTextView.delegate = self;
         [self addSubview:self.pasteboardTextView];
         
         // The "pasteboard" image scroller
@@ -69,15 +72,21 @@
         self.pasteboardImageHolderView.hidden = YES;
         self.pasteboardImageHolderView.layer.cornerRadius = 3;
         self.pasteboardImageHolderView.clipsToBounds = YES;
+        self.pasteboardImageHolderView.delegate = self;
         [self addSubview:self.pasteboardImageHolderView];
         
         // The "pasteboard" image content
         self.pasteboardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                   0,
-                                                                                   self.pasteboardImageHolderView.frame.size.width,
-                                                                                   self.pasteboardImageHolderView.frame.size.height)];
+                                                                                 0,
+                                                                                 self.pasteboardImageHolderView.frame.size.width,
+                                                                                 self.pasteboardImageHolderView.frame.size.height)];
         self.pasteboardImageView.backgroundColor = [UIColor clearColor];
         [self.pasteboardImageHolderView addSubview:self.pasteboardImageView];
+        
+        // The "pasteboard" header view
+        self.pasteboardHeaderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 22)];
+        self.pasteboardHeaderImageView.image = [UIImage imageNamed:@"header-clipboard.fw.png"];
+        [self addSubview:self.pasteboardHeaderImageView];
     }
     return self;
 }
@@ -86,6 +95,7 @@
     if ([objectFromClipboard isKindOfClass:[NSString class]]) {
         self.pasteboardTextView.hidden = NO;
         [self.pasteboardTextView setText:((NSString *) objectFromClipboard)];
+        [self.pasteboardTextView setContentOffset:CGPointMake(0, -kPasteboardTextContentTopGap)];
         
     } else if ([objectFromClipboard isKindOfClass:[UIImage class]]) {
         self.pasteboardImageHolderView.hidden = NO;
@@ -98,6 +108,23 @@
                                                     imageHeight);
         self.pasteboardImageHolderView.contentSize = CGSizeMake(self.pasteboardImageHolderView.frame.size.width,
                                                                 imageHeight);
+        [self.pasteboardImageHolderView setContentOffset:CGPointMake(0, -kPasteboardImageContentTopGap)];
+        
+    } else {
+        self.pasteboardTextView.hidden = NO;
+        [self.pasteboardTextView setText:@"Your clipboard is empty, please copy something to paste here!\nYou can copy images, texts,\nwebs or files."];
+        [self.pasteboardTextView setContentOffset:CGPointMake(0, -kPasteboardEmptyContentTopGap)];
+    }
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.y < 0) {
+        [scrollView setDecelerationRate:0]; // Stop deceleration
+        if (scrollView == self.pasteboardTextView) {
+            [scrollView setContentOffset:CGPointMake(0, -kPasteboardTextContentTopGap) animated:YES];
+        } else {
+            [scrollView setContentOffset:CGPointMake(0, -kPasteboardImageContentTopGap) animated:YES];
+        }
     }
 }
 
