@@ -12,12 +12,13 @@
 #define kOffset 6
 #define kHeaderViewHeight 52
 #define kPasteboardMinimumHeight 131
-#define kPasteboardContentTopOffset 32
+#define kPasteboardContentTopOffset 22
 #define kPasteboardContentBottomOffset 2
 #define kPasteboardContentWidth 300
 
 @implementation CPPasteboardView
 @synthesize pasteboardBackgroundImageView = _myPasteboardBackgroundImageView;
+@synthesize pasteboardHeaderImageView = _pasteboardHeaderImageView;
 @synthesize pasteboardTextView = _myPasteboardTextView;
 @synthesize pasteboardImageHolderView = _myPasteboardImageHolderView;
 @synthesize pasteboardImageView = _myPasteboardImageView;
@@ -30,26 +31,19 @@
         
         // The "my pasteboard background image view"
         self.pasteboardBackgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                             0,
-                                                                                             frame.size.width,
-                                                                                             frame.size.height)];
+                                                                                           0,
+                                                                                           frame.size.width,
+                                                                                           frame.size.height)];
         self.pasteboardBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth
                                                               | UIViewAutoresizingFlexibleHeight;
         self.pasteboardBackgroundImageView.image = [[UIImage imageNamed:@"pasteboard.png"] stretchableImageWithLeftCapWidth:30
-                                                                                                                 topCapHeight:30];
+                                                                                                            topCapHeight:30];
         [self addSubview:self.pasteboardBackgroundImageView];
 
         // The "pasteboard" header view
-        UILabel *pasteboardHeaderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                                                                   kOffset,
-                                                                                   frame.size.width,
-                                                                                   30)];
-        pasteboardHeaderLabel.text = @"pasteboard";
-        pasteboardHeaderLabel.backgroundColor = [UIColor clearColor];
-        pasteboardHeaderLabel.textColor = OPAQUE_HEXCOLOR(0xc8afa7);
-        pasteboardHeaderLabel.textAlignment = UITextAlignmentCenter;
-        pasteboardHeaderLabel.font = [UIFont fontWithName:@"Heiti SC" size:18.0f];
-        [self addSubview:pasteboardHeaderLabel];
+        self.pasteboardHeaderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, kPasteboardContentTopOffset)];
+        self.pasteboardHeaderImageView.image = [UIImage imageNamed:@"header-clipboard.fw.png"];
+        [self addSubview:self.pasteboardHeaderImageView];
         
         // The "pasteboard" string content
         self.pasteboardTextView = [[UITextView alloc] initWithFrame:CGRectMake((frame.size.width-kPasteboardContentWidth)/2,

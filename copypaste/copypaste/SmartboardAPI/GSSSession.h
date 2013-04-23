@@ -20,7 +20,7 @@
 
 @interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
-+ (GSSSession *) activeSession;
++ (GSSSession *)activeSession;
 + (void)setClientId:(NSString *)clientId clientSecret:(NSString *)clientSecret;
 + (BOOL)isAuthenticated;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate;
