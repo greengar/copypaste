@@ -16,8 +16,9 @@
 
 @property (nonatomic, retain) UIView *myPasteboardHolderView;
 @property (nonatomic, retain) UIImageView *myPasteboardBackgroundImageView;
-@property (nonatomic, retain) UITextView *stringLabel;
-@property (nonatomic, retain) UIImageView *imageHolderView;
+@property (nonatomic, retain) UITextView *myPasteboardTextView;
+@property (nonatomic, retain) UIScrollView *myPasteboardImageHolderView;
+@property (nonatomic, retain) UIImageView *myPasteboardImageView;
 
 @property (nonatomic, retain) EGOImageView *avatarImageView;
 @property (nonatomic, retain) UIButton *settingButton;
