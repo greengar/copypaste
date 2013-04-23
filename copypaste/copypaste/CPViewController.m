@@ -39,9 +39,8 @@
 @end
 
 @implementation CPViewController
-@synthesize myPasteboardHolderView = _displayView;
-@synthesize myPasteboardTextView = _stringLabel;
-@synthesize myPasteboardImageHolderView = _imageHolderView;
+@synthesize myPasteboardHolderView = _myPasteboardHolderView;
+@synthesize otherPasteboardHolderView = _otherPasteboardHolderView;
 @synthesize settingButton = _settingButton;
 @synthesize availableUsersGridView = _availableUsersGridView;
 
@@ -82,71 +81,25 @@
     [self.view addSubview:self.avatarImageView];
     
     // The "my pasteboard holder view"
-    self.myPasteboardHolderView = [[UIView alloc] initWithFrame:CGRectMake(kOffset+2,
-                                                                           kOffset+kHeaderViewHeight+kOffset,
-                                                                           self.view.frame.size.width - 2*(kOffset+2),
-                                                                           kPasteboardMinimumHeight)];
+    self.myPasteboardHolderView = [[CPPasteboardView alloc] initWithFrame:CGRectMake(kOffset+2,
+                                                                                     kOffset+kHeaderViewHeight+kOffset,
+                                                                                     self.view.frame.size.width - 2*(kOffset+2),
+                                                                                     kPasteboardMinimumHeight)];
     self.myPasteboardHolderView.backgroundColor = [UIColor clearColor];
     self.myPasteboardHolderView.layer.cornerRadius = 3;
     self.myPasteboardHolderView.clipsToBounds = YES;
     [self.view addSubview:self.myPasteboardHolderView];
-    
-    // The "my pasteboard background image view"
-    self.myPasteboardBackgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                         0,
-                                                                                         self.myPasteboardHolderView.frame.size.width,
-                                                                                         self.myPasteboardHolderView.frame.size.height)];
-    self.myPasteboardBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.myPasteboardBackgroundImageView.image = [[UIImage imageNamed:@"pasteboard.png"] stretchableImageWithLeftCapWidth:30
-                                                                                                             topCapHeight:30];
-    [self.myPasteboardHolderView addSubview:self.myPasteboardBackgroundImageView];
-    
-    // The "pasteboard" header view
-    UILabel *pasteboardHeaderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                                                               kOffset,
-                                                                               self.myPasteboardHolderView.frame.size.width,
-                                                                               30)];
-    pasteboardHeaderLabel.text = @"pasteboard";
-    pasteboardHeaderLabel.backgroundColor = [UIColor clearColor];
-    pasteboardHeaderLabel.textColor = OPAQUE_HEXCOLOR(0xc8afa7);
-    pasteboardHeaderLabel.textAlignment = UITextAlignmentCenter;
-    pasteboardHeaderLabel.font = [UIFont fontWithName:@"Heiti SC" size:18.0f];
-    [self.myPasteboardHolderView addSubview:pasteboardHeaderLabel];
-    
-    // The "pasteboard" string content
-    self.myPasteboardTextView = [[UITextView alloc] initWithFrame:CGRectMake((self.myPasteboardHolderView.frame.size.width-kPasteboardContentWidth)/2,
-                                                                    kPasteboardContentTopOffset,
-                                                                    kPasteboardContentWidth,
-                                                                    kPasteboardMinimumHeight-kPasteboardContentTopOffset-kPasteboardContentBottomOffset)];
-    self.myPasteboardTextView.backgroundColor = [UIColor clearColor];
-    self.myPasteboardTextView.textColor = [UIColor whiteColor];
-    self.myPasteboardTextView.textAlignment = UITextAlignmentCenter;
-    self.myPasteboardTextView.editable = NO;
-    self.myPasteboardTextView.font = [UIFont fontWithName:@"Heiti SC" size:16.0f];
-    self.myPasteboardTextView.hidden = YES;
-    self.myPasteboardTextView.layer.cornerRadius = 3;
-    self.myPasteboardTextView.clipsToBounds = YES;
-    [self.myPasteboardHolderView addSubview:self.myPasteboardTextView];
-    
-    // The "pasteboard" image scroller
-    self.myPasteboardImageHolderView = [[UIScrollView alloc] initWithFrame:CGRectMake((self.myPasteboardHolderView.frame.size.width-kPasteboardContentWidth)/2,
-                                                                         kPasteboardContentTopOffset,
-                                                                         kPasteboardContentWidth,
-                                                                         kPasteboardMinimumHeight-kPasteboardContentTopOffset-kPasteboardContentBottomOffset)];
-    self.myPasteboardImageHolderView.backgroundColor = [UIColor clearColor];
-    self.myPasteboardImageHolderView.hidden = YES;
-    self.myPasteboardImageHolderView.layer.cornerRadius = 3;
-    self.myPasteboardImageHolderView.clipsToBounds = YES;
-    [self.myPasteboardHolderView addSubview:self.myPasteboardImageHolderView];
-    
-    // The "pasteboard" image content
-    self.myPasteboardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                               0,
-                                                                               self.myPasteboardImageHolderView.frame.size.width,
-                                                                               self.myPasteboardImageHolderView.frame.size.height)];
-    self.myPasteboardImageView.backgroundColor = [UIColor clearColor];
-    [self.myPasteboardImageHolderView addSubview:self.myPasteboardImageView];
-    
+        
+    // The "other pasteboard holder view"
+    self.otherPasteboardHolderView = [[CPPasteboardView alloc] initWithFrame:CGRectMake(kOffset+2,
+                                                                                        kOffset+kHeaderViewHeight+kOffset+  kPasteboardMinimumHeight+kUserHolderHeight,
+                                                                                        self.view.frame.size.width - 2*(kOffset+2),
+                                                                                        kPasteboardMinimumHeight)];
+    self.otherPasteboardHolderView.backgroundColor = [UIColor clearColor];
+    self.otherPasteboardHolderView.layer.cornerRadius = 3;
+    self.otherPasteboardHolderView.clipsToBounds = YES;
+    [self.view addSubview:self.otherPasteboardHolderView];
+        
 	[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateUI)
                                                  name:kNotificationApplicationDidBecomeActive
@@ -181,24 +134,8 @@
 - (void)updateUI {
     [self hideOldCopiedContent];
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
-    
-    if ([itemToPaste isKindOfClass:[NSString class]]) {
-        self.myPasteboardTextView.hidden = NO;
-        [self.myPasteboardTextView setText:((NSString *) itemToPaste)];
+    [self.myPasteboardHolderView updateUIWithPasteObject:itemToPaste];
         
-    } else if ([itemToPaste isKindOfClass:[UIImage class]]) {
-        self.myPasteboardImageHolderView.hidden = NO;
-        [self.myPasteboardImageView setImage:((UIImage *) itemToPaste)];
-        float imageWidth = ((UIImage *) itemToPaste).size.width;
-        float imageHeight = ((UIImage *) itemToPaste).size.height*kPasteboardContentWidth/imageWidth;
-        self.myPasteboardImageView.frame = CGRectMake(self.myPasteboardImageView.frame.origin.x,
-                                                      self.myPasteboardImageView.frame.origin.y,
-                                                      self.myPasteboardImageView.frame.size.width,
-                                                      imageHeight);
-        self.myPasteboardImageHolderView.contentSize = CGSizeMake(self.myPasteboardImageHolderView.frame.size.width,
-                                                                  imageHeight);
-    }
-    
     if ([GSSSession isAuthenticated]) {
         GSSUser *currentUser = [[GSSSession activeSession] currentUser];
         if ([currentUser isAvatarCached]) {
@@ -206,6 +143,8 @@
         } else if ([currentUser avatarURLString]) {
             [self.avatarImageView setImageURL:[NSURL URLWithString:currentUser.avatarURLString]];
             [self.avatarImageView setDelegate:self];
+        } else {
+            [self.avatarImageView setImage:nil];
         }
     }
     [self.availableUsersGridView reloadData];
@@ -221,8 +160,8 @@
 }
 
 - (void)hideOldCopiedContent {
-    self.myPasteboardTextView.hidden = YES;
-    self.myPasteboardImageHolderView.hidden = YES;
+    self.myPasteboardHolderView.pasteboardTextView.hidden = YES;
+    self.myPasteboardHolderView.pasteboardImageHolderView.hidden = YES;
 }
 
 - (void)didLoginSucceeded {

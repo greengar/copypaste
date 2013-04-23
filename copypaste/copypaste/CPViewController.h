@@ -11,14 +11,12 @@
 #import "GMGridView.h"
 #import "EGOImageView.h"
 #import "GSSSession.h"
+#import "CPPasteboardView.h"
 
 @interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSSessionDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, retain) UIView *myPasteboardHolderView;
-@property (nonatomic, retain) UIImageView *myPasteboardBackgroundImageView;
-@property (nonatomic, retain) UITextView *myPasteboardTextView;
-@property (nonatomic, retain) UIScrollView *myPasteboardImageHolderView;
-@property (nonatomic, retain) UIImageView *myPasteboardImageView;
+@property (nonatomic, retain) CPPasteboardView *myPasteboardHolderView;
+@property (nonatomic, retain) CPPasteboardView *otherPasteboardHolderView;
 
 @property (nonatomic, retain) EGOImageView *avatarImageView;
 @property (nonatomic, retain) UIButton *settingButton;

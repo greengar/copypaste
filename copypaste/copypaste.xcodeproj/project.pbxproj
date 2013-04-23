@@ -28,6 +28,7 @@
 		7B2CD3A41725B865006380F3 /* pasteboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2CD3971725B865006380F3 /* pasteboard@2x.png */; };
 		7B2CD3A51725B865006380F3 /* person-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2CD3981725B865006380F3 /* person-background.png */; };
 		7B2CD3A61725B865006380F3 /* person-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2CD3991725B865006380F3 /* person-background@2x.png */; };
+		7B2CD3AA17260F9B006380F3 /* CPPasteboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2CD3A917260F9B006380F3 /* CPPasteboardView.m */; };
 		7B346713171CDA0A00B73449 /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346709171CDA0A00B73449 /* GMGridView.m */; };
 		7B346714171CDA0A00B73449 /* GMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B34670C171CDA0A00B73449 /* GMGridViewCell.m */; };
 		7B346715171CDA0A00B73449 /* GMGridViewLayoutStrategies.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B34670E171CDA0A00B73449 /* GMGridViewLayoutStrategies.m */; };
@@ -139,6 +140,8 @@
 		7B2CD3971725B865006380F3 /* pasteboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pasteboard@2x.png"; sourceTree = "<group>"; };
 		7B2CD3981725B865006380F3 /* person-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person-background.png"; sourceTree = "<group>"; };
 		7B2CD3991725B865006380F3 /* person-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person-background@2x.png"; sourceTree = "<group>"; };
+		7B2CD3A817260F9B006380F3 /* CPPasteboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPPasteboardView.h; sourceTree = "<group>"; };
+		7B2CD3A917260F9B006380F3 /* CPPasteboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPPasteboardView.m; sourceTree = "<group>"; };
 		7B346707171CDA0A00B73449 /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
 		7B346708171CDA0A00B73449 /* GMGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridView.h; sourceTree = "<group>"; };
 		7B346709171CDA0A00B73449 /* GMGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridView.m; sourceTree = "<group>"; };
@@ -475,6 +478,8 @@
 			children = (
 				A99F71E91717535000172B13 /* CPViewController.h */,
 				A99F71EA1717535000172B13 /* CPViewController.m */,
+				7B2CD3A817260F9B006380F3 /* CPPasteboardView.h */,
+				7B2CD3A917260F9B006380F3 /* CPPasteboardView.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -831,6 +836,7 @@
 				7BD2227C171F435600E66FD5 /* GSSSession.m in Sources */,
 				7BA18EEC1721C5E000B88255 /* GSSParseQueryHelper.m in Sources */,
 				7B2CD3891725AADB006380F3 /* CPLogInViewController.m in Sources */,
+				7B2CD3AA17260F9B006380F3 /* CPPasteboardView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
