@@ -8,7 +8,7 @@
 
 #import "CPViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import <Parse/Parse.h>
+#import <Firebase/Firebase.h>
 #import "GMGridViewLayoutStrategies.h"
 #import "GSSParseQueryHelper.h"
 
@@ -130,6 +130,7 @@
 
 - (void)finishAuthentication {
     [[GSSSession activeSession] getNearbyUserWithDelegate:self];
+    [[GSSSession activeSession] addObserver:self];
     [self updateUI];
 }
 
@@ -150,6 +151,10 @@
         }
     }
     [self.availableUsersGridView reloadData];
+}
+
+- (void)didReceiveMessageFrom:(NSString *)username content:(NSObject *)messageContent {
+    [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];
 }
 
 - (void)settingButtonTapped:(id)sender {
@@ -280,14 +285,26 @@
             }
         }
         
-        [contentLabel setText:user.username];
+        [contentLabel setText:user.fullname];
     }
     
     return cell;
 }
 
 - (void)GMGridView:(GMGridView *)gridView_ didTapOnItemAtIndex:(NSInteger)position {
-    
+    NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
+    GSSUser * user = [[[DataManager sharedManager] nearByUserList] objectAtIndex:position];
+    if (itemToPaste) {
+        [[GSSSession activeSession] sendMessage:itemToPaste toUser:user];
+        
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can not paste"
+                                                            message:[NSString stringWithFormat:@"Your clipboard is empty, please copy something to paste to %@!", user.fullname]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 
 - (void)imageViewLoadedImage:(EGOImageView *)imageView {

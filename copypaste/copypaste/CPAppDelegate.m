@@ -13,8 +13,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [GSSSession setClientId:@"UWaDpuZfLQvFpgVmz4LLvAPsy6bX9XG3D0mQrd7F"
-               clientSecret:@"jDyQOfa5IbHiY5cHbY1kouJMMwZWgGWX6RQhApIy"];
+    [GSSSession setAppId:@"UWaDpuZfLQvFpgVmz4LLvAPsy6bX9XG3D0mQrd7F"
+                 appName:@"copypaste"
+               appSecret:@"jDyQOfa5IbHiY5cHbY1kouJMMwZWgGWX6RQhApIy"];
     return YES;
 }
 							

@@ -40,6 +40,8 @@
 		7B34672E171CE35E00B73449 /* EGOImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346729171CE35E00B73449 /* EGOImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B346730171CE81900B73449 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B34672F171CE81900B73449 /* QuartzCore.framework */; };
 		7B38C65A171CA43F00B53A52 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B38C659171CA43F00B53A52 /* DataManager.m */; };
+		7B4B76A31727459000B1D810 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A21727459000B1D810 /* Firebase.framework */; };
+		7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A6172745BF00B1D810 /* libicucore.dylib */; };
 		7B737885171E0398004A16F4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737884171E0398004A16F4 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7B73788A171E04FC004A16F4 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B737889171E04FC004A16F4 /* FacebookSDKResources.bundle */; };
 		7B737896171E109D004A16F4 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B737895171E109D004A16F4 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -168,6 +170,8 @@
 		7B34672F171CE81900B73449 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7B38C658171CA43F00B53A52 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		7B38C659171CA43F00B53A52 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		7B4B76A21727459000B1D810 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = copypaste/SDKs/Firebase.framework; sourceTree = "<group>"; };
+		7B4B76A6172745BF00B1D810 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7B737880171E034E004A16F4 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		7B737884171E0398004A16F4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7B737889171E04FC004A16F4 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKResources.bundle; path = FacebookSDK.framework/Versions/A/Resources/FacebookSDKResources.bundle; sourceTree = "<group>"; };
@@ -268,6 +272,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */,
 				7B0B98D61720EADC006B4EBA /* AdSupport.framework in Frameworks */,
 				7B0B98D51720EA9B006B4EBA /* CoreLocation.framework in Frameworks */,
 				7B0B98D31720EA86006B4EBA /* StoreKit.framework in Frameworks */,
@@ -284,6 +289,7 @@
 				A99F71D01717535000172B13 /* CoreGraphics.framework in Frameworks */,
 				A99F720A17177F0100172B13 /* Parse.framework in Frameworks */,
 				7B0B98C71720E985006B4EBA /* FacebookSDK.framework in Frameworks */,
+				7B4B76A31727459000B1D810 /* Firebase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,7 +589,9 @@
 				7B0B98CA1720E9B4006B4EBA /* CFNetwork.framework */,
 				A99F71CF1717535000172B13 /* CoreGraphics.framework */,
 				7B0B98D41720EA9B006B4EBA /* CoreLocation.framework */,
+				7B4B76A21727459000B1D810 /* Firebase.framework */,
 				A99F71CD1717535000172B13 /* Foundation.framework */,
+				7B4B76A6172745BF00B1D810 /* libicucore.dylib */,
 				7B0B98D01720EA61006B4EBA /* MobileCoreServices.framework */,
 				A99F720917177F0100172B13 /* Parse.framework */,
 				7B34672F171CE81900B73449 /* QuartzCore.framework */,

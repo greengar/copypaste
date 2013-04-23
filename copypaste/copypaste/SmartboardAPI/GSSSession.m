@@ -9,13 +9,16 @@
 #import "GSSSession.h"
 #import "GSSParseQueryHelper.h"
 
+#define kFireBaseBaseURL @"https://gg.firebaseio.com/"
+
 static GSSSession *activeSession = nil;
 
 @interface GSSSession()
-
+@property (nonatomic, retain) Firebase *firebase;
 @end
 
 @implementation GSSSession
+@synthesize firebase = _firebase;
 @synthesize delegate = _delegate;
 @synthesize currentUser = _currentUser;
 
@@ -39,9 +42,10 @@ static GSSSession *activeSession = nil;
     return self;
 }
 
-+ (void)setClientId:(NSString *)clientId clientSecret:(NSString *)clientSecret {
-    [Parse setApplicationId:clientId clientKey:clientSecret];
++ (void)setAppId:(NSString *)appId appName:(NSString *)appName appSecret:(NSString *)appSecret {
+    [Parse setApplicationId:appId clientKey:appSecret];
     [PFFacebookUtils initializeFacebook];
+    [GSSSession activeSession].firebase = [[Firebase alloc] initWithUrl:[NSString stringWithFormat:@"%@%@", kFireBaseBaseURL, appName]];
 }
 
 + (BOOL)isAuthenticated {
@@ -70,6 +74,37 @@ static GSSSession *activeSession = nil;
 - (void)logOut {
     [PFUser logOut];
     self.currentUser = nil;
+}
+
+- (void)addObserver:(id<GSSSessionDelegate>)delegate {
+    self.delegate = delegate;
+    
+    [self.firebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+        [self receiveData:snapshot];
+    }];
+    
+    [self.firebase observeEventType:FEventTypeChildChanged withBlock:^(FDataSnapshot *snapshot) {
+        [self receiveData:snapshot];
+    }];
+    
+}
+
+- (void)receiveData:(FDataSnapshot *)snapshot {
+    NSString *senderUID = snapshot.value[@"sender"];
+    NSString *receiverUID = snapshot.value[@"receiver"];
+    NSObject *senderContent = snapshot.value[@"content"];
+    
+    if ([receiverUID isEqualToString:self.currentUser.uid]) {
+        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
+            [self.delegate didReceiveMessageFrom:senderUID content:senderContent];
+        }
+    }
+}
+
+- (void)sendMessage:(NSObject *)messageContent toUser:(GSSUser *)user {
+    [[self.firebase childByAppendingPath:self.currentUser.uid] setValue:@{@"sender"   : self.currentUser.uid,
+                                                                          @"receiver" : user.uid,
+                                                                          @"content"  : messageContent}];
 }
 
 - (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate {
@@ -189,6 +224,9 @@ static GSSSession *activeSession = nil;
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self.delegate didLoginSucceeded];
         self.delegate = nil;
+        
+        [[PFUser currentUser] setObject:user.username forKey:@"fullname"];
+        [[PFUser currentUser] saveInBackground];
         
         if (self.currentUser == nil) {
             self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
+#import <Firebase/Firebase.h>
 #import "CPLogInViewController.h"
 #import "GSSUser.h"
 
@@ -16,12 +17,13 @@
 - (void)didLoginFailed:(NSError *)error;
 - (void)didGetNearbyUserSucceeded:(NSArray *)listOfUsers;
 - (void)didGetNearbyUserFailed:(NSError *)error;
+- (void)didReceiveMessageFrom:(NSString *)username content:(NSObject *)messageContent;
 @end
 
 @interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 + (GSSSession *)activeSession;
-+ (void)setClientId:(NSString *)clientId clientSecret:(NSString *)clientSecret;
++ (void)setAppId:(NSString *)appId appName:(NSString *)appName appSecret:(NSString *)appSecret;
 + (BOOL)isAuthenticated;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate;
 - (void)logOut;
@@ -29,6 +31,8 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url;
 - (NSString *)currentUserName;
+- (void)addObserver:(id<GSSSessionDelegate>)delegate;
+- (void)sendMessage:(NSObject *)messageContent toUser:(GSSUser *)user;
 
 @property (nonatomic, retain) GSSUser *currentUser;
 @property (nonatomic, assign) id<GSSSessionDelegate> delegate;
