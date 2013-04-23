@@ -50,9 +50,14 @@
     [super viewDidLoad];
     
     // The background of the whole screen
+    self.view.backgroundColor = [UIColor blackColor];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];
     backgroundImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    backgroundImageView.image = [UIImage imageNamed:@"background.png"];
+    if (self.view.frame.size.height == 548) {
+        backgroundImageView.image = [UIImage imageNamed:@"background-548h.png"];
+    } else {
+        backgroundImageView.image = [UIImage imageNamed:@"background.png"];
+    }
     [self.view addSubview:backgroundImageView];
         
     // The header "copypaste"
