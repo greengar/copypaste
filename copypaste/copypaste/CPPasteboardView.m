@@ -41,8 +41,13 @@
         [self addSubview:self.pasteboardBackgroundImageView];
 
         // The "pasteboard" header view
-        self.pasteboardHeaderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, kPasteboardContentTopOffset)];
-        self.pasteboardHeaderImageView.image = [UIImage imageNamed:@"header-clipboard.fw.png"];
+        UIImage *clipboardHeaderImage = [UIImage imageNamed:@"header-clipboard2.png"];
+        self.pasteboardHeaderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, clipboardHeaderImage.size.width, clipboardHeaderImage.size.height)];
+        float centerY = (clipboardHeaderImage.size.height/2)+2;
+        //DLog(@"centerY = %.2f", centerY);
+        self.pasteboardHeaderImageView.center = CGPointMake(frame.size.width/2, centerY);
+        self.pasteboardHeaderImageView.image = clipboardHeaderImage;
+        self.pasteboardHeaderImageView.alpha = 0.9;
         [self addSubview:self.pasteboardHeaderImageView];
         
         // The "pasteboard" string content
