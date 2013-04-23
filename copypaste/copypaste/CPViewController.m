@@ -29,10 +29,7 @@
 
 #define kOffset 6
 #define kHeaderViewHeight 52
-#define kPasteboardMinimumHeight 131
-#define kPasteboardContentTopOffset 32
-#define kPasteboardContentBottomOffset 2
-#define kPasteboardContentWidth 300
+#define kPasteboardMinimumHeight (IS_IPHONE5 ? 175 : 131)
 
 @interface CPViewController ()
 
