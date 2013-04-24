@@ -13,12 +13,10 @@
 #define kHeaderViewHeight 52
 #define kPasteboardMinimumHeight 131
 #define kClipboardHeaderOffset 9
-#define kPasteboardContentTopOffset 1+kClipboardHeaderOffset //22
-#define kPasteboardContentBottomOffset 2
+#define kPasteboardContentTopOffset (1+kClipboardHeaderOffset)
+#define kPasteboardContentBottomOffset (1+kClipboardHeaderOffset)
 #define kPasteboardContentWidth 300
 #define kPasteboardEmptyContentTopGap 30
-#define kPasteboardTextContentTopGap 11
-#define kPasteboardImageContentTopGap 17
 
 @interface CPPasteboardView()
 
@@ -43,7 +41,7 @@
             [[UIImageView alloc] initWithFrame:CGRectMake(0,
                                                           kClipboardHeaderOffset,
                                                           frame.size.width,
-                                                          frame.size.height-kClipboardHeaderOffset)];
+                                                          frame.size.height-2*kClipboardHeaderOffset)];
         self.pasteboardBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth
                                                               | UIViewAutoresizingFlexibleHeight;
         self.pasteboardBackgroundImageView.image = [[UIImage imageNamed:@"pasteboard.png"] stretchableImageWithLeftCapWidth:30
@@ -64,6 +62,8 @@
         self.pasteboardTextView.layer.cornerRadius = 3;
         self.pasteboardTextView.clipsToBounds = YES;
         self.pasteboardTextView.delegate = self;
+        self.pasteboardTextView.bounces = YES;
+        self.pasteboardTextView.alwaysBounceVertical = YES;
         [self addSubview:self.pasteboardTextView];
         
         // The "pasteboard" image scroll view
@@ -99,7 +99,7 @@
     if ([objectFromClipboard isKindOfClass:[NSString class]]) {
         self.pasteboardTextView.hidden = NO;
         [self.pasteboardTextView setText:((NSString *) objectFromClipboard)];
-        [self.pasteboardTextView setContentOffset:CGPointMake(0, -kPasteboardTextContentTopGap)];
+        //[self.pasteboardTextView setContentOffset:CGPointMake(0, -kPasteboardTextContentTopGap)];
         
     } else if ([objectFromClipboard isKindOfClass:[UIImage class]]) {
         self.pasteboardImageHolderView.hidden = NO;
@@ -112,23 +112,12 @@
                                                     imageHeight);
         self.pasteboardImageHolderView.contentSize = CGSizeMake(self.pasteboardImageHolderView.frame.size.width,
                                                                 imageHeight);
-        [self.pasteboardImageHolderView setContentOffset:CGPointMake(0, -kPasteboardImageContentTopGap)];
+        //[self.pasteboardImageHolderView setContentOffset:CGPointMake(0, -kPasteboardImageContentTopGap)];
         
     } else {
         self.pasteboardTextView.hidden = NO;
         [self.pasteboardTextView setText:@"Your clipboard is empty, please copy something to paste here!\nYou can copy images, texts,\nwebs or files."];
         [self.pasteboardTextView setContentOffset:CGPointMake(0, -kPasteboardEmptyContentTopGap)];
-    }
-}
-
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y < 0) {
-        [scrollView setDecelerationRate:0]; // Stop deceleration
-        if (scrollView == self.pasteboardTextView) {
-            [scrollView setContentOffset:CGPointMake(0, -kPasteboardTextContentTopGap) animated:YES];
-        } else {
-            [scrollView setContentOffset:CGPointMake(0, -kPasteboardImageContentTopGap) animated:YES];
-        }
     }
 }
 
