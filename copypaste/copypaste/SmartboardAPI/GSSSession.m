@@ -17,6 +17,8 @@
 static GSSSession *activeSession = nil;
 
 @interface GSSSession()
+- (Firebase *)getMyBaseFirebase;
+- (Firebase *)generateFirebaseFor:(GSSUser *)user;
 @property (nonatomic, retain) Firebase *firebase;
 @end
 
@@ -82,60 +84,67 @@ static GSSSession *activeSession = nil;
 - (void)addObserver:(id<GSSSessionDelegate>)delegate {
     self.delegate = delegate;
     
-    [self.firebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+    [[self getMyBaseFirebase] observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
         [self receiveData:snapshot];
     }];
     
-    [self.firebase observeEventType:FEventTypeChildChanged withBlock:^(FDataSnapshot *snapshot) {
+    [[self getMyBaseFirebase] observeEventType:FEventTypeChildChanged withBlock:^(FDataSnapshot *snapshot) {
         [self receiveData:snapshot];
     }];
     
 }
 
 - (void)receiveData:(FDataSnapshot *)snapshot {
-    NSString *senderUID = snapshot.value[@"sender"];
-    NSString *receiverUID = snapshot.value[@"receiver"];
-    NSString *messageType = snapshot.value[@"type"];
-    NSObject *messageContent = snapshot.value[@"content"];
-    NSObject *messageData = nil;
-    
-    if ([messageType isEqualToString:@"string"]) {
-        messageData = messageContent;
+    for (FDataSnapshot *childSnapshot in snapshot.children) {
+        NSString *senderUID = childSnapshot.value[@"sender"];
+        NSString *receiverUID = childSnapshot.value[@"receiver"];
+        NSString *messageType = childSnapshot.value[@"type"];
+        NSObject *messageContent = childSnapshot.value[@"content"];
+        NSObject *messageData = nil;
         
-    } else if ([messageType isEqualToString:@"image"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD showWithStatus:@"Receiving image"];
+        if (![receiverUID isEqualToString:self.currentUser.uid]) {
+            DLog(@"This update from %@ to %@ is not for me: %@", senderUID, receiverUID, self.currentUser.uid);
+            return;
+        }
+        
+        if ([messageType isEqualToString:@"string"]) {
+            messageData = messageContent;
             
-            dispatch_async(dispatch_get_current_queue(), ^{
-                NSObject *messageData = nil;
-                if ([messageContent isKindOfClass:[NSArray class]]) {
-                    NSMutableString *messageString = [NSMutableString new];
-                    for (int i = 0; i < [((NSArray *) messageContent) count]; i++) {
-                        [messageString appendString:[((NSArray *) messageContent) objectAtIndex:i]];
+        } else if ([messageType isEqualToString:@"image"]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [SVProgressHUD showWithStatus:@"Receiving image"];
+                
+                dispatch_async(dispatch_get_current_queue(), ^{
+                    NSObject *messageData = nil;
+                    if ([messageContent isKindOfClass:[NSArray class]]) {
+                        NSMutableString *messageString = [NSMutableString new];
+                        for (int i = 0; i < [((NSArray *) messageContent) count]; i++) {
+                            [messageString appendString:[((NSArray *) messageContent) objectAtIndex:i]];
+                        }
+                        NSData *imageData = [NSData dataFromBase64String:messageString];
+                        DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
+                        messageData = [UIImage imageWithData:imageData];
+                        
+                    } else {
+                        NSData *imageData = [NSData dataFromBase64String:((NSString *)messageContent)];
+                        DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
+                        messageData = [UIImage imageWithData:imageData];
                     }
-                    NSData *imageData = [NSData dataFromBase64String:messageString];
-                    messageData = [UIImage imageWithData:imageData];
                     
-                } else {
-                    NSData *imageData = [NSData dataFromBase64String:((NSString *)messageContent)];
-                    messageData = [UIImage imageWithData:imageData];
-                }
-                
-                [SVProgressHUD dismissWithSuccess:@"Image received"];
-                
-                if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
-                    if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
-                        [self.delegate didReceiveMessageFrom:senderUID content:messageData];
+                    [SVProgressHUD dismissWithSuccess:@"Image received"];
+                    if (messageData) {
+                        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
+                            [self.delegate didReceiveMessageFrom:senderUID content:messageData];
+                        }
                     }
-                }
+                });
             });
-        });
+        }
         
-    }
-    
-    if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
-        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
-            [self.delegate didReceiveMessageFrom:senderUID content:messageData];
+        if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
+            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
+                [self.delegate didReceiveMessageFrom:senderUID content:messageData];
+            }
         }
     }
 }
@@ -144,17 +153,18 @@ static GSSSession *activeSession = nil;
     if ([messageContent isKindOfClass:[NSString class]]) {
         NSString *messageType = @"string";
         NSString *messageData = (NSString *)messageContent;
-        [[self.firebase childByAppendingPath:self.currentUser.uid] setValue:@{@"sender"   : self.currentUser.uid,
-                                                                              @"receiver" : user.uid,
-                                                                              @"type"     : messageType,
-                                                                              @"content"  : messageData}];
+        [[self generateFirebaseFor:user] setValue:@{@"sender"   : self.currentUser.uid,
+                                                    @"receiver" : user.uid,
+                                                    @"type"     : messageType,
+                                                    @"content"  : messageData}];
         
     } else if ([messageContent isKindOfClass:[UIImage class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD showWithStatus:@"Sending image"];
             
             dispatch_async(dispatch_get_current_queue(), ^{
-                NSData *imageData = UIImagePNGRepresentation(((UIImage *) messageContent));
+                NSData *imageData = UIImageJPEGRepresentation(((UIImage *) messageContent), 0.5);
+                DLog(@"Sent image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
                 NSString *messageType = @"image";
                 NSString *messageString = [imageData base64EncodedString];
                 NSObject *messageData = @"";
@@ -177,10 +187,10 @@ static GSSSession *activeSession = nil;
                 }
                 
                 [SVProgressHUD dismissWithSuccess:@"Image sent"];
-                [[self.firebase childByAppendingPath:self.currentUser.uid] setValue:@{@"sender"   : self.currentUser.uid,
-                                                                                      @"receiver" : user.uid,
-                                                                                      @"type"     : messageType,
-                                                                                      @"content"  : messageData}];
+                [[self generateFirebaseFor:user] setValue:@{@"sender"   : self.currentUser.uid,
+                                                            @"receiver" : user.uid,
+                                                            @"type"     : messageType,
+                                                            @"content"  : messageData}];
             });
         });
     }
@@ -254,9 +264,6 @@ static GSSSession *activeSession = nil;
 
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
-        [self.delegate didLoginSucceeded];
-        self.delegate = nil;
-        
         if (self.currentUser == nil) {
             self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
         } else {
@@ -286,8 +293,14 @@ static GSSSession *activeSession = nil;
                     } else {
                         [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
                     }
+                    
+                    [self.delegate didLoginSucceeded];
+                    self.delegate = nil;
                 }
             }];
+        } else {
+            [self.delegate didLoginSucceeded];
+            self.delegate = nil;
         }
     }
 }
@@ -301,9 +314,6 @@ static GSSSession *activeSession = nil;
 
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
-        [self.delegate didLoginSucceeded];
-        self.delegate = nil;
-        
         [[PFUser currentUser] setObject:user.username forKey:@"fullname"];
         [[PFUser currentUser] saveInBackground];
         
@@ -312,6 +322,9 @@ static GSSSession *activeSession = nil;
         } else {
             [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
         }
+        
+        [self.delegate didLoginSucceeded];
+        self.delegate = nil;
     }
 }
 
@@ -328,6 +341,23 @@ static GSSSession *activeSession = nil;
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return [PFFacebookUtils handleOpenURL:url];
+}
+
+- (Firebase *)getMyBaseFirebase {
+    return [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", self.currentUser.uid]];
+}
+
+- (Firebase *)generateFirebaseFor:(GSSUser *)user {
+    Firebase *receiverBaseFirebase = [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", user.uid]];
+    Firebase *senderFirebaseInReceiverBaseFirebase = [receiverBaseFirebase childByAppendingPath:[NSString stringWithFormat:@"Sender_%@", self.currentUser.uid]];
+    
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"EEEE MMMM d, YYYY hhmmss a"];
+    NSString *currentTime = [dateFormat stringFromDate:[NSDate date]];
+    NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", self.currentUser.username, currentTime];
+    Firebase *timeFirebase = [senderFirebaseInReceiverBaseFirebase childByAppendingPath:timeFirebaseName];
+    
+    return timeFirebase;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
