@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GSSUser.h"
+#import "GSSUtils.h"
 
 @interface CPMessage : NSObject
 

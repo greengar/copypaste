@@ -21,12 +21,9 @@
 #define kUserAvatarHeight 60
 #define kUserNameWidth 102
 #define kUserNameHeight 20
-#define kPasteWidth 102
-#define kPasteHeight 48
 
 #define kContentViewTag 777
 #define kLabelViewTag 778
-#define kPasteLabelViewTag 779
 
 #define kOffset 6
 #define kHeaderViewHeight 52
@@ -218,6 +215,28 @@
     return CGSizeMake(kUserHolderWidth, kUserHolderHeight);
 }
 
+- (void)pasteToUserAtPosition:(NSInteger)position
+{
+    NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
+    GSSUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
+    if (itemToPaste) {
+        [[GSSSession activeSession] sendMessage:itemToPaste toUser:user];
+        
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can not paste"
+                                                            message:[NSString stringWithFormat:@"Your clipboard is empty, please copy something to paste to %@!", user.fullname]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
+}
+
+- (void)pasteToUserWithButton:(UIButton *)button
+{
+    [self pasteToUserAtPosition:button.tag];
+}
+
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView_ cellForItemAtIndex:(NSInteger)index {
     GMGridViewCell *cell = [gridView_ dequeueReusableCellWithIdentifier:@"layerCell"];
     
@@ -254,14 +273,14 @@
         contentLabel.tag = kLabelViewTag;
         [cell addSubview:contentLabel];
         
-        UIImageView *pasteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                    kUserHolderHeight - kPasteHeight,
-                                                                                    kPasteWidth,
-                                                                                    kPasteHeight)];
-        pasteImageView.backgroundColor = [UIColor clearColor];
-        pasteImageView.tag = kPasteLabelViewTag;
-        pasteImageView.image = [UIImage imageNamed:@"paste.png"];
-        [cell addSubview:pasteImageView];
+        UIImage *pasteButtonImage = [UIImage imageNamed:@"pastebutton.png"];
+        UIButton *pasteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, kUserHolderHeight - pasteButtonImage.size.height,
+                                                                           pasteButtonImage.size.width, pasteButtonImage.size.height)];
+        pasteButton.backgroundColor = [UIColor clearColor];
+        [pasteButton setImage:pasteButtonImage forState:UIControlStateNormal];
+        pasteButton.tag = index; // tag is used by -pasteToUserWithButton: to identify the user position
+        [pasteButton addTarget:self action:@selector(pasteToUserWithButton:) forControlEvents:UIControlEventTouchUpInside];
+        [cell addSubview:pasteButton];
     }
     
     if ([[[DataManager sharedManager] availableUsers] count] == 0) {
@@ -289,19 +308,7 @@
 }
 
 - (void)GMGridView:(GMGridView *)gridView_ didTapOnItemAtIndex:(NSInteger)position {
-    NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
-    GSSUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
-    if (itemToPaste) {
-        [[GSSSession activeSession] sendMessage:itemToPaste toUser:user];
-        
-    } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can not paste"
-                                                            message:[NSString stringWithFormat:@"Your clipboard is empty, please copy something to paste to %@!", user.fullname]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
-    }
+    [self pasteToUserAtPosition:position];
 }
 
 - (void)didReceiveMessageFrom:(NSString *)userId
@@ -313,7 +320,7 @@
     [newMessage setSender:user];
     [newMessage setMessageContent:messageContent];
     [newMessage setCreatedDateInterval:[time timeIntervalSince1970]];
-    DLog(@"Message: %@", newMessage);
+    DLog(@"Receive message: %@", [newMessage description]);
     [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
     
     [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];

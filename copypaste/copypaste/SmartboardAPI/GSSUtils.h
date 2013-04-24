@@ -12,6 +12,7 @@
 
 + (NSString *) getCurrentTime;
 + (NSDate *) dateFromString:(NSString *)dateString;
++ (NSString *) stringFromDate:(NSDate *)date;
 + (NSString*) dateDiffFromInterval:(double)ti;
 + (NSString*) dateDiffFromDate:(NSDate *)date;
 

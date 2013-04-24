@@ -11,15 +11,19 @@
 @implementation GSSUtils
 
 + (NSString *)getCurrentTime {
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"EEEE MMMM d, YYYY hhmmss a"];
-    return [dateFormat stringFromDate:[NSDate date]];
+    return [self stringFromDate:[NSDate date]];
 }
 
 + (NSDate *)dateFromString:(NSString *)dateString {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"EEEE MMMM d, YYYY hhmmss a"];
     return [dateFormat dateFromString:dateString];
+}
+
++ (NSString *)stringFromDate:(NSDate *)date {
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"EEEE MMMM d, YYYY hhmmss a"];
+    return [dateFormat stringFromDate:date];
 }
 
 + (NSString*)dateDiffFromInterval:(double)ti {

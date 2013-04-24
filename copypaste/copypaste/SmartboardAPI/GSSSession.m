@@ -18,7 +18,7 @@ static GSSSession *activeSession = nil;
 
 @interface GSSSession()
 - (Firebase *)getMyBaseFirebase;
-- (Firebase *)generateFirebaseFor:(GSSUser *)user;
+- (Firebase *)generateFirebaseFor:(GSSUser *)user atTime:(NSString *)time;
 @property (nonatomic, retain) Firebase *firebase;
 @end
 
@@ -158,11 +158,11 @@ static GSSSession *activeSession = nil;
         NSString *messageType = @"string";
         NSString *messageData = (NSString *)messageContent;
         NSString *messageTime = [GSSUtils getCurrentTime];
-        [[self generateFirebaseFor:user] setValue:@{@"sender"   : self.currentUser.uid,
-                                                    @"receiver" : user.uid,
-                                                    @"type"     : messageType,
-                                                    @"content"  : messageData,
-                                                    @"time"     : messageTime}];
+        [[self generateFirebaseFor:user atTime:messageTime] setValue:@{@"sender"   : self.currentUser.uid,
+                                                                       @"receiver" : user.uid,
+                                                                       @"type"     : messageType,
+                                                                       @"content"  : messageData,
+                                                                       @"time"     : messageTime}];
         
     } else if ([messageContent isKindOfClass:[UIImage class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -194,11 +194,11 @@ static GSSSession *activeSession = nil;
                 }
                 
                 [SVProgressHUD dismissWithSuccess:@"Image sent"];
-                [[self generateFirebaseFor:user] setValue:@{@"sender"   : self.currentUser.uid,
-                                                            @"receiver" : user.uid,
-                                                            @"type"     : messageType,
-                                                            @"content"  : messageData,
-                                                            @"time"     : messageTime}];
+                [[self generateFirebaseFor:user atTime:messageTime] setValue:@{@"sender"   : self.currentUser.uid,
+                                                                               @"receiver" : user.uid,
+                                                                               @"type"     : messageType,
+                                                                               @"content"  : messageData,
+                                                                               @"time"     : messageTime}];
             });
         });
     }
@@ -368,12 +368,10 @@ static GSSSession *activeSession = nil;
     return [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", self.currentUser.uid]];
 }
 
-- (Firebase *)generateFirebaseFor:(GSSUser *)user {
+- (Firebase *)generateFirebaseFor:(GSSUser *)user atTime:(NSString *)time {
     Firebase *receiverBaseFirebase = [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", user.uid]];
     Firebase *senderFirebaseInReceiverBaseFirebase = [receiverBaseFirebase childByAppendingPath:[NSString stringWithFormat:@"Sender_%@", self.currentUser.uid]];
-    
-    NSString *currentTime = [GSSUtils getCurrentTime];
-    NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", self.currentUser.username, currentTime];
+    NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", self.currentUser.username, time];
     Firebase *timeFirebase = [senderFirebaseInReceiverBaseFirebase childByAppendingPath:timeFirebaseName];
     
     return timeFirebase;
