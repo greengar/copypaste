@@ -47,9 +47,10 @@ static GSSSession *activeSession = nil;
     return self;
 }
 
-+ (void)setAppId:(NSString *)appId appName:(NSString *)appName appSecret:(NSString *)appSecret {
++ (void)setAppId:(NSString *)appId appSecret:(NSString *)appSecret {
     [Parse setApplicationId:appId clientKey:appSecret];
     [PFFacebookUtils initializeFacebook];
+    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
     [GSSSession activeSession].firebase = [[Firebase alloc] initWithUrl:[NSString stringWithFormat:@"%@%@", kFireBaseBaseURL, appName]];
 }
 
@@ -263,13 +264,7 @@ static GSSSession *activeSession = nil;
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
-        if (self.currentUser == nil) {
-            self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
-        } else {
-            [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
-        }
-        
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {        
         if ([PFFacebookUtils isLinkedWithUser:user]) {
             // Create request for user's Facebook data
             FBRequest *request = [FBRequest requestForMe];
@@ -285,6 +280,10 @@ static GSSSession *activeSession = nil;
                     
                     [[PFUser currentUser] setObject:name forKey:@"fullname"];
                     [[PFUser currentUser] setObject:pictureURL forKey:@"avatar_url"];
+                    if (![[PFUser currentUser] objectForKey:@"initial_app_name"]) {
+                        NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+                        [[PFUser currentUser] setObject:appName forKey:@"initial_app_name"];
+                    }
                     [[PFUser currentUser] saveInBackground];
                     
                     // Parse again with new data
@@ -299,6 +298,17 @@ static GSSSession *activeSession = nil;
                 }
             }];
         } else {
+            if (![[PFUser currentUser] objectForKey:@"initial_app_name"]) {
+                NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+                [[PFUser currentUser] setObject:appName forKey:@"initial_app_name"];
+            }
+            [[PFUser currentUser] saveInBackground];
+            
+            if (self.currentUser == nil) {
+                self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
+            } else {
+                [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
+            }
             [self.delegate didLoginSucceeded];
             self.delegate = nil;
         }
@@ -315,6 +325,10 @@ static GSSSession *activeSession = nil;
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [[PFUser currentUser] setObject:user.username forKey:@"fullname"];
+        if (![[PFUser currentUser] objectForKey:@"initial_app_name"]) {
+            NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+            [[PFUser currentUser] setObject:appName forKey:@"initial_app_name"];
+        }
         [[PFUser currentUser] saveInBackground];
         
         if (self.currentUser == nil) {

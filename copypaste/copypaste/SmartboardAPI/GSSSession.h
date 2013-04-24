@@ -23,7 +23,7 @@
 @interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 + (GSSSession *)activeSession;
-+ (void)setAppId:(NSString *)appId appName:(NSString *)appName appSecret:(NSString *)appSecret;
++ (void)setAppId:(NSString *)appId appSecret:(NSString *)appSecret;
 + (BOOL)isAuthenticated;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate;
 - (void)logOut;
