@@ -9,8 +9,10 @@
 #import "GSSSession.h"
 #import "GSSParseQueryHelper.h"
 #import "NSData+Base64.h"
+#import "SVProgressHUD.h"
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
+#define kMaxSizeFirebaseString 5000000 //10485760
 
 static GSSSession *activeSession = nil;
 
@@ -94,15 +96,41 @@ static GSSSession *activeSession = nil;
     NSString *senderUID = snapshot.value[@"sender"];
     NSString *receiverUID = snapshot.value[@"receiver"];
     NSString *messageType = snapshot.value[@"type"];
-    NSString *messageContent = snapshot.value[@"content"];
+    NSObject *messageContent = snapshot.value[@"content"];
     NSObject *messageData = nil;
     
     if ([messageType isEqualToString:@"string"]) {
         messageData = messageContent;
         
     } else if ([messageType isEqualToString:@"image"]) {
-        NSData *imageData = [NSData dataFromBase64String:((NSString *)messageContent)];
-        messageData = [UIImage imageWithData:imageData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showWithStatus:@"Receiving image"];
+            
+            dispatch_async(dispatch_get_current_queue(), ^{
+                NSObject *messageData = nil;
+                if ([messageContent isKindOfClass:[NSArray class]]) {
+                    NSMutableString *messageString = [NSMutableString new];
+                    for (int i = 0; i < [((NSArray *) messageContent) count]; i++) {
+                        [messageString appendString:[((NSArray *) messageContent) objectAtIndex:i]];
+                    }
+                    NSData *imageData = [NSData dataFromBase64String:messageString];
+                    messageData = [UIImage imageWithData:imageData];
+                    
+                } else {
+                    NSData *imageData = [NSData dataFromBase64String:((NSString *)messageContent)];
+                    messageData = [UIImage imageWithData:imageData];
+                }
+                
+                [SVProgressHUD dismissWithSuccess:@"Image received"];
+                
+                if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
+                    if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
+                        [self.delegate didReceiveMessageFrom:senderUID content:messageData];
+                    }
+                }
+            });
+        });
+        
     }
     
     if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
@@ -113,22 +141,49 @@ static GSSSession *activeSession = nil;
 }
 
 - (void)sendMessage:(NSObject *)messageContent toUser:(GSSUser *)user {
-    NSString *messageType = @"unknown";
-    NSString *messageData = @"";
     if ([messageContent isKindOfClass:[NSString class]]) {
-        messageType = @"string";
-        messageData = (NSString *)messageContent;
+        NSString *messageType = @"string";
+        NSString *messageData = (NSString *)messageContent;
+        [[self.firebase childByAppendingPath:self.currentUser.uid] setValue:@{@"sender"   : self.currentUser.uid,
+                                                                              @"receiver" : user.uid,
+                                                                              @"type"     : messageType,
+                                                                              @"content"  : messageData}];
         
     } else if ([messageContent isKindOfClass:[UIImage class]]) {
-        NSData *imageData = UIImagePNGRepresentation(((UIImage *) messageContent));
-        messageType = @"image";
-        messageData = [imageData base64EncodedString];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showWithStatus:@"Sending image"];
+            
+            dispatch_async(dispatch_get_current_queue(), ^{
+                NSData *imageData = UIImagePNGRepresentation(((UIImage *) messageContent));
+                NSString *messageType = @"image";
+                NSString *messageString = [imageData base64EncodedString];
+                NSObject *messageData = @"";
+                
+                int numOfElement = round((float)[messageString length]/(float)kMaxSizeFirebaseString);
+                if (numOfElement > 1) { // More than 1 element
+                    NSMutableArray *elementArray = [NSMutableArray arrayWithCapacity:numOfElement];
+                    for (int i = 0; i < numOfElement; i++) {
+                        int location = kMaxSizeFirebaseString*i;
+                        int length = (kMaxSizeFirebaseString > ([messageString length]-location)
+                                      ? ([messageString length]-location)
+                                      : kMaxSizeFirebaseString);
+                        NSString *element = [messageString substringWithRange:NSMakeRange(location, length)];
+                        [elementArray addObject:element];
+                    }                    
+                    messageData = elementArray;
+                    
+                } else {
+                    messageData = messageString;
+                }
+                
+                [SVProgressHUD dismissWithSuccess:@"Image sent"];
+                [[self.firebase childByAppendingPath:self.currentUser.uid] setValue:@{@"sender"   : self.currentUser.uid,
+                                                                                      @"receiver" : user.uid,
+                                                                                      @"type"     : messageType,
+                                                                                      @"content"  : messageData}];
+            });
+        });
     }
-    
-    [[self.firebase childByAppendingPath:self.currentUser.uid] setValue:@{@"sender"   : self.currentUser.uid,
-                                                                          @"receiver" : user.uid,
-                                                                          @"type"     : messageType,
-                                                                          @"content"  : messageData}];
 }
 
 - (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate {
