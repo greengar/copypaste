@@ -13,8 +13,7 @@
 static DataManager *shareManager = nil;
 
 @implementation DataManager
-@synthesize nearByUserList = _nearByUserList;
-@synthesize recentUserList = _recentUserList;
+@synthesize availableUsers = _nearByUserList;
 
 + (DataManager *)sharedManager {
     static DataManager *sharedManager;
@@ -26,8 +25,8 @@ static DataManager *shareManager = nil;
 - (id) init {
     self = [super init];
     if (self) {
-        self.nearByUserList = [[NSMutableArray alloc] init];
-        self.recentUserList = [[NSMutableArray alloc] init];
+        self.availableUsers = [[NSMutableArray alloc] init];
+        self.receivedMessages = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -71,11 +70,23 @@ static DataManager *shareManager = nil;
 }
 
 - (void)updateNearbyUsers:(NSArray *)nearbyList {
-    [self.nearByUserList removeAllObjects];
+    [self.availableUsers removeAllObjects];
     for (GSSUser *gsUser in nearbyList) {
-        [self.nearByUserList addObject:gsUser];
+        [self.availableUsers addObject:gsUser];
     }
 }
+
+- (GSSUser *)userById:(NSString *)uid {
+    GSSUser *desiredUser = nil;
+    for (GSSUser *user in self.availableUsers) {
+        if ([user.uid isEqualToString:uid]) {
+            desiredUser = user;
+            break;
+        }
+    }
+    return desiredUser;
+}
+
 
 + (id)allocWithZone:(NSZone *)zone {
     @synchronized(self) {

@@ -40,6 +40,8 @@
 		7B34672E171CE35E00B73449 /* EGOImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346729171CE35E00B73449 /* EGOImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B346730171CE81900B73449 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B34672F171CE81900B73449 /* QuartzCore.framework */; };
 		7B38C65A171CA43F00B53A52 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B38C659171CA43F00B53A52 /* DataManager.m */; };
+		7B4574EA17287D2500675AE5 /* CPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574E917287D2500675AE5 /* CPMessage.m */; };
+		7B4574EF172884EE00675AE5 /* GSSUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574EE172884EE00675AE5 /* GSSUtils.m */; };
 		7B4B76A31727459000B1D810 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A21727459000B1D810 /* Firebase.framework */; };
 		7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A6172745BF00B1D810 /* libicucore.dylib */; };
 		7B4B76BC1727628F00B1D810 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B76BB1727628F00B1D810 /* NSData+Base64.m */; };
@@ -180,6 +182,10 @@
 		7B34672F171CE81900B73449 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7B38C658171CA43F00B53A52 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		7B38C659171CA43F00B53A52 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		7B4574E817287D2500675AE5 /* CPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPMessage.h; sourceTree = "<group>"; };
+		7B4574E917287D2500675AE5 /* CPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPMessage.m; sourceTree = "<group>"; };
+		7B4574ED172884EE00675AE5 /* GSSUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSUtils.h; sourceTree = "<group>"; };
+		7B4574EE172884EE00675AE5 /* GSSUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSUtils.m; sourceTree = "<group>"; };
 		7B4B76A21727459000B1D810 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = copypaste/SDKs/Firebase.framework; sourceTree = "<group>"; };
 		7B4B76A6172745BF00B1D810 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7B4B76BA1727628F00B1D810 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -569,6 +575,8 @@
 			children = (
 				7B38C658171CA43F00B53A52 /* DataManager.h */,
 				7B38C659171CA43F00B53A52 /* DataManager.m */,
+				7B4574E817287D2500675AE5 /* CPMessage.h */,
+				7B4574E917287D2500675AE5 /* CPMessage.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -584,6 +592,8 @@
 				7BD2227B171F435600E66FD5 /* GSSSession.m */,
 				7BA18EEA1721C5E000B88255 /* GSSParseQueryHelper.h */,
 				7BA18EEB1721C5E000B88255 /* GSSParseQueryHelper.m */,
+				7B4574ED172884EE00675AE5 /* GSSUtils.h */,
+				7B4574EE172884EE00675AE5 /* GSSUtils.m */,
 			);
 			path = SmartboardAPI;
 			sourceTree = "<group>";
@@ -931,6 +941,8 @@
 				7B4B76BC1727628F00B1D810 /* NSData+Base64.m in Sources */,
 				7B4B76C01727684400B1D810 /* CPTextView.m in Sources */,
 				7BAD0E77172856D700A474AB /* SVProgressHUD.m in Sources */,
+				7B4574EA17287D2500675AE5 /* CPMessage.m in Sources */,
+				7B4574EF172884EE00675AE5 /* GSSUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,14 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CPMessage.h"
 
 @interface DataManager : NSObject
 
 + (DataManager *) sharedManager;
 - (NSObject *) getThingsFromClipboard;
 - (void)updateNearbyUsers:(NSArray *)nearbyList;
+- (GSSUser *)userById:(NSString *)uid;
 
-@property (nonatomic, retain) NSMutableArray *nearByUserList;
-@property (nonatomic, retain) NSMutableArray *recentUserList;
+@property (nonatomic, retain) NSMutableArray *availableUsers;
+@property (nonatomic, retain) NSMutableArray *receivedMessages;
 
 @end

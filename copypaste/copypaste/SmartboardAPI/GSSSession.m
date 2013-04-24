@@ -101,12 +101,15 @@ static GSSSession *activeSession = nil;
         NSString *receiverUID = childSnapshot.value[@"receiver"];
         NSString *messageType = childSnapshot.value[@"type"];
         NSObject *messageContent = childSnapshot.value[@"content"];
+        NSString *messageTime = childSnapshot.value[@"time"];
         NSObject *messageData = nil;
         
         if (![receiverUID isEqualToString:self.currentUser.uid]) {
             DLog(@"This update from %@ to %@ is not for me: %@", senderUID, receiverUID, self.currentUser.uid);
             return;
         }
+        
+        NSDate *time = [GSSUtils dateFromString:messageTime];
         
         if ([messageType isEqualToString:@"string"]) {
             messageData = messageContent;
@@ -134,8 +137,8 @@ static GSSSession *activeSession = nil;
                     
                     [SVProgressHUD dismissWithSuccess:@"Image received"];
                     if (messageData) {
-                        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
-                            [self.delegate didReceiveMessageFrom:senderUID content:messageData];
+                        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
+                            [self.delegate didReceiveMessageFrom:senderUID content:messageData time:time];
                         }
                     }
                 });
@@ -143,8 +146,8 @@ static GSSSession *activeSession = nil;
         }
         
         if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
-            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
-                [self.delegate didReceiveMessageFrom:senderUID content:messageData];
+            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
+                [self.delegate didReceiveMessageFrom:senderUID content:messageData time:time];
             }
         }
     }
@@ -154,10 +157,12 @@ static GSSSession *activeSession = nil;
     if ([messageContent isKindOfClass:[NSString class]]) {
         NSString *messageType = @"string";
         NSString *messageData = (NSString *)messageContent;
+        NSString *messageTime = [GSSUtils getCurrentTime];
         [[self generateFirebaseFor:user] setValue:@{@"sender"   : self.currentUser.uid,
                                                     @"receiver" : user.uid,
                                                     @"type"     : messageType,
-                                                    @"content"  : messageData}];
+                                                    @"content"  : messageData,
+                                                    @"time"     : messageTime}];
         
     } else if ([messageContent isKindOfClass:[UIImage class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -168,6 +173,7 @@ static GSSSession *activeSession = nil;
                 DLog(@"Sent image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
                 NSString *messageType = @"image";
                 NSString *messageString = [imageData base64EncodedString];
+                NSString *messageTime = [GSSUtils getCurrentTime];
                 NSObject *messageData = @"";
                 
                 int numOfElement = round((float)[messageString length]/(float)kMaxSizeFirebaseString);
@@ -191,7 +197,8 @@ static GSSSession *activeSession = nil;
                 [[self generateFirebaseFor:user] setValue:@{@"sender"   : self.currentUser.uid,
                                                             @"receiver" : user.uid,
                                                             @"type"     : messageType,
-                                                            @"content"  : messageData}];
+                                                            @"content"  : messageData,
+                                                            @"time"     : messageTime}];
             });
         });
     }
@@ -365,9 +372,7 @@ static GSSSession *activeSession = nil;
     Firebase *receiverBaseFirebase = [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", user.uid]];
     Firebase *senderFirebaseInReceiverBaseFirebase = [receiverBaseFirebase childByAppendingPath:[NSString stringWithFormat:@"Sender_%@", self.currentUser.uid]];
     
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"EEEE MMMM d, YYYY hhmmss a"];
-    NSString *currentTime = [dateFormat stringFromDate:[NSDate date]];
+    NSString *currentTime = [GSSUtils getCurrentTime];
     NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", self.currentUser.username, currentTime];
     Firebase *timeFirebase = [senderFirebaseInReceiverBaseFirebase childByAppendingPath:timeFirebaseName];
     

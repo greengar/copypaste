@@ -154,11 +154,6 @@
     [self.availableUsersGridView reloadData];
 }
 
-- (void)didReceiveMessageFrom:(NSString *)username
-                      content:(NSObject *)messageContent {
-    [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];
-}
-
 - (void)settingButtonTapped:(id)sender {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Log Out"
                                                         message:[NSString stringWithFormat:@"You have logged in as %@. Do you want to log out?", [[GSSSession activeSession] currentUserName]]
@@ -216,7 +211,7 @@
 }
 
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
-    return [[[DataManager sharedManager] nearByUserList] count];
+    return [[[DataManager sharedManager] availableUsers] count];
 }
 
 - (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
@@ -269,12 +264,12 @@
         [cell addSubview:pasteImageView];
     }
     
-    if ([[[DataManager sharedManager] nearByUserList] count] == 0) {
+    if ([[[DataManager sharedManager] availableUsers] count] == 0) {
         UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
         [contentLabel setText:@"No available user"];
         
     } else {
-        GSSUser * user = [[[DataManager sharedManager] nearByUserList] objectAtIndex:index];
+        GSSUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:index];
         EGOImageView *contentView = (EGOImageView *) [cell viewWithTag:kContentViewTag];
         UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
         
@@ -295,7 +290,7 @@
 
 - (void)GMGridView:(GMGridView *)gridView_ didTapOnItemAtIndex:(NSInteger)position {
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
-    GSSUser * user = [[[DataManager sharedManager] nearByUserList] objectAtIndex:position];
+    GSSUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
     if (itemToPaste) {
         [[GSSSession activeSession] sendMessage:itemToPaste toUser:user];
         
@@ -308,6 +303,22 @@
         [alertView show];
     }
 }
+
+- (void)didReceiveMessageFrom:(NSString *)userId
+                      content:(NSObject *)messageContent
+                         time:(NSDate *)time {
+    GSSUser *user = [[DataManager sharedManager] userById:userId];
+    
+    CPMessage *newMessage = [[CPMessage alloc] init];
+    [newMessage setSender:user];
+    [newMessage setMessageContent:messageContent];
+    [newMessage setCreatedDateInterval:[time timeIntervalSince1970]];
+    DLog(@"Message: %@", newMessage);
+    [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
+    
+    [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];
+}
+
 
 - (void)imageViewLoadedImage:(EGOImageView *)imageView {
     [imageView setNeedsDisplay];

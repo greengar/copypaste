@@ -11,13 +11,14 @@
 #import <Firebase/Firebase.h>
 #import "CPLogInViewController.h"
 #import "GSSUser.h"
+#import "GSSUtils.h"
 
 @protocol GSSSessionDelegate
 - (void)didLoginSucceeded;
 - (void)didLoginFailed:(NSError *)error;
 - (void)didGetNearbyUserSucceeded:(NSArray *)listOfUsers;
 - (void)didGetNearbyUserFailed:(NSError *)error;
-- (void)didReceiveMessageFrom:(NSString *)username content:(NSObject *)messageContent;
+- (void)didReceiveMessageFrom:(NSString *)userId content:(NSObject *)messageContent time:(NSDate *)time;
 @end
 
 @interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
