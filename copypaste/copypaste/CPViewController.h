@@ -12,6 +12,7 @@
 #import "EGOImageView.h"
 #import "GSSSession.h"
 #import "CPPasteboardView.h"
+#import "CPMessageView.h"
 
 @interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSSessionDelegate, UIAlertViewDelegate>
 

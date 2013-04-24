@@ -109,8 +109,6 @@ static GSSSession *activeSession = nil;
             return;
         }
         
-        NSDate *time = [GSSUtils dateFromString:messageTime];
-        
         if ([messageType isEqualToString:@"string"]) {
             messageData = messageContent;
             
@@ -138,7 +136,7 @@ static GSSSession *activeSession = nil;
                     [SVProgressHUD dismissWithSuccess:@"Image received"];
                     if (messageData) {
                         if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
-                            [self.delegate didReceiveMessageFrom:senderUID content:messageData time:time];
+                            [self.delegate didReceiveMessageFrom:senderUID content:messageData time:messageTime];
                         }
                     }
                 });
@@ -147,7 +145,7 @@ static GSSSession *activeSession = nil;
         
         if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
             if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
-                [self.delegate didReceiveMessageFrom:senderUID content:messageData time:time];
+                [self.delegate didReceiveMessageFrom:senderUID content:messageData time:messageTime];
             }
         }
     }
@@ -193,15 +191,27 @@ static GSSSession *activeSession = nil;
                     messageData = messageString;
                 }
                 
-                [SVProgressHUD dismissWithSuccess:@"Image sent"];
+                
                 [[self generateFirebaseFor:user atTime:messageTime] setValue:@{@"sender"   : self.currentUser.uid,
                                                                                @"receiver" : user.uid,
                                                                                @"type"     : messageType,
                                                                                @"content"  : messageData,
-                                                                               @"time"     : messageTime}];
+                                                                               @"time"     : messageTime}
+                                                         withCompletionBlock:^(NSError *error) {
+                                                             [SVProgressHUD dismissWithSuccess:@"Image sent"];
+                                                                               }];
             });
         });
     }
+}
+
+- (void)removeMessageFromSender:(GSSUser *)user atTime:(NSString *)messageTime {
+    Firebase *myBaseFirebase = [self getMyBaseFirebase];
+    Firebase *senderFirebaseInMyFirebase = [myBaseFirebase childByAppendingPath:[NSString stringWithFormat:@"Sender_%@", user.uid]];
+    NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", user.username, messageTime];
+    Firebase *timeFirebase = [senderFirebaseInMyFirebase childByAppendingPath:timeFirebaseName];
+    DLog(@"Remove fire base: %@", [timeFirebase name]);
+    [timeFirebase removeValue];
 }
 
 - (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate {
@@ -373,10 +383,12 @@ static GSSSession *activeSession = nil;
     Firebase *senderFirebaseInReceiverBaseFirebase = [receiverBaseFirebase childByAppendingPath:[NSString stringWithFormat:@"Sender_%@", self.currentUser.uid]];
     NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", self.currentUser.username, time];
     Firebase *timeFirebase = [senderFirebaseInReceiverBaseFirebase childByAppendingPath:timeFirebaseName];
-    
+    DLog(@"Create fire base: %@", [timeFirebase name]);
     return timeFirebase;
 }
 
+//testuser_Wednesday April 24, 2013 035354 PM
+//testuser_Wednesday January 2, 2013 035354 PM
 + (id)allocWithZone:(NSZone *)zone {
     @synchronized(self) {
         if (activeSession == nil) {
