@@ -12,7 +12,8 @@
 #define kOffset 6
 #define kHeaderViewHeight 52
 #define kPasteboardMinimumHeight 131
-#define kPasteboardContentTopOffset 1 //22
+#define kClipboardHeaderOffset 9
+#define kPasteboardContentTopOffset 1+kClipboardHeaderOffset //22
 #define kPasteboardContentBottomOffset 2
 #define kPasteboardContentWidth 300
 #define kPasteboardEmptyContentTopGap 30
@@ -35,12 +36,14 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.clipsToBounds = NO; // pasteboardHeaderImageView is positioned slightly beyond bounds (can change this)
         
         // The "my pasteboard background image view"
-        self.pasteboardBackgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                           0,
-                                                                                           frame.size.width,
-                                                                                           frame.size.height)];
+        self.pasteboardBackgroundImageView =
+            [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                          kClipboardHeaderOffset,
+                                                          frame.size.width,
+                                                          frame.size.height-kClipboardHeaderOffset)];
         self.pasteboardBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth
                                                               | UIViewAutoresizingFlexibleHeight;
         self.pasteboardBackgroundImageView.image = [[UIImage imageNamed:@"pasteboard.png"] stretchableImageWithLeftCapWidth:30
@@ -63,7 +66,7 @@
         self.pasteboardTextView.delegate = self;
         [self addSubview:self.pasteboardTextView];
         
-        // The "pasteboard" image scroller
+        // The "pasteboard" image scroll view
         self.pasteboardImageHolderView = [[UIScrollView alloc] initWithFrame:CGRectMake((frame.size.width-kPasteboardContentWidth)/2,
                                                                                           kPasteboardContentTopOffset,
                                                                                           kPasteboardContentWidth,
@@ -83,14 +86,10 @@
         self.pasteboardImageView.backgroundColor = [UIColor clearColor];
         [self.pasteboardImageHolderView addSubview:self.pasteboardImageView];
         
-        // The "pasteboard" header view
-        UIImage *clipboardHeaderImage = [UIImage imageNamed:@"header-clipboard2.png"];
-        self.pasteboardHeaderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, clipboardHeaderImage.size.width, clipboardHeaderImage.size.height)];
-        float centerY = (clipboardHeaderImage.size.height/2)+2;
-        //DLog(@"centerY = %.2f", centerY);
-        self.pasteboardHeaderImageView.center = CGPointMake(frame.size.width/2, centerY);
+        // The "clipboard" header view
+        UIImage *clipboardHeaderImage = [UIImage imageNamed:@"header-clipboard3.png"];
+        self.pasteboardHeaderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(9, -2, clipboardHeaderImage.size.width, clipboardHeaderImage.size.height)];
         self.pasteboardHeaderImageView.image = clipboardHeaderImage;
-        self.pasteboardHeaderImageView.alpha = 0.9;
         [self addSubview:self.pasteboardHeaderImageView];
     }
     return self;
