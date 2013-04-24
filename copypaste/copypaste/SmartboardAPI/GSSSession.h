@@ -18,7 +18,7 @@
 - (void)didLoginFailed:(NSError *)error;
 - (void)didGetNearbyUserSucceeded:(NSArray *)listOfUsers;
 - (void)didGetNearbyUserFailed:(NSError *)error;
-- (void)didReceiveMessageFrom:(NSString *)userId content:(NSObject *)messageContent time:(NSDate *)time;
+- (void)didReceiveMessageFrom:(NSString *)userId content:(NSObject *)messageContent time:(NSString *)messageTime;
 @end
 
 @interface GSSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
@@ -34,6 +34,7 @@
 - (NSString *)currentUserName;
 - (void)addObserver:(id<GSSSessionDelegate>)delegate;
 - (void)sendMessage:(NSObject *)messageContent toUser:(GSSUser *)user;
+- (void)removeMessageFromSender:(GSSUser *)user atTime:(NSString *)messageTime;
 
 @property (nonatomic, retain) GSSUser *currentUser;
 @property (nonatomic, assign) id<GSSSessionDelegate> delegate;

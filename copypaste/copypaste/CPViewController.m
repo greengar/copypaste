@@ -313,15 +313,26 @@
 
 - (void)didReceiveMessageFrom:(NSString *)userId
                       content:(NSObject *)messageContent
-                         time:(NSDate *)time {
+                         time:(NSString *)messageTime {
     GSSUser *user = [[DataManager sharedManager] userById:userId];
     
     CPMessage *newMessage = [[CPMessage alloc] init];
     [newMessage setSender:user];
     [newMessage setMessageContent:messageContent];
-    [newMessage setCreatedDateInterval:[time timeIntervalSince1970]];
+    [newMessage setCreatedDateInterval:[[GSSUtils dateFromString:messageTime] timeIntervalSince1970]];
     DLog(@"Receive message: %@", [newMessage description]);
     [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
+    
+    // Uncomment this to remove the firebase
+    // Remove the value from the Firebase server
+    // [[GSSSession activeSession] removeMessageFromSender:user atTime:messageTime];
+    
+    CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
+                                                                                 0,
+                                                                                 self.view.frame.size.width,
+                                                                                 self.view.frame.size.height)];
+    [messageView addMessageContent:newMessage];
+    [messageView showMeOnView:self.view];
     
     [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];
 }
