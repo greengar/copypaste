@@ -48,7 +48,7 @@
         [self addSubview:self.pasteboardBackgroundImageView];
 
         // The "pasteboard" string content
-        self.pasteboardTextView = [[UITextView alloc] initWithFrame:CGRectMake((frame.size.width-kPasteboardContentWidth)/2,
+        self.pasteboardTextView = [[CPTextView alloc] initWithFrame:CGRectMake((frame.size.width-kPasteboardContentWidth)/2,
                                                                                  kPasteboardContentTopOffset,
                                                                                  kPasteboardContentWidth,
                                                                                  kPasteboardMinimumHeight-kPasteboardContentTopOffset-kPasteboardContentBottomOffset)];

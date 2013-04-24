@@ -42,6 +42,8 @@
 		7B38C65A171CA43F00B53A52 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B38C659171CA43F00B53A52 /* DataManager.m */; };
 		7B4B76A31727459000B1D810 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A21727459000B1D810 /* Firebase.framework */; };
 		7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A6172745BF00B1D810 /* libicucore.dylib */; };
+		7B4B76BC1727628F00B1D810 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B76BB1727628F00B1D810 /* NSData+Base64.m */; };
+		7B4B76C01727684400B1D810 /* CPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B76BF1727684400B1D810 /* CPTextView.m */; };
 		7B737885171E0398004A16F4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737884171E0398004A16F4 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7B73788A171E04FC004A16F4 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B737889171E04FC004A16F4 /* FacebookSDKResources.bundle */; };
 		7B737896171E109D004A16F4 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B737895171E109D004A16F4 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -172,6 +174,10 @@
 		7B38C659171CA43F00B53A52 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		7B4B76A21727459000B1D810 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = copypaste/SDKs/Firebase.framework; sourceTree = "<group>"; };
 		7B4B76A6172745BF00B1D810 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		7B4B76BA1727628F00B1D810 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		7B4B76BB1727628F00B1D810 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		7B4B76BE1727684400B1D810 /* CPTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTextView.h; sourceTree = "<group>"; };
+		7B4B76BF1727684400B1D810 /* CPTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPTextView.m; sourceTree = "<group>"; };
 		7B737880171E034E004A16F4 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		7B737884171E0398004A16F4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7B737889171E04FC004A16F4 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKResources.bundle; path = FacebookSDK.framework/Versions/A/Resources/FacebookSDKResources.bundle; sourceTree = "<group>"; };
@@ -331,11 +337,12 @@
 		7B346705171CDA0A00B73449 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				7BD22205171F324500E66FD5 /* OAuth2Client */,
 				7B34671B171CE35E00B73449 /* EGOImageLoading */,
 				7B737888171E04EB004A16F4 /* FacebookSDK */,
 				7B346706171CDA0A00B73449 /* GMGridView */,
+				7BD22205171F324500E66FD5 /* OAuth2Client */,
 				7B737893171E109D004A16F4 /* Reachability */,
+				7B4B76B91727628F00B1D810 /* Utils */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -406,6 +413,24 @@
 				7B346729171CE35E00B73449 /* EGOImageView.m */,
 			);
 			path = EGOImageView;
+			sourceTree = "<group>";
+		};
+		7B4B76B91727628F00B1D810 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7B4B76BA1727628F00B1D810 /* NSData+Base64.h */,
+				7B4B76BB1727628F00B1D810 /* NSData+Base64.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		7B4B76BD1727683200B1D810 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7B4B76BE1727684400B1D810 /* CPTextView.h */,
+				7B4B76BF1727684400B1D810 /* CPTextView.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		7B737888171E04EB004A16F4 /* FacebookSDK */ = {
@@ -488,6 +513,7 @@
 		7BD2223C171F359600E66FD5 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				7B4B76BD1727683200B1D810 /* View */,
 				A99F71E91717535000172B13 /* CPViewController.h */,
 				A99F71EA1717535000172B13 /* CPViewController.m */,
 				7B2CD3A817260F9B006380F3 /* CPPasteboardView.h */,
@@ -853,6 +879,8 @@
 				7BA18EEC1721C5E000B88255 /* GSSParseQueryHelper.m in Sources */,
 				7B2CD3891725AADB006380F3 /* CPLogInViewController.m in Sources */,
 				7B2CD3AA17260F9B006380F3 /* CPPasteboardView.m in Sources */,
+				7B4B76BC1727628F00B1D810 /* NSData+Base64.m in Sources */,
+				7B4B76C01727684400B1D810 /* CPTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,7 @@
 #import <Firebase/Firebase.h>
 #import "GMGridViewLayoutStrategies.h"
 #import "GSSParseQueryHelper.h"
+#import "NSData+Base64.h"
 
 #define kUserHolderWidth 102
 #define kUserHolderHeight 128
@@ -153,7 +154,8 @@
     [self.availableUsersGridView reloadData];
 }
 
-- (void)didReceiveMessageFrom:(NSString *)username content:(NSObject *)messageContent {
+- (void)didReceiveMessageFrom:(NSString *)username
+                      content:(NSObject *)messageContent {
     [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];
 }
 

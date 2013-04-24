@@ -8,6 +8,7 @@
 
 #import "GSSSession.h"
 #import "GSSParseQueryHelper.h"
+#import "NSData+Base64.h"
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
 
@@ -92,19 +93,42 @@ static GSSSession *activeSession = nil;
 - (void)receiveData:(FDataSnapshot *)snapshot {
     NSString *senderUID = snapshot.value[@"sender"];
     NSString *receiverUID = snapshot.value[@"receiver"];
-    NSObject *senderContent = snapshot.value[@"content"];
+    NSString *messageType = snapshot.value[@"type"];
+    NSString *messageContent = snapshot.value[@"content"];
+    NSObject *messageData = nil;
     
-    if ([receiverUID isEqualToString:self.currentUser.uid]) {
+    if ([messageType isEqualToString:@"string"]) {
+        messageData = messageContent;
+        
+    } else if ([messageType isEqualToString:@"image"]) {
+        NSData *imageData = [NSData dataFromBase64String:((NSString *)messageContent)];
+        messageData = [UIImage imageWithData:imageData];
+    }
+    
+    if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
         if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:)]) {
-            [self.delegate didReceiveMessageFrom:senderUID content:senderContent];
+            [self.delegate didReceiveMessageFrom:senderUID content:messageData];
         }
     }
 }
 
 - (void)sendMessage:(NSObject *)messageContent toUser:(GSSUser *)user {
+    NSString *messageType = @"unknown";
+    NSString *messageData = @"";
+    if ([messageContent isKindOfClass:[NSString class]]) {
+        messageType = @"string";
+        messageData = (NSString *)messageContent;
+        
+    } else if ([messageContent isKindOfClass:[UIImage class]]) {
+        NSData *imageData = UIImagePNGRepresentation(((UIImage *) messageContent));
+        messageType = @"image";
+        messageData = [imageData base64EncodedString];
+    }
+    
     [[self.firebase childByAppendingPath:self.currentUser.uid] setValue:@{@"sender"   : self.currentUser.uid,
                                                                           @"receiver" : user.uid,
-                                                                          @"content"  : messageContent}];
+                                                                          @"type"     : messageType,
+                                                                          @"content"  : messageData}];
 }
 
 - (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate {
