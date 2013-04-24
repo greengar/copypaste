@@ -87,7 +87,7 @@
                                                                                      kPasteboardMinimumHeight)];
     self.myPasteboardHolderView.backgroundColor = [UIColor clearColor];
     self.myPasteboardHolderView.layer.cornerRadius = 3;
-    self.myPasteboardHolderView.clipsToBounds = YES;
+    //self.myPasteboardHolderView.clipsToBounds = YES; // pasteboardHeaderImageView is positioned slightly beyond bounds (can change this)
     [self.view addSubview:self.myPasteboardHolderView];
         
     // The "other pasteboard holder view"
