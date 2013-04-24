@@ -26,8 +26,10 @@
 @property (nonatomic, retain) NSString *avatarURLString;
 @property (nonatomic)         BOOL isAvatarCached;
 @property (nonatomic, retain) UIImage *avatarImage;
+@property (nonatomic, retain) PFGeoPoint *location;
 
 - (id)initWithPFUser:(PFUser *)pfUser;
 - (void)parseDataFromPFUser:(PFUser *)pfUser;
+- (NSString *)distanceStringToUser:(GSSUser *)user;
 
 @end

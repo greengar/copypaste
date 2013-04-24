@@ -41,6 +41,7 @@
 		7B4574EA17287D2500675AE5 /* CPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574E917287D2500675AE5 /* CPMessage.m */; };
 		7B4574EF172884EE00675AE5 /* GSSUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574EE172884EE00675AE5 /* GSSUtils.m */; };
 		7B4574F317288AEE00675AE5 /* CPMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574F217288AEE00675AE5 /* CPMessageView.m */; };
+		7B4574F91728A28800675AE5 /* CPProfilePopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574F81728A28800675AE5 /* CPProfilePopupView.m */; };
 		7B4B76A31727459000B1D810 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A21727459000B1D810 /* Firebase.framework */; };
 		7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A6172745BF00B1D810 /* libicucore.dylib */; };
 		7B4B76BC1727628F00B1D810 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B76BB1727628F00B1D810 /* NSData+Base64.m */; };
@@ -187,6 +188,8 @@
 		7B4574EE172884EE00675AE5 /* GSSUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSUtils.m; sourceTree = "<group>"; };
 		7B4574F117288AEE00675AE5 /* CPMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPMessageView.h; sourceTree = "<group>"; };
 		7B4574F217288AEE00675AE5 /* CPMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPMessageView.m; sourceTree = "<group>"; };
+		7B4574F71728A28700675AE5 /* CPProfilePopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPProfilePopupView.h; sourceTree = "<group>"; };
+		7B4574F81728A28800675AE5 /* CPProfilePopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPProfilePopupView.m; sourceTree = "<group>"; };
 		7B4B76A21727459000B1D810 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = copypaste/SDKs/Firebase.framework; sourceTree = "<group>"; };
 		7B4B76A6172745BF00B1D810 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7B4B76BA1727628F00B1D810 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -571,6 +574,8 @@
 				7B2CD3A917260F9B006380F3 /* CPPasteboardView.m */,
 				7B4574F117288AEE00675AE5 /* CPMessageView.h */,
 				7B4574F217288AEE00675AE5 /* CPMessageView.m */,
+				7B4574F71728A28700675AE5 /* CPProfilePopupView.h */,
+				7B4574F81728A28800675AE5 /* CPProfilePopupView.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -949,6 +954,7 @@
 				7B4574EA17287D2500675AE5 /* CPMessage.m in Sources */,
 				7B4574EF172884EE00675AE5 /* GSSUtils.m in Sources */,
 				7B4574F317288AEE00675AE5 /* CPMessageView.m in Sources */,
+				7B4574F91728A28800675AE5 /* CPProfilePopupView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

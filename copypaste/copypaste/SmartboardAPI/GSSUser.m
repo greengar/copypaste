@@ -18,6 +18,7 @@
 @synthesize avatarURLString = _avatarURLString;
 @synthesize isAvatarCached = _isAvatarCached;
 @synthesize avatarImage = _avatarImage;
+@synthesize location = _location;
 
 - (id)initWithPFUser:(PFUser *)pfUser {
     if (self = [super init]) {
@@ -28,6 +29,7 @@
         self.fullname = pfUser[@"fullname"];
         self.email = pfUser[@"email"];
         self.avatarURLString = pfUser[@"avatar_url"];
+        self.location = pfUser[@"location"];
         DLog(@"Parse from %@ to %@", pfUser, self);
         
         dispatch_async(dispatch_get_current_queue(), ^{
@@ -49,6 +51,7 @@
     self.fullname = pfUser[@"fullname"];
     self.email = pfUser[@"email"];
     self.avatarURLString = pfUser[@"avatar_url"];
+    self.location = pfUser[@"location"];
     DLog(@"Parse from %@ to %@", pfUser, self);
     
     dispatch_async(dispatch_get_current_queue(), ^{
@@ -58,6 +61,14 @@
             self.isAvatarCached = YES;
         }
     });
+}
+
+- (NSString *)distanceStringToUser:(GSSUser *)user {
+    float miles = [self.location distanceInMilesTo:user.location];
+    if (miles < 0.1) {
+        return [NSString stringWithFormat:@"%.0f ft", miles*5280];
+    }
+    return [NSString stringWithFormat:@"%.1f mi", miles];
 }
 
 + (GSSUser *)userInfoFromDictionary:(NSDictionary *)userInfo {
