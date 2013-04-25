@@ -10,6 +10,7 @@
 #import "GSSParseQueryHelper.h"
 #import "NSData+Base64.h"
 #import "SVProgressHUD.h"
+#import "GSObject.h"
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
 #define kMaxSizeFirebaseString 5000000 //10485760
@@ -235,12 +236,8 @@ static GSSSession *activeSession = nil;
                 }
                 
                 DLog(@"Number of nearby users: %d", [nearByUserExceptMe count]);
-                if ([nearByUserExceptMe count] > 0) {
-                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didGetNearbyUserSucceeded:)]) {
-                        [self.delegate didGetNearbyUserSucceeded:nearByUserExceptMe];
-                    }
-                } else {
-                    
+                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didGetNearbyUserSucceeded:)]) {
+                    [self.delegate didGetNearbyUserSucceeded:nearByUserExceptMe];
                 }
             }
         }];
@@ -280,7 +277,71 @@ static GSSSession *activeSession = nil;
     }
 }
 
-- (void)updateClass:(NSString *)classname forKey:(NSString *)key withValue:(id)value where:(NSArray *)queryCondition delegate:(id<GSSSessionDelegate>)delegate {
+- (void)queryClass:(NSString *)classname
+             where:(NSArray *)queryCondition
+             block:(GSArrayResultBlock)block
+{
+//    self.delegate = delegate;
+    
+    PFQuery *query = [PFQuery queryWithClassName:classname];
+    for (int i = 0; i < [queryCondition count]-1; i += 2) {
+        NSString *key = [queryCondition objectAtIndex:i];
+        NSString *value = [queryCondition objectAtIndex:i+1];
+        [query whereKey:key equalTo:value];
+    }
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        if (error) {
+//            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didQueryFailed:)]) {
+//                [self.delegate didQueryFailed:error];
+//            }
+//        } else {
+            NSMutableArray *result = [NSMutableArray new];
+            for (PFObject *pfObject in objects)
+            {
+                GSObject *object = [[GSObject alloc] initWithPFObject:pfObject];
+                [result addObject:object];
+            }
+            
+            block(result, error);
+            
+//            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didQueryForKey:didFinish:)]) {
+//                [self.delegate didQueryForKey:resultKey didFinish:result];
+//            }
+            
+//            if (forceSave && [objects count] == 0) {
+//                PFObject *object = [PFObject objectWithClassName:classname];
+//                for (int i = 0; i < [queryCondition count]-1; i += 2) {
+//                    NSString *key = [queryCondition objectAtIndex:i];
+//                    NSString *value = [queryCondition objectAtIndex:i+1];
+//                    [object setValue:value forKey:key];
+//                }
+//                [object saveInBackground];
+//                
+//            } else {
+//                NSMutableArray *result = [NSMutableArray new];
+//                for (PFObject *object in objects) {
+//                    for (NSString *key in resultKey) {
+//                        NSObject *value = [object objectForKey:key];
+//                        [object allKeys]
+//                        
+//                        NSMutableDictionary *valueDict = [NSMutableDictionary new];
+//                        [valueDict setObject:value forKey:key];
+//                        
+//                        [result addObject:[object objectId]];
+//                        [result addObject:valueDict];
+//                    }
+//                }
+//            
+//            }
+//        }
+    }];
+}
+
+- (void)updateClass:(NSString *)classname
+               with:(NSArray *)valueToSet
+              where:(NSArray *)queryCondition
+           delegate:(id<GSSSessionDelegate>)delegate {
     self.delegate = delegate;
     
     PFQuery *query = [PFQuery queryWithClassName:classname];
@@ -303,13 +364,23 @@ static GSSSession *activeSession = nil;
                     NSString *key = [queryCondition objectAtIndex:i];
                     NSString *value = [queryCondition objectAtIndex:i+1];
                     [object setValue:value forKey:key];
+                    
+                    for (int j = 0; j < [valueToSet count]-1; j += 2) {
+                        NSString *key = [valueToSet objectAtIndex:j];
+                        NSString *value = [valueToSet objectAtIndex:j+1];
+                        [object setValue:value forKey:key];
+                    }
                 }
-                [object setValue:value forKey:key];
+                
                 [object saveInBackground];
                 
             } else {
                 for (PFObject *object in objects) {
-                    [object setValue:value forKey:key];
+                    for (int j = 0; j < [valueToSet count]-1; j += 2) {
+                        NSString *key = [valueToSet objectAtIndex:j];
+                        NSString *value = [valueToSet objectAtIndex:j+1];
+                        [object setValue:value forKey:key];
+                    }
                     [object saveInBackground];
                 }
             }

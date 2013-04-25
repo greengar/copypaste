@@ -52,17 +52,11 @@
 
 - (void)dealloc {
 	[self dismissPopoverAnimated:NO];
-	[contentViewController release];
-	[containerViewProperties release];
-	[passthroughViews release];
-	self.context = nil;
-	[super dealloc];
 }
 
 - (void)setContentViewController:(UIViewController *)vc {
 	if (vc != contentViewController) {
-		[contentViewController release];
-		contentViewController = [vc retain];
+		contentViewController = vc;
 		popoverContentSize = CGSizeZero;
 	}
 }
@@ -73,7 +67,6 @@
 
 //Overridden setter to copy the passthroughViews to the background view if it exists already
 - (void)setPassthroughViews:(NSArray *)array {
-	[passthroughViews release];
 	passthroughViews = nil;
 	if (array) {
 		passthroughViews = [[NSArray alloc] initWithArray:array];
@@ -99,10 +92,9 @@
 		[self.view removeFromSuperview];
 		self.view = nil;
 		[backgroundView removeFromSuperview];
-		[backgroundView release];
 		backgroundView = nil;
 		
-		BOOL userInitiatedDismissal = [(NSNumber *)theContext boolValue];
+		BOOL userInitiatedDismissal = [(__bridge NSNumber *)theContext boolValue];
 		
 		if (userInitiatedDismissal) {
 			//Only send message to delegate in case the user initiated this event, which is if he touched outside the view
@@ -144,7 +136,7 @@
 	CGRect displayArea = [self displayAreaForView:theView];
 	
 	WEPopoverContainerViewProperties *props = self.containerViewProperties ? self.containerViewProperties : [self defaultContainerViewProperties];
-	WEPopoverContainerView *containerView = [[[WEPopoverContainerView alloc] initWithSize:self.popoverContentSize anchorRect:rect displayArea:displayArea permittedArrowDirections:arrowDirections properties:props] autorelease];
+	WEPopoverContainerView *containerView = [[WEPopoverContainerView alloc] initWithSize:self.popoverContentSize anchorRect:rect displayArea:displayArea permittedArrowDirections:arrowDirections properties:props];
 	popoverArrowDirection = containerView.arrowDirection;
 	
 	UIView *keyView = self.keyView;
@@ -183,7 +175,7 @@
         
         [UIView animateWithDuration:FADE_DURATION
                               delay:0.0
-                            options:UIViewAnimationCurveLinear
+                            options:UIViewAnimationOptionCurveLinear
                          animations:^{
                              
                              self.view.alpha = 1.0;
@@ -287,8 +279,7 @@
 
 - (void)setView:(UIView *)v {
 	if (view != v) {
-		[view release];
-		view = [v retain];
+		view = v;
 	}
 }
 
@@ -309,14 +300,14 @@
             
             [UIView animateWithDuration:FADE_DURATION
                                   delay:0.0
-                                options:UIViewAnimationCurveLinear
+                                options:UIViewAnimationOptionCurveLinear
                              animations:^{
                                  
                                  self.view.alpha = 0.0;
                                  
                              } completion:^(BOOL finished) {
                                  
-                                 [self animationDidStop:@"FadeOut" finished:[NSNumber numberWithBool:finished] context:[NSNumber numberWithBool:userInitiated]];
+                                 [self animationDidStop:@"FadeOut" finished:[NSNumber numberWithBool:finished] context:(__bridge void *)([NSNumber numberWithBool:userInitiated])];
                              }];
 
             
@@ -327,7 +318,6 @@
 			[self.view removeFromSuperview];
 			self.view = nil;
 			[backgroundView removeFromSuperview];
-			[backgroundView release];
 			backgroundView = nil;            
 		}
 	}
@@ -346,17 +336,16 @@
 
 //Enable to use the simple popover style
 - (WEPopoverContainerViewProperties *)defaultContainerViewProperties {
-	WEPopoverContainerViewProperties *ret = [[WEPopoverContainerViewProperties new] autorelease];
+	WEPopoverContainerViewProperties *ret = [WEPopoverContainerViewProperties new];
 	
-	CGSize imageSize = CGSizeMake(30.0f, 30.0f);
-	NSString *bgImageName = @"popoverBgSimple.png";
-	CGFloat bgMargin = 6.0;
-	CGFloat contentMargin = 2.0;
+	CGSize imageSize = CGSizeMake(62.0f, 62.0f);
+	NSString *bgImageName = @"popoverBg";
+	CGFloat contentMargin = 8.0;
 	
-	ret.leftBgMargin = bgMargin;
-	ret.rightBgMargin = bgMargin;
-	ret.topBgMargin = bgMargin;
-	ret.bottomBgMargin = bgMargin;
+	ret.leftBgMargin = 13.5;
+	ret.rightBgMargin = 12.5;
+	ret.topBgMargin = 12.5;
+	ret.bottomBgMargin = 13.5;
 	ret.leftBgCapSize = imageSize.width/2;
 	ret.topBgCapSize = imageSize.height/2;
 	ret.bgImageName = bgImageName;
@@ -366,10 +355,10 @@
 	ret.bottomContentMargin = contentMargin;
 	ret.arrowMargin = 1.0;
 	
-	ret.upArrowImageName = @"popoverArrowUpSimple.png";
-	ret.downArrowImageName = @"popoverArrowDownSimple.png";
-	ret.leftArrowImageName = @"popoverArrowLeftSimple.png";
-	ret.rightArrowImageName = @"popoverArrowRightSimple.png";
+	ret.upArrowImageName = @"popoverArrowUp";
+	ret.downArrowImageName = @"popoverArrowDown";
+	ret.leftArrowImageName = @"popoverArrowLeft";
+	ret.rightArrowImageName = @"popoverArrowRight";
 	return ret;
 }
 

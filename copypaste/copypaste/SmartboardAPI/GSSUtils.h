@@ -17,3 +17,5 @@
 + (NSString*) dateDiffFromDate:(NSDate *)date;
 
 @end
+
+typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);

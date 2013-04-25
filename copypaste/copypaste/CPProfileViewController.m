@@ -74,6 +74,15 @@
     profileSentMsgNumLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
     profileSentMsgNumLabel.text = [NSString stringWithFormat:@"Sent: %d", [self.profileUser numOfCopyFromMe]];
     [self.view addSubview:profileSentMsgNumLabel];
+    
+    UILabel *profileReceiveMsgNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(kTextOffsetLeft,
+                                                                                   kOffset+3*(kTextHeight+kOffset),
+                                                                                   kTextWidth,
+                                                                                   kTextHeight)];
+    profileReceiveMsgNumLabel.backgroundColor = [UIColor clearColor];
+    profileReceiveMsgNumLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
+    profileReceiveMsgNumLabel.text = [NSString stringWithFormat:@"Receive: %d", [self.profileUser numOfPasteToMe]];
+    [self.view addSubview:profileReceiveMsgNumLabel];
 }
 
 - (void)didReceiveMemoryWarning

@@ -187,6 +187,24 @@
     } else {
         [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
         [self updateUI];
+        
+        for (CPUser *user in [[DataManager sharedManager] availableUsers]) {
+            NSMutableArray *queryCondition = [NSMutableArray new];
+            [queryCondition addObject:@"sender_id"];
+            [queryCondition addObject:user.uid];
+            [queryCondition addObject:@"receiver_id"];
+            [queryCondition addObject:[[[GSSSession activeSession] currentUser] uid]];
+            
+            [[GSSSession activeSession] queryClass:@"CopyAndPaste" where:queryCondition block:^(NSArray *objects, NSError *error) {
+                DLog(@"Result: %@", objects);
+                //    for (CPUser *user in [[DataManager sharedManager] availableUsers]) {
+                //        for (NSArray *key in result) {
+                //            // Note: just for getting the num of msg from this user to me
+                //            user.numOfPasteToMe = [[result objectAtIndex:1] intValue];
+                //        }
+                //    }
+            }];
+        }
     }
 }
 
@@ -229,9 +247,12 @@
         [sendCondition addObject:@"receiver_id"];
         [sendCondition addObject:[user uid]];
         
+        NSMutableArray *valueToSet = [NSMutableArray new];
+        [valueToSet addObject:@"num_of_msg"];
+        [valueToSet addObject:[NSNumber numberWithInt:user.numOfCopyFromMe]];
+        
         [[GSSSession activeSession] updateClass:@"CopyAndPaste"
-                                         forKey:@"num_of_msg"
-                                      withValue:[NSNumber numberWithInt:user.numOfCopyFromMe]
+                                           with:valueToSet
                                           where:sendCondition
                                        delegate:self];
         
