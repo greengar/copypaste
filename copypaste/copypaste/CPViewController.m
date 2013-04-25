@@ -35,6 +35,7 @@
 
 @implementation CPViewController
 @synthesize myPasteboardHolderView = _myPasteboardHolderView;
+@synthesize userProfilePopoverController = _userProfilePopoverController;
 @synthesize otherPasteboardHolderView = _otherPasteboardHolderView;
 @synthesize settingButton = _settingButton;
 @synthesize availableUsersGridView = _availableUsersGridView;
@@ -215,8 +216,7 @@
     return CGSizeMake(kUserHolderWidth, kUserHolderHeight);
 }
 
-- (void)pasteToUserAtPosition:(NSInteger)position
-{
+- (void)pasteToUserAtPosition:(NSInteger)position {
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     GSSUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
     if (itemToPaste) {
@@ -307,8 +307,38 @@
     return cell;
 }
 
-- (void)GMGridView:(GMGridView *)gridView_ didTapOnItemAtIndex:(NSInteger)position {
-    [self pasteToUserAtPosition:position];
+- (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position {
+    CPProfileViewController *profileViewController = [[CPProfileViewController alloc] init];
+    profileViewController.profileUser = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
+    profileViewController.view.frame = CGRectMake(0, 0, 320, 200);
+    
+    self.userProfilePopoverController = [[WEPopoverController alloc] initWithContentViewController:profileViewController];
+    [self.userProfilePopoverController setPopoverContentSize:CGSizeMake(320, 200)];
+    [self.userProfilePopoverController setDelegate:self];
+    
+    float popoverWidth = gridView.frame.size.width;
+    switch (position % 3) {
+        case 0:
+            popoverWidth = gridView.frame.size.width/3;
+            break;
+        case 1:
+            popoverWidth = gridView.frame.size.width;
+            break;
+        case 2:
+            popoverWidth = gridView.frame.size.width*3/2;
+            break;
+        default:
+            break;
+    }
+    DLog(@"cell frame: %@", [gridView cellForItemAtIndex:position]);
+    CGRect popoverRect = CGRectMake(gridView.frame.origin.x,
+                                    gridView.frame.origin.y+20,
+                                    popoverWidth,
+                                    gridView.frame.size.height);
+    [self.userProfilePopoverController presentPopoverFromRect:popoverRect
+                                                       inView:self.view
+                                     permittedArrowDirections:UIPopoverArrowDirectionDown
+                                                     animated:NO];
 }
 
 - (void)didReceiveMessageFrom:(NSString *)userId
@@ -323,9 +353,8 @@
     DLog(@"Receive message: %@", [newMessage description]);
     [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
     
-    // Uncomment this to remove the firebase
-    // Remove the value from the Firebase server
-    // [[GSSSession activeSession] removeMessageFromSender:user atTime:messageTime];
+    // Remove the value from the Firebase server, because it's catched
+    [[GSSSession activeSession] removeMessageFromSender:user atTime:messageTime];
     
     CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
                                                                                  0,
@@ -344,6 +373,22 @@
 
 - (void)imageViewFailedToLoadImage:(EGOImageView *)imageView error:(NSError *)error {
     [imageView cancelImageLoad];
+}
+
+- (void)wepopoverControllerDidDismissPopover:(WEPopoverController *)popoverController {
+    [self updateUI];
+}
+
+- (BOOL)wepopoverControllerShouldDismissPopover:(WEPopoverController *)popoverController {
+    return YES;
+}
+
+- (void)popoverControllerDidDismissPopover:(WEPopoverController *)popoverController {
+    [self updateUI];
+}
+
+- (BOOL)popoverControllerShouldDismissPopover:(WEPopoverController *)popoverController {
+    return YES;
 }
 
 - (void)dealloc {
