@@ -71,14 +71,15 @@ static DataManager *shareManager = nil;
 
 - (void)updateNearbyUsers:(NSArray *)nearbyList {
     [self.availableUsers removeAllObjects];
-    for (GSSUser *gsUser in nearbyList) {
-        [self.availableUsers addObject:gsUser];
+    for (GSSUser *gssUser in nearbyList) {
+        CPUser *user = [[CPUser alloc] initWithGSSUser:gssUser];
+        [self.availableUsers addObject:user];
     }
 }
 
-- (GSSUser *)userById:(NSString *)uid {
-    GSSUser *desiredUser = nil;
-    for (GSSUser *user in self.availableUsers) {
+- (CPUser *)userById:(NSString *)uid {
+    CPUser *desiredUser = nil;
+    for (CPUser *user in self.availableUsers) {
         if ([user.uid isEqualToString:uid]) {
             desiredUser = user;
             break;
@@ -87,6 +88,17 @@ static DataManager *shareManager = nil;
     return desiredUser;
 }
 
+- (void)getNumOfMessageFromUser:(CPUser *)fromUser toUser:(CPUser *)toUser {
+    PFQuery *query = [PFQuery queryWithClassName:@"CopyAndPaste"];
+    [query whereKey:@"sender_id" equalTo:fromUser.uid];
+    [query whereKey:@"receiver_id" equalTo:toUser.uid];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        for (PFObject *object in objects) {
+            fromUser.numOfCopyFromMe = [object[@"num_of_msg"] intValue];
+            toUser.numOfPasteToMe = [object[@"num_of_msg"] intValue];
+        }
+    }];
+}
 
 + (id)allocWithZone:(NSZone *)zone {
     @synchronized(self) {

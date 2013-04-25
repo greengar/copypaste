@@ -38,6 +38,7 @@
 		7B34672E171CE35E00B73449 /* EGOImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346729171CE35E00B73449 /* EGOImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B346730171CE81900B73449 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B34672F171CE81900B73449 /* QuartzCore.framework */; };
 		7B38C65A171CA43F00B53A52 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B38C659171CA43F00B53A52 /* DataManager.m */; };
+		7B41E4841729CADA002157DF /* CPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B41E4831729CADA002157DF /* CPUser.m */; };
 		7B4574EA17287D2500675AE5 /* CPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574E917287D2500675AE5 /* CPMessage.m */; };
 		7B4574EF172884EE00675AE5 /* GSSUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574EE172884EE00675AE5 /* GSSUtils.m */; };
 		7B4574F317288AEE00675AE5 /* CPMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574F217288AEE00675AE5 /* CPMessageView.m */; };
@@ -201,6 +202,8 @@
 		7B34672F171CE81900B73449 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7B38C658171CA43F00B53A52 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		7B38C659171CA43F00B53A52 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		7B41E4821729CADA002157DF /* CPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPUser.h; sourceTree = "<group>"; };
+		7B41E4831729CADA002157DF /* CPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPUser.m; sourceTree = "<group>"; };
 		7B4574E817287D2500675AE5 /* CPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPMessage.h; sourceTree = "<group>"; };
 		7B4574E917287D2500675AE5 /* CPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPMessage.m; sourceTree = "<group>"; };
 		7B4574ED172884EE00675AE5 /* GSSUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSUtils.h; sourceTree = "<group>"; };
@@ -678,6 +681,8 @@
 				7B38C659171CA43F00B53A52 /* DataManager.m */,
 				7B4574E817287D2500675AE5 /* CPMessage.h */,
 				7B4574E917287D2500675AE5 /* CPMessage.m */,
+				7B41E4821729CADA002157DF /* CPUser.h */,
+				7B41E4831729CADA002157DF /* CPUser.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1065,6 +1070,7 @@
 				7B4575271728A72500675AE5 /* WEPopoverController.m in Sources */,
 				7B4575281728A72500675AE5 /* WETouchableView.m in Sources */,
 				7B45752C1728A7E000675AE5 /* CPProfileViewController.m in Sources */,
+				7B41E4841729CADA002157DF /* CPUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

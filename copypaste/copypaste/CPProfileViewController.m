@@ -65,6 +65,15 @@
     profileDistanceLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
     profileDistanceLabel.text = [NSString stringWithFormat:@"Distance: %@", [self.profileUser distanceStringToUser:[[GSSSession activeSession] currentUser]]];
     [self.view addSubview:profileDistanceLabel];
+    
+    UILabel *profileSentMsgNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(kTextOffsetLeft,
+                                                                                kOffset+2*(kTextHeight+kOffset),
+                                                                                kTextWidth,
+                                                                                kTextHeight)];
+    profileSentMsgNumLabel.backgroundColor = [UIColor clearColor];
+    profileSentMsgNumLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
+    profileSentMsgNumLabel.text = [NSString stringWithFormat:@"Sent: %d", [self.profileUser numOfCopyFromMe]];
+    [self.view addSubview:profileSentMsgNumLabel];
 }
 
 - (void)didReceiveMemoryWarning

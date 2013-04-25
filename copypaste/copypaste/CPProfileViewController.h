@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GSSUser.h"
+#import "CPUser.h"
 #import "EGOImageView.h"
 
 @interface CPProfileViewController : UIViewController <EGOImageViewDelegate>
 
-@property (nonatomic, retain) GSSUser *profileUser;
+@property (nonatomic, retain) CPUser *profileUser;
 
 @end

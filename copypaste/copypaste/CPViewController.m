@@ -139,7 +139,7 @@
     [self.myPasteboardHolderView updateUIWithPasteObject:itemToPaste];
         
     if ([GSSSession isAuthenticated]) {
-        GSSUser *currentUser = [[GSSSession activeSession] currentUser];
+        CPUser *currentUser = (CPUser *) [[GSSSession activeSession] currentUser];
         if ([currentUser isAvatarCached]) {
             [self.avatarImageView setImage:currentUser.avatarImage];
         } else if ([currentUser avatarURLString]) {
@@ -218,9 +218,22 @@
 
 - (void)pasteToUserAtPosition:(NSInteger)position {
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
-    GSSUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
+    CPUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
     if (itemToPaste) {
         [[GSSSession activeSession] sendMessage:itemToPaste toUser:user];
+        user.numOfCopyFromMe++;
+        
+        NSMutableArray *sendCondition = [NSMutableArray new];
+        [sendCondition addObject:@"sender_id"];
+        [sendCondition addObject:[[[GSSSession activeSession] currentUser] uid]];
+        [sendCondition addObject:@"receiver_id"];
+        [sendCondition addObject:[user uid]];
+        
+        [[GSSSession activeSession] updateClass:@"CopyAndPaste"
+                                         forKey:@"num_of_msg"
+                                      withValue:[NSNumber numberWithInt:user.numOfCopyFromMe]
+                                          where:sendCondition
+                                       delegate:self];
         
     } else {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can not paste"
@@ -288,7 +301,7 @@
         [contentLabel setText:@"No available user"];
         
     } else {
-        GSSUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:index];
+        CPUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:index];
         EGOImageView *contentView = (EGOImageView *) [cell viewWithTag:kContentViewTag];
         UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
         
@@ -344,7 +357,7 @@
 - (void)didReceiveMessageFrom:(NSString *)userId
                       content:(NSObject *)messageContent
                          time:(NSString *)messageTime {
-    GSSUser *user = [[DataManager sharedManager] userById:userId];
+    CPUser *user = [[DataManager sharedManager] userById:userId];
     
     CPMessage *newMessage = [[CPMessage alloc] init];
     [newMessage setSender:user];
@@ -366,6 +379,14 @@
     [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];
 }
 
+- (void)didUpdateClassSucceeded {
+    [self updateUI];
+}
+
+- (void)didUpdateClassFailed:(NSError *)error {
+    // TODO: Show alert here
+    [self updateUI];
+}
 
 - (void)imageViewLoadedImage:(EGOImageView *)imageView {
     [imageView setNeedsDisplay];

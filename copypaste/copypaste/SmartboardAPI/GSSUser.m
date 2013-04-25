@@ -63,6 +63,37 @@
     });
 }
 
+- (id)initWithGSSUser:(GSSUser *)gssUser {
+    if (self = [super init]) {
+        self.uid = gssUser.uid;
+        self.username = gssUser.username;
+        self.firstname = gssUser.firstname;
+        self.lastname = gssUser.lastname;
+        self.fullname = gssUser.fullname;
+        self.email = gssUser.email;
+        self.avatarURLString = gssUser.avatarURLString;
+        self.location = gssUser.location;
+        self.avatarImage = gssUser.avatarImage;
+        self.isAvatarCached = gssUser.isAvatarCached;
+        DLog(@"Parse from %@ to %@", gssUser, self);
+    }
+    return self;
+}
+
+- (void)parseDataFromGSSUser:(GSSUser *)gssUser {
+    self.uid = gssUser.uid;
+    self.username = gssUser.username;
+    self.firstname = gssUser.firstname;
+    self.lastname = gssUser.lastname;
+    self.fullname = gssUser.fullname;
+    self.email = gssUser.email;
+    self.avatarURLString = gssUser.avatarURLString;
+    self.location = gssUser.location;
+    self.avatarImage = gssUser.avatarImage;
+    self.isAvatarCached = gssUser.isAvatarCached;
+    DLog(@"Parse from %@ to %@", gssUser, self);
+}
+
 - (NSString *)distanceStringToUser:(GSSUser *)user {
     float miles = [self.location distanceInMilesTo:user.location];
     if (miles < 0.1) {

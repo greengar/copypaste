@@ -30,6 +30,8 @@
 
 - (id)initWithPFUser:(PFUser *)pfUser;
 - (void)parseDataFromPFUser:(PFUser *)pfUser;
+- (id)initWithGSSUser:(GSSUser *)gssUser;
+- (void)parseDataFromGSSUser:(GSSUser *)gssUser;
 - (NSString *)distanceStringToUser:(GSSUser *)user;
 
 @end

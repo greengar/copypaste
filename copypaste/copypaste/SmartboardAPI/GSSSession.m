@@ -280,6 +280,48 @@ static GSSSession *activeSession = nil;
     }
 }
 
+- (void)updateClass:(NSString *)classname forKey:(NSString *)key withValue:(id)value where:(NSArray *)queryCondition delegate:(id<GSSSessionDelegate>)delegate {
+    self.delegate = delegate;
+    
+    PFQuery *query = [PFQuery queryWithClassName:classname];
+    for (int i = 0; i < [queryCondition count]-1; i += 2) {
+        NSString *key = [queryCondition objectAtIndex:i];
+        NSString *value = [queryCondition objectAtIndex:i+1];
+        [query whereKey:key equalTo:value];
+    }
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (error) {
+            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didUpdateClassFailed:)]) {
+                [self.delegate didUpdateClassFailed:error];
+                self.delegate = nil;
+            }
+        } else {
+            if ([objects count] == 0) { // Empty, so just create it
+                PFObject *object = [PFObject objectWithClassName:classname];
+                for (int i = 0; i < [queryCondition count]-1; i += 2) {
+                    NSString *key = [queryCondition objectAtIndex:i];
+                    NSString *value = [queryCondition objectAtIndex:i+1];
+                    [object setValue:value forKey:key];
+                }
+                [object setValue:value forKey:key];
+                [object saveInBackground];
+                
+            } else {
+                for (PFObject *object in objects) {
+                    [object setValue:value forKey:key];
+                    [object saveInBackground];
+                }
+            }
+            
+            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didUpdateClassSucceeded)]) {
+                [self.delegate didUpdateClassSucceeded];
+                self.delegate = nil;
+            }
+        }
+    }];
+}
+
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {        
         if ([PFFacebookUtils isLinkedWithUser:user]) {
@@ -387,8 +429,6 @@ static GSSSession *activeSession = nil;
     return timeFirebase;
 }
 
-//testuser_Wednesday April 24, 2013 035354 PM
-//testuser_Wednesday January 2, 2013 035354 PM
 + (id)allocWithZone:(NSZone *)zone {
     @synchronized(self) {
         if (activeSession == nil) {
