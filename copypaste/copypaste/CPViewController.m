@@ -105,10 +105,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self updateUI];
-    
     if ([GSSession isAuthenticated]) {
-        [self finishAuthentication];
+        [[GSSession activeSession] updateUserInfoFromSmartboardAPIWithBlock:^(BOOL succeed, NSError *error) {
+            [self finishAuthentication];
+        }];
     } else {
         [[GSSession activeSession] authenticateSmartboardAPIFromViewController:self
                                                                       delegate:self];
@@ -213,15 +213,17 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == alertView.firstOtherButtonIndex) {
-        [[GSSession activeSession] logOut];
-        [self viewDidAppear:YES];
-        
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Finish log out"
-                                                            message:nil
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        [[GSSession activeSession] logOutWithBlock:^(BOOL succeed, NSError *error) {
+            [self viewDidAppear:YES];
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"You have logged out"
+                                                                message:@"Please log in in order to use copypaste"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+
+        }];
     }
 }
 
@@ -253,7 +255,7 @@
         [[GSSession activeSession] updateClass:@"CopyAndPaste"
                                           with:valueToSet
                                          where:sendCondition
-                                         block:^(NSError *error) {
+                                         block:^(BOOL succeed, NSError *error) {
                                              [self updateUI];
                                          }];
         

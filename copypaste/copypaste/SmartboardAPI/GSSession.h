@@ -27,9 +27,13 @@
 + (void)setAppId:(NSString *)appId appSecret:(NSString *)appSecret;
 + (BOOL)isAuthenticated;
 
-- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSessionDelegate>)delegate;
-- (void)logOut;
+- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController
+                                           delegate:(id<GSSessionDelegate>)delegate;
+- (void)updateUserInfoFromSmartboardAPIWithBlock:(GSResultBlock)block;
+
+- (void)logOutWithBlock:(GSResultBlock)block;
 - (void)getNearbyUserWithBlock:(GSArrayResultBlock)block;
+
 - (NSString *)currentUserName;
 
 - (void)addObserver:(id<GSSessionDelegate>)delegate;
@@ -52,6 +56,11 @@
 
 - (BOOL)application:(UIApplication *)application
       handleOpenURL:(NSURL *)url;
+
+- (void)applicationWillEnterForeground:(UIApplication *)application;
+- (void)applicationDidEnterBackground:(UIApplication *)application;
+- (void)applicationDidBecomeActive:(UIApplication *)application;
+- (void)applicationWillTerminate:(UIApplication *)application;
 
 @property (nonatomic, retain) GSUser *currentUser;
 @property (nonatomic, assign) id<GSSessionDelegate> delegate;

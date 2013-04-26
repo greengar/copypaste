@@ -87,6 +87,16 @@
     profileReceiveMsgNumLabel.textColor = [UIColor whiteColor];
     profileReceiveMsgNumLabel.text = [NSString stringWithFormat:@"Receive: %d", [self.profileUser numOfPasteToMe]];
     [self.view addSubview:profileReceiveMsgNumLabel];
+    
+    UILabel *profileLastSeenLabel = [[UILabel alloc] initWithFrame:CGRectMake(kTextOffsetLeft,
+                                                                              kOffset+4*(kTextHeight+kOffset),
+                                                                              kTextWidth,
+                                                                              kTextHeight)];
+    profileLastSeenLabel.backgroundColor = [UIColor clearColor];
+    profileLastSeenLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
+    profileLastSeenLabel.textColor = [UIColor whiteColor];
+    profileLastSeenLabel.text = [NSString stringWithFormat:@"Last: %@", [self.profileUser lastSeenTimeString]];
+    [self.view addSubview:profileLastSeenLabel];
 }
 
 - (void)didReceiveMemoryWarning

@@ -19,4 +19,4 @@
 @end
 
 typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);
-typedef void (^GSResultBlock)(NSError *error);
+typedef void (^GSResultBlock)(BOOL succeed, NSError *error);

@@ -7,6 +7,7 @@
 //
 
 #import "GSUser.h"
+#import "GSUtils.h"
 
 @implementation GSUser
 @synthesize uid = _uid;
@@ -19,6 +20,7 @@
 @synthesize isAvatarCached = _isAvatarCached;
 @synthesize avatarImage = _avatarImage;
 @synthesize location = _location;
+@synthesize lastLogInDate = _lastLogInDate;
 
 - (id)initWithPFUser:(PFUser *)pfUser {
     if (self = [super init]) {
@@ -30,6 +32,7 @@
         self.email = pfUser[@"email"];
         self.avatarURLString = pfUser[@"avatar_url"];
         self.location = pfUser[@"location"];
+        self.lastLogInDate = pfUser[@"last_log_in"];
         DLog(@"Parse from %@ to %@", pfUser, self);
         
         dispatch_async(dispatch_get_current_queue(), ^{
@@ -52,6 +55,7 @@
     self.email = pfUser[@"email"];
     self.avatarURLString = pfUser[@"avatar_url"];
     self.location = pfUser[@"location"];
+    self.lastLogInDate = pfUser[@"last_log_in"];
     DLog(@"Parse from %@ to %@", pfUser, self);
     
     dispatch_async(dispatch_get_current_queue(), ^{
@@ -75,6 +79,7 @@
         self.location = gssUser.location;
         self.avatarImage = gssUser.avatarImage;
         self.isAvatarCached = gssUser.isAvatarCached;
+        self.lastLogInDate = gssUser.lastLogInDate;
         DLog(@"Parse from %@ to %@", gssUser, self);
     }
     return self;
@@ -91,6 +96,7 @@
     self.location = gssUser.location;
     self.avatarImage = gssUser.avatarImage;
     self.isAvatarCached = gssUser.isAvatarCached;
+    self.lastLogInDate = gssUser.lastLogInDate;
     DLog(@"Parse from %@ to %@", gssUser, self);
 }
 
@@ -100,6 +106,23 @@
         return [NSString stringWithFormat:@"%.0f ft", miles*5280];
     }
     return [NSString stringWithFormat:@"%.1f mi", miles];
+}
+
+- (NSString *)lastSeenTimeString {
+    if (self.lastLogInDate) {
+        return [GSUtils dateDiffFromDate:self.lastLogInDate];
+    }
+    return @"never seen";
+}
+
+- (void)updateWithPFUser:(PFUser *)pfUser block:(GSResultBlock)block {
+    [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
+        [pfUser setObject:geoPoint forKey:@"location"];
+        [pfUser setObject:[NSDate date] forKey:@"last_log_in"];
+        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [self parseDataFromPFUser:pfUser];
+        }];
+    }];
 }
 
 + (GSUser *)userInfoFromDictionary:(NSDictionary *)userInfo {

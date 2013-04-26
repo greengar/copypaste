@@ -18,6 +18,10 @@
 static GSSession *activeSession = nil;
 
 @interface GSSession()
+- (void)linkFacebookDataBlock:(GSResultBlock)block;
+- (void)setUserInitialApp;
+- (void)initOrUpdateGSUser;
+- (void)updateUserDataWithBlock:(GSResultBlock)block;
 - (Firebase *)getMyBaseFirebase;
 - (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time;
 @property (nonatomic, retain) Firebase *firebase;
@@ -38,11 +42,7 @@ static GSSession *activeSession = nil;
 - (id)init {
     if (self = [super init]) {
         if ([PFUser currentUser]) {
-            if (self.currentUser == nil) {
-                self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
-            } else {
-                [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
-            }
+            [self initOrUpdateGSUser];
         }
     }
     return self;
@@ -78,9 +78,68 @@ static GSSession *activeSession = nil;
     [viewController presentModalViewController:logInController animated:YES];
 }
 
-- (void)logOut {
-    [PFUser logOut];
-    self.currentUser = nil;
+- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
+        [self setUserInitialApp];
+        
+        if ([PFFacebookUtils isLinkedWithUser:user]) {
+            [self linkFacebookDataBlock:^(BOOL succeed, NSError *error) {
+                [self initOrUpdateGSUser];
+                [self.delegate didLoginSucceeded];
+                self.delegate = nil;
+            }];
+        } else {
+            [self initOrUpdateGSUser];
+            [self.delegate didLoginSucceeded];
+            self.delegate = nil;
+        }
+    }
+}
+
+- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
+        [self.delegate didLoginFailed:error];
+        self.delegate = nil;
+    }
+}
+
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
+        [self setUserInitialApp];
+        [self initOrUpdateGSUser];
+        [self.delegate didLoginSucceeded];
+        self.delegate = nil;
+    }
+}
+
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
+        [self.delegate didLoginFailed:error];
+        self.delegate = nil;
+    }
+}
+
+- (void)updateUserInfoFromSmartboardAPIWithBlock:(GSResultBlock)block {
+    if ([PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
+        [self linkFacebookDataBlock:^(BOOL succeed, NSError *error) {
+            [self updateUserDataWithBlock:^(BOOL succeed, NSError *error) {
+                block(YES, error);
+            }];
+        }];
+    } else {
+        [self updateUserDataWithBlock:^(BOOL succeed, NSError *error) {
+            block(YES, error);
+        }];
+    }
+}
+
+- (void)logOutWithBlock:(GSResultBlock)block {
+    [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        [PFUser logOut];
+        self.currentUser = nil;
+        block(succeeded, error);
+    }];
 }
 
 - (void)addObserver:(id<GSSessionDelegate>)delegate {
@@ -231,6 +290,11 @@ static GSSession *activeSession = nil;
                 NSMutableArray *nearByUserExceptMe = [[NSMutableArray alloc] init];
                 for (PFUser *user in objects) {
                     if (![[user objectId] isEqualToString:[[PFUser currentUser] objectId]]) {
+                        // Also update last seen if never seen
+                        if (![user objectForKey:@"last_log_in"]) {
+                            [user setObject:user.updatedAt forKey:@"last_log_in"];
+                        }
+                        
                         GSUser *gsUser = [[GSUser alloc] initWithPFUser:user];
                         [nearByUserExceptMe addObject:gsUser];
                     }
@@ -240,35 +304,15 @@ static GSSession *activeSession = nil;
             }
         }];
     } else {
-        [self getMyLocationWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                NSMutableArray *nearByUserExceptMe = [[NSMutableArray alloc] init];
-                for (PFUser *user in objects) {
-                    if (![[user objectId] isEqualToString:[[PFUser currentUser] objectId]]) {
-                        GSUser *gsUser = [[GSUser alloc] initWithPFUser:user];
-                        [nearByUserExceptMe addObject:gsUser];
-                    }
-                }
-                DLog(@"Number of nearby users: %d", [nearByUserExceptMe count]);
-                block(nearByUserExceptMe, error);
-            }
+        [self updateUserDataWithBlock:^(BOOL succeed, NSError *error) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can not get available users"
+                                                                message:@"Please check your Internet connection"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
         }];
     }
-}
-
-- (void)getMyLocationWithBlock:(GSArrayResultBlock)block {
-    // Update my location
-    [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
-        [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
-        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                DLog(@" My location: %@", [[PFUser currentUser] objectForKey:@"location"]);
-                [self getNearbyUserWithBlock:block];
-            } else {
-
-            }
-        }];
-    }];
 }
 
 - (NSString *)currentUserName {
@@ -324,12 +368,12 @@ static GSSession *activeSession = nil;
             for (int i = 0; i < [queryCondition count]-1; i += 2) {
                 NSString *key = [queryCondition objectAtIndex:i];
                 NSString *value = [queryCondition objectAtIndex:i+1];
-                [object setValue:value forKey:key];
+                [object setObject:value forKey:key];
                 
                 for (int j = 0; j < [valueToSet count]-1; j += 2) {
                     NSString *key = [valueToSet objectAtIndex:j];
                     NSString *value = [valueToSet objectAtIndex:j+1];
-                    [object setValue:value forKey:key];
+                    [object setObject:value forKey:key];
                 }
             }
             
@@ -340,108 +384,91 @@ static GSSession *activeSession = nil;
                 for (int j = 0; j < [valueToSet count]-1; j += 2) {
                     NSString *key = [valueToSet objectAtIndex:j];
                     NSString *value = [valueToSet objectAtIndex:j+1];
-                    [object setValue:value forKey:key];
+                    [object setObject:value forKey:key];
                 }
                 [object saveInBackground];
             }
         }
         
-        block(error);
+        block(YES, error);
     }];
 }
 
-- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {        
-        if ([PFFacebookUtils isLinkedWithUser:user]) {
-            // Create request for user's Facebook data
-            FBRequest *request = [FBRequest requestForMe];
-            
-            // Send request to Facebook
-            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                if (!error) {
-                    // result is a dictionary with the user's Facebook data
-                    NSDictionary *userData = (NSDictionary *)result;
-                    NSString *facebookID = userData[@"id"];
-                    NSString *name = userData[@"name"];
-                    NSString *pictureURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID];
-                    
-                    [[PFUser currentUser] setObject:name forKey:@"fullname"];
-                    [[PFUser currentUser] setObject:pictureURL forKey:@"avatar_url"];
-                    if (![[PFUser currentUser] objectForKey:@"initial_app_name"]) {
-                        NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-                        [[PFUser currentUser] setObject:appName forKey:@"initial_app_name"];
-                    }
-                    [[PFUser currentUser] saveInBackground];
-                    
-                    // Parse again with new data
-                    if (self.currentUser == nil) {
-                        self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
-                    } else {
-                        [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
-                    }
-                    
-                    [self.delegate didLoginSucceeded];
-                    self.delegate = nil;
-                }
-            }];
-        } else {
-            if (![[PFUser currentUser] objectForKey:@"initial_app_name"]) {
-                NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-                [[PFUser currentUser] setObject:appName forKey:@"initial_app_name"];
-            }
-            [[PFUser currentUser] saveInBackground];
-            
-            if (self.currentUser == nil) {
-                self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
-            } else {
-                [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
-            }
-            [self.delegate didLoginSucceeded];
-            self.delegate = nil;
-        }
-    }
-}
-
-- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
-        [self.delegate didLoginFailed:error];
-        self.delegate = nil;
-    }
-}
-
-- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
-        [[PFUser currentUser] setObject:user.username forKey:@"fullname"];
-        if (![[PFUser currentUser] objectForKey:@"initial_app_name"]) {
-            NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-            [[PFUser currentUser] setObject:appName forKey:@"initial_app_name"];
-        }
-        [[PFUser currentUser] saveInBackground];
-        
-        if (self.currentUser == nil) {
-            self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
-        } else {
-            [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
-        }
-        
-        [self.delegate didLoginSucceeded];
-        self.delegate = nil;
-    }
-}
-
-- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
-        [self.delegate didLoginFailed:error];
-        self.delegate = nil;
-    }
-}
-
+#pragma mark - INTERFACE
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [PFFacebookUtils handleOpenURL:url];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return [PFFacebookUtils handleOpenURL:url];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [self.currentUser updateWithPFUser:[PFUser currentUser]
+                                 block:^(BOOL succeed, NSError *error) {}];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    [self.currentUser updateWithPFUser:[PFUser currentUser]
+                                 block:^(BOOL succeed, NSError *error) {}];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [self.currentUser updateWithPFUser:[PFUser currentUser]
+                                 block:^(BOOL succeed, NSError *error) {}];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+    [self.currentUser updateWithPFUser:[PFUser currentUser]
+                                 block:^(BOOL succeed, NSError *error) {}];
+}
+
+- (void)linkFacebookDataBlock:(GSResultBlock)block {
+    // Create request for user's Facebook data
+    FBRequest *request = [FBRequest requestForMe];
+    
+    // Send request to Facebook
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            // result is a dictionary with the user's Facebook data
+            NSDictionary *userData = (NSDictionary *)result;
+            NSString *facebookID = userData[@"id"];
+            NSString *name = userData[@"name"];
+            NSString *pictureURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID];
+            
+            [[PFUser currentUser] setObject:name forKey:@"fullname"];
+            [[PFUser currentUser] setObject:pictureURL forKey:@"avatar_url"];
+            [[PFUser currentUser] saveInBackground];
+        }
+        block(YES, error);
+    }];
+}
+
+- (void)setUserInitialApp {
+    if (![[PFUser currentUser] objectForKey:@"initial_app_name"]) {
+        NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+        [[PFUser currentUser] setObject:appName forKey:@"initial_app_name"];
+        [[PFUser currentUser] saveInBackground];
+    }
+}
+
+- (void)initOrUpdateGSUser {
+    if (self.currentUser == nil) {
+        self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
+    } else {
+        [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
+    }
+}
+
+- (void)updateUserDataWithBlock:(GSResultBlock)block {
+    [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
+        [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
+        [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
+        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [self initOrUpdateGSUser];
+            block(YES, error);
+        }];
+    }];
 }
 
 - (Firebase *)getMyBaseFirebase {

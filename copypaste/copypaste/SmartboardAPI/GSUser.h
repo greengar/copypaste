@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
+#import "GSUtils.h"
 
 @class GSUser;
 
@@ -27,11 +28,14 @@
 @property (nonatomic)         BOOL isAvatarCached;
 @property (nonatomic, retain) UIImage *avatarImage;
 @property (nonatomic, retain) PFGeoPoint *location;
+@property (nonatomic, retain) NSDate *lastLogInDate;
 
 - (id)initWithPFUser:(PFUser *)pfUser;
 - (void)parseDataFromPFUser:(PFUser *)pfUser;
 - (id)initWithGSUser:(GSUser *)gsUser;
 - (void)parseDataFromGSUser:(GSUser *)gsUser;
 - (NSString *)distanceStringToUser:(GSUser *)user;
+- (NSString *)lastSeenTimeString;
+- (void)updateWithPFUser:(PFUser *)pfUser block:(GSResultBlock)block;
 
 @end
