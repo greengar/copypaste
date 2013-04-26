@@ -15,8 +15,6 @@
 
 #define kUserHolderWidth 102
 #define kUserHolderHeight 128
-#define kUserBackgroundWidth 102
-#define kUserBackgroundHeight 128
 #define kUserAvatarWidth 60
 #define kUserAvatarHeight 60
 #define kUserNameWidth 102
@@ -292,12 +290,10 @@
         cell = [[GMGridViewCell alloc] init];
         cell.clipsToBounds = YES;
         
-        UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                    0,
-                                                                                    kUserBackgroundWidth,
-                                                                                    kUserBackgroundHeight)];
-        backgroundView.image = [UIImage imageNamed:@"person-background.png"];
-        [cell addSubview:backgroundView];
+        UIImage *personBackgroundImage = [UIImage imageNamed:@"person-background.fw.png"];
+        UIImageView *personBackgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, personBackgroundImage.size.width, personBackgroundImage.size.height)];
+        personBackgroundImageView.image = personBackgroundImage;
+        [cell addSubview:personBackgroundImageView];
         
         EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake(21,
                                                                                    21,
