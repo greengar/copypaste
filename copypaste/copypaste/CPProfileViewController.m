@@ -55,7 +55,11 @@
     profileUsernameLabel.backgroundColor = [UIColor clearColor];
     profileUsernameLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
     profileUsernameLabel.textColor = [UIColor whiteColor];
-    profileUsernameLabel.text = self.profileUser.fullname;
+    if (self.profileUser.fullname) {
+        profileUsernameLabel.text = self.profileUser.fullname;
+    } else {
+        profileUsernameLabel.text = self.profileUser.username;
+    }
     [self.view addSubview:profileUsernameLabel];
     
     UILabel *profileDistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(kTextOffsetLeft,

@@ -379,9 +379,12 @@
                 [contentView setImageURL:[NSURL URLWithString:user.avatarURLString]];
                 [contentView setDelegate:self];
             }
+            if (user.fullname) {
+                [contentLabel setText:user.fullname];
+            } else {
+                [contentLabel setText:user.username];
+            }
         }
-        
-        [contentLabel setText:user.fullname];
     }
     
     return cell;

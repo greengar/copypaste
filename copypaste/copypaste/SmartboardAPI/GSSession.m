@@ -19,6 +19,7 @@ static GSSession *activeSession = nil;
 
 @interface GSSession()
 - (void)linkFacebookDataBlock:(GSResultBlock)block;
+- (void)initEssentialDataBlock:(GSResultBlock)block;
 - (void)setUserInitialApp;
 - (void)initOrUpdateGSUser;
 - (void)updateUserDataWithBlock:(GSResultBlock)block;
@@ -108,25 +109,25 @@ static GSSession *activeSession = nil;
 // Sent to the delegate when a PFUser is signed up.
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
-        [self setUserInitialApp];
-        [self initOrUpdateGSUser];
-        [self.delegate didLoginSucceeded]; // Dismiss the PFSignUpViewController
-        self.delegate = nil;
+        [self initEssentialDataBlock:^(BOOL succeed, NSError *error) {
+            [self setUserInitialApp];
+            [self initOrUpdateGSUser];
+            [self.delegate didLoginSucceeded]; // Dismiss the PFSignUpViewController
+        }];
     }
 }
 
 // Sent to the delegate when the sign up attempt fails.
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
-    DLog(@"Failed to sign up...");
+    DLog(@"Failed to sign up... %@", error);
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
         [self.delegate didLoginFailed:error];
-        self.delegate = nil;
     }
 }
 
 // Sent to the delegate when the sign up screen is dismissed.
 - (void)signUpViewControllerDidCancelSignUp:(PFSignUpViewController *)signUpController {
-    NSLog(@"User dismissed the signUpViewController");
+    DLog(@"User dismissed the signUpViewController");
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
@@ -137,12 +138,12 @@ static GSSession *activeSession = nil;
             [self linkFacebookDataBlock:^(BOOL succeed, NSError *error) {
                 [self initOrUpdateGSUser];
                 [self.delegate didLoginSucceeded];
-                self.delegate = nil;
             }];
         } else {
-            [self initOrUpdateGSUser];
-            [self.delegate didLoginSucceeded];
-            self.delegate = nil;
+            [self initEssentialDataBlock:^(BOOL succeed, NSError *error) {
+                [self initOrUpdateGSUser];
+                [self.delegate didLoginSucceeded];
+            }];
         }
     }
 }
@@ -150,7 +151,6 @@ static GSSession *activeSession = nil;
 - (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
         [self.delegate didLoginFailed:error];
-        self.delegate = nil;
     }
 }
 
@@ -340,12 +340,7 @@ static GSSession *activeSession = nil;
         }];
     } else {
         [self updateUserDataWithBlock:^(BOOL succeed, NSError *error) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can not get available users"
-                                                                message:@"Please check your Internet connection"
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            [self getNearbyUserWithBlock:block];
         }];
     }
 }
@@ -479,6 +474,22 @@ static GSSession *activeSession = nil;
     }];
 }
 
+- (void)initEssentialDataBlock:(GSResultBlock)block {
+    BOOL haveUpdate = NO;
+    if (![[PFUser currentUser] objectForKey:@"fullname"]) {
+        [[PFUser currentUser] setObject:[[PFUser currentUser] username] forKey:@"fullname"];
+        haveUpdate = YES;
+    }
+    
+    if (haveUpdate) {
+        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            block(succeeded, error);
+        }];
+    } else {
+        block(NO, nil);
+    }
+}
+
 - (void)setUserInitialApp {
     if (![[PFUser currentUser] objectForKey:@"initial_app_name"]) {
         NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
@@ -499,6 +510,9 @@ static GSSession *activeSession = nil;
     [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
         [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
         [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
+        if (![[PFUser currentUser] objectForKey:@"fullname"]) {
+            [[PFUser currentUser] setObject:[[PFUser currentUser] username] forKey:@"fullname"];
+        }
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             [self initOrUpdateGSUser];
             block(YES, error);
