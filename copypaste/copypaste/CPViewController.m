@@ -336,6 +336,7 @@
         contentView.tag = kContentViewTag;
         contentView.image = [UIImage imageNamed:@"pasteboard.png"];
         contentView.contentMode = UIViewContentModeScaleAspectFill;
+        contentView.layer.cornerRadius = 3;
         contentView.clipsToBounds = YES;
         contentView.delegate = self;
         [cell addSubview:contentView];
@@ -358,7 +359,7 @@
         contentLabel.textAlignment = UITextAlignmentCenter;
         contentLabel.backgroundColor = [UIColor clearColor];
         contentLabel.textColor = [UIColor whiteColor];
-        contentLabel.font = [UIFont fontWithName:@"Heiti SC" size:11.0f];
+        contentLabel.font = DEFAULT_FONT_SIZE(11.0f);
         contentLabel.tag = kLabelViewTag;
         [cell addSubview:contentLabel];
     }
@@ -415,9 +416,14 @@
     CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
                                                                                  0,
                                                                                  self.view.frame.size.width,
-                                                                                 self.view.frame.size.height)];
-    [messageView addMessageContent:newMessage];
+                                                                                 self.view.frame.size.height)
+                                                              message:newMessage];
+    [messageView setDelegate:self];
     [messageView showMeOnView:self.view];
+}
+
+- (void)copyMessage:(CPMessage *)message {
+    [self updateUI];
 }
 
 - (void)imageViewLoadedImage:(EGOImageView *)imageView {

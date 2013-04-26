@@ -57,7 +57,7 @@
         self.pasteboardTextView.textColor = [UIColor whiteColor];
         self.pasteboardTextView.textAlignment = UITextAlignmentCenter;
         self.pasteboardTextView.editable = NO;
-        self.pasteboardTextView.font = [UIFont fontWithName:@"Heiti SC" size:16.0f];
+        self.pasteboardTextView.font = DEFAULT_FONT_SIZE(16.0f);
         self.pasteboardTextView.hidden = YES;
         self.pasteboardTextView.layer.cornerRadius = 3;
         self.pasteboardTextView.clipsToBounds = YES;
@@ -99,7 +99,6 @@
     if ([objectFromClipboard isKindOfClass:[NSString class]]) {
         self.pasteboardTextView.hidden = NO;
         [self.pasteboardTextView setText:((NSString *) objectFromClipboard)];
-        //[self.pasteboardTextView setContentOffset:CGPointMake(0, -kPasteboardTextContentTopGap)];
         
     } else if ([objectFromClipboard isKindOfClass:[UIImage class]]) {
         self.pasteboardImageHolderView.hidden = NO;
@@ -112,7 +111,6 @@
                                                     imageHeight);
         self.pasteboardImageHolderView.contentSize = CGSizeMake(self.pasteboardImageHolderView.frame.size.width,
                                                                 imageHeight);
-        //[self.pasteboardImageHolderView setContentOffset:CGPointMake(0, -kPasteboardImageContentTopGap)];
         
     } else {
         self.pasteboardTextView.hidden = NO;

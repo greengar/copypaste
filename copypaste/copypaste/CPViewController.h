@@ -17,7 +17,7 @@
 #import "WEPopoverController.h"
 #import "CPProfileViewController.h"
 
-@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSessionDelegate, WEPopoverControllerDelegate, UIAlertViewDelegate>
+@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSessionDelegate, WEPopoverControllerDelegate, UIAlertViewDelegate, CPMessageViewDelegate>
 
 @property (nonatomic, retain) CPPasteboardView *myPasteboardHolderView;
 @property (nonatomic, retain) WEPopoverController *userProfilePopoverController;

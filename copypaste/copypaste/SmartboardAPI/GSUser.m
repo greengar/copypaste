@@ -39,7 +39,7 @@
         self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
         self.facebookId = pfUser[@"facebook_id"];
         self.facebookScreenName = pfUser[@"facebook_screen_name"];
-        DLog(@"Parse from %@ to %@", pfUser, self);
+        // DLog(@"Parse from %@ to %@", pfUser, self);
         
         dispatch_async(dispatch_get_current_queue(), ^{
             if (self.avatarURLString) {
@@ -65,7 +65,7 @@
     self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
     self.facebookId = pfUser[@"facebook_id"];
     self.facebookScreenName = pfUser[@"facebook_screen_name"];
-    DLog(@"Parse from %@ to %@", pfUser, self);
+    // DLog(@"Parse from %@ to %@", pfUser, self);
     
     dispatch_async(dispatch_get_current_queue(), ^{
         if (self.avatarURLString) {
@@ -92,7 +92,7 @@
         self.isFacebookUser = gssUser.isFacebookUser;
         self.facebookId = gssUser.facebookId;
         self.facebookScreenName = gssUser.facebookScreenName;
-        DLog(@"Parse from %@ to %@", gssUser, self);
+        // DLog(@"Parse from %@ to %@", gssUser, self);
     }
     return self;
 }
@@ -112,7 +112,7 @@
     self.isFacebookUser = gssUser.isFacebookUser;
     self.facebookId = gssUser.facebookId;
     self.facebookScreenName = gssUser.facebookScreenName;
-    DLog(@"Parse from %@ to %@", gssUser, self);
+    // DLog(@"Parse from %@ to %@", gssUser, self);
 }
 
 - (NSString *)distanceStringToUser:(GSUser *)user {
