@@ -78,6 +78,57 @@ static GSSession *activeSession = nil;
     [viewController presentModalViewController:logInController animated:YES];
 }
 
+#pragma mark - Sign Up View Controller Delegate Methods
+
+// Sent to the delegate to determine whether the sign up request should be submitted to the server.
+- (BOOL)signUpViewController:(PFSignUpViewController *)signUpController shouldBeginSignUp:(NSDictionary *)info {
+    BOOL informationComplete = YES;
+    
+    // loop through all of the submitted data
+    for (id key in info) {
+        NSString *field = [info objectForKey:key];
+        if (!field || field.length == 0) { // check completion
+            informationComplete = NO;
+            break;
+        }
+    }
+    
+    // Display an alert if a field wasn't completed
+    if (!informationComplete) {
+        [[[UIAlertView alloc] initWithTitle:@"Missing Information"
+                                    message:@"Make sure you fill out all of the information!"
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+    }
+    
+    return informationComplete;
+}
+
+// Sent to the delegate when a PFUser is signed up.
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
+        [self setUserInitialApp];
+        [self initOrUpdateGSUser];
+        [self.delegate didLoginSucceeded]; // Dismiss the PFSignUpViewController
+        self.delegate = nil;
+    }
+}
+
+// Sent to the delegate when the sign up attempt fails.
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
+    DLog(@"Failed to sign up...");
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
+        [self.delegate didLoginFailed:error];
+        self.delegate = nil;
+    }
+}
+
+// Sent to the delegate when the sign up screen is dismissed.
+- (void)signUpViewControllerDidCancelSignUp:(PFSignUpViewController *)signUpController {
+    NSLog(@"User dismissed the signUpViewController");
+}
+
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self setUserInitialApp];
@@ -97,22 +148,6 @@ static GSSession *activeSession = nil;
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
-        [self.delegate didLoginFailed:error];
-        self.delegate = nil;
-    }
-}
-
-- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
-        [self setUserInitialApp];
-        [self initOrUpdateGSUser];
-        [self.delegate didLoginSucceeded];
-        self.delegate = nil;
-    }
-}
-
-- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
         [self.delegate didLoginFailed:error];
         self.delegate = nil;
