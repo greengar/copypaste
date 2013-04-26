@@ -9,12 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
 
-@interface GSSParseQueryHelper : NSObject
-
+@interface GSParseQueryHelper : NSObject
 + (void)setAdminRoleForUser:(PFUser *)user;
 + (void)removeAdminRoleFromUser:(PFUser *)user;
 + (void)updateCurrentUserLocation;
 + (PFGeoPoint *)getCurrentUserLocation;
-//+ (void)getAllUser;
 
 @end

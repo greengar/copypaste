@@ -7,7 +7,7 @@
 //
 
 #import "CPProfileViewController.h"
-#import "GSSSession.h"
+#import "GSSession.h"
 
 #define kOffset 8
 #define kAvatarSize 88
@@ -63,7 +63,7 @@
                                                                               kTextHeight)];
     profileDistanceLabel.backgroundColor = [UIColor clearColor];
     profileDistanceLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
-    profileDistanceLabel.text = [NSString stringWithFormat:@"Distance: %@", [self.profileUser distanceStringToUser:[[GSSSession activeSession] currentUser]]];
+    profileDistanceLabel.text = [NSString stringWithFormat:@"Distance: %@", [self.profileUser distanceStringToUser:[[GSSession activeSession] currentUser]]];
     [self.view addSubview:profileDistanceLabel];
     
     UILabel *profileSentMsgNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(kTextOffsetLeft,

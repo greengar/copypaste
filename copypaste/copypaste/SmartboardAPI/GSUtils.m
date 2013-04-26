@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "GSSUtils.h"
+#import "GSUtils.h"
 
-@implementation GSSUtils
+@implementation GSUtils
 
 + (NSString *)getCurrentTime {
     return [self stringFromDate:[NSDate date]];
@@ -85,7 +85,7 @@
 }
 
 + (NSString *)dateDiffFromDate:(NSDate *)date {
-    return [GSSUtils dateDiffFromInterval:[date timeIntervalSince1970]];
+    return [GSUtils dateDiffFromInterval:[date timeIntervalSince1970]];
 }
 
 @end

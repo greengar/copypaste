@@ -7,13 +7,13 @@
 //
 
 #import "CPAppDelegate.h"
-#import "GSSSession.h"
+#import "GSSession.h"
 
 @implementation CPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [GSSSession setAppId:@"UWaDpuZfLQvFpgVmz4LLvAPsy6bX9XG3D0mQrd7F"
+    [GSSession setAppId:@"UWaDpuZfLQvFpgVmz4LLvAPsy6bX9XG3D0mQrd7F"
                appSecret:@"jDyQOfa5IbHiY5cHbY1kouJMMwZWgGWX6RQhApIy"];
     return YES;
 }
@@ -48,14 +48,14 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return [[GSSSession activeSession] application:application
+    return [[GSSession activeSession] application:application
                                            openURL:url
                                  sourceApplication:sourceApplication
                                         annotation:annotation];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return [[GSSSession activeSession] application:application
+    return [[GSSession activeSession] application:application
                                      handleOpenURL:url];
 }
 

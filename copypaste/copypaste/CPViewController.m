@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <Firebase/Firebase.h>
 #import "GMGridViewLayoutStrategies.h"
-#import "GSSParseQueryHelper.h"
+#import "GSParseQueryHelper.h"
 #import "NSData+Base64.h"
 
 #define kUserHolderWidth 102
@@ -48,7 +48,7 @@
     self.view.backgroundColor = [UIColor blackColor];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];
     backgroundImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    if (self.view.frame.size.height == 548) {
+    if (IS_IPHONE5) {
         backgroundImageView.image = [UIImage imageNamed:@"background-548h.png"];
     } else {
         backgroundImageView.image = [UIImage imageNamed:@"background.png"];
@@ -120,17 +120,75 @@
     [super viewDidAppear:animated];
     [self updateUI];
     
-    if ([GSSSession isAuthenticated]) {
+    if ([GSSession isAuthenticated]) {
         [self finishAuthentication];
     } else {
-        [[GSSSession activeSession] authenticateSmartboardAPIFromViewController:self delegate:self];
+        [[GSSession activeSession] authenticateSmartboardAPIFromViewController:self
+                                                                      delegate:self];
     }
 }
 
 - (void)finishAuthentication {
-    [[GSSSession activeSession] getNearbyUserWithDelegate:self];
-    [[GSSSession activeSession] addObserver:self];
+    [[GSSession activeSession] getNearbyUserWithBlock:^(NSArray *listOfUsers, NSError *error) {
+        if ([listOfUsers count] == 0) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No nearby user"
+                                                                message:nil
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+            
+        } else {
+            [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
+            [self updateUI];
+            
+            for (CPUser *user in [[DataManager sharedManager] availableUsers]) {
+                
+                // To get number of paste to me
+                NSMutableArray *queryCondition = [NSMutableArray new];
+                [queryCondition addObject:@"sender_id"];
+                [queryCondition addObject:user.uid];
+                [queryCondition addObject:@"receiver_id"];
+                [queryCondition addObject:[[[GSSession activeSession] currentUser] uid]];
+                
+                [[GSSession activeSession] queryClass:@"CopyAndPaste"
+                                                where:queryCondition
+                                                block:^(NSArray *objects, NSError *error) {
+                    for (GSObject *object in objects) {
+                        DLog(@"%@ paste %d to me", [object objectForKey:@"sender_id"], [[object objectForKey:@"num_of_msg"] intValue]);
+                        user.numOfPasteToMe = [[object objectForKey:@"num_of_msg"] intValue];
+                    }
+                }];
+                
+                // To get number of copy from me
+                [queryCondition removeAllObjects];
+                [queryCondition addObject:@"receiver_id"];
+                [queryCondition addObject:user.uid];
+                [queryCondition addObject:@"send_id"];
+                [queryCondition addObject:[[[GSSession activeSession] currentUser] uid]];
+                
+                [[GSSession activeSession] queryClass:@"CopyAndPaste"
+                                                where:queryCondition
+                                                block:^(NSArray *objects, NSError *error) {
+                    for (GSObject *object in objects) {
+                        DLog(@"%@ copy %d from me", [object objectForKey:@"receiver_id"], [[object objectForKey:@"num_of_msg"] intValue]);
+                        user.numOfCopyFromMe = [[object objectForKey:@"num_of_msg"] intValue];
+                    }
+                }];
+            }
+        }
+    }];
+    [[GSSession activeSession] addObserver:self];
     [self updateUI];
+}
+
+- (void)didLoginSucceeded {
+    [self dismissModalViewControllerAnimated:YES];
+    [self finishAuthentication];
+}
+
+- (void)didLoginFailed:(NSError *)error {
+    // I think we have nothing to do now
 }
 
 - (void)updateUI {
@@ -138,8 +196,8 @@
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     [self.myPasteboardHolderView updateUIWithPasteObject:itemToPaste];
         
-    if ([GSSSession isAuthenticated]) {
-        CPUser *currentUser = (CPUser *) [[GSSSession activeSession] currentUser];
+    if ([GSSession isAuthenticated]) {
+        CPUser *currentUser = (CPUser *) [[GSSession activeSession] currentUser];
         if ([currentUser isAvatarCached]) {
             [self.avatarImageView setImage:currentUser.avatarImage];
         } else if ([currentUser avatarURLString]) {
@@ -154,7 +212,7 @@
 
 - (void)settingButtonTapped:(id)sender {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Log Out"
-                                                        message:[NSString stringWithFormat:@"You have logged in as %@. Do you want to log out?", [[GSSSession activeSession] currentUserName]]
+                                                        message:[NSString stringWithFormat:@"You have logged in as %@. Do you want to log out?", [[GSSession activeSession] currentUserName]]
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Log Out", nil];
@@ -166,55 +224,9 @@
     self.myPasteboardHolderView.pasteboardImageHolderView.hidden = YES;
 }
 
-- (void)didLoginSucceeded {
-    [self dismissModalViewControllerAnimated:YES];
-    [self finishAuthentication];
-}
-
-- (void)didLoginFailed:(NSError *)error {
-    // I think we have nothing to do now
-}
-
-- (void)didGetNearbyUserSucceeded:(NSArray *)listOfUsers {
-    if ([listOfUsers count] == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No nearby user"
-                                                            message:nil
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
-        
-    } else {
-        [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
-        [self updateUI];
-        
-        for (CPUser *user in [[DataManager sharedManager] availableUsers]) {
-            NSMutableArray *queryCondition = [NSMutableArray new];
-            [queryCondition addObject:@"sender_id"];
-            [queryCondition addObject:user.uid];
-            [queryCondition addObject:@"receiver_id"];
-            [queryCondition addObject:[[[GSSSession activeSession] currentUser] uid]];
-            
-            [[GSSSession activeSession] queryClass:@"CopyAndPaste" where:queryCondition block:^(NSArray *objects, NSError *error) {
-                DLog(@"Result: %@", objects);
-                //    for (CPUser *user in [[DataManager sharedManager] availableUsers]) {
-                //        for (NSArray *key in result) {
-                //            // Note: just for getting the num of msg from this user to me
-                //            user.numOfPasteToMe = [[result objectAtIndex:1] intValue];
-                //        }
-                //    }
-            }];
-        }
-    }
-}
-
-- (void)didGetNearbyUserFailed:(NSError *)error {
-
-}
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == alertView.firstOtherButtonIndex) {
-        [[GSSSession activeSession] logOut];
+        [[GSSession activeSession] logOut];
         [self viewDidAppear:YES];
         
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Finish log out"
@@ -238,12 +250,12 @@
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     CPUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
     if (itemToPaste) {
-        [[GSSSession activeSession] sendMessage:itemToPaste toUser:user];
+        [[GSSession activeSession] sendMessage:itemToPaste toUser:user];
         user.numOfCopyFromMe++;
         
         NSMutableArray *sendCondition = [NSMutableArray new];
         [sendCondition addObject:@"sender_id"];
-        [sendCondition addObject:[[[GSSSession activeSession] currentUser] uid]];
+        [sendCondition addObject:[[[GSSession activeSession] currentUser] uid]];
         [sendCondition addObject:@"receiver_id"];
         [sendCondition addObject:[user uid]];
         
@@ -251,10 +263,12 @@
         [valueToSet addObject:@"num_of_msg"];
         [valueToSet addObject:[NSNumber numberWithInt:user.numOfCopyFromMe]];
         
-        [[GSSSession activeSession] updateClass:@"CopyAndPaste"
-                                           with:valueToSet
-                                          where:sendCondition
-                                       delegate:self];
+        [[GSSession activeSession] updateClass:@"CopyAndPaste"
+                                          with:valueToSet
+                                         where:sendCondition
+                                         block:^(NSError *error) {
+                                             [self updateUI];
+                                         }];
         
     } else {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can not paste"
@@ -383,12 +397,12 @@
     CPMessage *newMessage = [[CPMessage alloc] init];
     [newMessage setSender:user];
     [newMessage setMessageContent:messageContent];
-    [newMessage setCreatedDateInterval:[[GSSUtils dateFromString:messageTime] timeIntervalSince1970]];
+    [newMessage setCreatedDateInterval:[[GSUtils dateFromString:messageTime] timeIntervalSince1970]];
     DLog(@"Receive message: %@", [newMessage description]);
     [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
     
     // Remove the value from the Firebase server, because it's catched
-    [[GSSSession activeSession] removeMessageFromSender:user atTime:messageTime];
+    [[GSSession activeSession] removeMessageFromSender:user atTime:messageTime];
     
     CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
                                                                                  0,
@@ -398,15 +412,6 @@
     [messageView showMeOnView:self.view];
     
     [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];
-}
-
-- (void)didUpdateClassSucceeded {
-    [self updateUI];
-}
-
-- (void)didUpdateClassFailed:(NSError *)error {
-    // TODO: Show alert here
-    [self updateUI];
 }
 
 - (void)imageViewLoadedImage:(EGOImageView *)imageView {

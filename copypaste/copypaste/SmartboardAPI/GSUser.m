@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "GSSUser.h"
+#import "GSUser.h"
 
-@implementation GSSUser
+@implementation GSUser
 @synthesize uid = _uid;
 @synthesize username = _username;
 @synthesize firstname = _firstname;
@@ -63,7 +63,7 @@
     });
 }
 
-- (id)initWithGSSUser:(GSSUser *)gssUser {
+- (id)initWithGSUser:(GSUser *)gssUser {
     if (self = [super init]) {
         self.uid = gssUser.uid;
         self.username = gssUser.username;
@@ -80,7 +80,7 @@
     return self;
 }
 
-- (void)parseDataFromGSSUser:(GSSUser *)gssUser {
+- (void)parseDataFromGSUser:(GSUser *)gssUser {
     self.uid = gssUser.uid;
     self.username = gssUser.username;
     self.firstname = gssUser.firstname;
@@ -94,7 +94,7 @@
     DLog(@"Parse from %@ to %@", gssUser, self);
 }
 
-- (NSString *)distanceStringToUser:(GSSUser *)user {
+- (NSString *)distanceStringToUser:(GSUser *)user {
     float miles = [self.location distanceInMilesTo:user.location];
     if (miles < 0.1) {
         return [NSString stringWithFormat:@"%.0f ft", miles*5280];
@@ -102,7 +102,7 @@
     return [NSString stringWithFormat:@"%.1f mi", miles];
 }
 
-+ (GSSUser *)userInfoFromDictionary:(NSDictionary *)userInfo {
++ (GSUser *)userInfoFromDictionary:(NSDictionary *)userInfo {
     return [[[self class] alloc] initWithDictionary:userInfo];
 }
 

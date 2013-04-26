@@ -14,6 +14,6 @@
 @synthesize createdDateInterval = _createdDateInterval;
 
 - (NSString *) description {
-    return [NSString stringWithFormat:@"User: %@ sent at time: %@", self.sender.username, [GSSUtils stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.createdDateInterval]]];
+    return [NSString stringWithFormat:@"User: %@ sent at time: %@", self.sender.username, [GSUtils stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.createdDateInterval]]];
 }
 @end

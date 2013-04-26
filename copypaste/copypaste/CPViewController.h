@@ -10,13 +10,14 @@
 #import "DataManager.h"
 #import "GMGridView.h"
 #import "EGOImageView.h"
-#import "GSSSession.h"
+#import "GSSession.h"
+#import "GSObject.h"
 #import "CPPasteboardView.h"
 #import "CPMessageView.h"
 #import "WEPopoverController.h"
 #import "CPProfileViewController.h"
 
-@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSSessionDelegate, WEPopoverControllerDelegate, UIAlertViewDelegate>
+@interface CPViewController : UIViewController <GMGridViewActionDelegate, GMGridViewDataSource, EGOImageViewDelegate,GSSessionDelegate, WEPopoverControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) CPPasteboardView *myPasteboardHolderView;
 @property (nonatomic, retain) WEPopoverController *userProfilePopoverController;

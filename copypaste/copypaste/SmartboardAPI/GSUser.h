@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
 
-@class GSSUser;
+@class GSUser;
 
 @protocol GSSUser
-+ (GSSUser *)userInfoFromDictionary:(NSDictionary *)userInfo;
++ (GSUser *)userInfoFromDictionary:(NSDictionary *)userInfo;
 @end
 
-@interface GSSUser : NSObject <GSSUser, NSCoding>
+@interface GSUser : NSObject <GSSUser, NSCoding>
 
 @property (nonatomic, retain) NSString *uid;
 @property (nonatomic, retain) NSString *username;
@@ -30,8 +30,8 @@
 
 - (id)initWithPFUser:(PFUser *)pfUser;
 - (void)parseDataFromPFUser:(PFUser *)pfUser;
-- (id)initWithGSSUser:(GSSUser *)gssUser;
-- (void)parseDataFromGSSUser:(GSSUser *)gssUser;
-- (NSString *)distanceStringToUser:(GSSUser *)user;
+- (id)initWithGSUser:(GSUser *)gsUser;
+- (void)parseDataFromGSUser:(GSUser *)gsUser;
+- (NSString *)distanceStringToUser:(GSUser *)user;
 
 @end

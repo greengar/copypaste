@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GSSUtils : NSObject
+@interface GSUtils : NSObject
 
 + (NSString *) getCurrentTime;
 + (NSDate *) dateFromString:(NSString *)dateString;
@@ -19,3 +19,4 @@
 @end
 
 typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);
+typedef void (^GSResultBlock)(NSError *error);

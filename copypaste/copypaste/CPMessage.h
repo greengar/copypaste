@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GSSUser.h"
-#import "GSSUtils.h"
+#import "GSUser.h"
+#import "GSUtils.h"
 
 @interface CPMessage : NSObject
 
-@property (nonatomic) GSSUser *sender;
+@property (nonatomic) GSUser *sender;
 @property (nonatomic) NSObject *messageContent;
 @property (nonatomic) NSTimeInterval createdDateInterval;
 

@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "GSSUser.h"
+#import "GSUser.h"
 
-@interface CPUser : GSSUser
+@interface CPUser : GSUser
 @property (nonatomic) int numOfCopyFromMe;
 @property (nonatomic) int numOfPasteToMe;
 @end

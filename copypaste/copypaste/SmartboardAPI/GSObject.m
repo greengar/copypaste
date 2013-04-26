@@ -10,7 +10,10 @@
 
 @interface GSObject ()
 
-@property (nonatomic, strong) NSMutableDictionary *d;
+// This does not include
+// createdAt, updatedAt, authData, or objectId. It does include things like username
+// and ACL.
+@property (nonatomic, strong) NSMutableDictionary *innerDict;
 
 @end
 
@@ -20,15 +23,21 @@
 {
     if ((self = [super init]))
     {
-        self.d = [NSMutableDictionary new];
-        // This does not include
-        // createdAt, updatedAt, authData, or objectId. It does include things like username
-        // and ACL.
+        self.innerDict = [NSMutableDictionary new];
+        
         for (NSString *key in [object allKeys]) {
-            [self.d setObject:[object objectForKey:key] forKey:key];
+            [self.innerDict setObject:[object objectForKey:key] forKey:key];
         }
     }
     return self;
+}
+
+- (void)setObject:(id)object forKey:(NSString *)key {
+    [self.innerDict setObject:object forKey:key];
+}
+
+- (id)objectForKey:(NSString *)key {
+    return [self.innerDict objectForKey:key];
 }
 
 @end

@@ -6,32 +6,32 @@
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "GSSSession.h"
-#import "GSSParseQueryHelper.h"
+#import "GSSession.h"
+#import "GSParseQueryHelper.h"
 #import "NSData+Base64.h"
 #import "SVProgressHUD.h"
 #import "GSObject.h"
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
-#define kMaxSizeFirebaseString 5000000 //10485760
+#define kMaxSizeFirebaseString 10485760
 
-static GSSSession *activeSession = nil;
+static GSSession *activeSession = nil;
 
-@interface GSSSession()
+@interface GSSession()
 - (Firebase *)getMyBaseFirebase;
-- (Firebase *)generateFirebaseFor:(GSSUser *)user atTime:(NSString *)time;
+- (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time;
 @property (nonatomic, retain) Firebase *firebase;
 @end
 
-@implementation GSSSession
+@implementation GSSession
 @synthesize firebase = _firebase;
 @synthesize delegate = _delegate;
 @synthesize currentUser = _currentUser;
 
-+ (GSSSession *)activeSession {
-    static GSSSession *activeSession;
++ (GSSession *)activeSession {
+    static GSSession *activeSession;
     static dispatch_once_t done;
-    dispatch_once(&done, ^{ activeSession = [GSSSession new]; });
+    dispatch_once(&done, ^{ activeSession = [GSSession new]; });
     return activeSession;
 }
 
@@ -39,7 +39,7 @@ static GSSSession *activeSession = nil;
     if (self = [super init]) {
         if ([PFUser currentUser]) {
             if (self.currentUser == nil) {
-                self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
+                self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
             } else {
                 [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
             }
@@ -52,14 +52,14 @@ static GSSSession *activeSession = nil;
     [Parse setApplicationId:appId clientKey:appSecret];
     [PFFacebookUtils initializeFacebook];
     NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-    [GSSSession activeSession].firebase = [[Firebase alloc] initWithUrl:[NSString stringWithFormat:@"%@%@", kFireBaseBaseURL, appName]];
+    [GSSession activeSession].firebase = [[Firebase alloc] initWithUrl:[NSString stringWithFormat:@"%@%@", kFireBaseBaseURL, appName]];
 }
 
 + (BOOL)isAuthenticated {
-    return ([[GSSSession activeSession] currentUser] != nil);
+    return ([[GSSession activeSession] currentUser] != nil);
 }
 
-- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSSessionDelegate>)delegate {
+- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSessionDelegate>)delegate {
     self.delegate = delegate;
     
     CPLogInViewController *logInController = [[CPLogInViewController alloc] init];
@@ -83,7 +83,7 @@ static GSSSession *activeSession = nil;
     self.currentUser = nil;
 }
 
-- (void)addObserver:(id<GSSSessionDelegate>)delegate {
+- (void)addObserver:(id<GSSessionDelegate>)delegate {
     self.delegate = delegate;
     
     [[self getMyBaseFirebase] observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
@@ -136,7 +136,8 @@ static GSSSession *activeSession = nil;
                     
                     [SVProgressHUD dismissWithSuccess:@"Image received"];
                     if (messageData) {
-                        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
+                        if (self.delegate
+                            && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
                             [self.delegate didReceiveMessageFrom:senderUID content:messageData time:messageTime];
                         }
                     }
@@ -145,18 +146,19 @@ static GSSSession *activeSession = nil;
         }
         
         if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
-            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
+            if (self.delegate
+                && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
                 [self.delegate didReceiveMessageFrom:senderUID content:messageData time:messageTime];
             }
         }
     }
 }
 
-- (void)sendMessage:(NSObject *)messageContent toUser:(GSSUser *)user {
+- (void)sendMessage:(NSObject *)messageContent toUser:(GSUser *)user {
     if ([messageContent isKindOfClass:[NSString class]]) {
         NSString *messageType = @"string";
         NSString *messageData = (NSString *)messageContent;
-        NSString *messageTime = [GSSUtils getCurrentTime];
+        NSString *messageTime = [GSUtils getCurrentTime];
         [[self generateFirebaseFor:user atTime:messageTime] setValue:@{@"sender"   : self.currentUser.uid,
                                                                        @"receiver" : user.uid,
                                                                        @"type"     : messageType,
@@ -172,7 +174,7 @@ static GSSSession *activeSession = nil;
                 DLog(@"Sent image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
                 NSString *messageType = @"image";
                 NSString *messageString = [imageData base64EncodedString];
-                NSString *messageTime = [GSSUtils getCurrentTime];
+                NSString *messageTime = [GSUtils getCurrentTime];
                 NSObject *messageData = @"";
                 
                 int numOfElement = round((float)[messageString length]/(float)kMaxSizeFirebaseString);
@@ -206,7 +208,7 @@ static GSSSession *activeSession = nil;
     }
 }
 
-- (void)removeMessageFromSender:(GSSUser *)user atTime:(NSString *)messageTime {
+- (void)removeMessageFromSender:(GSUser *)user atTime:(NSString *)messageTime {
     Firebase *myBaseFirebase = [self getMyBaseFirebase];
     Firebase *senderFirebaseInMyFirebase = [myBaseFirebase childByAppendingPath:[NSString stringWithFormat:@"Sender_%@", user.uid]];
     NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", user.username, messageTime];
@@ -215,57 +217,62 @@ static GSSSession *activeSession = nil;
     [timeFirebase removeValue];
 }
 
-- (void)getNearbyUserWithDelegate:(id<GSSSessionDelegate>)delegate {
-    self.delegate = delegate;
+- (void)getNearbyUserWithBlock:(GSArrayResultBlock)block {
     PFGeoPoint *currentLocation = [[PFUser currentUser] objectForKey:@"location"];
     
     if (currentLocation != nil) {
         // Query for locations near mine
         PFQuery *query = [PFUser query];
-        [query setLimit:10];
         [query whereKey:@"location"
            nearGeoPoint:currentLocation];
+        
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 NSMutableArray *nearByUserExceptMe = [[NSMutableArray alloc] init];
                 for (PFUser *user in objects) {
                     if (![[user objectId] isEqualToString:[[PFUser currentUser] objectId]]) {
-                        GSSUser *gsUser = [[GSSUser alloc] initWithPFUser:user];
+                        GSUser *gsUser = [[GSUser alloc] initWithPFUser:user];
                         [nearByUserExceptMe addObject:gsUser];
                     }
                 }
-                
                 DLog(@"Number of nearby users: %d", [nearByUserExceptMe count]);
-                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didGetNearbyUserSucceeded:)]) {
-                    [self.delegate didGetNearbyUserSucceeded:nearByUserExceptMe];
-                }
+                block(nearByUserExceptMe, error);
             }
         }];
     } else {
-        [self getMyLocation];
+        [self getMyLocationWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                NSMutableArray *nearByUserExceptMe = [[NSMutableArray alloc] init];
+                for (PFUser *user in objects) {
+                    if (![[user objectId] isEqualToString:[[PFUser currentUser] objectId]]) {
+                        GSUser *gsUser = [[GSUser alloc] initWithPFUser:user];
+                        [nearByUserExceptMe addObject:gsUser];
+                    }
+                }
+                DLog(@"Number of nearby users: %d", [nearByUserExceptMe count]);
+                block(nearByUserExceptMe, error);
+            }
+        }];
     }
 }
 
-- (void)getMyLocation {
+- (void)getMyLocationWithBlock:(GSArrayResultBlock)block {
     // Update my location
     [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
         [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 DLog(@" My location: %@", [[PFUser currentUser] objectForKey:@"location"]);
-                
-                [self getNearbyUserWithDelegate:self.delegate];
+                [self getNearbyUserWithBlock:block];
             } else {
-                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didGetNearbyUserFailed:)]) {
-                    [self.delegate didGetNearbyUserFailed:error];
-                }
+
             }
         }];
     }];
 }
 
 - (NSString *)currentUserName {
-    if ([GSSSession isAuthenticated]) {
+    if ([GSSession isAuthenticated]) {
         if (self.currentUser.fullname != nil) {
             return self.currentUser.fullname;
         } else {
@@ -279,9 +286,7 @@ static GSSSession *activeSession = nil;
 
 - (void)queryClass:(NSString *)classname
              where:(NSArray *)queryCondition
-             block:(GSArrayResultBlock)block
-{
-//    self.delegate = delegate;
+             block:(GSArrayResultBlock)block {
     
     PFQuery *query = [PFQuery queryWithClassName:classname];
     for (int i = 0; i < [queryCondition count]-1; i += 2) {
@@ -291,58 +296,20 @@ static GSSSession *activeSession = nil;
     }
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//        if (error) {
-//            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didQueryFailed:)]) {
-//                [self.delegate didQueryFailed:error];
-//            }
-//        } else {
             NSMutableArray *result = [NSMutableArray new];
-            for (PFObject *pfObject in objects)
-            {
+            for (PFObject *pfObject in objects) {
                 GSObject *object = [[GSObject alloc] initWithPFObject:pfObject];
                 [result addObject:object];
             }
             
-            block(result, error);
-            
-//            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didQueryForKey:didFinish:)]) {
-//                [self.delegate didQueryForKey:resultKey didFinish:result];
-//            }
-            
-//            if (forceSave && [objects count] == 0) {
-//                PFObject *object = [PFObject objectWithClassName:classname];
-//                for (int i = 0; i < [queryCondition count]-1; i += 2) {
-//                    NSString *key = [queryCondition objectAtIndex:i];
-//                    NSString *value = [queryCondition objectAtIndex:i+1];
-//                    [object setValue:value forKey:key];
-//                }
-//                [object saveInBackground];
-//                
-//            } else {
-//                NSMutableArray *result = [NSMutableArray new];
-//                for (PFObject *object in objects) {
-//                    for (NSString *key in resultKey) {
-//                        NSObject *value = [object objectForKey:key];
-//                        [object allKeys]
-//                        
-//                        NSMutableDictionary *valueDict = [NSMutableDictionary new];
-//                        [valueDict setObject:value forKey:key];
-//                        
-//                        [result addObject:[object objectId]];
-//                        [result addObject:valueDict];
-//                    }
-//                }
-//            
-//            }
-//        }
+            block(result, error);            
     }];
 }
 
 - (void)updateClass:(NSString *)classname
                with:(NSArray *)valueToSet
               where:(NSArray *)queryCondition
-           delegate:(id<GSSSessionDelegate>)delegate {
-    self.delegate = delegate;
+              block:(GSResultBlock)block {
     
     PFQuery *query = [PFQuery queryWithClassName:classname];
     for (int i = 0; i < [queryCondition count]-1; i += 2) {
@@ -352,44 +319,34 @@ static GSSSession *activeSession = nil;
     }
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (error) {
-            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didUpdateClassFailed:)]) {
-                [self.delegate didUpdateClassFailed:error];
-                self.delegate = nil;
-            }
-        } else {
-            if ([objects count] == 0) { // Empty, so just create it
-                PFObject *object = [PFObject objectWithClassName:classname];
-                for (int i = 0; i < [queryCondition count]-1; i += 2) {
-                    NSString *key = [queryCondition objectAtIndex:i];
-                    NSString *value = [queryCondition objectAtIndex:i+1];
+        if ([objects count] == 0) { // Empty, so just create it
+            PFObject *object = [PFObject objectWithClassName:classname];
+            for (int i = 0; i < [queryCondition count]-1; i += 2) {
+                NSString *key = [queryCondition objectAtIndex:i];
+                NSString *value = [queryCondition objectAtIndex:i+1];
+                [object setValue:value forKey:key];
+                
+                for (int j = 0; j < [valueToSet count]-1; j += 2) {
+                    NSString *key = [valueToSet objectAtIndex:j];
+                    NSString *value = [valueToSet objectAtIndex:j+1];
                     [object setValue:value forKey:key];
-                    
-                    for (int j = 0; j < [valueToSet count]-1; j += 2) {
-                        NSString *key = [valueToSet objectAtIndex:j];
-                        NSString *value = [valueToSet objectAtIndex:j+1];
-                        [object setValue:value forKey:key];
-                    }
-                }
-                
-                [object saveInBackground];
-                
-            } else {
-                for (PFObject *object in objects) {
-                    for (int j = 0; j < [valueToSet count]-1; j += 2) {
-                        NSString *key = [valueToSet objectAtIndex:j];
-                        NSString *value = [valueToSet objectAtIndex:j+1];
-                        [object setValue:value forKey:key];
-                    }
-                    [object saveInBackground];
                 }
             }
             
-            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didUpdateClassSucceeded)]) {
-                [self.delegate didUpdateClassSucceeded];
-                self.delegate = nil;
+            [object saveInBackground];
+            
+        } else {
+            for (PFObject *object in objects) {
+                for (int j = 0; j < [valueToSet count]-1; j += 2) {
+                    NSString *key = [valueToSet objectAtIndex:j];
+                    NSString *value = [valueToSet objectAtIndex:j+1];
+                    [object setValue:value forKey:key];
+                }
+                [object saveInBackground];
             }
         }
+        
+        block(error);
     }];
 }
 
@@ -418,7 +375,7 @@ static GSSSession *activeSession = nil;
                     
                     // Parse again with new data
                     if (self.currentUser == nil) {
-                        self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
+                        self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
                     } else {
                         [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
                     }
@@ -435,7 +392,7 @@ static GSSSession *activeSession = nil;
             [[PFUser currentUser] saveInBackground];
             
             if (self.currentUser == nil) {
-                self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
+                self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
             } else {
                 [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
             }
@@ -462,7 +419,7 @@ static GSSSession *activeSession = nil;
         [[PFUser currentUser] saveInBackground];
         
         if (self.currentUser == nil) {
-            self.currentUser = [[GSSUser alloc] initWithPFUser:[PFUser currentUser]];
+            self.currentUser = [[GSUser alloc] initWithPFUser:[PFUser currentUser]];
         } else {
             [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
         }
@@ -491,7 +448,7 @@ static GSSSession *activeSession = nil;
     return [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", self.currentUser.uid]];
 }
 
-- (Firebase *)generateFirebaseFor:(GSSUser *)user atTime:(NSString *)time {
+- (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time {
     Firebase *receiverBaseFirebase = [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", user.uid]];
     Firebase *senderFirebaseInReceiverBaseFirebase = [receiverBaseFirebase childByAppendingPath:[NSString stringWithFormat:@"Sender_%@", self.currentUser.uid]];
     NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", self.currentUser.username, time];

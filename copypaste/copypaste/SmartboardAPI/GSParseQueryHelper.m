@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "GSSParseQueryHelper.h"
+#import "GSParseQueryHelper.h"
 
-@implementation GSSParseQueryHelper
+@implementation GSParseQueryHelper
 
 + (void)setAdminRoleForUser:(PFUser *)user {
     // Make a new role for administrators

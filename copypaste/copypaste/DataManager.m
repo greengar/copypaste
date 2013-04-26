@@ -8,7 +8,7 @@
 
 #import "DataManager.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "GSSSession.h"
+#import "GSSession.h"
 
 static DataManager *shareManager = nil;
 
@@ -71,8 +71,8 @@ static DataManager *shareManager = nil;
 
 - (void)updateNearbyUsers:(NSArray *)nearbyList {
     [self.availableUsers removeAllObjects];
-    for (GSSUser *gssUser in nearbyList) {
-        CPUser *user = [[CPUser alloc] initWithGSSUser:gssUser];
+    for (GSUser *gssUser in nearbyList) {
+        CPUser *user = [[CPUser alloc] initWithGSUser:gssUser];
         [self.availableUsers addObject:user];
     }
 }

@@ -11,5 +11,6 @@
 @interface GSObject : NSObject
 
 - (id)initWithPFObject:(PFObject *)object;
-
+- (void)setObject:(id)object forKey:(NSString *)key;
+- (id)objectForKey:(NSString *)key;
 @end
