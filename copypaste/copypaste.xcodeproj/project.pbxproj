@@ -23,8 +23,6 @@
 		7B2CD3A01725B865006380F3 /* header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2CD3931725B865006380F3 /* header@2x.png */; };
 		7B2CD3A31725B865006380F3 /* pasteboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2CD3961725B865006380F3 /* pasteboard.png */; };
 		7B2CD3A41725B865006380F3 /* pasteboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2CD3971725B865006380F3 /* pasteboard@2x.png */; };
-		7B2CD3A51725B865006380F3 /* person-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2CD3981725B865006380F3 /* person-background.png */; };
-		7B2CD3A61725B865006380F3 /* person-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2CD3991725B865006380F3 /* person-background@2x.png */; };
 		7B2CD3AA17260F9B006380F3 /* CPPasteboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2CD3A917260F9B006380F3 /* CPPasteboardView.m */; };
 		7B346713171CDA0A00B73449 /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B346709171CDA0A00B73449 /* GMGridView.m */; };
 		7B346714171CDA0A00B73449 /* GMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B34670C171CDA0A00B73449 /* GMGridViewCell.m */; };
@@ -112,6 +110,8 @@
 		A9130A7C17288AD30079A261 /* header-clipboard3.png in Resources */ = {isa = PBXBuildFile; fileRef = A9130A7A17288AD30079A261 /* header-clipboard3.png */; };
 		A9130A7D17288AD30079A261 /* header-clipboard3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */; };
 		A945DFD117260B7900F69D40 /* background-548h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A945DFD017260B7900F69D40 /* background-548h@2x.png */; };
+		A96726431729DE8F008BC997 /* person-background.fw.png in Resources */ = {isa = PBXBuildFile; fileRef = A96726411729DE8F008BC997 /* person-background.fw.png */; };
+		A96726441729DE8F008BC997 /* person-background.fw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A96726421729DE8F008BC997 /* person-background.fw@2x.png */; };
 		A99F71CC1717535000172B13 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CB1717535000172B13 /* UIKit.framework */; };
 		A99F71CE1717535000172B13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CD1717535000172B13 /* Foundation.framework */; };
 		A99F71D01717535000172B13 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CF1717535000172B13 /* CoreGraphics.framework */; };
@@ -174,8 +174,6 @@
 		7B2CD3931725B865006380F3 /* header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header@2x.png"; sourceTree = "<group>"; };
 		7B2CD3961725B865006380F3 /* pasteboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pasteboard.png; sourceTree = "<group>"; };
 		7B2CD3971725B865006380F3 /* pasteboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pasteboard@2x.png"; sourceTree = "<group>"; };
-		7B2CD3981725B865006380F3 /* person-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person-background.png"; sourceTree = "<group>"; };
-		7B2CD3991725B865006380F3 /* person-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person-background@2x.png"; sourceTree = "<group>"; };
 		7B2CD3A817260F9B006380F3 /* CPPasteboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPPasteboardView.h; sourceTree = "<group>"; };
 		7B2CD3A917260F9B006380F3 /* CPPasteboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPPasteboardView.m; sourceTree = "<group>"; };
 		7B346707171CDA0A00B73449 /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
@@ -325,6 +323,8 @@
 		A9130A7A17288AD30079A261 /* header-clipboard3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-clipboard3.png"; sourceTree = "<group>"; };
 		A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-clipboard3@2x.png"; sourceTree = "<group>"; };
 		A945DFD017260B7900F69D40 /* background-548h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-548h@2x.png"; sourceTree = "<group>"; };
+		A96726411729DE8F008BC997 /* person-background.fw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person-background.fw.png"; sourceTree = "<group>"; };
+		A96726421729DE8F008BC997 /* person-background.fw@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person-background.fw@2x.png"; sourceTree = "<group>"; };
 		A99F71C81717535000172B13 /* copypaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = copypaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99F71CB1717535000172B13 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A99F71CD1717535000172B13 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -407,8 +407,8 @@
 				7B2CD3931725B865006380F3 /* header@2x.png */,
 				7B2CD3961725B865006380F3 /* pasteboard.png */,
 				7B2CD3971725B865006380F3 /* pasteboard@2x.png */,
-				7B2CD3981725B865006380F3 /* person-background.png */,
-				7B2CD3991725B865006380F3 /* person-background@2x.png */,
+				A96726411729DE8F008BC997 /* person-background.fw.png */,
+				A96726421729DE8F008BC997 /* person-background.fw@2x.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -970,8 +970,6 @@
 				7B2CD3A01725B865006380F3 /* header@2x.png in Resources */,
 				7B2CD3A31725B865006380F3 /* pasteboard.png in Resources */,
 				7B2CD3A41725B865006380F3 /* pasteboard@2x.png in Resources */,
-				7B2CD3A51725B865006380F3 /* person-background.png in Resources */,
-				7B2CD3A61725B865006380F3 /* person-background@2x.png in Resources */,
 				A945DFD117260B7900F69D40 /* background-548h@2x.png in Resources */,
 				7BAD0E70172856D700A474AB /* comment.png in Resources */,
 				7BAD0E71172856D700A474AB /* comment@2x.png in Resources */,
