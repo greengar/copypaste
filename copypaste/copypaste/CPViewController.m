@@ -155,7 +155,7 @@
                                                 where:queryCondition
                                                 block:^(NSArray *objects, NSError *error) {
                     for (GSObject *object in objects) {
-                        DLog(@"%@ paste %d to me", [object objectForKey:@"sender_id"], [[object objectForKey:@"num_of_msg"] intValue]);
+                        DLog(@"%@ has pasted %d messages to me", [object objectForKey:@"sender_id"], [[object objectForKey:@"num_of_msg"] intValue]);
                         user.numOfPasteToMe = [[object objectForKey:@"num_of_msg"] intValue];
                     }
                 }];
@@ -164,14 +164,14 @@
                 [queryCondition removeAllObjects];
                 [queryCondition addObject:@"receiver_id"];
                 [queryCondition addObject:user.uid];
-                [queryCondition addObject:@"send_id"];
+                [queryCondition addObject:@"sender_id"];
                 [queryCondition addObject:[[[GSSession activeSession] currentUser] uid]];
                 
                 [[GSSession activeSession] queryClass:@"CopyAndPaste"
                                                 where:queryCondition
                                                 block:^(NSArray *objects, NSError *error) {
                     for (GSObject *object in objects) {
-                        DLog(@"%@ copy %d from me", [object objectForKey:@"receiver_id"], [[object objectForKey:@"num_of_msg"] intValue]);
+                        DLog(@"I have copied %d messages to %@", [[object objectForKey:@"num_of_msg"] intValue], [object objectForKey:@"receiver_id"]);
                         user.numOfCopyFromMe = [[object objectForKey:@"num_of_msg"] intValue];
                     }
                 }];
@@ -400,6 +400,9 @@
     [newMessage setCreatedDateInterval:[[GSUtils dateFromString:messageTime] timeIntervalSince1970]];
     DLog(@"Receive message: %@", [newMessage description]);
     [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
+    
+    // Get more message from the sender
+    user.numOfPasteToMe++;
     
     // Remove the value from the Firebase server, because it's catched
     [[GSSession activeSession] removeMessageFromSender:user atTime:messageTime];

@@ -54,6 +54,7 @@
                                                                               kTextHeight)];
     profileUsernameLabel.backgroundColor = [UIColor clearColor];
     profileUsernameLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
+    profileUsernameLabel.textColor = [UIColor whiteColor];
     profileUsernameLabel.text = self.profileUser.fullname;
     [self.view addSubview:profileUsernameLabel];
     
@@ -63,6 +64,7 @@
                                                                               kTextHeight)];
     profileDistanceLabel.backgroundColor = [UIColor clearColor];
     profileDistanceLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
+    profileDistanceLabel.textColor = [UIColor whiteColor];
     profileDistanceLabel.text = [NSString stringWithFormat:@"Distance: %@", [self.profileUser distanceStringToUser:[[GSSession activeSession] currentUser]]];
     [self.view addSubview:profileDistanceLabel];
     
@@ -72,6 +74,7 @@
                                                                                 kTextHeight)];
     profileSentMsgNumLabel.backgroundColor = [UIColor clearColor];
     profileSentMsgNumLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
+    profileSentMsgNumLabel.textColor = [UIColor whiteColor];
     profileSentMsgNumLabel.text = [NSString stringWithFormat:@"Sent: %d", [self.profileUser numOfCopyFromMe]];
     [self.view addSubview:profileSentMsgNumLabel];
     
@@ -81,6 +84,7 @@
                                                                                    kTextHeight)];
     profileReceiveMsgNumLabel.backgroundColor = [UIColor clearColor];
     profileReceiveMsgNumLabel.font = [UIFont fontWithName:@"Heiti SC" size:15.0f];
+    profileReceiveMsgNumLabel.textColor = [UIColor whiteColor];
     profileReceiveMsgNumLabel.text = [NSString stringWithFormat:@"Receive: %d", [self.profileUser numOfPasteToMe]];
     [self.view addSubview:profileReceiveMsgNumLabel];
 }
