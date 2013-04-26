@@ -101,6 +101,21 @@
     profileLastSeenLabel.textColor = [UIColor whiteColor];
     profileLastSeenLabel.text = [NSString stringWithFormat:@"Last: %@", [self.profileUser lastSeenTimeString]];
     [self.view addSubview:profileLastSeenLabel];
+    
+    if (self.profileUser.isFacebookUser) {
+        UIButton *facebookButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [facebookButton setFrame:CGRectMake(kOffset, kOffset+kAvatarSize+kOffset, kAvatarSize, kAvatarSize)];
+        [facebookButton setTitle:@"f" forState:UIControlStateNormal];
+        [facebookButton addTarget:self
+                           action:@selector(facebookButtonTapped:)
+                 forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:facebookButton];
+    }
+}
+
+- (void)facebookButtonTapped:(id)sender {
+    NSString *facebookLink = [NSString stringWithFormat:@"https://www.facebook.com/%@", self.profileUser.facebookScreenName];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:facebookLink]];
 }
 
 - (void)didReceiveMemoryWarning

@@ -21,6 +21,9 @@
 @synthesize avatarImage = _avatarImage;
 @synthesize location = _location;
 @synthesize lastLogInDate = _lastLogInDate;
+@synthesize isFacebookUser = _isFacebookUser;
+@synthesize facebookId = _facebookId;
+@synthesize facebookScreenName = _facebookScreenName;
 
 - (id)initWithPFUser:(PFUser *)pfUser {
     if (self = [super init]) {
@@ -33,6 +36,9 @@
         self.avatarURLString = pfUser[@"avatar_url"];
         self.location = pfUser[@"location"];
         self.lastLogInDate = pfUser[@"last_log_in"];
+        self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
+        self.facebookId = pfUser[@"facebook_id"];
+        self.facebookScreenName = pfUser[@"facebook_screen_name"];
         DLog(@"Parse from %@ to %@", pfUser, self);
         
         dispatch_async(dispatch_get_current_queue(), ^{
@@ -56,6 +62,9 @@
     self.avatarURLString = pfUser[@"avatar_url"];
     self.location = pfUser[@"location"];
     self.lastLogInDate = pfUser[@"last_log_in"];
+    self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
+    self.facebookId = pfUser[@"facebook_id"];
+    self.facebookScreenName = pfUser[@"facebook_screen_name"];
     DLog(@"Parse from %@ to %@", pfUser, self);
     
     dispatch_async(dispatch_get_current_queue(), ^{
@@ -80,6 +89,9 @@
         self.avatarImage = gssUser.avatarImage;
         self.isAvatarCached = gssUser.isAvatarCached;
         self.lastLogInDate = gssUser.lastLogInDate;
+        self.isFacebookUser = gssUser.isFacebookUser;
+        self.facebookId = gssUser.facebookId;
+        self.facebookScreenName = gssUser.facebookScreenName;
         DLog(@"Parse from %@ to %@", gssUser, self);
     }
     return self;
@@ -97,6 +109,9 @@
     self.avatarImage = gssUser.avatarImage;
     self.isAvatarCached = gssUser.isAvatarCached;
     self.lastLogInDate = gssUser.lastLogInDate;
+    self.isFacebookUser = gssUser.isFacebookUser;
+    self.facebookId = gssUser.facebookId;
+    self.facebookScreenName = gssUser.facebookScreenName;
     DLog(@"Parse from %@ to %@", gssUser, self);
 }
 

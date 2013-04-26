@@ -29,6 +29,9 @@
 @property (nonatomic, retain) UIImage *avatarImage;
 @property (nonatomic, retain) PFGeoPoint *location;
 @property (nonatomic, retain) NSDate *lastLogInDate;
+@property (nonatomic)         BOOL isFacebookUser;
+@property (nonatomic, retain) NSString *facebookId;
+@property (nonatomic, retain) NSString *facebookScreenName;
 
 - (id)initWithPFUser:(PFUser *)pfUser;
 - (void)parseDataFromPFUser:(PFUser *)pfUser;

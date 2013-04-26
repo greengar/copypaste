@@ -464,10 +464,14 @@ static GSSession *activeSession = nil;
             NSDictionary *userData = (NSDictionary *)result;
             NSString *facebookID = userData[@"id"];
             NSString *name = userData[@"name"];
+            NSString *username = userData[@"username"];
             NSString *pictureURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID];
             
             [[PFUser currentUser] setObject:name forKey:@"fullname"];
             [[PFUser currentUser] setObject:pictureURL forKey:@"avatar_url"];
+            [[PFUser currentUser] setObject:[NSNumber numberWithBool:YES] forKey:@"facebook_linked"];
+            [[PFUser currentUser] setObject:facebookID forKey:@"facebook_id"];
+            [[PFUser currentUser] setObject:username forKey:@"facebook_screen_name"];
             [[PFUser currentUser] saveInBackground];
         }
         block(YES, error);
