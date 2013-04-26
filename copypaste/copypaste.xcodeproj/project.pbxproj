@@ -57,6 +57,8 @@
 		7B41E4B31729F389002157DF /* WEPopoverContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B41E49D1729F389002157DF /* WEPopoverContainerView.m */; };
 		7B41E4B41729F389002157DF /* WEPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B41E49F1729F389002157DF /* WEPopoverController.m */; };
 		7B41E4B51729F389002157DF /* WETouchableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B41E4A21729F389002157DF /* WETouchableView.m */; };
+		7B41E4B9172A093D002157DF /* person-background.fw.png in Resources */ = {isa = PBXBuildFile; fileRef = A96726411729DE8F008BC997 /* person-background.fw.png */; };
+		7B41E4BA172A093D002157DF /* person-background.fw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A96726421729DE8F008BC997 /* person-background.fw@2x.png */; };
 		7B4574EA17287D2500675AE5 /* CPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574E917287D2500675AE5 /* CPMessage.m */; };
 		7B4574EF172884EE00675AE5 /* GSUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574EE172884EE00675AE5 /* GSUtils.m */; };
 		7B4574F317288AEE00675AE5 /* CPMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574F217288AEE00675AE5 /* CPMessageView.m */; };
@@ -110,8 +112,6 @@
 		A9130A7C17288AD30079A261 /* header-clipboard3.png in Resources */ = {isa = PBXBuildFile; fileRef = A9130A7A17288AD30079A261 /* header-clipboard3.png */; };
 		A9130A7D17288AD30079A261 /* header-clipboard3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */; };
 		A945DFD117260B7900F69D40 /* background-548h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A945DFD017260B7900F69D40 /* background-548h@2x.png */; };
-		A96726431729DE8F008BC997 /* person-background.fw.png in Resources */ = {isa = PBXBuildFile; fileRef = A96726411729DE8F008BC997 /* person-background.fw.png */; };
-		A96726441729DE8F008BC997 /* person-background.fw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A96726421729DE8F008BC997 /* person-background.fw@2x.png */; };
 		A99F71CC1717535000172B13 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CB1717535000172B13 /* UIKit.framework */; };
 		A99F71CE1717535000172B13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CD1717535000172B13 /* Foundation.framework */; };
 		A99F71D01717535000172B13 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F71CF1717535000172B13 /* CoreGraphics.framework */; };
@@ -997,6 +997,8 @@
 				7B41E4AF1729F389002157DF /* popoverArrowRightSimple.png in Resources */,
 				7B41E4B01729F389002157DF /* popoverArrowUpSimple.png in Resources */,
 				7B41E4B11729F389002157DF /* popoverBgSimple.png in Resources */,
+				7B41E4B9172A093D002157DF /* person-background.fw.png in Resources */,
+				7B41E4BA172A093D002157DF /* person-background.fw@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

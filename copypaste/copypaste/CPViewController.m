@@ -14,11 +14,11 @@
 #import "NSData+Base64.h"
 
 #define kUserHolderWidth 102
-#define kUserHolderHeight 128
-#define kUserAvatarWidth 60
-#define kUserAvatarHeight 60
-#define kUserNameWidth 102
-#define kUserNameHeight 20
+#define kUserHolderHeight 140
+#define kUserAvatarWidth 76
+#define kUserAvatarHeight 76
+#define kUsernameOffset 3
+#define kUsernameHeight 23
 
 #define kContentViewTag 777
 #define kLabelViewTag 778
@@ -291,12 +291,15 @@
         cell.clipsToBounds = YES;
         
         UIImage *personBackgroundImage = [UIImage imageNamed:@"person-background.fw.png"];
-        UIImageView *personBackgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, personBackgroundImage.size.width, personBackgroundImage.size.height)];
+        UIImageView *personBackgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                                                               0,
+                                                                                               personBackgroundImage.size.width,
+                                                                                               personBackgroundImage.size.height)];
         personBackgroundImageView.image = personBackgroundImage;
         [cell addSubview:personBackgroundImageView];
         
-        EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake(21,
-                                                                                   21,
+        EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake((personBackgroundImage.size.width-kUserAvatarWidth)/2,
+                                                                                   (personBackgroundImage.size.width-kUserAvatarWidth)/2,
                                                                                    kUserAvatarWidth,
                                                                                    kUserAvatarHeight)];
         contentView.tag = kContentViewTag;
@@ -306,25 +309,27 @@
         contentView.delegate = self;
         [cell addSubview:contentView];
         
-        UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                                                          0,
-                                                                          kUserNameWidth,
-                                                                          kUserNameHeight)];
-        contentLabel.textAlignment = UITextAlignmentCenter;
-        contentLabel.backgroundColor = [UIColor clearColor];
-        contentLabel.textColor = [UIColor whiteColor];
-        contentLabel.font = [UIFont fontWithName:@"Heiti SC" size:13.0f];
-        contentLabel.tag = kLabelViewTag;
-        [cell addSubview:contentLabel];
-        
         UIImage *pasteButtonImage = [UIImage imageNamed:@"pastebutton.png"];
-        UIButton *pasteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, kUserHolderHeight - pasteButtonImage.size.height,
-                                                                           pasteButtonImage.size.width, pasteButtonImage.size.height)];
+        UIButton *pasteButton = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                           kUserHolderHeight - pasteButtonImage.size.height,
+                                                                           pasteButtonImage.size.width,
+                                                                           pasteButtonImage.size.height)];
         pasteButton.backgroundColor = [UIColor clearColor];
         [pasteButton setImage:pasteButtonImage forState:UIControlStateNormal];
         pasteButton.tag = index; // tag is used by -pasteToUserWithButton: to identify the user position
         [pasteButton addTarget:self action:@selector(pasteToUserWithButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:pasteButton];
+        
+        UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(kUsernameOffset,
+                                                                          kUserHolderHeight - pasteButtonImage.size.height,
+                                                                          pasteButtonImage.size.width-2*kUsernameOffset,
+                                                                          kUsernameHeight)];
+        contentLabel.textAlignment = UITextAlignmentCenter;
+        contentLabel.backgroundColor = [UIColor clearColor];
+        contentLabel.textColor = [UIColor whiteColor];
+        contentLabel.font = [UIFont fontWithName:@"Heiti SC" size:11.0f];
+        contentLabel.tag = kLabelViewTag;
+        [cell addSubview:contentLabel];
     }
     
     if ([[[DataManager sharedManager] availableUsers] count] == 0) {
