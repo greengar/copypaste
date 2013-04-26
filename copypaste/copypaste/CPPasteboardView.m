@@ -11,7 +11,7 @@
 
 #define kOffset 6
 #define kHeaderViewHeight 52
-#define kPasteboardMinimumHeight 131
+#define kPasteboardMinimumHeight (IS_IPHONE5 ? 338 : 250)
 #define kClipboardHeaderOffset 9
 #define kPasteboardContentTopOffset (1+kClipboardHeaderOffset)
 #define kPasteboardContentBottomOffset (1+kClipboardHeaderOffset)

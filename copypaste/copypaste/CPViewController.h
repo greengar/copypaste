@@ -21,7 +21,6 @@
 
 @property (nonatomic, retain) CPPasteboardView *myPasteboardHolderView;
 @property (nonatomic, retain) WEPopoverController *userProfilePopoverController;
-@property (nonatomic, retain) CPPasteboardView *otherPasteboardHolderView;
 
 @property (nonatomic, retain) EGOImageView *avatarImageView;
 @property (nonatomic, retain) UIButton *settingButton;

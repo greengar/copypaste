@@ -25,7 +25,7 @@
 
 #define kOffset 6
 #define kHeaderViewHeight 52
-#define kPasteboardMinimumHeight (IS_IPHONE5 ? 175 : 131)
+#define kPasteboardMinimumHeight (IS_IPHONE5 ? 338 : 250)
 
 @interface CPViewController ()
 
@@ -34,7 +34,6 @@
 @implementation CPViewController
 @synthesize myPasteboardHolderView = _myPasteboardHolderView;
 @synthesize userProfilePopoverController = _userProfilePopoverController;
-@synthesize otherPasteboardHolderView = _otherPasteboardHolderView;
 @synthesize settingButton = _settingButton;
 @synthesize availableUsersGridView = _availableUsersGridView;
 
@@ -88,17 +87,7 @@
     self.myPasteboardHolderView.layer.cornerRadius = 3;
     //self.myPasteboardHolderView.clipsToBounds = YES; // pasteboardHeaderImageView is positioned slightly beyond bounds (can change this)
     [self.view addSubview:self.myPasteboardHolderView];
-        
-    // The "other pasteboard holder view"
-    self.otherPasteboardHolderView = [[CPPasteboardView alloc] initWithFrame:CGRectMake(kOffset+2,
-                                                                                        kOffset+kHeaderViewHeight+kOffset+  kPasteboardMinimumHeight+kUserHolderHeight,
-                                                                                        self.view.frame.size.width - 2*(kOffset+2),
-                                                                                        kPasteboardMinimumHeight)];
-    self.otherPasteboardHolderView.backgroundColor = [UIColor clearColor];
-    self.otherPasteboardHolderView.layer.cornerRadius = 3;
-    self.otherPasteboardHolderView.clipsToBounds = YES;
-    [self.view addSubview:self.otherPasteboardHolderView];
-        
+                
 	[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateUI)
                                                  name:kNotificationApplicationDidBecomeActive
@@ -278,9 +267,45 @@
     }
 }
 
-- (void)pasteToUserWithButton:(UIButton *)button
-{
+- (void)pasteToUserWithButton:(UIButton *)button {
     [self pasteToUserAtPosition:button.tag];
+}
+
+- (void)showUserProfileAtPosition:(NSInteger)position {
+    CPProfileViewController *profileViewController = [[CPProfileViewController alloc] init];
+    profileViewController.profileUser = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
+    profileViewController.view.frame = CGRectMake(0, 0, 320, 200);
+    
+    self.userProfilePopoverController = [[WEPopoverController alloc] initWithContentViewController:profileViewController];
+    [self.userProfilePopoverController setPopoverContentSize:CGSizeMake(320, 200)];
+    [self.userProfilePopoverController setDelegate:self];
+    
+    float popoverWidth = self.availableUsersGridView.frame.size.width;
+    switch (position % 3) {
+        case 0:
+            popoverWidth = self.availableUsersGridView.frame.size.width/3;
+            break;
+        case 1:
+            popoverWidth = self.availableUsersGridView.frame.size.width;
+            break;
+        case 2:
+            popoverWidth = self.availableUsersGridView.frame.size.width*3/2;
+            break;
+        default:
+            break;
+    }
+    CGRect popoverRect = CGRectMake(self.availableUsersGridView.frame.origin.x,
+                                    self.availableUsersGridView.frame.origin.y+20,
+                                    popoverWidth,
+                                    self.availableUsersGridView.frame.size.height);
+    [self.userProfilePopoverController presentPopoverFromRect:popoverRect
+                                                       inView:self.view
+                                     permittedArrowDirections:UIPopoverArrowDirectionDown
+                                                     animated:NO];
+}
+
+- (void)showUserProfileWithButton:(UIButton *)button {
+    [self showUserProfileAtPosition:button.tag];
 }
 
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView_ cellForItemAtIndex:(NSInteger)index {
@@ -291,12 +316,16 @@
         cell.clipsToBounds = YES;
         
         UIImage *personBackgroundImage = [UIImage imageNamed:@"person-background.fw.png"];
-        UIImageView *personBackgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                               0,
-                                                                                               personBackgroundImage.size.width,
-                                                                                               personBackgroundImage.size.height)];
-        personBackgroundImageView.image = personBackgroundImage;
-        [cell addSubview:personBackgroundImageView];
+        UIButton *personBackgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                                      0,
+                                                                                      personBackgroundImage.size.width,
+                                                                                      personBackgroundImage.size.height)];
+        [personBackgroundButton setBackgroundColor:[UIColor clearColor]];
+        [personBackgroundButton setImage:personBackgroundImage forState:UIControlStateNormal];
+        [personBackgroundButton setTag:index];
+        [personBackgroundButton addTarget:self action:@selector(showUserProfileWithButton:)
+                         forControlEvents:UIControlEventTouchUpInside];
+        [cell addSubview:personBackgroundButton];
         
         EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake((personBackgroundImage.size.width-kUserAvatarWidth)/2,
                                                                                    (personBackgroundImage.size.width-kUserAvatarWidth)/2,
@@ -357,37 +386,7 @@
 }
 
 - (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position {
-    CPProfileViewController *profileViewController = [[CPProfileViewController alloc] init];
-    profileViewController.profileUser = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
-    profileViewController.view.frame = CGRectMake(0, 0, 320, 200);
     
-    self.userProfilePopoverController = [[WEPopoverController alloc] initWithContentViewController:profileViewController];
-    [self.userProfilePopoverController setPopoverContentSize:CGSizeMake(320, 200)];
-    [self.userProfilePopoverController setDelegate:self];
-    
-    float popoverWidth = gridView.frame.size.width;
-    switch (position % 3) {
-        case 0:
-            popoverWidth = gridView.frame.size.width/3;
-            break;
-        case 1:
-            popoverWidth = gridView.frame.size.width;
-            break;
-        case 2:
-            popoverWidth = gridView.frame.size.width*3/2;
-            break;
-        default:
-            break;
-    }
-    DLog(@"cell frame: %@", [gridView cellForItemAtIndex:position]);
-    CGRect popoverRect = CGRectMake(gridView.frame.origin.x,
-                                    gridView.frame.origin.y+20,
-                                    popoverWidth,
-                                    gridView.frame.size.height);
-    [self.userProfilePopoverController presentPopoverFromRect:popoverRect
-                                                       inView:self.view
-                                     permittedArrowDirections:UIPopoverArrowDirectionDown
-                                                     animated:NO];
 }
 
 - (void)didReceiveMessageFrom:(NSString *)userId
@@ -414,8 +413,6 @@
                                                                                  self.view.frame.size.height)];
     [messageView addMessageContent:newMessage];
     [messageView showMeOnView:self.view];
-    
-    [self.otherPasteboardHolderView updateUIWithPasteObject:messageContent];
 }
 
 - (void)imageViewLoadedImage:(EGOImageView *)imageView {
