@@ -73,12 +73,13 @@ static GSSession *activeSession = nil;
     [logInController setSignUpController:signUpViewController];
     
     // We should check Facebook permissions for this
-    NSArray *permissions = [NSArray arrayWithObjects:@"user_about_me", @"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location", nil];
-    [logInController setFacebookPermissions:permissions];
+    // friends_about_me
+    [logInController setFacebookPermissions:@[@"user_about_me", @"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location"]];
     [logInController setFields:PFLogInFieldsUsernameAndPassword
-                             | PFLogInFieldsFacebook
-                             | PFLogInFieldsSignUpButton
-                             | PFLogInFieldsDismissButton];
+//         | PFLogInFieldsTwitter
+         | PFLogInFieldsFacebook
+         | PFLogInFieldsSignUpButton];
+    // No PFLogInFieldsDismissButton - when would we want a user to dismiss?
     
     // Present the log in view controller
     //[viewController presentModalViewController:logInController animated:YES];
@@ -139,6 +140,7 @@ static GSSession *activeSession = nil;
 #pragma mark - Log In View Controller Delegate Methods
 
 // Sent to the delegate to determine whether the log in request should be submitted to the server.
+// Note that this method is NOT called when Twitter or Facebook login is used.
 - (BOOL)logInViewController:(PFLogInViewController *)logInController shouldBeginLogInWithUsername:(NSString *)username password:(NSString *)password {
     // Check if both fields are completed
     if (username && password && username.length != 0 && password.length != 0) {
@@ -172,10 +174,17 @@ static GSSession *activeSession = nil;
     }
 }
 
+// Sent to the delegate when the log in attempt fails.
 - (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
         [self.delegate didLoginFailed:error];
     }
+}
+
+// Sent to the delegate when the log in screen is dismissed.
+- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
+    //[self.navigationController popViewControllerAnimated:YES];
+    DLog(@"log in screen dismissed");
 }
 
 - (void)updateUserInfoFromSmartboardAPIWithBlock:(GSResultBlock)block {
