@@ -63,11 +63,14 @@ static GSSession *activeSession = nil;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSessionDelegate>)delegate {
     self.delegate = delegate;
     
-    CPLogInViewController *logInController = [[CPLogInViewController alloc] init];
+    CPLogInViewController *logInController = [[CPLogInViewController alloc] init]; // PFLogInViewController subclass
     logInController.delegate = self;
     
-    // For next, we should allocate new Sign Up View Controller to be able to customize the UI
-    logInController.signUpController.delegate = self;
+    // Create the sign up view controller
+    PFSignUpViewController *signUpViewController = [[PFSignUpViewController alloc] init];
+    signUpViewController.delegate = self;
+    
+    [logInController setSignUpController:signUpViewController];
     
     // We should check Facebook permissions for this
     NSArray *permissions = [NSArray arrayWithObjects:@"user_about_me", @"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location", nil];
@@ -76,7 +79,10 @@ static GSSession *activeSession = nil;
                              | PFLogInFieldsFacebook
                              | PFLogInFieldsSignUpButton
                              | PFLogInFieldsDismissButton];
-    [viewController presentModalViewController:logInController animated:YES];
+    
+    // Present the log in view controller
+    //[viewController presentModalViewController:logInController animated:YES];
+    [viewController presentViewController:logInController animated:YES completion:NULL];
 }
 
 #pragma mark - Sign Up View Controller Delegate Methods
@@ -130,19 +136,37 @@ static GSSession *activeSession = nil;
     DLog(@"User dismissed the signUpViewController");
 }
 
+#pragma mark - Log In View Controller Delegate Methods
+
+// Sent to the delegate to determine whether the log in request should be submitted to the server.
+- (BOOL)logInViewController:(PFLogInViewController *)logInController shouldBeginLogInWithUsername:(NSString *)username password:(NSString *)password {
+    // Check if both fields are completed
+    if (username && password && username.length != 0 && password.length != 0) {
+        return YES; // Begin login process
+    }
+    
+    [[[UIAlertView alloc] initWithTitle:@"Missing Information"
+                                message:@"Make sure you fill out all of the information!"
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
+    return NO; // Interrupt login process
+}
+
+// TODO: You can use this method to perform additional on-boarding logic, such as downloading a profile picture
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
-        [self setUserInitialApp];
+        [self setUserInitialApp]; // set initial_app_name
         
         if ([PFFacebookUtils isLinkedWithUser:user]) {
             [self linkFacebookDataBlock:^(BOOL succeed, NSError *error) {
-                [self initOrUpdateGSUser];
-                [self.delegate didLoginSucceeded];
+                [self initOrUpdateGSUser]; // create GSUser object
+                [self.delegate didLoginSucceeded]; // dismiss the log in view controller
             }];
         } else {
             [self initEssentialDataBlock:^(BOOL succeed, NSError *error) {
-                [self initOrUpdateGSUser];
-                [self.delegate didLoginSucceeded];
+                [self initOrUpdateGSUser]; // create GSUser object
+                [self.delegate didLoginSucceeded]; // dismiss the log in view controller
             }];
         }
     }
