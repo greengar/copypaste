@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import <Parse/Parse.h>
+#import "GSUtils.h"
 
 @interface GSObject : NSObject
 

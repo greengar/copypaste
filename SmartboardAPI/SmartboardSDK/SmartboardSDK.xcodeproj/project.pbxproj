@@ -66,9 +66,9 @@
 		7B56A3F3172EE7E80021E5DC /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3D7172EE7CA0021E5DC /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B56A3F4172EE7F40021E5DC /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E5172EE7CA0021E5DC /* NSData+Base64.m */; };
 		7B56A3F5172EE7F70021E5DC /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E4172EE7CA0021E5DC /* NSData+Base64.h */; };
-		7B56A3F8172EE8670021E5DC /* CPLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* CPLogInViewController.m */; };
-		7B56A3F9172EE86E0021E5DC /* CPLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* CPLogInViewController.m */; };
-		7B56A3FA172EE8740021E5DC /* CPLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3F6172EE8670021E5DC /* CPLogInViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B56A3F8172EE8670021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
+		7B56A3F9172EE86E0021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
+		7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A405172EEB620021E5DC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A402172EEB620021E5DC /* FacebookSDK.framework */; };
 		7B56A406172EEB620021E5DC /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A403172EEB620021E5DC /* Firebase.framework */; };
 		7B56A407172EEB620021E5DC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A404172EEB620021E5DC /* Parse.framework */; };
@@ -123,8 +123,8 @@
 		7B56A3E2172EE7CA0021E5DC /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		7B56A3E4172EE7CA0021E5DC /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		7B56A3E5172EE7CA0021E5DC /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
-		7B56A3F6172EE8670021E5DC /* CPLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLogInViewController.h; sourceTree = "<group>"; };
-		7B56A3F7172EE8670021E5DC /* CPLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLogInViewController.m; sourceTree = "<group>"; };
+		7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSLogInViewController.h; sourceTree = "<group>"; };
+		7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSLogInViewController.m; sourceTree = "<group>"; };
 		7B56A402172EEB620021E5DC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		7B56A403172EEB620021E5DC /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		7B56A404172EEB620021E5DC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
@@ -248,8 +248,8 @@
 		7B56A398172EE6B40021E5DC /* SourceCode */ = {
 			isa = PBXGroup;
 			children = (
-				7B56A3F6172EE8670021E5DC /* CPLogInViewController.h */,
-				7B56A3F7172EE8670021E5DC /* CPLogInViewController.m */,
+				7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */,
+				7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */,
 				7B56A399172EE6B40021E5DC /* GSObject.h */,
 				7B56A39A172EE6B40021E5DC /* GSObject.m */,
 				7B56A39B172EE6B40021E5DC /* GSParseQueryHelper.h */,
@@ -338,7 +338,7 @@
 				7B56A3B1172EE74D0021E5DC /* GSUtils.h in Headers */,
 				7B56A3B2172EE7520021E5DC /* GSUser.h in Headers */,
 				7B56A3B0172EE74A0021E5DC /* GSSession.h in Headers */,
-				7B56A3FA172EE8740021E5DC /* CPLogInViewController.h in Headers */,
+				7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */,
 				7B56A3F5172EE7F70021E5DC /* NSData+Base64.h in Headers */,
 				7B56A3F0172EE7DA0021E5DC /* Reachability.h in Headers */,
 				7B56A3AE172EE7370021E5DC /* GSParseQueryHelper.h in Headers */,
@@ -475,7 +475,7 @@
 				7B56A3E6172EE7CA0021E5DC /* Reachability.m in Sources */,
 				7B56A3EE172EE7CA0021E5DC /* SVProgressHUD.m in Sources */,
 				7B56A3EF172EE7CA0021E5DC /* NSData+Base64.m in Sources */,
-				7B56A3F8172EE8670021E5DC /* CPLogInViewController.m in Sources */,
+				7B56A3F8172EE8670021E5DC /* GSLogInViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +491,7 @@
 				7B56A3AB172EE71F0021E5DC /* GSUser.m in Sources */,
 				7B56A3F4172EE7F40021E5DC /* NSData+Base64.m in Sources */,
 				7B56A3AA172EE71C0021E5DC /* GSSession.m in Sources */,
-				7B56A3F9172EE86E0021E5DC /* CPLogInViewController.m in Sources */,
+				7B56A3F9172EE86E0021E5DC /* GSLogInViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

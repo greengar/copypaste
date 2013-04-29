@@ -63,7 +63,7 @@ static GSSession *activeSession = nil;
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSessionDelegate>)delegate {
     self.delegate = delegate;
     
-    CPLogInViewController *logInController = [[CPLogInViewController alloc] init]; // PFLogInViewController subclass
+    GSLogInViewController *logInController = [[GSLogInViewController alloc] init]; // PFLogInViewController subclass
     logInController.delegate = self;
     
     // Create the sign up view controller

@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Parse/Parse.h>
-#import <Firebase/Firebase.h>
-#import "CPLogInViewController.h"
 #import "GSUser.h"
 #import "GSUtils.h"
+#import "GSLogInViewController.h"
+
 
 @protocol GSSessionDelegate
 - (void)didLoginSucceeded;
