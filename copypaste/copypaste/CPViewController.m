@@ -415,7 +415,8 @@
                                                                                  0,
                                                                                  self.view.frame.size.width,
                                                                                  self.view.frame.size.height)
-                                                              message:newMessage];
+                                                              message:newMessage
+                                                           controller:self];
     [messageView setDelegate:self];
     [messageView showMeOnView:self.view];
 }

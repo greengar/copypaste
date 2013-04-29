@@ -20,7 +20,7 @@
 
 @interface CPMessageView : UIView <EGOImageViewDelegate, UIScrollViewDelegate, UITextViewDelegate>
 
-- (id)initWithFrame:(CGRect)frame message:(CPMessage *)message;
+- (id)initWithFrame:(CGRect)frame message:(CPMessage *)message controller:(UIViewController *)controller;
 - (void)showMeOnView:(UIView *)view;
 
 @property (nonatomic, retain) CPMessage *message;
@@ -32,5 +32,6 @@
 @property (nonatomic, retain) UIScrollView *pasteboardImageHolderView;
 @property (nonatomic, retain) UIImageView *pasteboardImageView;
 @property (nonatomic, assign) id<CPMessageViewDelegate> delegate;
+@property (nonatomic, retain) UIViewController *viewController;
 
 @end

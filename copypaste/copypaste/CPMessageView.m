@@ -22,12 +22,13 @@
 @synthesize userAvatarImageView = _userAvatarImageView;
 @synthesize usernameLabel = _usernameLabel;
 @synthesize delegate = _delegate;
+@synthesize viewController = _viewController;
 
-- (id)initWithFrame:(CGRect)frame message:(CPMessage *)message
-{
+- (id)initWithFrame:(CGRect)frame message:(CPMessage *)message controller:(UIViewController *)controller {
     self = [super initWithFrame:frame];
     if (self) {
         self.message = message;
+        self.viewController = controller;
         
         self.layer.cornerRadius = 5;
         self.clipsToBounds = YES;
@@ -185,7 +186,20 @@
 }
 
 - (void)saveButtonTapped:(id)sender {
-    [self removeFromSuperview];
+    // If only text, so we just need to copy the content
+    if ([self.message.messageContent isKindOfClass:[NSString class]]) {
+        [self copyButtonTapped:nil];
+        
+    } else if ([self.message.messageContent isKindOfClass:[UIImage class]]) {
+        if (self.viewController) {
+            UIImage *image = (UIImage *) self.message.messageContent;
+            NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+            NSArray* dataToShare = @[imageData];
+            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:dataToShare
+                                                                                             applicationActivities:nil];
+            [self.viewController presentViewController:activityController animated:YES completion:nil];
+        }
+    }
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(saveMessage:)]) {
         [self.delegate saveMessage:self.message];
@@ -193,8 +207,6 @@
 }
 
 - (void)copyButtonTapped:(id)sender {
-    [self removeFromSuperview];
-    
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     if ([self.message.messageContent isKindOfClass:[NSString class]]) {
         NSString *string = (NSString *) self.message.messageContent;
@@ -208,14 +220,21 @@
     }
     [pasteboard setPersistent:YES];
     
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Copied"
+                                                        message:@"You copied the content to your clipboard"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+    [alertView show];
+    
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(copyMessage:)]) {
         [self.delegate copyMessage:self.message];
     }
 }
 
 - (void)discardButtonTapped:(id)sender {
-    [self removeFromSuperview];
     
+    [self removeFromSuperview];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(discardMessage:)]) {
         [self.delegate discardMessage:self.message];
     }
