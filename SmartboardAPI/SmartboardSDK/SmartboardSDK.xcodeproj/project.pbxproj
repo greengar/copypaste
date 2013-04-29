@@ -50,22 +50,13 @@
 		7B56A3B6172EE7A00021E5DC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A3B3172EE7A00021E5DC /* FacebookSDK.framework */; };
 		7B56A3B7172EE7A00021E5DC /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A3B4172EE7A00021E5DC /* Firebase.framework */; };
 		7B56A3B8172EE7A00021E5DC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A3B5172EE7A00021E5DC /* Parse.framework */; };
-		7B56A3E6172EE7CA0021E5DC /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3D7172EE7CA0021E5DC /* Reachability.m */; };
-		7B56A3E7172EE7CA0021E5DC /* comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3DA172EE7CA0021E5DC /* comment.png */; };
-		7B56A3E8172EE7CA0021E5DC /* comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3DB172EE7CA0021E5DC /* comment@2x.png */; };
-		7B56A3E9172EE7CA0021E5DC /* friend.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3DC172EE7CA0021E5DC /* friend.png */; };
-		7B56A3EA172EE7CA0021E5DC /* friend@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3DD172EE7CA0021E5DC /* friend@2x.png */; };
-		7B56A3EB172EE7CA0021E5DC /* love.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3DE172EE7CA0021E5DC /* love.png */; };
-		7B56A3EC172EE7CA0021E5DC /* love@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3DF172EE7CA0021E5DC /* love@2x.png */; };
 		7B56A3ED172EE7CA0021E5DC /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3E0172EE7CA0021E5DC /* SVProgressHUD.bundle */; };
-		7B56A3EE172EE7CA0021E5DC /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E2172EE7CA0021E5DC /* SVProgressHUD.m */; };
-		7B56A3EF172EE7CA0021E5DC /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E5172EE7CA0021E5DC /* NSData+Base64.m */; };
-		7B56A3F0172EE7DA0021E5DC /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3D6172EE7CA0021E5DC /* Reachability.h */; };
-		7B56A3F1172EE7E20021E5DC /* SVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E1172EE7CA0021E5DC /* SVProgressHUD.h */; };
-		7B56A3F2172EE7E60021E5DC /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E2172EE7CA0021E5DC /* SVProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		7B56A3F3172EE7E80021E5DC /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3D7172EE7CA0021E5DC /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		7B56A3F4172EE7F40021E5DC /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E5172EE7CA0021E5DC /* NSData+Base64.m */; };
-		7B56A3F5172EE7F70021E5DC /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E4172EE7CA0021E5DC /* NSData+Base64.h */; };
+		7B56A3EE172EE7CA0021E5DC /* GSSVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E2172EE7CA0021E5DC /* GSSVProgressHUD.m */; };
+		7B56A3EF172EE7CA0021E5DC /* NSData+GSBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */; };
+		7B56A3F1172EE7E20021E5DC /* GSSVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E1172EE7CA0021E5DC /* GSSVProgressHUD.h */; };
+		7B56A3F2172EE7E60021E5DC /* GSSVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E2172EE7CA0021E5DC /* GSSVProgressHUD.m */; };
+		7B56A3F4172EE7F40021E5DC /* NSData+GSBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */; };
+		7B56A3F5172EE7F70021E5DC /* NSData+GSBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E4172EE7CA0021E5DC /* NSData+GSBase64.h */; };
 		7B56A3F8172EE8670021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
 		7B56A3F9172EE86E0021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
 		7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -110,19 +101,11 @@
 		7B56A3B3172EE7A00021E5DC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = SmartboardSDK/SDKs/FacebookSDK.framework; sourceTree = "<group>"; };
 		7B56A3B4172EE7A00021E5DC /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = SmartboardSDK/SDKs/Firebase.framework; sourceTree = "<group>"; };
 		7B56A3B5172EE7A00021E5DC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = SmartboardSDK/SDKs/Parse.framework; sourceTree = "<group>"; };
-		7B56A3D6172EE7CA0021E5DC /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		7B56A3D7172EE7CA0021E5DC /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		7B56A3DA172EE7CA0021E5DC /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment.png; sourceTree = "<group>"; };
-		7B56A3DB172EE7CA0021E5DC /* comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comment@2x.png"; sourceTree = "<group>"; };
-		7B56A3DC172EE7CA0021E5DC /* friend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend.png; sourceTree = "<group>"; };
-		7B56A3DD172EE7CA0021E5DC /* friend@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend@2x.png"; sourceTree = "<group>"; };
-		7B56A3DE172EE7CA0021E5DC /* love.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = love.png; sourceTree = "<group>"; };
-		7B56A3DF172EE7CA0021E5DC /* love@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "love@2x.png"; sourceTree = "<group>"; };
 		7B56A3E0172EE7CA0021E5DC /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
-		7B56A3E1172EE7CA0021E5DC /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
-		7B56A3E2172EE7CA0021E5DC /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
-		7B56A3E4172EE7CA0021E5DC /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
-		7B56A3E5172EE7CA0021E5DC /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		7B56A3E1172EE7CA0021E5DC /* GSSVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSVProgressHUD.h; sourceTree = "<group>"; };
+		7B56A3E2172EE7CA0021E5DC /* GSSVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSVProgressHUD.m; sourceTree = "<group>"; };
+		7B56A3E4172EE7CA0021E5DC /* NSData+GSBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GSBase64.h"; sourceTree = "<group>"; };
+		7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GSBase64.m"; sourceTree = "<group>"; };
 		7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSLogInViewController.h; sourceTree = "<group>"; };
 		7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSLogInViewController.m; sourceTree = "<group>"; };
 		7B56A402172EEB620021E5DC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
@@ -267,51 +250,27 @@
 		7B56A3D4172EE7CA0021E5DC /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				7B56A3D5172EE7CA0021E5DC /* Reachability */,
 				7B56A3D8172EE7CA0021E5DC /* SVProgressHUD */,
 				7B56A3E3172EE7CA0021E5DC /* Utils */,
 			);
 			path = Support;
 			sourceTree = "<group>";
 		};
-		7B56A3D5172EE7CA0021E5DC /* Reachability */ = {
-			isa = PBXGroup;
-			children = (
-				7B56A3D6172EE7CA0021E5DC /* Reachability.h */,
-				7B56A3D7172EE7CA0021E5DC /* Reachability.m */,
-			);
-			path = Reachability;
-			sourceTree = "<group>";
-		};
 		7B56A3D8172EE7CA0021E5DC /* SVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
-				7B56A3D9172EE7CA0021E5DC /* Additional Image */,
 				7B56A3E0172EE7CA0021E5DC /* SVProgressHUD.bundle */,
-				7B56A3E1172EE7CA0021E5DC /* SVProgressHUD.h */,
-				7B56A3E2172EE7CA0021E5DC /* SVProgressHUD.m */,
+				7B56A3E1172EE7CA0021E5DC /* GSSVProgressHUD.h */,
+				7B56A3E2172EE7CA0021E5DC /* GSSVProgressHUD.m */,
 			);
 			path = SVProgressHUD;
-			sourceTree = "<group>";
-		};
-		7B56A3D9172EE7CA0021E5DC /* Additional Image */ = {
-			isa = PBXGroup;
-			children = (
-				7B56A3DA172EE7CA0021E5DC /* comment.png */,
-				7B56A3DB172EE7CA0021E5DC /* comment@2x.png */,
-				7B56A3DC172EE7CA0021E5DC /* friend.png */,
-				7B56A3DD172EE7CA0021E5DC /* friend@2x.png */,
-				7B56A3DE172EE7CA0021E5DC /* love.png */,
-				7B56A3DF172EE7CA0021E5DC /* love@2x.png */,
-			);
-			path = "Additional Image";
 			sourceTree = "<group>";
 		};
 		7B56A3E3172EE7CA0021E5DC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				7B56A3E4172EE7CA0021E5DC /* NSData+Base64.h */,
-				7B56A3E5172EE7CA0021E5DC /* NSData+Base64.m */,
+				7B56A3E4172EE7CA0021E5DC /* NSData+GSBase64.h */,
+				7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -339,10 +298,9 @@
 				7B56A3B2172EE7520021E5DC /* GSUser.h in Headers */,
 				7B56A3B0172EE74A0021E5DC /* GSSession.h in Headers */,
 				7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */,
-				7B56A3F5172EE7F70021E5DC /* NSData+Base64.h in Headers */,
-				7B56A3F0172EE7DA0021E5DC /* Reachability.h in Headers */,
+				7B56A3F5172EE7F70021E5DC /* NSData+GSBase64.h in Headers */,
 				7B56A3AE172EE7370021E5DC /* GSParseQueryHelper.h in Headers */,
-				7B56A3F1172EE7E20021E5DC /* SVProgressHUD.h in Headers */,
+				7B56A3F1172EE7E20021E5DC /* GSSVProgressHUD.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,12 +380,6 @@
 				7B56A367172EE09B0021E5DC /* Default.png in Resources */,
 				7B56A369172EE09B0021E5DC /* Default@2x.png in Resources */,
 				7B56A36B172EE09B0021E5DC /* Default-568h@2x.png in Resources */,
-				7B56A3E7172EE7CA0021E5DC /* comment.png in Resources */,
-				7B56A3E8172EE7CA0021E5DC /* comment@2x.png in Resources */,
-				7B56A3E9172EE7CA0021E5DC /* friend.png in Resources */,
-				7B56A3EA172EE7CA0021E5DC /* friend@2x.png in Resources */,
-				7B56A3EB172EE7CA0021E5DC /* love.png in Resources */,
-				7B56A3EC172EE7CA0021E5DC /* love@2x.png in Resources */,
 				7B56A3ED172EE7CA0021E5DC /* SVProgressHUD.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,9 +424,8 @@
 				7B56A3A5172EE6B40021E5DC /* GSSession.m in Sources */,
 				7B56A3A6172EE6B40021E5DC /* GSUser.m in Sources */,
 				7B56A3A7172EE6B40021E5DC /* GSUtils.m in Sources */,
-				7B56A3E6172EE7CA0021E5DC /* Reachability.m in Sources */,
-				7B56A3EE172EE7CA0021E5DC /* SVProgressHUD.m in Sources */,
-				7B56A3EF172EE7CA0021E5DC /* NSData+Base64.m in Sources */,
+				7B56A3EE172EE7CA0021E5DC /* GSSVProgressHUD.m in Sources */,
+				7B56A3EF172EE7CA0021E5DC /* NSData+GSBase64.m in Sources */,
 				7B56A3F8172EE8670021E5DC /* GSLogInViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -485,11 +436,10 @@
 			files = (
 				7B56A3A8172EE7180021E5DC /* GSObject.m in Sources */,
 				7B56A3AC172EE7210021E5DC /* GSUtils.m in Sources */,
-				7B56A3F2172EE7E60021E5DC /* SVProgressHUD.m in Sources */,
+				7B56A3F2172EE7E60021E5DC /* GSSVProgressHUD.m in Sources */,
 				7B56A3A9172EE71B0021E5DC /* GSParseQueryHelper.m in Sources */,
-				7B56A3F3172EE7E80021E5DC /* Reachability.m in Sources */,
 				7B56A3AB172EE71F0021E5DC /* GSUser.m in Sources */,
-				7B56A3F4172EE7F40021E5DC /* NSData+Base64.m in Sources */,
+				7B56A3F4172EE7F40021E5DC /* NSData+GSBase64.m in Sources */,
 				7B56A3AA172EE71C0021E5DC /* GSSession.m in Sources */,
 				7B56A3F9172EE86E0021E5DC /* GSLogInViewController.m in Sources */,
 			);
@@ -701,6 +651,7 @@
 				7B56A370172EE09B0021E5DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7B56A383172EE1890021E5DC /* Build configuration list for PBXNativeTarget "Smartboard" */ = {
 			isa = XCConfigurationList;
@@ -709,6 +660,7 @@
 				7B56A385172EE1890021E5DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7B56A38A172EE3170021E5DC /* Build configuration list for PBXAggregateTarget "BuildSmartboardSDK" */ = {
 			isa = XCConfigurationList;
@@ -717,6 +669,7 @@
 				7B56A38C172EE3170021E5DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

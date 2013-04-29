@@ -163,7 +163,7 @@
             }
         }
     }];
-    [[GSSession activeSession] addObserver:self];
+    [[GSSession activeSession] registerMessageReceiver:self];
     [self updateUI];
 }
 

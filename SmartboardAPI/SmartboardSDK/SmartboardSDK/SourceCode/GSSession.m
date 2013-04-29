@@ -8,8 +8,8 @@
 
 #import "GSSession.h"
 #import "GSParseQueryHelper.h"
-#import "NSData+Base64.h"
-#import "SVProgressHUD.h"
+#import "NSData+GSBase64.h"
+#import "GSSVProgressHUD.h"
 #import "GSObject.h"
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
@@ -38,6 +38,10 @@ static GSSession *activeSession = nil;
     static dispatch_once_t done;
     dispatch_once(&done, ^{ activeSession = [GSSession new]; });
     return activeSession;
+}
+
++ (GSUser *)currentUser {
+    return [[GSSession activeSession] currentUser];
 }
 
 - (id)init {
@@ -210,7 +214,7 @@ static GSSession *activeSession = nil;
     }];
 }
 
-- (void)addObserver:(id<GSSessionDelegate>)delegate {
+- (void)registerMessageReceiver:(id<GSSessionDelegate>)delegate {
     self.delegate = delegate;
     
     [[self getMyBaseFirebase] observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
@@ -242,7 +246,7 @@ static GSSession *activeSession = nil;
             
         } else if ([messageType isEqualToString:@"image"]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [SVProgressHUD showWithStatus:@"Receiving image"];
+                [GSSVProgressHUD showWithStatus:@"Receiving image"];
                 
                 dispatch_async(dispatch_get_current_queue(), ^{
                     NSObject *messageData = nil;
@@ -251,17 +255,17 @@ static GSSession *activeSession = nil;
                         for (int i = 0; i < [((NSArray *) messageContent) count]; i++) {
                             [messageString appendString:[((NSArray *) messageContent) objectAtIndex:i]];
                         }
-                        NSData *imageData = [NSData dataFromBase64String:messageString];
+                        NSData *imageData = [NSData gsDataFromBase64String:messageString];
                         DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
                         messageData = [UIImage imageWithData:imageData];
                         
                     } else {
-                        NSData *imageData = [NSData dataFromBase64String:((NSString *)messageContent)];
+                        NSData *imageData = [NSData gsDataFromBase64String:((NSString *)messageContent)];
                         DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
                         messageData = [UIImage imageWithData:imageData];
                     }
                     
-                    [SVProgressHUD dismissWithSuccess:@"Image received"];
+                    [GSSVProgressHUD dismiss];
                     if (messageData) {
                         if (self.delegate
                             && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
@@ -294,13 +298,13 @@ static GSSession *activeSession = nil;
         
     } else if ([messageContent isKindOfClass:[UIImage class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD showWithStatus:@"Sending image"];
+            [GSSVProgressHUD showWithStatus:@"Sending image"];
             
             dispatch_async(dispatch_get_current_queue(), ^{
                 NSData *imageData = UIImageJPEGRepresentation(((UIImage *) messageContent), 0.5);
                 DLog(@"Sent image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
                 NSString *messageType = @"image";
-                NSString *messageString = [imageData base64EncodedString];
+                NSString *messageString = [imageData gsBase64EncodedString];
                 NSString *messageTime = [GSUtils getCurrentTime];
                 NSObject *messageData = @"";
                 
@@ -328,7 +332,7 @@ static GSSession *activeSession = nil;
                                                                                @"content"  : messageData,
                                                                                @"time"     : messageTime}
                                                          withCompletionBlock:^(NSError *error) {
-                                                             [SVProgressHUD dismissWithSuccess:@"Image sent"];
+                                                             [GSSVProgressHUD dismiss];
                                                                                }];
             });
         });

@@ -24,6 +24,14 @@
 
 #define NSDEF [NSUserDefaults standardUserDefaults]
 
+@protocol GSSessionDelegate
+- (void)didLoginSucceeded;
+- (void)didLoginFailed:(NSError *)error;
+- (void)didReceiveMessageFrom:(NSString *)senderUID
+                      content:(NSObject *)messageContent
+                         time:(NSString *)messageTime;
+@end
+
 @interface GSUtils : NSObject
 
 + (NSString *) getCurrentTime;
