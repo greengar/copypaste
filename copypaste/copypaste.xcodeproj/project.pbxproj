@@ -168,7 +168,7 @@
 		7B41E4A01729F389002157DF /* WEPopoverParentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WEPopoverParentView.h; sourceTree = "<group>"; };
 		7B41E4A11729F389002157DF /* WETouchableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WETouchableView.h; sourceTree = "<group>"; };
 		7B41E4A21729F389002157DF /* WETouchableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WETouchableView.m; sourceTree = "<group>"; };
-		7B41E4B61729F51C002157DF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7B41E4B61729F51C002157DF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = copypaste/README.md; sourceTree = "<group>"; };
 		7B4574E817287D2500675AE5 /* CPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPMessage.h; sourceTree = "<group>"; };
 		7B4574E917287D2500675AE5 /* CPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPMessage.m; sourceTree = "<group>"; };
 		7B4574F117288AEE00675AE5 /* CPMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPMessageView.h; sourceTree = "<group>"; };
@@ -448,6 +448,7 @@
 		A99F71BF1717534F00172B13 = {
 			isa = PBXGroup;
 			children = (
+				7B41E4B61729F51C002157DF /* README.md */,
 				A99F71D11717535000172B13 /* copypaste */,
 				A99F71F81717535000172B13 /* copypasteTests */,
 				A99F71CA1717535000172B13 /* Frameworks */,
@@ -503,7 +504,6 @@
 				7B346705171CDA0A00B73449 /* Support */,
 				7B2CD38C1725B865006380F3 /* Resources */,
 				A99F71D21717535000172B13 /* Supporting Files */,
-				7B41E4B61729F51C002157DF /* README.md */,
 			);
 			path = copypaste;
 			sourceTree = "<group>";
