@@ -8,10 +8,8 @@
 
 #import "CPViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import <Firebase/Firebase.h>
+#import <Smartboard/Smartboard.h>
 #import "GMGridViewLayoutStrategies.h"
-#import "GSParseQueryHelper.h"
-#import "NSData+Base64.h"
 
 #define kUserHolderWidth 102
 #define kUserHolderHeight 140

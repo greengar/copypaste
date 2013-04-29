@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Smartboard/Smartboard.h>
 
 @interface CPAppDelegate : UIResponder <UIApplicationDelegate>
 

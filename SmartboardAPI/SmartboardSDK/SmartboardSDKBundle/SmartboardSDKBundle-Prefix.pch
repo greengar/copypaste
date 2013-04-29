@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'SmartboardSDKBundle' target in the 'SmartboardSDKBundle' project
+//
+
+#ifdef __OBJC__
+    //#import <Cocoa/Cocoa.h>
+#endif

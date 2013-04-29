@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GSUser.h"
-#import "GSUtils.h"
+#import <Smartboard/Smartboard.h>
 
 @interface CPMessage : NSObject
 

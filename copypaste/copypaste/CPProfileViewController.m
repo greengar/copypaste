@@ -7,7 +7,7 @@
 //
 
 #import "CPProfileViewController.h"
-#import "GSSession.h"
+#import <Smartboard/Smartboard.h>
 
 #define kOffset 8
 #define kAvatarSize 76

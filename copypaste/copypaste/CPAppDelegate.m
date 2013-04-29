@@ -7,7 +7,6 @@
 //
 
 #import "CPAppDelegate.h"
-#import "GSSession.h"
 
 @implementation CPAppDelegate
 

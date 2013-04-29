@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Smartboard/Smartboard.h>
 #import "DataManager.h"
 #import "GMGridView.h"
 #import "EGOImageView.h"
-#import "GSSession.h"
-#import "GSObject.h"
 #import "CPPasteboardView.h"
 #import "CPMessageView.h"
 #import "WEPopoverController.h"

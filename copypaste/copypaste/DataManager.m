@@ -7,8 +7,7 @@
 //
 
 #import "DataManager.h"
-#import <FacebookSDK/FacebookSDK.h>
-#import "GSSession.h"
+#import <Smartboard/Smartboard.h>
 
 static DataManager *shareManager = nil;
 

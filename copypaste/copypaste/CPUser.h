@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "GSUser.h"
+#import <Smartboard/Smartboard.h>
 
 @interface CPUser : GSUser
 @property (nonatomic) int numOfCopyFromMe;

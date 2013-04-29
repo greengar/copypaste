@@ -8,7 +8,7 @@
 
 #import "CPMessageView.h"
 #import <QuartzCore/QuartzCore.h>
-#import "GSSession.h"
+#import <Smartboard/Smartboard.h>
 
 #define kOffset 6
 #define kHeaderHeight 100
