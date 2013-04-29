@@ -218,7 +218,6 @@
         NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
         [pasteboard setData:imageData forPasteboardType:@"public.jpg"];
     }
-    [pasteboard setPersistent:YES];
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Copied"
                                                         message:@"You copied the content to your clipboard"

@@ -244,6 +244,13 @@ static GSSession *activeSession = nil;
         if ([messageType isEqualToString:@"string"]) {
             messageData = messageContent;
             
+            if (messageData) {
+                if (self.delegate
+                    && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
+                    [self.delegate didReceiveMessageFrom:senderUID content:messageData time:messageTime];
+                }
+            }
+            
         } else if ([messageType isEqualToString:@"image"]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [GSSVProgressHUD showWithStatus:@"Receiving image"];
@@ -274,13 +281,6 @@ static GSSession *activeSession = nil;
                     }
                 });
             });
-        }
-        
-        if (messageData && [receiverUID isEqualToString:self.currentUser.uid]) {
-            if (self.delegate
-                && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
-                [self.delegate didReceiveMessageFrom:senderUID content:messageData time:messageTime];
-            }
         }
     }
 }

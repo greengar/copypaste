@@ -49,8 +49,15 @@
     [[GSSession activeSession] applicationWillTerminate:application];
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
+    if ([url isFileURL]) {
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        NSDictionary *dict = [NSDictionary dictionaryWithObject:data forKey:@"content"];
+        NSNotification *notification = [NSNotification notificationWithName:kNotificationOpenFileURL
+                                                                     object:nil
+                                                                   userInfo:dict];
+        [[NSNotificationCenter defaultCenter] postNotification:notification];
+    }
     return [[GSSession activeSession] application:application
                                            openURL:url
                                  sourceApplication:sourceApplication

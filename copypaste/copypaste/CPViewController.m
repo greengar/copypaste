@@ -90,6 +90,10 @@
                                              selector:@selector(updateUI)
                                                  name:kNotificationApplicationDidBecomeActive
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(getFileURL:)
+                                                 name:kNotificationOpenFileURL
+                                               object:nil];
     
     self.availableUsersGridView = [[GMGridView alloc] initWithFrame:CGRectMake(kOffset,
                                                                                kOffset+kHeaderViewHeight+kOffset+self.myPasteboardHolderView.frame.size.height,
@@ -419,6 +423,12 @@
                                                            controller:self];
     [messageView setDelegate:self];
     [messageView showMeOnView:self.view];
+}
+
+- (void)getFileURL:(NSNotification *)notification {
+    NSData *data = [[notification userInfo] objectForKey:@"content"];
+    [[UIPasteboard generalPasteboard] setData:data forPasteboardType:@"public.jpg"];
+    [self updateUI];
 }
 
 - (void)copyMessage:(CPMessage *)message {
