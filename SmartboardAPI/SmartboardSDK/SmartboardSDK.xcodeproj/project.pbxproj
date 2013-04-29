@@ -179,11 +179,11 @@
 		7B56A35A172EE09B0021E5DC /* SmartboardSDK */ = {
 			isa = PBXGroup;
 			children = (
+				7B41CD5C172EFB780012FF63 /* InstructionGuide.rtf */,
 				7B56A371172EE0E30021E5DC /* Class */,
 				7B56A363172EE09B0021E5DC /* GSAppDelegate.h */,
 				7B56A364172EE09B0021E5DC /* GSAppDelegate.m */,
 				7B56A35B172EE09B0021E5DC /* Supporting Files */,
-				7B41CD5C172EFB780012FF63 /* InstructionGuide.rtf */,
 			);
 			path = SmartboardSDK;
 			sourceTree = "<group>";
