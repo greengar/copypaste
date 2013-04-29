@@ -24,11 +24,11 @@
 @synthesize delegate = _delegate;
 @synthesize viewController = _viewController;
 
-- (id)initWithFrame:(CGRect)frame message:(CPMessage *)message controller:(UIViewController *)controller {
+- (id)initWithFrame:(CGRect)frame message:(CPMessage *)message controller:(UIViewController *)baseController {
     self = [super initWithFrame:frame];
     if (self) {
         self.message = message;
-        self.viewController = controller;
+        self.baseViewController = baseController;
         
         self.layer.cornerRadius = 5;
         self.clipsToBounds = YES;
@@ -145,19 +145,25 @@
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [saveButton setTitle:@"Save" forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(saveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [saveButton setFrame:CGRectMake(0, 400, 106, 60)];
+        [saveButton setFrame:CGRectMake(0, 400, 80, 60)];
         [self addSubview:saveButton];
+        
+        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [shareButton setTitle:@"Open In" forState:UIControlStateNormal];
+        [shareButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [shareButton setFrame:CGRectMake(80, 400, 80, 60)];
+        [self addSubview:shareButton];
         
         UIButton *remindMeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [remindMeButton setTitle:@"Copy" forState:UIControlStateNormal];
         [remindMeButton addTarget:self action:@selector(copyButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [remindMeButton setFrame:CGRectMake(107, 400, 106, 60)];
+        [remindMeButton setFrame:CGRectMake(160, 400, 80, 60)];
         [self addSubview:remindMeButton];
         
         UIButton *discardButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [discardButton setTitle:@"Discard" forState:UIControlStateNormal];
         [discardButton addTarget:self action:@selector(discardButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [discardButton setFrame:CGRectMake(214, 400, 106, 60)];
+        [discardButton setFrame:CGRectMake(240, 400, 80, 60)];
         [self addSubview:discardButton];
         
         // Update message content
@@ -191,18 +197,46 @@
         [self copyButtonTapped:nil];
         
     } else if ([self.message.messageContent isKindOfClass:[UIImage class]]) {
-        if (self.viewController) {
+        if (self.baseViewController) {
             UIImage *image = (UIImage *) self.message.messageContent;
             NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
-            NSArray* dataToShare = @[imageData];
-            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:dataToShare
-                                                                                             applicationActivities:nil];
-            [self.viewController presentViewController:activityController animated:YES completion:nil];
+            NSArray *imageArray = @[imageData];
+            UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:imageArray
+                                                                                     applicationActivities:nil];
+            [self.baseViewController presentViewController:controller animated:YES completion:nil];
         }
     }
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(saveMessage:)]) {
         [self.delegate saveMessage:self.message];
+    }
+}
+
+- (void)shareButtonTapped:(id)sender {
+    // If only text, so we just need to copy the content
+    if ([self.message.messageContent isKindOfClass:[NSString class]]) {
+        [self copyButtonTapped:nil];
+        
+    } else if ([self.message.messageContent isKindOfClass:[UIImage class]]) {
+        UIImage *image = (UIImage *) self.message.messageContent;
+        NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+        NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *filePath = [basePath stringByAppendingPathComponent:@"copypaste Image.jpg"];
+        [imageData writeToFile:filePath atomically:NO];
+        NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+        
+        if (self.viewController) {
+            self.viewController = nil;
+        }
+        self.viewController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+        self.viewController.UTI = @"public.image";
+        [self.viewController presentOpenInMenuFromRect:CGRectZero
+                                                inView:self
+                                              animated:YES];
+    }
+    
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(shareMessage:)]) {
+        [self.delegate shareMessage:self.message];
     }
 }
 
@@ -232,7 +266,6 @@
 }
 
 - (void)discardButtonTapped:(id)sender {
-    
     [self removeFromSuperview];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(discardMessage:)]) {
         [self.delegate discardMessage:self.message];

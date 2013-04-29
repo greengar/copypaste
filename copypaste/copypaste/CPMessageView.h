@@ -14,13 +14,14 @@
 @protocol CPMessageViewDelegate
 @optional
 - (void)saveMessage:(CPMessage *)message;
+- (void)shareMessage:(CPMessage *)message;
 - (void)copyMessage:(CPMessage *)message;
 - (void)discardMessage:(CPMessage *)message;
 @end
 
 @interface CPMessageView : UIView <EGOImageViewDelegate, UIScrollViewDelegate, UITextViewDelegate>
 
-- (id)initWithFrame:(CGRect)frame message:(CPMessage *)message controller:(UIViewController *)controller;
+- (id)initWithFrame:(CGRect)frame message:(CPMessage *)message controller:(UIViewController *)baseController;
 - (void)showMeOnView:(UIView *)view;
 
 @property (nonatomic, retain) CPMessage *message;
@@ -32,6 +33,7 @@
 @property (nonatomic, retain) UIScrollView *pasteboardImageHolderView;
 @property (nonatomic, retain) UIImageView *pasteboardImageView;
 @property (nonatomic, assign) id<CPMessageViewDelegate> delegate;
-@property (nonatomic, retain) UIViewController *viewController;
+@property (nonatomic, retain) UIViewController *baseViewController;
+@property (nonatomic, retain) UIDocumentInteractionController *viewController;
 
 @end
