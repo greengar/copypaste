@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		7B41CD5D172EFB780012FF63 /* InstructionGuide.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7B41CD5C172EFB780012FF63 /* InstructionGuide.rtf */; };
 		7B56A355172EE09B0021E5DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A354172EE09B0021E5DC /* UIKit.framework */; };
 		7B56A357172EE09B0021E5DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A356172EE09B0021E5DC /* Foundation.framework */; };
 		7B56A359172EE09B0021E5DC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A358172EE09B0021E5DC /* CoreGraphics.framework */; };
@@ -69,6 +70,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B41CD5C172EFB780012FF63 /* InstructionGuide.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = InstructionGuide.rtf; sourceTree = "<group>"; };
 		7B56A351172EE09B0021E5DC /* SmartboardSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartboardSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B56A354172EE09B0021E5DC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7B56A356172EE09B0021E5DC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -181,6 +183,7 @@
 				7B56A363172EE09B0021E5DC /* GSAppDelegate.h */,
 				7B56A364172EE09B0021E5DC /* GSAppDelegate.m */,
 				7B56A35B172EE09B0021E5DC /* Supporting Files */,
+				7B41CD5C172EFB780012FF63 /* InstructionGuide.rtf */,
 			);
 			path = SmartboardSDK;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				7B56A369172EE09B0021E5DC /* Default@2x.png in Resources */,
 				7B56A36B172EE09B0021E5DC /* Default-568h@2x.png in Resources */,
 				7B56A3ED172EE7CA0021E5DC /* SVProgressHUD.bundle in Resources */,
+				7B41CD5D172EFB780012FF63 /* InstructionGuide.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
