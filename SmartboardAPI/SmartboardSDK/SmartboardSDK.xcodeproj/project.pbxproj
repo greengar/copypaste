@@ -67,6 +67,32 @@
 		7B56A40E172EED0F0021E5DC /* FacebookSDK.framework in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A402172EEB620021E5DC /* FacebookSDK.framework */; };
 		7B56A40F172EED0F0021E5DC /* Firebase.framework in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A403172EEB620021E5DC /* Firebase.framework */; };
 		7B56A410172EED0F0021E5DC /* Parse.framework in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A404172EEB620021E5DC /* Parse.framework */; };
+		A9B8D9FC1730883E00E7308F /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8D9FA1730883E00E7308F /* GSSignUpViewController.m */; };
+		A9B8D9FD1730887400E7308F /* GSSignUpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8D9F91730883E00E7308F /* GSSignUpViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A9B8DA0417308BB400E7308F /* GSTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8D9FE17308BB400E7308F /* GSTheme.h */; };
+		A9B8DA0517308BB400E7308F /* GSTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8D9FF17308BB400E7308F /* GSTheme.m */; };
+		A9B8DA0617308BB400E7308F /* UIColor+GSExpanded.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0017308BB400E7308F /* UIColor+GSExpanded.h */; };
+		A9B8DA0717308BB400E7308F /* UIColor+GSExpanded.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0117308BB400E7308F /* UIColor+GSExpanded.m */; };
+		A9B8DA0817308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0217308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h */; };
+		A9B8DA0917308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0317308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m */; };
+		A9B8DA2117308DFD00E7308F /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A9B8DA0C17308DFD00E7308F /* LICENSE */; };
+		A9B8DA2217308DFD00E7308F /* CoreTextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0E17308DFD00E7308F /* CoreTextUtils.h */; };
+		A9B8DA2317308DFD00E7308F /* CoreTextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0F17308DFD00E7308F /* CoreTextUtils.m */; };
+		A9B8DA2417308DFD00E7308F /* NSAttributedString+Attributes.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1117308DFD00E7308F /* NSAttributedString+Attributes.h */; };
+		A9B8DA2517308DFD00E7308F /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1217308DFD00E7308F /* NSAttributedString+Attributes.m */; };
+		A9B8DA2617308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1317308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h */; };
+		A9B8DA2717308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1417308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.m */; };
+		A9B8DA2817308DFD00E7308F /* OHAttributedLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1517308DFD00E7308F /* OHAttributedLabel.h */; };
+		A9B8DA2917308DFD00E7308F /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1617308DFD00E7308F /* OHAttributedLabel.m */; };
+		A9B8DA2A17308DFD00E7308F /* OHParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1717308DFD00E7308F /* OHParagraphStyle.h */; };
+		A9B8DA2B17308DFD00E7308F /* OHParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1817308DFD00E7308F /* OHParagraphStyle.m */; };
+		A9B8DA2C17308DFD00E7308F /* OHASBasicHTMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1A17308DFD00E7308F /* OHASBasicHTMLParser.h */; };
+		A9B8DA2D17308DFD00E7308F /* OHASBasicHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1B17308DFD00E7308F /* OHASBasicHTMLParser.m */; };
+		A9B8DA2E17308DFD00E7308F /* OHASBasicMarkupParser.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1C17308DFD00E7308F /* OHASBasicMarkupParser.h */; };
+		A9B8DA2F17308DFD00E7308F /* OHASBasicMarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1D17308DFD00E7308F /* OHASBasicMarkupParser.m */; };
+		A9B8DA3017308DFD00E7308F /* OHASMarkupParserBase.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1E17308DFD00E7308F /* OHASMarkupParserBase.h */; };
+		A9B8DA3117308DFD00E7308F /* OHASMarkupParserBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1F17308DFD00E7308F /* OHASMarkupParserBase.m */; };
+		A9B8DA3217308DFD00E7308F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A9B8DA2017308DFD00E7308F /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +139,32 @@
 		7B56A402172EEB620021E5DC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		7B56A403172EEB620021E5DC /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		7B56A404172EEB620021E5DC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		A9B8D9F91730883E00E7308F /* GSSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSignUpViewController.h; sourceTree = "<group>"; };
+		A9B8D9FA1730883E00E7308F /* GSSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSignUpViewController.m; sourceTree = "<group>"; };
+		A9B8D9FE17308BB400E7308F /* GSTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSTheme.h; sourceTree = "<group>"; };
+		A9B8D9FF17308BB400E7308F /* GSTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSTheme.m; sourceTree = "<group>"; };
+		A9B8DA0017308BB400E7308F /* UIColor+GSExpanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GSExpanded.h"; sourceTree = "<group>"; };
+		A9B8DA0117308BB400E7308F /* UIColor+GSExpanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GSExpanded.m"; sourceTree = "<group>"; };
+		A9B8DA0217308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+GSCustomPlaceholderTextColor.h"; sourceTree = "<group>"; };
+		A9B8DA0317308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+GSCustomPlaceholderTextColor.m"; sourceTree = "<group>"; };
+		A9B8DA0C17308DFD00E7308F /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A9B8DA0E17308DFD00E7308F /* CoreTextUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTextUtils.h; sourceTree = "<group>"; };
+		A9B8DA0F17308DFD00E7308F /* CoreTextUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreTextUtils.m; sourceTree = "<group>"; };
+		A9B8DA1117308DFD00E7308F /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Attributes.h"; sourceTree = "<group>"; };
+		A9B8DA1217308DFD00E7308F /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Attributes.m"; sourceTree = "<group>"; };
+		A9B8DA1317308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextCheckingResult+ExtendedURL.h"; sourceTree = "<group>"; };
+		A9B8DA1417308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextCheckingResult+ExtendedURL.m"; sourceTree = "<group>"; };
+		A9B8DA1517308DFD00E7308F /* OHAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHAttributedLabel.h; sourceTree = "<group>"; };
+		A9B8DA1617308DFD00E7308F /* OHAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHAttributedLabel.m; sourceTree = "<group>"; };
+		A9B8DA1717308DFD00E7308F /* OHParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHParagraphStyle.h; sourceTree = "<group>"; };
+		A9B8DA1817308DFD00E7308F /* OHParagraphStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHParagraphStyle.m; sourceTree = "<group>"; };
+		A9B8DA1A17308DFD00E7308F /* OHASBasicHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHASBasicHTMLParser.h; sourceTree = "<group>"; };
+		A9B8DA1B17308DFD00E7308F /* OHASBasicHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHASBasicHTMLParser.m; sourceTree = "<group>"; };
+		A9B8DA1C17308DFD00E7308F /* OHASBasicMarkupParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHASBasicMarkupParser.h; sourceTree = "<group>"; };
+		A9B8DA1D17308DFD00E7308F /* OHASBasicMarkupParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHASBasicMarkupParser.m; sourceTree = "<group>"; };
+		A9B8DA1E17308DFD00E7308F /* OHASMarkupParserBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHASMarkupParserBase.h; sourceTree = "<group>"; };
+		A9B8DA1F17308DFD00E7308F /* OHASMarkupParserBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHASMarkupParserBase.m; sourceTree = "<group>"; };
+		A9B8DA2017308DFD00E7308F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +288,8 @@
 			children = (
 				7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */,
 				7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */,
+				A9B8D9F91730883E00E7308F /* GSSignUpViewController.h */,
+				A9B8D9FA1730883E00E7308F /* GSSignUpViewController.m */,
 				7B56A399172EE6B40021E5DC /* GSObject.h */,
 				7B56A39A172EE6B40021E5DC /* GSObject.m */,
 				7B56A39B172EE6B40021E5DC /* GSParseQueryHelper.h */,
@@ -253,6 +307,7 @@
 		7B56A3D4172EE7CA0021E5DC /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				A9B8DA0A17308DFD00E7308F /* OHAttributedLabel */,
 				7B56A3D8172EE7CA0021E5DC /* SVProgressHUD */,
 				7B56A3E3172EE7CA0021E5DC /* Utils */,
 			);
@@ -272,6 +327,12 @@
 		7B56A3E3172EE7CA0021E5DC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A9B8D9FE17308BB400E7308F /* GSTheme.h */,
+				A9B8D9FF17308BB400E7308F /* GSTheme.m */,
+				A9B8DA0017308BB400E7308F /* UIColor+GSExpanded.h */,
+				A9B8DA0117308BB400E7308F /* UIColor+GSExpanded.m */,
+				A9B8DA0217308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h */,
+				A9B8DA0317308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m */,
 				7B56A3E4172EE7CA0021E5DC /* NSData+GSBase64.h */,
 				7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */,
 			);
@@ -288,6 +349,63 @@
 			path = SDKs;
 			sourceTree = "<group>";
 		};
+		A9B8DA0A17308DFD00E7308F /* OHAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				A9B8DA0B17308DFD00E7308F /* OHAttributedLabel */,
+				A9B8DA2017308DFD00E7308F /* README.md */,
+			);
+			path = OHAttributedLabel;
+			sourceTree = "<group>";
+		};
+		A9B8DA0B17308DFD00E7308F /* OHAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				A9B8DA0C17308DFD00E7308F /* LICENSE */,
+				A9B8DA0D17308DFD00E7308F /* PrivateUtils */,
+				A9B8DA1017308DFD00E7308F /* Source */,
+				A9B8DA1917308DFD00E7308F /* TagParsers */,
+			);
+			path = OHAttributedLabel;
+			sourceTree = "<group>";
+		};
+		A9B8DA0D17308DFD00E7308F /* PrivateUtils */ = {
+			isa = PBXGroup;
+			children = (
+				A9B8DA0E17308DFD00E7308F /* CoreTextUtils.h */,
+				A9B8DA0F17308DFD00E7308F /* CoreTextUtils.m */,
+			);
+			path = PrivateUtils;
+			sourceTree = "<group>";
+		};
+		A9B8DA1017308DFD00E7308F /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A9B8DA1117308DFD00E7308F /* NSAttributedString+Attributes.h */,
+				A9B8DA1217308DFD00E7308F /* NSAttributedString+Attributes.m */,
+				A9B8DA1317308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h */,
+				A9B8DA1417308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.m */,
+				A9B8DA1517308DFD00E7308F /* OHAttributedLabel.h */,
+				A9B8DA1617308DFD00E7308F /* OHAttributedLabel.m */,
+				A9B8DA1717308DFD00E7308F /* OHParagraphStyle.h */,
+				A9B8DA1817308DFD00E7308F /* OHParagraphStyle.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		A9B8DA1917308DFD00E7308F /* TagParsers */ = {
+			isa = PBXGroup;
+			children = (
+				A9B8DA1A17308DFD00E7308F /* OHASBasicHTMLParser.h */,
+				A9B8DA1B17308DFD00E7308F /* OHASBasicHTMLParser.m */,
+				A9B8DA1C17308DFD00E7308F /* OHASBasicMarkupParser.h */,
+				A9B8DA1D17308DFD00E7308F /* OHASBasicMarkupParser.m */,
+				A9B8DA1E17308DFD00E7308F /* OHASMarkupParserBase.h */,
+				A9B8DA1F17308DFD00E7308F /* OHASMarkupParserBase.m */,
+			);
+			path = TagParsers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -301,9 +419,21 @@
 				7B56A3B2172EE7520021E5DC /* GSUser.h in Headers */,
 				7B56A3B0172EE74A0021E5DC /* GSSession.h in Headers */,
 				7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */,
+				A9B8D9FD1730887400E7308F /* GSSignUpViewController.h in Headers */,
 				7B56A3F5172EE7F70021E5DC /* NSData+GSBase64.h in Headers */,
 				7B56A3AE172EE7370021E5DC /* GSParseQueryHelper.h in Headers */,
 				7B56A3F1172EE7E20021E5DC /* GSSVProgressHUD.h in Headers */,
+				A9B8DA0417308BB400E7308F /* GSTheme.h in Headers */,
+				A9B8DA0617308BB400E7308F /* UIColor+GSExpanded.h in Headers */,
+				A9B8DA0817308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h in Headers */,
+				A9B8DA2217308DFD00E7308F /* CoreTextUtils.h in Headers */,
+				A9B8DA2417308DFD00E7308F /* NSAttributedString+Attributes.h in Headers */,
+				A9B8DA2617308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h in Headers */,
+				A9B8DA2817308DFD00E7308F /* OHAttributedLabel.h in Headers */,
+				A9B8DA2A17308DFD00E7308F /* OHParagraphStyle.h in Headers */,
+				A9B8DA2C17308DFD00E7308F /* OHASBasicHTMLParser.h in Headers */,
+				A9B8DA2E17308DFD00E7308F /* OHASBasicMarkupParser.h in Headers */,
+				A9B8DA3017308DFD00E7308F /* OHASMarkupParserBase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +525,8 @@
 				7B56A40E172EED0F0021E5DC /* FacebookSDK.framework in Resources */,
 				7B56A40F172EED0F0021E5DC /* Firebase.framework in Resources */,
 				7B56A410172EED0F0021E5DC /* Parse.framework in Resources */,
+				A9B8DA2117308DFD00E7308F /* LICENSE in Resources */,
+				A9B8DA3217308DFD00E7308F /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +578,18 @@
 				7B56A3F4172EE7F40021E5DC /* NSData+GSBase64.m in Sources */,
 				7B56A3AA172EE71C0021E5DC /* GSSession.m in Sources */,
 				7B56A3F9172EE86E0021E5DC /* GSLogInViewController.m in Sources */,
+				A9B8D9FC1730883E00E7308F /* GSSignUpViewController.m in Sources */,
+				A9B8DA0517308BB400E7308F /* GSTheme.m in Sources */,
+				A9B8DA0717308BB400E7308F /* UIColor+GSExpanded.m in Sources */,
+				A9B8DA0917308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m in Sources */,
+				A9B8DA2317308DFD00E7308F /* CoreTextUtils.m in Sources */,
+				A9B8DA2517308DFD00E7308F /* NSAttributedString+Attributes.m in Sources */,
+				A9B8DA2717308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.m in Sources */,
+				A9B8DA2917308DFD00E7308F /* OHAttributedLabel.m in Sources */,
+				A9B8DA2B17308DFD00E7308F /* OHParagraphStyle.m in Sources */,
+				A9B8DA2D17308DFD00E7308F /* OHASBasicHTMLParser.m in Sources */,
+				A9B8DA2F17308DFD00E7308F /* OHASBasicMarkupParser.m in Sources */,
+				A9B8DA3117308DFD00E7308F /* OHASMarkupParserBase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
