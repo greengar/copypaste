@@ -15,6 +15,16 @@
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
 #define kMaxSizeFirebaseString 10485760
 
+#define kSenderUIDKey @"sender"
+#define kSenderUsernameKey @"sender_name"
+#define kSenderAvatarURLKey @"sender_avatar"
+#define kSenderLongitudeKey @"sender_long"
+#define kSenderLatitudeKey @"sender_lat"
+#define kReceiverUIDKey @"receiver"
+#define kMessageTypeKey @"type"
+#define kMessageTimeKey @"time"
+#define kMessageContentKey @"content"
+
 static GSSession *activeSession = nil;
 
 @interface GSSession()
@@ -229,12 +239,25 @@ static GSSession *activeSession = nil;
 
 - (void)receiveData:(FDataSnapshot *)snapshot {
     for (FDataSnapshot *childSnapshot in snapshot.children) {
-        NSString *senderUID = childSnapshot.value[@"sender"];
-        NSString *receiverUID = childSnapshot.value[@"receiver"];
-        NSString *messageType = childSnapshot.value[@"type"];
-        NSObject *messageContent = childSnapshot.value[@"content"];
-        NSString *messageTime = childSnapshot.value[@"time"];
-        NSObject *messageData = nil;
+        NSString *senderUID = childSnapshot.value[kSenderUIDKey];
+        NSString *senderName = childSnapshot.value[kSenderUsernameKey];
+        NSString *senderAvatarURL = childSnapshot.value[kSenderAvatarURLKey];
+        double senderLongitude = [childSnapshot.value[kSenderLongitudeKey] doubleValue];
+        double senderLatitude = [childSnapshot.value[kSenderLatitudeKey] doubleValue];
+        NSString *receiverUID = childSnapshot.value[kReceiverUIDKey];
+        NSString *messageType = childSnapshot.value[kMessageTypeKey];
+        NSObject *messageContent = childSnapshot.value[kMessageContentKey];
+        NSString *messageTime = childSnapshot.value[kMessageTimeKey];
+        
+        NSMutableDictionary *messageDict = [NSMutableDictionary new];
+        [messageDict setObject:senderUID forKey:kSenderUIDKey];
+        [messageDict setObject:senderName forKey:kSenderUsernameKey];
+        [messageDict setObject:senderAvatarURL forKey:kSenderAvatarURLKey];
+        [messageDict setObject:[NSNumber numberWithDouble:senderLongitude] forKey:kSenderLongitudeKey];
+        [messageDict setObject:[NSNumber numberWithDouble:senderLatitude] forKey:kSenderLatitudeKey];
+        [messageDict setObject:receiverUID forKey:kReceiverUIDKey];
+        [messageDict setObject:messageType forKey:kMessageTypeKey];
+        [messageDict setObject:messageTime forKey:kMessageTimeKey];
         
         if (![receiverUID isEqualToString:self.currentUser.uid]) {
             DLog(@"This update from %@ to %@ is not for me: %@", senderUID, receiverUID, self.currentUser.uid);
@@ -242,13 +265,10 @@ static GSSession *activeSession = nil;
         }
         
         if ([messageType isEqualToString:@"string"]) {
-            messageData = messageContent;
+            [messageDict setObject:(NSString *)messageContent forKey:kMessageContentKey];
             
-            if (messageData) {
-                if (self.delegate
-                    && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
-                    [self.delegate didReceiveMessageFrom:senderUID content:messageData time:messageTime];
-                }
+            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessage:)]) {
+                [self.delegate didReceiveMessage:messageDict];
             }
             
         } else if ([messageType isEqualToString:@"image"]) {
@@ -256,7 +276,6 @@ static GSSession *activeSession = nil;
                 [GSSVProgressHUD showWithStatus:@"Receiving image"];
                 
                 dispatch_async(dispatch_get_current_queue(), ^{
-                    NSObject *messageData = nil;
                     if ([messageContent isKindOfClass:[NSArray class]]) {
                         NSMutableString *messageString = [NSMutableString new];
                         for (int i = 0; i < [((NSArray *) messageContent) count]; i++) {
@@ -264,20 +283,18 @@ static GSSession *activeSession = nil;
                         }
                         NSData *imageData = [NSData gsDataFromBase64String:messageString];
                         DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
-                        messageData = [UIImage imageWithData:imageData];
+                        [messageDict setObject:[UIImage imageWithData:imageData] forKey:kMessageContentKey];
                         
                     } else {
                         NSData *imageData = [NSData gsDataFromBase64String:((NSString *)messageContent)];
                         DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
-                        messageData = [UIImage imageWithData:imageData];
+                        [messageDict setObject:[UIImage imageWithData:imageData] forKey:kMessageContentKey];
                     }
                     
                     [GSSVProgressHUD dismiss];
-                    if (messageData) {
-                        if (self.delegate
-                            && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessageFrom:content:time:)]) {
-                            [self.delegate didReceiveMessageFrom:senderUID content:messageData time:messageTime];
-                        }
+                    if (self.delegate
+                        && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessage:)]) {
+                        [self.delegate didReceiveMessage:messageDict];
                     }
                 });
             });
@@ -290,11 +307,17 @@ static GSSession *activeSession = nil;
         NSString *messageType = @"string";
         NSString *messageData = (NSString *)messageContent;
         NSString *messageTime = [GSUtils getCurrentTime];
-        [[self generateFirebaseFor:user atTime:messageTime] setValue:@{@"sender"   : self.currentUser.uid,
-                                                                       @"receiver" : user.uid,
-                                                                       @"type"     : messageType,
-                                                                       @"content"  : messageData,
-                                                                       @"time"     : messageTime}];
+        NSNumber *longitude = [NSNumber numberWithDouble:self.currentUser.location.longitude];
+        NSNumber *latitude = [NSNumber numberWithDouble:self.currentUser.location.latitude];
+        [[self generateFirebaseFor:user atTime:messageTime] setValue:@{kSenderUIDKey:self.currentUser.uid,
+                                                                  kSenderUsernameKey:[self currentUserName],
+                                                                 kSenderAvatarURLKey:self.currentUser.avatarURLString,
+                                                                 kSenderLongitudeKey:longitude,
+                                                                  kSenderLatitudeKey:latitude,
+                                                                     kReceiverUIDKey:user.uid,
+                                                                     kMessageTypeKey:messageType,
+                                                                  kMessageContentKey:messageData,
+                                                                     kMessageTimeKey:messageTime}];
         
     } else if ([messageContent isKindOfClass:[UIImage class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -306,6 +329,8 @@ static GSSession *activeSession = nil;
                 NSString *messageType = @"image";
                 NSString *messageString = [imageData gsBase64EncodedString];
                 NSString *messageTime = [GSUtils getCurrentTime];
+                NSNumber *longitude = [NSNumber numberWithDouble:self.currentUser.location.longitude];
+                NSNumber *latitude = [NSNumber numberWithDouble:self.currentUser.location.latitude];
                 NSObject *messageData = @"";
                 
                 int numOfElement = round((float)[messageString length]/(float)kMaxSizeFirebaseString);
@@ -326,11 +351,15 @@ static GSSession *activeSession = nil;
                 }
                 
                 
-                [[self generateFirebaseFor:user atTime:messageTime] setValue:@{@"sender"   : self.currentUser.uid,
-                                                                               @"receiver" : user.uid,
-                                                                               @"type"     : messageType,
-                                                                               @"content"  : messageData,
-                                                                               @"time"     : messageTime}
+                [[self generateFirebaseFor:user atTime:messageTime] setValue:@{kSenderUIDKey:self.currentUser.uid,
+                                                                          kSenderUsernameKey:[self currentUserName],
+                                                                         kSenderAvatarURLKey:self.currentUser.avatarURLString,
+                                                                         kSenderLongitudeKey:longitude,
+                                                                          kSenderLatitudeKey:latitude,
+                                                                             kReceiverUIDKey:user.uid,
+                                                                             kMessageTypeKey:messageType,
+                                                                          kMessageContentKey:messageData,
+                                                                             kMessageTimeKey:messageTime}
                                                          withCompletionBlock:^(NSError *error) {
                                                              [GSSVProgressHUD dismiss];
                                                                                }];
@@ -384,11 +413,7 @@ static GSSession *activeSession = nil;
 
 - (NSString *)currentUserName {
     if ([GSSession isAuthenticated]) {
-        if (self.currentUser.fullname != nil) {
-            return self.currentUser.fullname;
-        } else {
-            return self.currentUser.username;
-        }
+        return [self.currentUser displayName];
         
     } else {
         return @"";

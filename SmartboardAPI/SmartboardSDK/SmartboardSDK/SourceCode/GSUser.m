@@ -34,6 +34,9 @@
         self.fullname = pfUser[@"fullname"];
         self.email = pfUser[@"email"];
         self.avatarURLString = pfUser[@"avatar_url"];
+        if (self.avatarURLString == nil) {
+            self.avatarURLString = @"";
+        }
         self.location = pfUser[@"location"];
         self.lastLogInDate = pfUser[@"last_log_in"];
         self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
@@ -60,6 +63,9 @@
     self.fullname = pfUser[@"fullname"];
     self.email = pfUser[@"email"];
     self.avatarURLString = pfUser[@"avatar_url"];
+    if (self.avatarURLString == nil) {
+        self.avatarURLString = @"";
+    }
     self.location = pfUser[@"location"];
     self.lastLogInDate = pfUser[@"last_log_in"];
     self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
@@ -113,6 +119,14 @@
     self.facebookId = gssUser.facebookId;
     self.facebookScreenName = gssUser.facebookScreenName;
     // DLog(@"Parse from %@ to %@", gssUser, self);
+}
+
+- (NSString *)displayName {
+    if (self.fullname) {
+        return self.fullname;
+    } else {
+        return self.username;
+    }
 }
 
 - (NSString *)distanceStringToUser:(GSUser *)user {

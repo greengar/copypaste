@@ -36,6 +36,7 @@
 - (void)parseDataFromPFUser:(PFUser *)pfUser;
 - (id)initWithGSUser:(GSUser *)gsUser;
 - (void)parseDataFromGSUser:(GSUser *)gsUser;
+- (NSString *)displayName;
 - (NSString *)distanceStringToUser:(GSUser *)user;
 - (NSString *)lastSeenTimeString;
 - (void)updateWithPFUser:(PFUser *)pfUser block:(GSResultBlock)block;

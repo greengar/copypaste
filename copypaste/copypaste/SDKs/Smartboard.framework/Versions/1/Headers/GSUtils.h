@@ -27,9 +27,7 @@
 @protocol GSSessionDelegate
 - (void)didLoginSucceeded;
 - (void)didLoginFailed:(NSError *)error;
-- (void)didReceiveMessageFrom:(NSString *)senderUID
-                      content:(NSObject *)messageContent
-                         time:(NSString *)messageTime;
+- (void)didReceiveMessage:(NSDictionary *)dictInfo;
 @end
 
 @interface GSUtils : NSObject

@@ -118,6 +118,7 @@
 }
 
 - (void)finishAuthentication {
+    [[GSSession activeSession] registerMessageReceiver:self];
     [[GSSession activeSession] getNearbyUserWithBlock:^(NSArray *listOfUsers, NSError *error) {
         if ([listOfUsers count] == 0) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No nearby user"
@@ -167,7 +168,6 @@
             }
         }
     }];
-    [[GSSession activeSession] registerMessageReceiver:self];
     [self updateUI];
 }
 
@@ -397,23 +397,35 @@
     
 }
 
-- (void)didReceiveMessageFrom:(NSString *)userId
-                      content:(NSObject *)messageContent
-                         time:(NSString *)messageTime {
-    CPUser *user = [[DataManager sharedManager] userById:userId];
+- (void)didReceiveMessage:(NSDictionary *)dictInfo {
+    NSString *senderUID = [dictInfo objectForKey:@"sender"];
+    NSObject *messageContent = [dictInfo objectForKey:@"content"];
+    NSString *messageTime = [dictInfo objectForKey:@"time"];
+    CPUser *sender = [[DataManager sharedManager] userById:senderUID];
+    
+    if (sender == nil) { // The sender is not a nearby user
+        sender = [[CPUser alloc] init];
+        sender.uid = senderUID;
+        sender.fullname = [dictInfo objectForKey:@"sender_name"];
+        sender.username = [dictInfo objectForKey:@"sender_name"];
+        sender.avatarURLString = [dictInfo objectForKey:@"sender_avatar"];
+        sender.location = [[PFGeoPoint alloc] init];
+        sender.location.longitude = [[dictInfo objectForKey:@"sender_long"] doubleValue];
+        sender.location.latitude = [[dictInfo objectForKey:@"sender_lat"] doubleValue];
+    }
     
     CPMessage *newMessage = [[CPMessage alloc] init];
-    [newMessage setSender:user];
+    [newMessage setSender:sender];
     [newMessage setMessageContent:messageContent];
     [newMessage setCreatedDateInterval:[[GSUtils dateFromString:messageTime] timeIntervalSince1970]];
     DLog(@"Receive message: %@", [newMessage description]);
     [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
     
     // Get more message from the sender
-    user.numOfPasteToMe++;
+    sender.numOfPasteToMe++;
     
     // Remove the value from the Firebase server, because it's catched
-    [[GSSession activeSession] removeMessageFromSender:user atTime:messageTime];
+    [[GSSession activeSession] removeMessageFromSender:sender atTime:messageTime];
     
     CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
                                                                                  0,
