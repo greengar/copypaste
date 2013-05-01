@@ -24,6 +24,12 @@
 
 #define NSDEF [NSUserDefaults standardUserDefaults]
 
+#define OPAQUE_HEXCOLOR(c) [UIColor colorWithRed:((c>>16)&0xFF)/255.0 green:((c>>8)&0xFF)/255.0 blue:(c&0xFF)/255.0 alpha:0.9]
+
+#define kCPBackgroundColor OPAQUE_HEXCOLOR(0xE1CAA7)
+#define kCPPasteTextColor OPAQUE_HEXCOLOR(0xFA891F)
+#define kCPLightOrangeColor OPAQUE_HEXCOLOR(0xF7A058)
+
 @protocol GSSessionDelegate
 - (void)didLoginSucceeded;
 - (void)didLoginFailed:(NSError *)error;

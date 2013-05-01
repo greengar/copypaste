@@ -9,83 +9,68 @@
 #import "CPViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <Smartboard/Smartboard.h>
-#import "GMGridViewLayoutStrategies.h"
-
-#define kUserHolderWidth 102
-#define kUserHolderHeight 140
-#define kUserAvatarWidth 76
-#define kUserAvatarHeight 76
-#define kUsernameOffset 3
-#define kUsernameHeight 23
+#import <Smartboard/OHAttributedLabel.h>
+#import <Smartboard/GSTheme.h>
 
 #define kContentViewTag 777
 #define kLabelViewTag 778
 
 #define kOffset 6
 #define kHeaderViewHeight 52
-#define kPasteboardMinimumHeight (IS_IPHONE5 ? 338 : 250)
+#define kPasteboardMinimumHeight (IS_IPHONE5 ? 328 : 240)
+#define kUserViewHeight 155
 
 @interface CPViewController ()
 
 @end
 
 @implementation CPViewController
+
 @synthesize myPasteboardHolderView = _myPasteboardHolderView;
 @synthesize userProfilePopoverController = _userProfilePopoverController;
-@synthesize settingButton = _settingButton;
-@synthesize availableUsersGridView = _availableUsersGridView;
+//@synthesize settingButton = _settingButton;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    // The background of the whole screen
-    self.view.backgroundColor = [UIColor blackColor];
-    UIImageView *backgroundImageView = [[UIImageView alloc] init];
-    backgroundImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    if (IS_IPHONE5) {
-        backgroundImageView.image = [UIImage imageNamed:@"background-548h.png"];
-    } else {
-        backgroundImageView.image = [UIImage imageNamed:@"background.png"];
-    }
-    [self.view addSubview:backgroundImageView];
-        
-    // The header "copypaste"
-    UIImageView *headerImageView = [[UIImageView alloc] init];
-    UIImage *headerImage = [UIImage imageNamed:@"header.png"];
-    headerImageView.frame = CGRectMake(kOffset, kOffset, self.view.frame.size.width-2*kOffset, kHeaderViewHeight);
-    headerImageView.image = headerImage;
-    [self.view addSubview:headerImageView];
+    self.view.backgroundColor = kCPBackgroundColor;
     
-    // The gear button which means "setting"
-    self.settingButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.settingButton.frame = CGRectMake(262, 10, 44, 44);
-    [self.settingButton setImage:[UIImage imageNamed:@"gear.png"]
-                        forState:UIControlStateNormal];
-    [self.settingButton addTarget:self
-                           action:@selector(settingButtonTapped:)
-                 forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.settingButton];
+    OHAttributedLabel *logo = [GSTheme logoWithSize:32];
+    CGRect frame = logo.frame;
+    frame.origin.y = kOffset;
+    logo.frame = frame;
+    logo.centerVertically = YES;
+    [self.view addSubview:logo];
+    
+    // Help button
+    UIImage *helpImage = [UIImage imageNamed:@"help.fw.png"];
+    self.helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.helpButton.frame = CGRectMake(self.view.frame.size.width - helpImage.size.width, 0, helpImage.size.width, helpImage.size.height);
+    [self.helpButton setBackgroundImage:helpImage forState:UIControlStateNormal];
+    [self.helpButton addTarget:self action:@selector(helpButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.helpButton];
+    
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(self.helpButton.frame.origin.x-1, 0, 1, helpImage.size.height)];
+    line.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
+    [self.view addSubview:line];
     
     // The avatar image view of the logged in user
-    self.avatarImageView = [[EGOImageView alloc] init];
-    self.avatarImageView.frame = CGRectMake(10, 10, 43, 43);
-    self.avatarImageView.image = [UIImage imageNamed:@"pasteboard.png"];
-    self.avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.avatarImageView.layer.cornerRadius = 3;
-    self.avatarImageView.clipsToBounds = YES;
-    [self.view addSubview:self.avatarImageView];
+    self.avatarImageButton = [[EGOImageButton alloc] initWithFrame:CGRectMake(0, 0, helpImage.size.width, helpImage.size.height)];
+    [self.avatarImageButton setBackgroundImage:helpImage forState:UIControlStateNormal];
+    self.avatarImageButton.contentMode = UIViewContentModeScaleAspectFill;
+    [self.avatarImageButton addTarget:self action:@selector(avatarImageButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.avatarImageButton];
+    
+    line = [[UIView alloc] initWithFrame:CGRectMake(self.avatarImageButton.frame.size.width, 0, 1, self.avatarImageButton.frame.size.height)];
+    line.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
+    [self.view addSubview:line];
     
     // The "my pasteboard holder view"
-    self.myPasteboardHolderView = [[CPPasteboardView alloc] initWithFrame:CGRectMake(kOffset+2,
-                                                                                     kOffset+kHeaderViewHeight+kOffset,
-                                                                                     self.view.frame.size.width - 2*(kOffset+2),
-                                                                                     kPasteboardMinimumHeight)];
-    self.myPasteboardHolderView.backgroundColor = [UIColor clearColor];
-    self.myPasteboardHolderView.layer.cornerRadius = 3;
-    //self.myPasteboardHolderView.clipsToBounds = YES; // pasteboardHeaderImageView is positioned slightly beyond bounds (can change this)
+    const float y = logo.frame.origin.y * 2 + logo.frame.size.height;
+    self.myPasteboardHolderView = [[CPPasteboardView alloc] initWithFrame:CGRectMake(0, y, self.view.frame.size.width, self.view.frame.size.height - y - kUserViewHeight)];
     [self.view addSubview:self.myPasteboardHolderView];
-                
+    
 	[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateUI)
                                                  name:kNotificationApplicationDidBecomeActive
@@ -95,14 +80,44 @@
                                                  name:kNotificationOpenFileURL
                                                object:nil];
     
-    self.availableUsersGridView = [[GMGridView alloc] initWithFrame:CGRectMake(kOffset,
-                                                                               kOffset+kHeaderViewHeight+kOffset+self.myPasteboardHolderView.frame.size.height,
-                                                                               self.view.frame.size.width-2*kOffset,
-                                                                               kUserHolderHeight)];
-    self.availableUsersGridView.dataSource = self;
-    self.availableUsersGridView.actionDelegate = self;
-    self.availableUsersGridView.layoutStrategy = [GMGridViewLayoutStrategyFactory strategyFromType:GMGridViewLayoutHorizontalPagedLTR];
-    [self.view addSubview:self.availableUsersGridView];
+    self.userViews = [NSMutableArray arrayWithCapacity:3];
+    
+    for (int i = 0; i < 3; i++)
+    {
+        CPUserView *userView = [[CPUserView alloc] initWithFrame:CGRectMake(92 * i, self.view.frame.size.height-kUserViewHeight, 91, kUserViewHeight)];
+        userView.delegate = self;
+        userView.isLight = (i % 2) ? NO : YES;
+        [self.view addSubview:userView];
+        [self.userViews addObject:userView];
+    }
+    
+    self.moreUsersButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    float x = 92*3;
+    self.moreUsersButton.frame = CGRectMake(x, self.view.frame.size.height-kUserViewHeight, self.view.frame.size.width-x, kUserViewHeight);
+    
+    self.moreUsersButton.backgroundColor = kCPPasteTextColor;
+    
+    [self.view addSubview:self.moreUsersButton];
+}
+
+- (void)avatarImageButtonTapped:(id)sender
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Log Out"
+                                                        message:[NSString stringWithFormat:@"You have logged in as %@. Do you want to log out?", [[GSSession activeSession] currentUserName]]
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Log Out", nil];
+    [alertView show];
+}
+
+- (void)helpButtonTapped:(id)sender
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Copy to set clipboard content"
+                                                        message:@"In any app, use Cut or Copy to set the content of your clipboard."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+    [alertView show];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -188,24 +203,16 @@
     if ([GSSession isAuthenticated]) {
         CPUser *currentUser = (CPUser *) [[GSSession activeSession] currentUser];
         if ([currentUser isAvatarCached]) {
-            [self.avatarImageView setImage:currentUser.avatarImage];
+            [self.avatarImageButton setImage:currentUser.avatarImage forState:UIControlStateNormal];
         } else if ([currentUser avatarURLString]) {
-            [self.avatarImageView setImageURL:[NSURL URLWithString:currentUser.avatarURLString]];
-            [self.avatarImageView setDelegate:self];
+            [self.avatarImageButton setImageURL:[NSURL URLWithString:currentUser.avatarURLString]];
+            [self.avatarImageButton setDelegate:self];
         } else {
-            [self.avatarImageView setImage:nil];
+//            [self.avatarImageView setImage:nil forState:UIControlStateNormal];
         }
     }
-    [self.availableUsersGridView reloadData];
-}
-
-- (void)settingButtonTapped:(id)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Log Out"
-                                                        message:[NSString stringWithFormat:@"You have logged in as %@. Do you want to log out?", [[GSSession activeSession] currentUserName]]
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Log Out", nil];
-    [alertView show];
+    
+    [self reloadUserViews];
 }
 
 - (void)hideOldCopiedContent {
@@ -218,6 +225,8 @@
         [[GSSession activeSession] logOutWithBlock:^(BOOL succeed, NSError *error) {
             [self viewDidAppear:YES];
             
+            [self.avatarImageButton setImage:nil forState:UIControlStateNormal];
+            
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"You have logged out"
                                                                 message:@"Please log in in order to use copypaste"
                                                                delegate:nil
@@ -229,17 +238,10 @@
     }
 }
 
-- (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
-    return [[[DataManager sharedManager] availableUsers] count];
-}
-
-- (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return CGSizeMake(kUserHolderWidth, kUserHolderHeight);
-}
-
-- (void)pasteToUserAtPosition:(NSInteger)position {
+- (void)didTapPasteUser:(CPUser *)user
+{
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
-    CPUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
+    
     if (itemToPaste) {
         [[GSSession activeSession] sendMessage:itemToPaste toUser:user];
         user.numOfCopyFromMe++;
@@ -271,130 +273,38 @@
     }
 }
 
-- (void)pasteToUserWithButton:(UIButton *)button {
-    [self pasteToUserAtPosition:button.tag];
-}
-
-- (void)showUserProfileAtPosition:(NSInteger)position {
+- (void)didTapAvatarUserView:(CPUserView *)userView
+{
+    CPUser *user = userView.user;
+    
     CPProfileViewController *profileViewController = [[CPProfileViewController alloc] init];
-    profileViewController.profileUser = [[[DataManager sharedManager] availableUsers] objectAtIndex:position];
+    profileViewController.profileUser = user;
     profileViewController.view.frame = CGRectMake(0, 0, 320, 200);
     
     self.userProfilePopoverController = [[WEPopoverController alloc] initWithContentViewController:profileViewController];
     [self.userProfilePopoverController setPopoverContentSize:CGSizeMake(320, 200)];
     [self.userProfilePopoverController setDelegate:self];
     
-    float popoverWidth = self.availableUsersGridView.frame.size.width;
-    switch (position % 3) {
-        case 0:
-            popoverWidth = self.availableUsersGridView.frame.size.width/3;
-            break;
-        case 1:
-            popoverWidth = self.availableUsersGridView.frame.size.width;
-            break;
-        case 2:
-            popoverWidth = self.availableUsersGridView.frame.size.width*3/2;
-            break;
-        default:
-            break;
-    }
-    CGRect popoverRect = CGRectMake(self.availableUsersGridView.frame.origin.x,
-                                    self.availableUsersGridView.frame.origin.y+20,
-                                    popoverWidth,
-                                    self.availableUsersGridView.frame.size.height);
-    [self.userProfilePopoverController presentPopoverFromRect:popoverRect
+    [self.userProfilePopoverController presentPopoverFromRect:userView.frame
                                                        inView:self.view
                                      permittedArrowDirections:UIPopoverArrowDirectionDown
                                                      animated:NO];
 }
 
-- (void)showUserProfileWithButton:(UIButton *)button {
-    [self showUserProfileAtPosition:button.tag];
-}
-
-- (GMGridViewCell *)GMGridView:(GMGridView *)gridView_ cellForItemAtIndex:(NSInteger)index {
-    GMGridViewCell *cell = [gridView_ dequeueReusableCellWithIdentifier:@"layerCell"];
-    
-    if(cell == nil) {
-        cell = [[GMGridViewCell alloc] init];
-        cell.clipsToBounds = YES;
-        
-        UIImage *personBackgroundImage = [UIImage imageNamed:@"person-background.fw.png"];
-        UIButton *personBackgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(0,
-                                                                                      0,
-                                                                                      personBackgroundImage.size.width,
-                                                                                      personBackgroundImage.size.height)];
-        [personBackgroundButton setBackgroundColor:[UIColor clearColor]];
-        [personBackgroundButton setImage:personBackgroundImage forState:UIControlStateNormal];
-        [personBackgroundButton setTag:index];
-        [personBackgroundButton addTarget:self action:@selector(showUserProfileWithButton:)
-                         forControlEvents:UIControlEventTouchUpInside];
-        [cell addSubview:personBackgroundButton];
-        
-        EGOImageView *contentView = [[EGOImageView alloc] initWithFrame:CGRectMake((personBackgroundImage.size.width-kUserAvatarWidth)/2,
-                                                                                   (personBackgroundImage.size.width-kUserAvatarWidth)/2,
-                                                                                   kUserAvatarWidth,
-                                                                                   kUserAvatarHeight)];
-        contentView.tag = kContentViewTag;
-        contentView.image = [UIImage imageNamed:@"pasteboard.png"];
-        contentView.contentMode = UIViewContentModeScaleAspectFill;
-        contentView.layer.cornerRadius = 3;
-        contentView.clipsToBounds = YES;
-        contentView.delegate = self;
-        [cell addSubview:contentView];
-        
-        UIImage *pasteButtonImage = [UIImage imageNamed:@"pastebutton.png"];
-        UIButton *pasteButton = [[UIButton alloc] initWithFrame:CGRectMake(0,
-                                                                           kUserHolderHeight - pasteButtonImage.size.height,
-                                                                           pasteButtonImage.size.width,
-                                                                           pasteButtonImage.size.height)];
-        pasteButton.backgroundColor = [UIColor clearColor];
-        [pasteButton setImage:pasteButtonImage forState:UIControlStateNormal];
-        pasteButton.tag = index; // tag is used by -pasteToUserWithButton: to identify the user position
-        [pasteButton addTarget:self action:@selector(pasteToUserWithButton:) forControlEvents:UIControlEventTouchUpInside];
-        [cell addSubview:pasteButton];
-        
-        UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(kUsernameOffset,
-                                                                          kUserHolderHeight - pasteButtonImage.size.height,
-                                                                          pasteButtonImage.size.width-2*kUsernameOffset,
-                                                                          kUsernameHeight)];
-        contentLabel.textAlignment = UITextAlignmentCenter;
-        contentLabel.backgroundColor = [UIColor clearColor];
-        contentLabel.textColor = [UIColor whiteColor];
-        contentLabel.font = DEFAULT_FONT_SIZE(11.0f);
-        contentLabel.tag = kLabelViewTag;
-        [cell addSubview:contentLabel];
+- (void)reloadUserViews
+{
+    if ([[[DataManager sharedManager] availableUsers] count] == 0)
+    {
+        // TODO: animate disappearance of any existing user views
     }
-    
-    if ([[[DataManager sharedManager] availableUsers] count] == 0) {
-        UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
-        [contentLabel setText:@"No available user"];
-        
-    } else {
-        CPUser * user = [[[DataManager sharedManager] availableUsers] objectAtIndex:index];
-        EGOImageView *contentView = (EGOImageView *) [cell viewWithTag:kContentViewTag];
-        UILabel *contentLabel = (UILabel *) [cell viewWithTag:kLabelViewTag];
-        
-        if (user != nil) {
-            if (user.isAvatarCached) {
-                [contentView setImage:user.avatarImage];
-            } else if (user.avatarURLString) {
-                [contentView setImageURL:[NSURL URLWithString:user.avatarURLString]];
-                [contentView setDelegate:self];
-            }
-            if (user.fullname) {
-                [contentLabel setText:user.fullname];
-            } else {
-                [contentLabel setText:user.username];
-            }
+    else
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            CPUser *user = [[[DataManager sharedManager] availableUsers] objectAtIndex:i];
+            [(CPUserView *)self.userViews[i] setUser:user];
         }
     }
-    
-    return cell;
-}
-
-- (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position {
-    
 }
 
 - (void)didReceiveMessage:(NSDictionary *)dictInfo {

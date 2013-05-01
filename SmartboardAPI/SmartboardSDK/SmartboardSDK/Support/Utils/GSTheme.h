@@ -9,10 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "UIColor+GSExpanded.h"
 #import "OHAttributedLabel.h"
-
-#define kCPBackgroundColor ([UIColor colorWithHexString:@"E1CAA7"])
-#define kCPPasteTextColor ([UIColor colorWithHexString:@"FA891F"])
-#define kCPLightOrangeColor ([UIColor colorWithHexString:@"F7A058"])
+#import "GSUtils.h"
 
 @interface GSTheme : NSObject
 

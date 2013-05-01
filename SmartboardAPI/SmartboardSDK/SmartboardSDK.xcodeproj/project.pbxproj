@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		7B017807173097EF0081DC85 /* GSTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8D9FE17308BB400E7308F /* GSTheme.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B41CD5D172EFB780012FF63 /* InstructionGuide.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7B41CD5C172EFB780012FF63 /* InstructionGuide.rtf */; };
 		7B56A355172EE09B0021E5DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A354172EE09B0021E5DC /* UIKit.framework */; };
 		7B56A357172EE09B0021E5DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A356172EE09B0021E5DC /* Foundation.framework */; };
@@ -43,7 +44,7 @@
 		7B56A3AA172EE71C0021E5DC /* GSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A39E172EE6B40021E5DC /* GSSession.m */; };
 		7B56A3AB172EE71F0021E5DC /* GSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3A0172EE6B40021E5DC /* GSUser.m */; };
 		7B56A3AC172EE7210021E5DC /* GSUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3A2172EE6B40021E5DC /* GSUtils.m */; };
-		7B56A3AE172EE7370021E5DC /* GSParseQueryHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A39B172EE6B40021E5DC /* GSParseQueryHelper.h */; };
+		7B56A3AE172EE7370021E5DC /* GSParseQueryHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A39B172EE6B40021E5DC /* GSParseQueryHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A3AF172EE7450021E5DC /* GSObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A399172EE6B40021E5DC /* GSObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A3B0172EE74A0021E5DC /* GSSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A39D172EE6B40021E5DC /* GSSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A3B1172EE74D0021E5DC /* GSUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3A1172EE6B40021E5DC /* GSUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -54,10 +55,10 @@
 		7B56A3ED172EE7CA0021E5DC /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3E0172EE7CA0021E5DC /* SVProgressHUD.bundle */; };
 		7B56A3EE172EE7CA0021E5DC /* GSSVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E2172EE7CA0021E5DC /* GSSVProgressHUD.m */; };
 		7B56A3EF172EE7CA0021E5DC /* NSData+GSBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */; };
-		7B56A3F1172EE7E20021E5DC /* GSSVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E1172EE7CA0021E5DC /* GSSVProgressHUD.h */; };
+		7B56A3F1172EE7E20021E5DC /* GSSVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E1172EE7CA0021E5DC /* GSSVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A3F2172EE7E60021E5DC /* GSSVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E2172EE7CA0021E5DC /* GSSVProgressHUD.m */; };
 		7B56A3F4172EE7F40021E5DC /* NSData+GSBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */; };
-		7B56A3F5172EE7F70021E5DC /* NSData+GSBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E4172EE7CA0021E5DC /* NSData+GSBase64.h */; };
+		7B56A3F5172EE7F70021E5DC /* NSData+GSBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3E4172EE7CA0021E5DC /* NSData+GSBase64.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A3F8172EE8670021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
 		7B56A3F9172EE86E0021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
 		7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -69,28 +70,27 @@
 		7B56A410172EED0F0021E5DC /* Parse.framework in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A404172EEB620021E5DC /* Parse.framework */; };
 		A9B8D9FC1730883E00E7308F /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8D9FA1730883E00E7308F /* GSSignUpViewController.m */; };
 		A9B8D9FD1730887400E7308F /* GSSignUpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8D9F91730883E00E7308F /* GSSignUpViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A9B8DA0417308BB400E7308F /* GSTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8D9FE17308BB400E7308F /* GSTheme.h */; };
 		A9B8DA0517308BB400E7308F /* GSTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8D9FF17308BB400E7308F /* GSTheme.m */; };
-		A9B8DA0617308BB400E7308F /* UIColor+GSExpanded.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0017308BB400E7308F /* UIColor+GSExpanded.h */; };
+		A9B8DA0617308BB400E7308F /* UIColor+GSExpanded.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0017308BB400E7308F /* UIColor+GSExpanded.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA0717308BB400E7308F /* UIColor+GSExpanded.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0117308BB400E7308F /* UIColor+GSExpanded.m */; };
-		A9B8DA0817308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0217308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h */; };
+		A9B8DA0817308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0217308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA0917308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0317308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m */; };
 		A9B8DA2117308DFD00E7308F /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A9B8DA0C17308DFD00E7308F /* LICENSE */; };
-		A9B8DA2217308DFD00E7308F /* CoreTextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0E17308DFD00E7308F /* CoreTextUtils.h */; };
+		A9B8DA2217308DFD00E7308F /* CoreTextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0E17308DFD00E7308F /* CoreTextUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA2317308DFD00E7308F /* CoreTextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0F17308DFD00E7308F /* CoreTextUtils.m */; };
-		A9B8DA2417308DFD00E7308F /* NSAttributedString+Attributes.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1117308DFD00E7308F /* NSAttributedString+Attributes.h */; };
+		A9B8DA2417308DFD00E7308F /* NSAttributedString+Attributes.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1117308DFD00E7308F /* NSAttributedString+Attributes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA2517308DFD00E7308F /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1217308DFD00E7308F /* NSAttributedString+Attributes.m */; };
-		A9B8DA2617308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1317308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h */; };
+		A9B8DA2617308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1317308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA2717308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1417308DFD00E7308F /* NSTextCheckingResult+ExtendedURL.m */; };
-		A9B8DA2817308DFD00E7308F /* OHAttributedLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1517308DFD00E7308F /* OHAttributedLabel.h */; };
+		A9B8DA2817308DFD00E7308F /* OHAttributedLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1517308DFD00E7308F /* OHAttributedLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA2917308DFD00E7308F /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1617308DFD00E7308F /* OHAttributedLabel.m */; };
-		A9B8DA2A17308DFD00E7308F /* OHParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1717308DFD00E7308F /* OHParagraphStyle.h */; };
+		A9B8DA2A17308DFD00E7308F /* OHParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1717308DFD00E7308F /* OHParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA2B17308DFD00E7308F /* OHParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1817308DFD00E7308F /* OHParagraphStyle.m */; };
-		A9B8DA2C17308DFD00E7308F /* OHASBasicHTMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1A17308DFD00E7308F /* OHASBasicHTMLParser.h */; };
+		A9B8DA2C17308DFD00E7308F /* OHASBasicHTMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1A17308DFD00E7308F /* OHASBasicHTMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA2D17308DFD00E7308F /* OHASBasicHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1B17308DFD00E7308F /* OHASBasicHTMLParser.m */; };
-		A9B8DA2E17308DFD00E7308F /* OHASBasicMarkupParser.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1C17308DFD00E7308F /* OHASBasicMarkupParser.h */; };
+		A9B8DA2E17308DFD00E7308F /* OHASBasicMarkupParser.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1C17308DFD00E7308F /* OHASBasicMarkupParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA2F17308DFD00E7308F /* OHASBasicMarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1D17308DFD00E7308F /* OHASBasicMarkupParser.m */; };
-		A9B8DA3017308DFD00E7308F /* OHASMarkupParserBase.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1E17308DFD00E7308F /* OHASMarkupParserBase.h */; };
+		A9B8DA3017308DFD00E7308F /* OHASMarkupParserBase.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1E17308DFD00E7308F /* OHASMarkupParserBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA3117308DFD00E7308F /* OHASMarkupParserBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1F17308DFD00E7308F /* OHASMarkupParserBase.m */; };
 		A9B8DA3217308DFD00E7308F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A9B8DA2017308DFD00E7308F /* README.md */; };
 /* End PBXBuildFile section */
@@ -418,12 +418,12 @@
 				7B56A3B1172EE74D0021E5DC /* GSUtils.h in Headers */,
 				7B56A3B2172EE7520021E5DC /* GSUser.h in Headers */,
 				7B56A3B0172EE74A0021E5DC /* GSSession.h in Headers */,
+				7B017807173097EF0081DC85 /* GSTheme.h in Headers */,
 				7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */,
 				A9B8D9FD1730887400E7308F /* GSSignUpViewController.h in Headers */,
 				7B56A3F5172EE7F70021E5DC /* NSData+GSBase64.h in Headers */,
 				7B56A3AE172EE7370021E5DC /* GSParseQueryHelper.h in Headers */,
 				7B56A3F1172EE7E20021E5DC /* GSSVProgressHUD.h in Headers */,
-				A9B8DA0417308BB400E7308F /* GSTheme.h in Headers */,
 				A9B8DA0617308BB400E7308F /* UIColor+GSExpanded.h in Headers */,
 				A9B8DA0817308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h in Headers */,
 				A9B8DA2217308DFD00E7308F /* CoreTextUtils.h in Headers */,

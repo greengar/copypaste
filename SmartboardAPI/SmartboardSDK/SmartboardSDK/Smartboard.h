@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Greengar Studios. All rights reserved.
 //
 
-#import "GSSession.h"
-#import "GSUser.h"
-#import "GSObject.h"
+#import <Smartboard/GSSession.h>
+#import <Smartboard/GSUser.h>
+#import <Smartboard/GSObject.h>
+#import <Smartboard/GSUtils.h>
