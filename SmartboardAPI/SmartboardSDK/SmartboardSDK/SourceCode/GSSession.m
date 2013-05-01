@@ -11,6 +11,8 @@
 #import "NSData+GSBase64.h"
 #import "GSSVProgressHUD.h"
 #import "GSObject.h"
+#import <Parse/Parse.h>
+#import <Firebase/Firebase.h>
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
 #define kMaxSizeFirebaseString 10485760

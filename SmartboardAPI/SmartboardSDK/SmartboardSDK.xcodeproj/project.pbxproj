@@ -22,6 +22,9 @@
 
 /* Begin PBXBuildFile section */
 		7B017807173097EF0081DC85 /* GSTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8D9FE17308BB400E7308F /* GSTheme.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B01780F1730A5540081DC85 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B01780C1730A5540081DC85 /* FacebookSDK.framework */; };
+		7B0178101730A5540081DC85 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B01780D1730A5540081DC85 /* Firebase.framework */; };
+		7B0178111730A5540081DC85 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B01780E1730A5540081DC85 /* Parse.framework */; };
 		7B41CD5D172EFB780012FF63 /* InstructionGuide.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7B41CD5C172EFB780012FF63 /* InstructionGuide.rtf */; };
 		7B56A355172EE09B0021E5DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A354172EE09B0021E5DC /* UIKit.framework */; };
 		7B56A357172EE09B0021E5DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A356172EE09B0021E5DC /* Foundation.framework */; };
@@ -32,7 +35,6 @@
 		7B56A367172EE09B0021E5DC /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A366172EE09B0021E5DC /* Default.png */; };
 		7B56A369172EE09B0021E5DC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A368172EE09B0021E5DC /* Default@2x.png */; };
 		7B56A36B172EE09B0021E5DC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A36A172EE09B0021E5DC /* Default-568h@2x.png */; };
-		7B56A37B172EE1890021E5DC /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A37A172EE1890021E5DC /* CoreFoundation.framework */; };
 		7B56A397172EE66B0021E5DC /* Smartboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A393172EE6590021E5DC /* Smartboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A3A3172EE6B40021E5DC /* GSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A39A172EE6B40021E5DC /* GSObject.m */; };
 		7B56A3A4172EE6B40021E5DC /* GSParseQueryHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A39C172EE6B40021E5DC /* GSParseQueryHelper.m */; };
@@ -49,9 +51,6 @@
 		7B56A3B0172EE74A0021E5DC /* GSSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A39D172EE6B40021E5DC /* GSSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A3B1172EE74D0021E5DC /* GSUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3A1172EE6B40021E5DC /* GSUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B56A3B2172EE7520021E5DC /* GSUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A39F172EE6B40021E5DC /* GSUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7B56A3B6172EE7A00021E5DC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A3B3172EE7A00021E5DC /* FacebookSDK.framework */; };
-		7B56A3B7172EE7A00021E5DC /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A3B4172EE7A00021E5DC /* Firebase.framework */; };
-		7B56A3B8172EE7A00021E5DC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A3B5172EE7A00021E5DC /* Parse.framework */; };
 		7B56A3ED172EE7CA0021E5DC /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A3E0172EE7CA0021E5DC /* SVProgressHUD.bundle */; };
 		7B56A3EE172EE7CA0021E5DC /* GSSVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E2172EE7CA0021E5DC /* GSSVProgressHUD.m */; };
 		7B56A3EF172EE7CA0021E5DC /* NSData+GSBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */; };
@@ -62,12 +61,6 @@
 		7B56A3F8172EE8670021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
 		7B56A3F9172EE86E0021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
 		7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7B56A405172EEB620021E5DC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A402172EEB620021E5DC /* FacebookSDK.framework */; };
-		7B56A406172EEB620021E5DC /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A403172EEB620021E5DC /* Firebase.framework */; };
-		7B56A407172EEB620021E5DC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A404172EEB620021E5DC /* Parse.framework */; };
-		7B56A40E172EED0F0021E5DC /* FacebookSDK.framework in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A402172EEB620021E5DC /* FacebookSDK.framework */; };
-		7B56A40F172EED0F0021E5DC /* Firebase.framework in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A403172EEB620021E5DC /* Firebase.framework */; };
-		7B56A410172EED0F0021E5DC /* Parse.framework in Resources */ = {isa = PBXBuildFile; fileRef = 7B56A404172EEB620021E5DC /* Parse.framework */; };
 		A9B8D9FC1730883E00E7308F /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8D9FA1730883E00E7308F /* GSSignUpViewController.m */; };
 		A9B8D9FD1730887400E7308F /* GSSignUpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8D9F91730883E00E7308F /* GSSignUpViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA0517308BB400E7308F /* GSTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8D9FF17308BB400E7308F /* GSTheme.m */; };
@@ -75,7 +68,6 @@
 		A9B8DA0717308BB400E7308F /* UIColor+GSExpanded.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0117308BB400E7308F /* UIColor+GSExpanded.m */; };
 		A9B8DA0817308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0217308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA0917308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0317308BB400E7308F /* UITextField+GSCustomPlaceholderTextColor.m */; };
-		A9B8DA2117308DFD00E7308F /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A9B8DA0C17308DFD00E7308F /* LICENSE */; };
 		A9B8DA2217308DFD00E7308F /* CoreTextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA0E17308DFD00E7308F /* CoreTextUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA2317308DFD00E7308F /* CoreTextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA0F17308DFD00E7308F /* CoreTextUtils.m */; };
 		A9B8DA2417308DFD00E7308F /* NSAttributedString+Attributes.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1117308DFD00E7308F /* NSAttributedString+Attributes.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -92,10 +84,12 @@
 		A9B8DA2F17308DFD00E7308F /* OHASBasicMarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1D17308DFD00E7308F /* OHASBasicMarkupParser.m */; };
 		A9B8DA3017308DFD00E7308F /* OHASMarkupParserBase.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8DA1E17308DFD00E7308F /* OHASMarkupParserBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA3117308DFD00E7308F /* OHASMarkupParserBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8DA1F17308DFD00E7308F /* OHASMarkupParserBase.m */; };
-		A9B8DA3217308DFD00E7308F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A9B8DA2017308DFD00E7308F /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B01780C1730A5540081DC85 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		7B01780D1730A5540081DC85 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
+		7B01780E1730A5540081DC85 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		7B41CD5C172EFB780012FF63 /* InstructionGuide.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = InstructionGuide.rtf; sourceTree = "<group>"; };
 		7B56A351172EE09B0021E5DC /* SmartboardSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartboardSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B56A354172EE09B0021E5DC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -136,9 +130,6 @@
 		7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GSBase64.m"; sourceTree = "<group>"; };
 		7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSLogInViewController.h; sourceTree = "<group>"; };
 		7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSLogInViewController.m; sourceTree = "<group>"; };
-		7B56A402172EEB620021E5DC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		7B56A403172EEB620021E5DC /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
-		7B56A404172EEB620021E5DC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		A9B8D9F91730883E00E7308F /* GSSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSignUpViewController.h; sourceTree = "<group>"; };
 		A9B8D9FA1730883E00E7308F /* GSSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSignUpViewController.m; sourceTree = "<group>"; };
 		A9B8D9FE17308BB400E7308F /* GSTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSTheme.h; sourceTree = "<group>"; };
@@ -175,9 +166,9 @@
 				7B56A355172EE09B0021E5DC /* UIKit.framework in Frameworks */,
 				7B56A357172EE09B0021E5DC /* Foundation.framework in Frameworks */,
 				7B56A359172EE09B0021E5DC /* CoreGraphics.framework in Frameworks */,
-				7B56A405172EEB620021E5DC /* FacebookSDK.framework in Frameworks */,
-				7B56A406172EEB620021E5DC /* Firebase.framework in Frameworks */,
-				7B56A407172EEB620021E5DC /* Parse.framework in Frameworks */,
+				7B01780F1730A5540081DC85 /* FacebookSDK.framework in Frameworks */,
+				7B0178101730A5540081DC85 /* Firebase.framework in Frameworks */,
+				7B0178111730A5540081DC85 /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,16 +176,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B56A3B6172EE7A00021E5DC /* FacebookSDK.framework in Frameworks */,
-				7B56A3B7172EE7A00021E5DC /* Firebase.framework in Frameworks */,
-				7B56A3B8172EE7A00021E5DC /* Parse.framework in Frameworks */,
-				7B56A37B172EE1890021E5DC /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B01780B1730A5540081DC85 /* SDKs */ = {
+			isa = PBXGroup;
+			children = (
+				7B01780C1730A5540081DC85 /* FacebookSDK.framework */,
+				7B01780D1730A5540081DC85 /* Firebase.framework */,
+				7B01780E1730A5540081DC85 /* Parse.framework */,
+			);
+			path = SDKs;
+			sourceTree = "<group>";
+		};
 		7B56A348172EE09B0021E5DC = {
 			isa = PBXGroup;
 			children = (
@@ -217,13 +214,13 @@
 		7B56A353172EE09B0021E5DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7B56A37A172EE1890021E5DC /* CoreFoundation.framework */,
+				7B56A358172EE09B0021E5DC /* CoreGraphics.framework */,
 				7B56A3B3172EE7A00021E5DC /* FacebookSDK.framework */,
 				7B56A3B4172EE7A00021E5DC /* Firebase.framework */,
+				7B56A356172EE09B0021E5DC /* Foundation.framework */,
 				7B56A3B5172EE7A00021E5DC /* Parse.framework */,
 				7B56A354172EE09B0021E5DC /* UIKit.framework */,
-				7B56A356172EE09B0021E5DC /* Foundation.framework */,
-				7B56A358172EE09B0021E5DC /* CoreGraphics.framework */,
-				7B56A37A172EE1890021E5DC /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -259,8 +256,8 @@
 			children = (
 				7B56A393172EE6590021E5DC /* Smartboard.h */,
 				7B56A398172EE6B40021E5DC /* SourceCode */,
-				7B56A401172EEB620021E5DC /* SDKs */,
 				7B56A3D4172EE7CA0021E5DC /* Support */,
+				7B01780B1730A5540081DC85 /* SDKs */,
 			);
 			name = Class;
 			sourceTree = "<group>";
@@ -337,16 +334,6 @@
 				7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */,
 			);
 			path = Utils;
-			sourceTree = "<group>";
-		};
-		7B56A401172EEB620021E5DC /* SDKs */ = {
-			isa = PBXGroup;
-			children = (
-				7B56A402172EEB620021E5DC /* FacebookSDK.framework */,
-				7B56A403172EEB620021E5DC /* Firebase.framework */,
-				7B56A404172EEB620021E5DC /* Parse.framework */,
-			);
-			path = SDKs;
 			sourceTree = "<group>";
 		};
 		A9B8DA0A17308DFD00E7308F /* OHAttributedLabel */ = {
@@ -522,11 +509,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B56A40E172EED0F0021E5DC /* FacebookSDK.framework in Resources */,
-				7B56A40F172EED0F0021E5DC /* Firebase.framework in Resources */,
-				7B56A410172EED0F0021E5DC /* Parse.framework in Resources */,
-				A9B8DA2117308DFD00E7308F /* LICENSE in Resources */,
-				A9B8DA3217308DFD00E7308F /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

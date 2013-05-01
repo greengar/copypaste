@@ -7,6 +7,7 @@
 //
 
 #import "GSUser.h"
+#import <Parse/Parse.h>
 #import "GSUtils.h"
 
 @implementation GSUser

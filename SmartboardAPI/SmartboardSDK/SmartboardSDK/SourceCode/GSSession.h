@@ -11,6 +11,9 @@
 #import "GSUtils.h"
 #import "GSLogInViewController.h"
 
+@protocol PFLogInViewControllerDelegate;
+@protocol PFSignUpViewControllerDelegate;
+
 @interface GSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 // Get the active session

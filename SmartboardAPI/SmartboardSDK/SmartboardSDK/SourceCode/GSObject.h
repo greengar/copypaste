@@ -8,6 +8,8 @@
 
 #import "GSUtils.h"
 
+@class PFObject;
+
 @interface GSObject : NSObject
 
 - (id)initWithPFObject:(PFObject *)object;

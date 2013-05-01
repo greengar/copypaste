@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "GSUtils.h"
 
 @class GSUser;
+@class PFGeoPoint;
+@class PFUser;
 
 @protocol GSSUser
 + (GSUser *)userInfoFromDictionary:(NSDictionary *)userInfo;
