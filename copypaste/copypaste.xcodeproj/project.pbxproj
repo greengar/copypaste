@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B0177F3173092EE0081DC85 /* Smartboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0177F2173092EE0081DC85 /* Smartboard.framework */; };
+		7B0177F5173093280081DC85 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0177F4173093280081DC85 /* CoreText.framework */; };
 		7B0B98CB1720E9B4006B4EBA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0B98CA1720E9B4006B4EBA /* CFNetwork.framework */; };
 		7B0B98CF1720E9C3006B4EBA /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0B98CE1720E9C3006B4EBA /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7B0B98D11720EA61006B4EBA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0B98D01720EA61006B4EBA /* MobileCoreServices.framework */; };
@@ -61,7 +63,6 @@
 		7B45752C1728A7E000675AE5 /* CPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B45752B1728A7E000675AE5 /* CPProfileViewController.m */; };
 		7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A6172745BF00B1D810 /* libicucore.dylib */; };
 		7B4B76C01727684400B1D810 /* CPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B76BF1727684400B1D810 /* CPTextView.m */; };
-		7B56A3FC172EE8DE0021E5DC /* Smartboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B56A3FB172EE8DE0021E5DC /* Smartboard.framework */; };
 		7B737885171E0398004A16F4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737884171E0398004A16F4 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7B73789A171E1148004A16F4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737899171E1148004A16F4 /* SystemConfiguration.framework */; };
 		7BD22238171F33ED00E66FD5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD22237171F33ED00E66FD5 /* Security.framework */; };
@@ -101,6 +102,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B0177F2173092EE0081DC85 /* Smartboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Smartboard.framework; path = copypaste/SDKs/Smartboard.framework; sourceTree = "<group>"; };
+		7B0177F4173093280081DC85 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7B0B98CA1720E9B4006B4EBA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		7B0B98CC1720E9BB006B4EBA /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7B0B98CE1720E9C3006B4EBA /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -178,7 +181,6 @@
 		7B4B76A6172745BF00B1D810 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7B4B76BE1727684400B1D810 /* CPTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTextView.h; sourceTree = "<group>"; };
 		7B4B76BF1727684400B1D810 /* CPTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPTextView.m; sourceTree = "<group>"; };
-		7B56A3FB172EE8DE0021E5DC /* Smartboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Smartboard.framework; path = copypaste/SDKs/Smartboard.framework; sourceTree = "<group>"; };
 		7B737884171E0398004A16F4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7B737899171E1148004A16F4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7BD22237171F33ED00E66FD5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -220,7 +222,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B56A3FC172EE8DE0021E5DC /* Smartboard.framework in Frameworks */,
+				7B0177F5173093280081DC85 /* CoreText.framework in Frameworks */,
 				7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */,
 				7B0B98D61720EADC006B4EBA /* AdSupport.framework in Frameworks */,
 				7B0B98D51720EA9B006B4EBA /* CoreLocation.framework in Frameworks */,
@@ -236,6 +238,7 @@
 				A99F71CC1717535000172B13 /* UIKit.framework in Frameworks */,
 				A99F71CE1717535000172B13 /* Foundation.framework in Frameworks */,
 				A99F71D01717535000172B13 /* CoreGraphics.framework in Frameworks */,
+				7B0177F3173092EE0081DC85 /* Smartboard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,19 +471,20 @@
 		A99F71CA1717535000172B13 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7B56A3FB172EE8DE0021E5DC /* Smartboard.framework */,
 				7B0B98CE1720E9C3006B4EBA /* Accounts.framework */,
 				7B0B98CC1720E9BB006B4EBA /* AdSupport.framework */,
 				A99F720B17179B2E00172B13 /* AudioToolbox.framework */,
 				7B0B98CA1720E9B4006B4EBA /* CFNetwork.framework */,
 				A99F71CF1717535000172B13 /* CoreGraphics.framework */,
 				7B0B98D41720EA9B006B4EBA /* CoreLocation.framework */,
+				7B0177F4173093280081DC85 /* CoreText.framework */,
 				A99F71CD1717535000172B13 /* Foundation.framework */,
 				7B4B76A6172745BF00B1D810 /* libicucore.dylib */,
 				7B0B98D01720EA61006B4EBA /* MobileCoreServices.framework */,
 				7B34672F171CE81900B73449 /* QuartzCore.framework */,
 				7BD22237171F33ED00E66FD5 /* Security.framework */,
 				A99F71F21717535000172B13 /* SenTestingKit.framework */,
+				7B0177F2173092EE0081DC85 /* Smartboard.framework */,
 				7B737884171E0398004A16F4 /* Social.framework */,
 				7B0B98D21720EA86006B4EBA /* StoreKit.framework */,
 				7B737899171E1148004A16F4 /* SystemConfiguration.framework */,
