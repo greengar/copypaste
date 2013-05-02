@@ -96,9 +96,16 @@
     
     self.moreUsersButton = [UIButton buttonWithType:UIButtonTypeCustom];
     float x = 92*3;
-    self.moreUsersButton.frame = CGRectMake(x, self.view.frame.size.height-kUserViewHeight, self.view.frame.size.width-x, kUserViewHeight);
+    self.moreUsersButton.frame = CGRectMake(0, 0, kUserViewHeight, self.view.frame.size.width-x); // Just init
+    self.moreUsersButton.center = CGPointMake(x+(self.view.frame.size.width-x)/2,
+                                              self.view.frame.size.height-kUserViewHeight/2); // Correct frame
+    self.moreUsersButton.transform = CGAffineTransformMakeRotation(-M_PI/2); // Rotate left
     self.moreUsersButton.backgroundColor = kCPPasteTextColor;
-    [self.moreUsersButton addTarget:self action:@selector(moreUsersButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    self.moreUsersButton.titleLabel.shadowColor = [UIColor blackColor];
+    self.moreUsersButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+    [self.moreUsersButton addTarget:self
+                             action:@selector(moreUsersButtonTapped:)
+                   forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.moreUsersButton];
     
     double delayInSeconds = 0.0;
@@ -232,6 +239,12 @@
     }
     
     [self reloadUserViews];
+    
+    if ([[[DataManager sharedManager] availableUsers] count]) {
+        [self.moreUsersButton setTitle:@"more users" forState:UIControlStateNormal];
+    } else {
+        [self.moreUsersButton setTitle:@"" forState:UIControlStateNormal];
+    }
 }
 
 - (void)hideOldCopiedContent {

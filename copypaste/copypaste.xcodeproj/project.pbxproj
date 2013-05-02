@@ -71,6 +71,8 @@
 		7B7BB16D1732D4B10082A267 /* CPNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7BB16C1732D4B10082A267 /* CPNavigationView.m */; };
 		7B7BB1701732E46C0082A267 /* default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B7BB16E1732E46C0082A267 /* default_avatar.png */; };
 		7B7BB1711732E46C0082A267 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B7BB16F1732E46C0082A267 /* default_avatar@2x.png */; };
+		7B7BB1741732FAB70082A267 /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B7BB1721732FAB70082A267 /* facebook.png */; };
+		7B7BB1751732FAB70082A267 /* facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B7BB1731732FAB70082A267 /* facebook@2x.png */; };
 		7BD22238171F33ED00E66FD5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD22237171F33ED00E66FD5 /* Security.framework */; };
 		7BFE09CE17319432008F751A /* CPFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE09CD17319432008F751A /* CPFriendListViewController.m */; };
 		7BFE09D61731FDA8008F751A /* CPFullProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE09D51731FDA8008F751A /* CPFullProfileViewController.m */; };
@@ -190,6 +192,8 @@
 		7B7BB16C1732D4B10082A267 /* CPNavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPNavigationView.m; sourceTree = "<group>"; };
 		7B7BB16E1732E46C0082A267 /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_avatar.png; sourceTree = "<group>"; };
 		7B7BB16F1732E46C0082A267 /* default_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_avatar@2x.png"; sourceTree = "<group>"; };
+		7B7BB1721732FAB70082A267 /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
+		7B7BB1731732FAB70082A267 /* facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook@2x.png"; sourceTree = "<group>"; };
 		7BD22237171F33ED00E66FD5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7BFE09CC17319432008F751A /* CPFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPFriendListViewController.h; sourceTree = "<group>"; };
 		7BFE09CD17319432008F751A /* CPFriendListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPFriendListViewController.m; sourceTree = "<group>"; };
@@ -275,6 +279,8 @@
 				7B2CD38F1725B865006380F3 /* background@2x.png */,
 				7B7BB16E1732E46C0082A267 /* default_avatar.png */,
 				7B7BB16F1732E46C0082A267 /* default_avatar@2x.png */,
+				7B7BB1721732FAB70082A267 /* facebook.png */,
+				7B7BB1731732FAB70082A267 /* facebook@2x.png */,
 				A9130A7A17288AD30079A261 /* header-clipboard3.png */,
 				A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */,
 				7B2CD3921725B865006380F3 /* header.png */,
@@ -664,6 +670,8 @@
 				7B017803173097120081DC85 /* pastebuttonlight.fw@2x.png in Resources */,
 				7B7BB1701732E46C0082A267 /* default_avatar.png in Resources */,
 				7B7BB1711732E46C0082A267 /* default_avatar@2x.png in Resources */,
+				7B7BB1741732FAB70082A267 /* facebook.png in Resources */,
+				7B7BB1751732FAB70082A267 /* facebook@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

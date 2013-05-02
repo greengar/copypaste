@@ -103,7 +103,7 @@
     if (self.profileUser.isFacebookUser) {
         UIButton *facebookButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [facebookButton setFrame:CGRectMake(kOffset, kOffset+kAvatarSize+kOffset, kAvatarSize, kAvatarSize)];
-        [facebookButton setTitle:@"f" forState:UIControlStateNormal];
+        [facebookButton setBackgroundImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateNormal];
         [facebookButton addTarget:self
                            action:@selector(facebookButtonTapped:)
                  forControlEvents:UIControlEventTouchUpInside];
