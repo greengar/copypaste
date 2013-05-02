@@ -34,27 +34,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-//        self.clipsToBounds = NO; // pasteboardHeaderImageView is positioned slightly beyond bounds (can change this)
-        
         self.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
         
-        // The "my pasteboard background image view"
-//        self.pasteboardBackgroundImageView =
-//            [[UIImageView alloc] initWithFrame:CGRectMake(0,
-//                                                          kClipboardHeaderOffset,
-//                                                          frame.size.width,
-//                                                          frame.size.height-2*kClipboardHeaderOffset)];
-//        self.pasteboardBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth
-//                                                              | UIViewAutoresizingFlexibleHeight;
-//        self.pasteboardBackgroundImageView.image = [[UIImage imageNamed:@"pasteboard.png"] stretchableImageWithLeftCapWidth:30
-//                                                                                                            topCapHeight:30];
-//        [self addSubview:self.pasteboardBackgroundImageView];
-
         // The "pasteboard" string content
-        self.pasteboardTextView = [[CPTextView alloc] initWithFrame:CGRectMake((frame.size.width-kPasteboardContentWidth)/2,
-                                                                                 kPasteboardContentTopOffset,
-                                                                                 kPasteboardContentWidth,
-                                                                                 kPasteboardMinimumHeight-kPasteboardContentTopOffset-kPasteboardContentBottomOffset)];
+        self.pasteboardTextView = [[CPTextView alloc] initWithFrame:CGRectMake(0,
+                                                                               0,
+                                                                               frame.size.width,
+                                                                               frame.size.height)];
         self.pasteboardTextView.backgroundColor = [UIColor clearColor];
         self.pasteboardTextView.textColor = [UIColor whiteColor];
         self.pasteboardTextView.textAlignment = UITextAlignmentCenter;
@@ -69,10 +55,10 @@
         [self addSubview:self.pasteboardTextView];
         
         // The "pasteboard" image scroll view
-        self.pasteboardImageHolderView = [[UIScrollView alloc] initWithFrame:CGRectMake((frame.size.width-kPasteboardContentWidth)/2,
-                                                                                          kPasteboardContentTopOffset,
-                                                                                          kPasteboardContentWidth,
-                                                                                          kPasteboardMinimumHeight-kPasteboardContentTopOffset-kPasteboardContentBottomOffset)];
+        self.pasteboardImageHolderView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,
+                                                                                        0,
+                                                                                        frame.size.width,
+                                                                                        frame.size.height)];
         self.pasteboardImageHolderView.backgroundColor = [UIColor clearColor];
         self.pasteboardImageHolderView.hidden = YES;
         self.pasteboardImageHolderView.layer.cornerRadius = 3;
@@ -88,11 +74,6 @@
         self.pasteboardImageView.backgroundColor = [UIColor clearColor];
         [self.pasteboardImageHolderView addSubview:self.pasteboardImageView];
         
-        // The "clipboard" header view
-//        UIImage *clipboardHeaderImage = [UIImage imageNamed:@"header-clipboard3.png"];
-//        self.pasteboardHeaderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(9, -2, clipboardHeaderImage.size.width, clipboardHeaderImage.size.height)];
-//        self.pasteboardHeaderImageView.image = clipboardHeaderImage;
-//        [self addSubview:self.pasteboardHeaderImageView];
     }
     return self;
 }

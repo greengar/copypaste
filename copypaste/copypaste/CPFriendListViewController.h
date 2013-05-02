@@ -11,7 +11,7 @@
 #import "EGOImageView.h"
 #import "CPNavigationView.h"
 
-@interface CPFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EGOImageViewDelegate, CPNavigationDelegate>
+@interface CPFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EGOImageViewDelegate, CPNavigationDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 

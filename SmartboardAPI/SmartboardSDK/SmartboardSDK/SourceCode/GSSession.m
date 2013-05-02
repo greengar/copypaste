@@ -386,6 +386,7 @@ static GSSession *activeSession = nil;
     if (currentLocation != nil) {
         // Query for locations near mine
         PFQuery *query = [PFUser query];
+        [query setLimit:30];
         [query whereKey:@"location"
            nearGeoPoint:currentLocation];
         

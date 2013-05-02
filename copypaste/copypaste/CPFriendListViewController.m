@@ -14,11 +14,20 @@
 #define kAvatarImageTag 777
 #define kSortButtonWidth (self.view.frame.size.width-kNavigationBarHeight)/2
 #define kSortButtonHeight kNavigationBarHeight
+#define kSearchBarHeight 44
+
+typedef enum {
+    SortTypeLocation = 0,
+    SortTypeName
+} SortType;
 
 @interface CPFriendListViewController ()
 @property (nonatomic, strong) UIButton *sortLocationButton;
 @property (nonatomic, strong) UIButton *sortNameButton;
+@property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSMutableArray *availableUsers;
+@property (nonatomic, strong) NSMutableArray *sortedByNameUsers;
+@property (nonatomic) SortType sortType;
 @end
 
 @implementation CPFriendListViewController
@@ -40,6 +49,8 @@
         [self.view addSubview:navigationView];
         
         self.availableUsers = [NSMutableArray arrayWithArray:[[DataManager sharedManager] availableUsers]];
+        self.sortedByNameUsers = [NSMutableArray arrayWithArray:[[DataManager sharedManager] sortedAvailableUsersByName]];
+        self.sortType = SortTypeLocation;
         
         self.sortLocationButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.sortLocationButton setFrame:CGRectMake(kNavigationBarHeight,
@@ -79,6 +90,15 @@
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         [self.view addSubview:self.tableView];
+        
+        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,
+                                                                               0,
+                                                                               self.view.frame.size.width,
+                                                                               kSearchBarHeight)];
+        [GSUtils removeSearchBarBackground:self.searchBar];
+        [GSUtils changeSearchBarReturnKeyToReturn:self.searchBar];
+        [self.searchBar setDelegate:self];
+        self.tableView.tableHeaderView = self.searchBar;
     }
     return self;
 }
@@ -87,22 +107,44 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (void)sortLocationButtonTapped:(id)sender {
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     [self.availableUsers removeAllObjects];
-    [self.availableUsers addObjectsFromArray:[[DataManager sharedManager] sortedAvailableUsersByLocation]];
-    [self.tableView reloadData];
+    if ([searchText length] > 0) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"displayName CONTAINS %@", searchText];
+        NSArray *filteredArray;
+        if (self.sortType == SortTypeLocation) {
+            filteredArray = [[[DataManager sharedManager] availableUsers] filteredArrayUsingPredicate:predicate];
+        } else {
+            filteredArray = [self.sortedByNameUsers filteredArrayUsingPredicate:predicate];
+        }
+        [self.availableUsers addObjectsFromArray:filteredArray];
+    } else {
+        if (self.sortType == SortTypeLocation) {
+            [self.availableUsers addObjectsFromArray:[[DataManager sharedManager] availableUsers]];
+        } else {
+            [self.availableUsers addObjectsFromArray:self.sortedByNameUsers];
+        }
+    }
     
+    [self.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+}
+
+- (void)sortLocationButtonTapped:(id)sender {
+    self.sortType = SortTypeLocation;
     self.sortLocationButton.backgroundColor = kCPPasteTextColor;
     self.sortNameButton.backgroundColor = kCPBackgroundColor;
+    [self searchBar:self.searchBar textDidChange:self.searchBar.text];
 }
 
 - (void)sortNameButtonTapped:(id)sender {
-    [self.availableUsers removeAllObjects];
-    [self.availableUsers addObjectsFromArray:[[DataManager sharedManager] sortedAvailableUsersByName]];
-    [self.tableView reloadData];
-    
+    self.sortType = SortTypeName;
     self.sortLocationButton.backgroundColor = kCPBackgroundColor;
     self.sortNameButton.backgroundColor = kCPPasteTextColor;
+    [self searchBar:self.searchBar textDidChange:self.searchBar.text];
 }
 
 - (void)viewDidLoad
@@ -132,6 +174,7 @@
         cell.textLabel.font = DEFAULT_FONT_SIZE(15.0f);
         cell.detailTextLabel.textColor = [UIColor whiteColor];
         cell.detailTextLabel.font = DEFAULT_FONT_SIZE(11.0f);
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         
         EGOImageView *avatarImage = [[EGOImageView alloc] initWithFrame:CGRectMake(0,
                                                                                    0,

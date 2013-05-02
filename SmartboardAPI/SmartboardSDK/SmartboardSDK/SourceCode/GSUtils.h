@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #define IS_IPAD      (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
 #define IS_IPAD1    ((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()) && ([UIScreen mainScreen].scale == 1.0) && (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]))
@@ -41,6 +42,8 @@
 + (NSString *) stringFromDate:(NSDate *)date;
 + (NSString*) dateDiffFromInterval:(double)ti;
 + (NSString*) dateDiffFromDate:(NSDate *)date;
++ (void)changeSearchBarReturnKeyToReturn:(UISearchBar *)searchBar;
++ (void)removeSearchBarBackground:(UISearchBar *)searchBar;
 
 @end
 

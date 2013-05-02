@@ -88,4 +88,19 @@
     return [GSUtils dateDiffFromInterval:[date timeIntervalSince1970]];
 }
 
++ (void)changeSearchBarReturnKeyToReturn:(UISearchBar *)searchBar {
+    for(UIView *subView in searchBar.subviews) {
+        if([subView conformsToProtocol:@protocol(UITextInputTraits)]) {
+            [(UITextField *)subView setKeyboardAppearance:UIKeyboardAppearanceAlert];
+            [(UITextField *)subView setReturnKeyType:UIReturnKeyDefault];
+            [(UITextField *)subView setEnablesReturnKeyAutomatically:NO];
+        }
+    }
+}
+
++ (void)removeSearchBarBackground:(UISearchBar *)searchBar {
+    [searchBar setBackgroundColor:[UIColor clearColor]];
+    [[searchBar.subviews objectAtIndex:0] removeFromSuperview];
+}
+
 @end
