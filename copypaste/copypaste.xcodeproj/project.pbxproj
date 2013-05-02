@@ -69,6 +69,7 @@
 		7B737885171E0398004A16F4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737884171E0398004A16F4 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7B73789A171E1148004A16F4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737899171E1148004A16F4 /* SystemConfiguration.framework */; };
 		7BD22238171F33ED00E66FD5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD22237171F33ED00E66FD5 /* Security.framework */; };
+		7BFE09CE17319432008F751A /* CPFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE09CD17319432008F751A /* CPFriendListViewController.m */; };
 		A9130A7C17288AD30079A261 /* header-clipboard3.png in Resources */ = {isa = PBXBuildFile; fileRef = A9130A7A17288AD30079A261 /* header-clipboard3.png */; };
 		A9130A7D17288AD30079A261 /* header-clipboard3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */; };
 		A945DFD117260B7900F69D40 /* background-548h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A945DFD017260B7900F69D40 /* background-548h@2x.png */; };
@@ -182,6 +183,8 @@
 		7B737884171E0398004A16F4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7B737899171E1148004A16F4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7BD22237171F33ED00E66FD5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		7BFE09CC17319432008F751A /* CPFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPFriendListViewController.h; sourceTree = "<group>"; };
+		7BFE09CD17319432008F751A /* CPFriendListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPFriendListViewController.m; sourceTree = "<group>"; };
 		A9130A7A17288AD30079A261 /* header-clipboard3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-clipboard3.png"; sourceTree = "<group>"; };
 		A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-clipboard3@2x.png"; sourceTree = "<group>"; };
 		A945DFD017260B7900F69D40 /* background-548h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-548h@2x.png"; sourceTree = "<group>"; };
@@ -390,6 +393,8 @@
 				A99F71EA1717535000172B13 /* CPViewController.m */,
 				7B45752A1728A7E000675AE5 /* CPProfileViewController.h */,
 				7B45752B1728A7E000675AE5 /* CPProfileViewController.m */,
+				7BFE09CC17319432008F751A /* CPFriendListViewController.h */,
+				7BFE09CD17319432008F751A /* CPFriendListViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -695,6 +700,7 @@
 				7B41E4B41729F389002157DF /* WEPopoverController.m in Sources */,
 				7B41E4B51729F389002157DF /* WETouchableView.m in Sources */,
 				7B017806173097310081DC85 /* CPUserView.m in Sources */,
+				7BFE09CE17319432008F751A /* CPFriendListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

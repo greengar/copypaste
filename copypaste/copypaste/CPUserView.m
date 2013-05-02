@@ -18,9 +18,6 @@
 
 @implementation CPUserView
 
-//@synthesize user = _user;
-//@synthesize isLight = _isLight;
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -29,16 +26,15 @@
         
         self.avatarButton = [[EGOImageButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.width)];
         self.avatarButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
-        //contentView.clipsToBounds = YES;
         self.avatarButton.delegate = self;
+        [self.avatarButton setBackgroundImage:[UIImage imageNamed:@"help.fw.png"] forState:UIControlStateNormal];
         [self.avatarButton addTarget:self action:@selector(avatarButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.avatarButton];
         
-        self.pasteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.avatarButton.frame.size.height, frame.size.width, frame.size.height - self.avatarButton.frame.size.height)];
-//        self.pasteButton.backgroundColor = [UIColor blueColor];
-//        self.pasteButton.tag = index; // tag is used by -pasteToUserWithButton: to identify the user position
-        // TODO: check -pasteToUserWithButton:
-//        [self.pasteButton addTarget:self action:@selector(pasteToUserWithButton:) forControlEvents:UIControlEventTouchUpInside];
+        self.pasteButton = [[UIButton alloc] initWithFrame:CGRectMake(0,
+                                                                      self.avatarButton.frame.size.height,
+                                                                      frame.size.width,
+                                                                      frame.size.height - self.avatarButton.frame.size.height)];
         [self addSubview:self.pasteButton];
         
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, frame.size.width-10, kNameLabelHeight)];
@@ -86,12 +82,6 @@
     }
 }
 
-//- (void)setBackgroundColor:(UIColor *)backgroundColor
-//{
-//    [super setBackgroundColor:backgroundColor];
-//    self.pasteButton.backgroundColor = backgroundColor;
-//}
-
 - (void)setUser:(CPUser *)user
 {
     _user = user;
@@ -122,6 +112,8 @@
 - (void)imageButtonLoadedImage:(EGOImageButton*)imageButton
 {
     [imageButton setNeedsDisplay];
+    self.user.avatarImage = imageButton.imageView.image;
+    self.user.isAvatarCached = YES;
 }
 
 - (void)imageButtonFailedToLoadImage:(EGOImageButton*)imageButton error:(NSError*)error

@@ -36,9 +36,14 @@
 @property (nonatomic, retain) NSString *facebookScreenName;
 
 - (id)initWithPFUser:(PFUser *)pfUser;
+- (id)initWithPFUser:(PFUser *)pfUser cacheAvatar:(BOOL)cache;
 - (void)parseDataFromPFUser:(PFUser *)pfUser;
-- (id)initWithGSUser:(GSUser *)gsUser;
+- (void)parseDataFromPFUser:(PFUser *)pfUser cacheAvatar:(BOOL)cache;
+- (void)cacheAvatar;
+- (id)initWithGSUser:(GSUser *)pfUser;
+- (id)initWithGSUser:(GSUser *)gsUser cacheAvatar:(BOOL)cache;
 - (void)parseDataFromGSUser:(GSUser *)gsUser;
+- (void)parseDataFromGSUser:(GSUser *)gsUser cacheAvatar:(BOOL)cache;
 - (NSString *)displayName;
 - (NSString *)distanceStringToUser:(GSUser *)user;
 - (NSString *)lastSeenTimeString;

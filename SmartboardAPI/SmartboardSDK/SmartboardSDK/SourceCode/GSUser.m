@@ -27,6 +27,10 @@
 @synthesize facebookScreenName = _facebookScreenName;
 
 - (id)initWithPFUser:(PFUser *)pfUser {
+    return [self initWithPFUser:pfUser cacheAvatar:YES];
+}
+
+- (id)initWithPFUser:(PFUser *)pfUser cacheAvatar:(BOOL)cache {
     if (self = [super init]) {
         self.uid = [pfUser objectId];
         self.username = [pfUser username];
@@ -35,28 +39,24 @@
         self.fullname = pfUser[@"fullname"];
         self.email = pfUser[@"email"];
         self.avatarURLString = pfUser[@"avatar_url"];
-        if (self.avatarURLString == nil) {
-            self.avatarURLString = @"";
-        }
         self.location = pfUser[@"location"];
         self.lastLogInDate = pfUser[@"last_log_in"];
         self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
         self.facebookId = pfUser[@"facebook_id"];
         self.facebookScreenName = pfUser[@"facebook_screen_name"];
         // DLog(@"Parse from %@ to %@", pfUser, self);
-        
-        dispatch_async(dispatch_get_current_queue(), ^{
-            if (self.avatarURLString) {
-                NSData *avatarData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.avatarURLString]];
-                self.avatarImage = [UIImage imageWithData:avatarData];
-                self.isAvatarCached = YES;
-            }
-        });
+        if (cache) {
+            [self cacheAvatar];
+        }
     }
     return self;
 }
 
 - (void)parseDataFromPFUser:(PFUser *)pfUser {
+    return [self parseDataFromPFUser:pfUser cacheAvatar:YES];
+}
+
+- (void)parseDataFromPFUser:(PFUser *)pfUser cacheAvatar:(BOOL)cache {
     self.uid = [pfUser objectId];
     self.username = [pfUser username];
     self.firstname = pfUser[@"firstname"];
@@ -64,9 +64,6 @@
     self.fullname = pfUser[@"fullname"];
     self.email = pfUser[@"email"];
     self.avatarURLString = pfUser[@"avatar_url"];
-    if (self.avatarURLString == nil) {
-        self.avatarURLString = @"";
-    }
     self.location = pfUser[@"location"];
     self.lastLogInDate = pfUser[@"last_log_in"];
     self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
@@ -74,6 +71,12 @@
     self.facebookScreenName = pfUser[@"facebook_screen_name"];
     // DLog(@"Parse from %@ to %@", pfUser, self);
     
+    if (cache) {
+        [self cacheAvatar];
+    }
+}
+
+- (void)cacheAvatar {
     dispatch_async(dispatch_get_current_queue(), ^{
         if (self.avatarURLString) {
             NSData *avatarData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.avatarURLString]];
@@ -84,6 +87,10 @@
 }
 
 - (id)initWithGSUser:(GSUser *)gssUser {
+    return [self initWithGSUser:gssUser cacheAvatar:YES];
+}
+
+- (id)initWithGSUser:(GSUser *)gssUser cacheAvatar:(BOOL)cache {
     if (self = [super init]) {
         self.uid = gssUser.uid;
         self.username = gssUser.username;
@@ -100,11 +107,19 @@
         self.facebookId = gssUser.facebookId;
         self.facebookScreenName = gssUser.facebookScreenName;
         // DLog(@"Parse from %@ to %@", gssUser, self);
+        
+        if (cache) {
+            [self cacheAvatar];
+        }
     }
     return self;
 }
 
-- (void)parseDataFromGSUser:(GSUser *)gssUser {
+- (void)parseDataFromGSUser:(GSUser *)gsUser {
+    return [self parseDataFromGSUser:gsUser cacheAvatar:YES];
+}
+
+- (void)parseDataFromGSUser:(GSUser *)gssUser cacheAvatar:(BOOL)cache {
     self.uid = gssUser.uid;
     self.username = gssUser.username;
     self.firstname = gssUser.firstname;
@@ -120,6 +135,10 @@
     self.facebookId = gssUser.facebookId;
     self.facebookScreenName = gssUser.facebookScreenName;
     // DLog(@"Parse from %@ to %@", gssUser, self);
+    
+    if (cache) {
+        [self cacheAvatar];
+    }
 }
 
 - (NSString *)displayName {

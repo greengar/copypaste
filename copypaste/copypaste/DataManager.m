@@ -71,7 +71,7 @@ static DataManager *shareManager = nil;
 - (void)updateNearbyUsers:(NSArray *)nearbyList {
     [self.availableUsers removeAllObjects];
     for (GSUser *gssUser in nearbyList) {
-        CPUser *user = [[CPUser alloc] initWithGSUser:gssUser];
+        CPUser *user = [[CPUser alloc] initWithGSUser:gssUser cacheAvatar:YES];
         [self.availableUsers addObject:user];
     }
 }

@@ -28,7 +28,6 @@
 
 @synthesize myPasteboardHolderView = _myPasteboardHolderView;
 @synthesize userProfilePopoverController = _userProfilePopoverController;
-//@synthesize settingButton = _settingButton;
 
 - (void)viewDidLoad
 {
@@ -57,8 +56,8 @@
     
     // The avatar image view of the logged in user
     self.avatarImageButton = [[EGOImageButton alloc] initWithFrame:CGRectMake(0, 0, helpImage.size.width, helpImage.size.height)];
-    [self.avatarImageButton setBackgroundImage:helpImage forState:UIControlStateNormal];
     self.avatarImageButton.contentMode = UIViewContentModeScaleAspectFill;
+    [self.avatarImageButton setBackgroundImage:helpImage forState:UIControlStateNormal];
     [self.avatarImageButton addTarget:self action:@selector(avatarImageButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.avatarImageButton];
     
@@ -84,9 +83,13 @@
     
     for (int i = 0; i < 3; i++)
     {
-        CPUserView *userView = [[CPUserView alloc] initWithFrame:CGRectMake(92 * i, self.view.frame.size.height-kUserViewHeight, 91, kUserViewHeight)];
+        CPUserView *userView = [[CPUserView alloc] initWithFrame:CGRectMake(92 * i,
+                                                                            self.view.frame.size.height-kUserViewHeight,
+                                                                            91,
+                                                                            kUserViewHeight)];
         userView.delegate = self;
         userView.isLight = (i % 2) ? NO : YES;
+        userView.nameLabel.text = @"Loading...";
         [self.view addSubview:userView];
         [self.userViews addObject:userView];
     }
@@ -94,9 +97,8 @@
     self.moreUsersButton = [UIButton buttonWithType:UIButtonTypeCustom];
     float x = 92*3;
     self.moreUsersButton.frame = CGRectMake(x, self.view.frame.size.height-kUserViewHeight, self.view.frame.size.width-x, kUserViewHeight);
-    
     self.moreUsersButton.backgroundColor = kCPPasteTextColor;
-    
+    [self.moreUsersButton addTarget:self action:@selector(moreUsersButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.moreUsersButton];
 }
 
@@ -118,6 +120,29 @@
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
     [alertView show];
+}
+
+- (void)moreUsersButtonTapped:(id)sender
+{
+    if ([[[DataManager sharedManager] availableUsers] count] < 3) { // No more users
+        return;
+    }
+    
+    CPFriendListViewController *friendListViewController = [[CPFriendListViewController alloc] init];
+    friendListViewController.delegate = self;
+    friendListViewController.view.frame = CGRectMake(0,
+                                                     self.view.frame.size.height,
+                                                     self.view.frame.size.width,
+                                                     self.view.frame.size.height);
+    [self.view addSubview:friendListViewController.view];
+    [UIView animateWithDuration:0.4 animations:^{
+        friendListViewController.view.frame = CGRectMake(0,
+                                                         0,
+                                                         self.view.frame.size.width,
+                                                         self.view.frame.size.height);
+    } completion:^(BOOL finished) {
+        [friendListViewController.tableView reloadData];
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -208,7 +233,7 @@
             [self.avatarImageButton setImageURL:[NSURL URLWithString:currentUser.avatarURLString]];
             [self.avatarImageButton setDelegate:self];
         } else {
-//            [self.avatarImageView setImage:nil forState:UIControlStateNormal];
+            [self.avatarImageButton setImage:nil forState:UIControlStateNormal];
         }
     }
     
@@ -236,6 +261,16 @@
 
         }];
     }
+}
+
+- (void)selectUser:(CPUser *)user {
+    CPUserView *userView = [[CPUserView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    userView.user = user;
+    [self didTapAvatarUserView:userView];
+}
+
+- (void)pasteToUser:(CPUser *)user {
+    [self didTapPasteUser:user];
 }
 
 - (void)didTapPasteUser:(CPUser *)user

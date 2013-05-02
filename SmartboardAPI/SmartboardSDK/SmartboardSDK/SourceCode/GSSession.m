@@ -311,9 +311,10 @@ static GSSession *activeSession = nil;
         NSString *messageTime = [GSUtils getCurrentTime];
         NSNumber *longitude = [NSNumber numberWithDouble:self.currentUser.location.longitude];
         NSNumber *latitude = [NSNumber numberWithDouble:self.currentUser.location.latitude];
+        NSString *userAvatarString = self.currentUser.avatarURLString ? self.currentUser.avatarURLString : @"";
         [[self generateFirebaseFor:user atTime:messageTime] setValue:@{kSenderUIDKey:self.currentUser.uid,
                                                                   kSenderUsernameKey:[self currentUserName],
-                                                                 kSenderAvatarURLKey:self.currentUser.avatarURLString,
+                                                                 kSenderAvatarURLKey:userAvatarString,
                                                                  kSenderLongitudeKey:longitude,
                                                                   kSenderLatitudeKey:latitude,
                                                                      kReceiverUIDKey:user.uid,
@@ -398,7 +399,7 @@ static GSSession *activeSession = nil;
                             [user setObject:user.updatedAt forKey:@"last_log_in"];
                         }
                         
-                        GSUser *gsUser = [[GSUser alloc] initWithPFUser:user];
+                        GSUser *gsUser = [[GSUser alloc] initWithPFUser:user cacheAvatar:NO];
                         [nearByUserExceptMe addObject:gsUser];
                     }
                 }
@@ -529,7 +530,7 @@ static GSSession *activeSession = nil;
             NSString *facebookID = userData[@"id"];
             NSString *name = userData[@"name"];
             NSString *username = userData[@"username"];
-            NSString *pictureURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID];
+            NSString *pictureURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?width=132&height=132", facebookID];
             
             [[PFUser currentUser] setObject:name forKey:@"fullname"];
             [[PFUser currentUser] setObject:pictureURL forKey:@"avatar_url"];
