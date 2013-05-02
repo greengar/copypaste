@@ -63,13 +63,14 @@
 		7B41E4BA172A093D002157DF /* person-background.fw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A96726421729DE8F008BC997 /* person-background.fw@2x.png */; };
 		7B4574EA17287D2500675AE5 /* CPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574E917287D2500675AE5 /* CPMessage.m */; };
 		7B4574F317288AEE00675AE5 /* CPMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4574F217288AEE00675AE5 /* CPMessageView.m */; };
-		7B45752C1728A7E000675AE5 /* CPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B45752B1728A7E000675AE5 /* CPProfileViewController.m */; };
+		7B45752C1728A7E000675AE5 /* CPShortProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B45752B1728A7E000675AE5 /* CPShortProfileViewController.m */; };
 		7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A6172745BF00B1D810 /* libicucore.dylib */; };
 		7B4B76C01727684400B1D810 /* CPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B76BF1727684400B1D810 /* CPTextView.m */; };
 		7B737885171E0398004A16F4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737884171E0398004A16F4 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7B73789A171E1148004A16F4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737899171E1148004A16F4 /* SystemConfiguration.framework */; };
 		7BD22238171F33ED00E66FD5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD22237171F33ED00E66FD5 /* Security.framework */; };
 		7BFE09CE17319432008F751A /* CPFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE09CD17319432008F751A /* CPFriendListViewController.m */; };
+		7BFE09D61731FDA8008F751A /* CPFullProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE09D51731FDA8008F751A /* CPFullProfileViewController.m */; };
 		A9130A7C17288AD30079A261 /* header-clipboard3.png in Resources */ = {isa = PBXBuildFile; fileRef = A9130A7A17288AD30079A261 /* header-clipboard3.png */; };
 		A9130A7D17288AD30079A261 /* header-clipboard3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */; };
 		A945DFD117260B7900F69D40 /* background-548h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A945DFD017260B7900F69D40 /* background-548h@2x.png */; };
@@ -175,8 +176,8 @@
 		7B4574E917287D2500675AE5 /* CPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPMessage.m; sourceTree = "<group>"; };
 		7B4574F117288AEE00675AE5 /* CPMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPMessageView.h; sourceTree = "<group>"; };
 		7B4574F217288AEE00675AE5 /* CPMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPMessageView.m; sourceTree = "<group>"; };
-		7B45752A1728A7E000675AE5 /* CPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPProfileViewController.h; sourceTree = "<group>"; };
-		7B45752B1728A7E000675AE5 /* CPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPProfileViewController.m; sourceTree = "<group>"; };
+		7B45752A1728A7E000675AE5 /* CPShortProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPShortProfileViewController.h; sourceTree = "<group>"; };
+		7B45752B1728A7E000675AE5 /* CPShortProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPShortProfileViewController.m; sourceTree = "<group>"; };
 		7B4B76A6172745BF00B1D810 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7B4B76BE1727684400B1D810 /* CPTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTextView.h; sourceTree = "<group>"; };
 		7B4B76BF1727684400B1D810 /* CPTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPTextView.m; sourceTree = "<group>"; };
@@ -185,6 +186,8 @@
 		7BD22237171F33ED00E66FD5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7BFE09CC17319432008F751A /* CPFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPFriendListViewController.h; sourceTree = "<group>"; };
 		7BFE09CD17319432008F751A /* CPFriendListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPFriendListViewController.m; sourceTree = "<group>"; };
+		7BFE09D41731FDA8008F751A /* CPFullProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPFullProfileViewController.h; sourceTree = "<group>"; };
+		7BFE09D51731FDA8008F751A /* CPFullProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPFullProfileViewController.m; sourceTree = "<group>"; };
 		A9130A7A17288AD30079A261 /* header-clipboard3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-clipboard3.png"; sourceTree = "<group>"; };
 		A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-clipboard3@2x.png"; sourceTree = "<group>"; };
 		A945DFD017260B7900F69D40 /* background-548h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-548h@2x.png"; sourceTree = "<group>"; };
@@ -391,8 +394,10 @@
 			children = (
 				A99F71E91717535000172B13 /* CPViewController.h */,
 				A99F71EA1717535000172B13 /* CPViewController.m */,
-				7B45752A1728A7E000675AE5 /* CPProfileViewController.h */,
-				7B45752B1728A7E000675AE5 /* CPProfileViewController.m */,
+				7B45752A1728A7E000675AE5 /* CPShortProfileViewController.h */,
+				7B45752B1728A7E000675AE5 /* CPShortProfileViewController.m */,
+				7BFE09D41731FDA8008F751A /* CPFullProfileViewController.h */,
+				7BFE09D51731FDA8008F751A /* CPFullProfileViewController.m */,
 				7BFE09CC17319432008F751A /* CPFriendListViewController.h */,
 				7BFE09CD17319432008F751A /* CPFriendListViewController.m */,
 			);
@@ -693,7 +698,7 @@
 				7B4B76C01727684400B1D810 /* CPTextView.m in Sources */,
 				7B4574EA17287D2500675AE5 /* CPMessage.m in Sources */,
 				7B4574F317288AEE00675AE5 /* CPMessageView.m in Sources */,
-				7B45752C1728A7E000675AE5 /* CPProfileViewController.m in Sources */,
+				7B45752C1728A7E000675AE5 /* CPShortProfileViewController.m in Sources */,
 				7B41E4841729CADA002157DF /* CPUser.m in Sources */,
 				7B41E4B21729F389002157DF /* UIBarButtonItem+WEPopover.m in Sources */,
 				7B41E4B31729F389002157DF /* WEPopoverContainerView.m in Sources */,
@@ -701,6 +706,7 @@
 				7B41E4B51729F389002157DF /* WETouchableView.m in Sources */,
 				7B017806173097310081DC85 /* CPUserView.m in Sources */,
 				7BFE09CE17319432008F751A /* CPFriendListViewController.m in Sources */,
+				7BFE09D61731FDA8008F751A /* CPFullProfileViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

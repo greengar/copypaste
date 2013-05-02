@@ -8,6 +8,7 @@
 
 #import "CPFriendListViewController.h"
 #import "DataManager.h"
+#import "CPFullProfileViewController.h"
 
 #define kAvatarImageTag 777
 
@@ -40,14 +41,7 @@
 }
 
 - (void)topButtonTapped:(id)sender {
-    [UIView animateWithDuration:0.4 animations:^{
-        self.view.frame = CGRectMake(0,
-                                     self.view.frame.size.height,
-                                     self.view.frame.size.width,
-                                     self.view.frame.size.height);
-    } completion:^(BOOL finished) {
-        [self.view removeFromSuperview];
-    }];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad
@@ -104,12 +98,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self topButtonTapped:nil];
-    
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(selectUser:)]) {
-        CPUser *user = [[[DataManager sharedManager] availableUsers] objectAtIndex:[indexPath row]];
-        [self.delegate selectUser:user];
-    }
+//    CPUser *user = [[[DataManager sharedManager] availableUsers] objectAtIndex:[indexPath row]];
+//    
+//    CPFullProfileViewController *profileViewController = [[CPFullProfileViewController alloc] init];
+//    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (void)imageViewFailedToLoadImage:(EGOImageView *)imageView error:(NSError *)error {

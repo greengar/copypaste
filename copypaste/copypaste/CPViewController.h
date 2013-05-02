@@ -13,7 +13,7 @@
 #import "CPPasteboardView.h"
 #import "CPMessageView.h"
 #import "WEPopoverController.h"
-#import "CPProfileViewController.h"
+#import "CPShortProfileViewController.h"
 #import "CPFriendListViewController.h"
 #import "CPUserView.h"
 

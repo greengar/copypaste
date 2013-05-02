@@ -100,6 +100,19 @@
     self.moreUsersButton.backgroundColor = kCPPasteTextColor;
     [self.moreUsersButton addTarget:self action:@selector(moreUsersButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.moreUsersButton];
+    
+    double delayInSeconds = 0.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if ([GSSession isAuthenticated]) {
+            [[GSSession activeSession] updateUserInfoFromSmartboardAPIWithBlock:^(BOOL succeed, NSError *error) {
+                [self finishAuthentication];
+            }];
+        } else {
+            [[GSSession activeSession] authenticateSmartboardAPIFromViewController:self
+                                                                          delegate:self];
+        }
+    });
 }
 
 - (void)avatarImageButtonTapped:(id)sender
@@ -130,31 +143,14 @@
     
     CPFriendListViewController *friendListViewController = [[CPFriendListViewController alloc] init];
     friendListViewController.delegate = self;
-    friendListViewController.view.frame = CGRectMake(0,
-                                                     self.view.frame.size.height,
-                                                     self.view.frame.size.width,
-                                                     self.view.frame.size.height);
-    [self.view addSubview:friendListViewController.view];
-    [UIView animateWithDuration:0.4 animations:^{
-        friendListViewController.view.frame = CGRectMake(0,
-                                                         0,
-                                                         self.view.frame.size.width,
-                                                         self.view.frame.size.height);
-    } completion:^(BOOL finished) {
-        [friendListViewController.tableView reloadData];
-    }];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
+    navigationController.navigationBarHidden = YES;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if ([GSSession isAuthenticated]) {
-        [[GSSession activeSession] updateUserInfoFromSmartboardAPIWithBlock:^(BOOL succeed, NSError *error) {
-            [self finishAuthentication];
-        }];
-    } else {
-        [[GSSession activeSession] authenticateSmartboardAPIFromViewController:self
-                                                                      delegate:self];
-    }
 }
 
 - (void)finishAuthentication {
@@ -248,9 +244,8 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == alertView.firstOtherButtonIndex) {
         [[GSSession activeSession] logOutWithBlock:^(BOOL succeed, NSError *error) {
-            [self viewDidAppear:YES];
-            
             [self.avatarImageButton setImage:nil forState:UIControlStateNormal];
+            [[[DataManager sharedManager] availableUsers] removeAllObjects];
             
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"You have logged out"
                                                                 message:@"Please log in in order to use copypaste"
@@ -258,6 +253,9 @@
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
             [alertView show];
+            
+            [[GSSession activeSession] authenticateSmartboardAPIFromViewController:self
+                                                                          delegate:self];
 
         }];
     }
@@ -312,7 +310,7 @@
 {
     CPUser *user = userView.user;
     
-    CPProfileViewController *profileViewController = [[CPProfileViewController alloc] init];
+    CPShortProfileViewController *profileViewController = [[CPShortProfileViewController alloc] init];
     profileViewController.profileUser = user;
     profileViewController.view.frame = CGRectMake(0, 0, 320, 200);
     

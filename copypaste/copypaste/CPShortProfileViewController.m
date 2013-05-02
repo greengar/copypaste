@@ -1,12 +1,12 @@
 //
-//  CPProfileViewController.m
+//  CPShortProfileViewController.m
 //  copypaste
 //
 //  Created by Hector Zhao on 4/24/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "CPProfileViewController.h"
+#import "CPShortProfileViewController.h"
 #import <Smartboard/Smartboard.h>
 
 #define kOffset 8
@@ -15,11 +15,11 @@
 #define kTextWidth self.view.frame.size.width-kTextOffsetLeft+kOffset
 #define kTextHeight 30
 
-@interface CPProfileViewController ()
+@interface CPShortProfileViewController ()
 
 @end
 
-@implementation CPProfileViewController
+@implementation CPShortProfileViewController
 @synthesize profileUser = _profileUser;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -27,6 +27,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.view.backgroundColor = kCPBackgroundColor;
     }
     return self;
 }

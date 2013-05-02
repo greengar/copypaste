@@ -1,5 +1,5 @@
 //
-//  CPProfileViewController.h
+//  CPShortProfileViewController.h
 //  copypaste
 //
 //  Created by Hector Zhao on 4/24/13.
@@ -10,7 +10,7 @@
 #import "CPUser.h"
 #import "EGOImageView.h"
 
-@interface CPProfileViewController : UIViewController <EGOImageViewDelegate>
+@interface CPShortProfileViewController : UIViewController <EGOImageViewDelegate>
 
 @property (nonatomic, retain) CPUser *profileUser;
 
