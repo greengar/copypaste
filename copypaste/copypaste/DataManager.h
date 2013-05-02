@@ -17,8 +17,11 @@
 - (void)updateNearbyUsers:(NSArray *)nearbyList;
 - (CPUser *)userById:(NSString *)uid;
 - (void)getNumOfMessageFromUser:(CPUser *)fromUser toUser:(CPUser *)toUser;
+- (void)pasteToUser:(CPUser *)user block:(GSResultBlock)block;
+- (NSArray *)sortedAvailableUsersByLocation;
+- (NSArray *)sortedAvailableUsersByName;
 
-@property (nonatomic, retain) NSMutableArray *availableUsers;
-@property (nonatomic, retain) NSMutableArray *receivedMessages;
+@property (nonatomic, strong) NSMutableArray *availableUsers;
+@property (nonatomic, strong) NSMutableArray *receivedMessages;
 
 @end

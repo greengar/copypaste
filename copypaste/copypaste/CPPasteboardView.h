@@ -13,10 +13,10 @@
 
 - (void)updateUIWithPasteObject:(NSObject *)objectFromClipboard;
 
-@property (nonatomic, retain) UIImageView *pasteboardBackgroundImageView;
-@property (nonatomic, retain) UIImageView *pasteboardHeaderImageView;
-@property (nonatomic, retain) CPTextView *pasteboardTextView;
-@property (nonatomic, retain) UIScrollView *pasteboardImageHolderView;
-@property (nonatomic, retain) UIImageView *pasteboardImageView;
+@property (nonatomic, strong) UIImageView *pasteboardBackgroundImageView;
+@property (nonatomic, strong) UIImageView *pasteboardHeaderImageView;
+@property (nonatomic, strong) CPTextView *pasteboardTextView;
+@property (nonatomic, strong) UIScrollView *pasteboardImageHolderView;
+@property (nonatomic, strong) UIImageView *pasteboardImageView;
 
 @end

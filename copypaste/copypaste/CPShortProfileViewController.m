@@ -32,13 +32,14 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    EGOImageView *userAvatarImageView = [[EGOImageView alloc] initWithFrame:CGRectMake(kOffset,
-                                                                                       kOffset,
-                                                                                       kAvatarSize,
-                                                                                       kAvatarSize)];
+- (void)setProfileUser:(CPUser *)profileUser {
+    _profileUser = profileUser;
+
+    EGOImageView *userAvatarImageView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"default_avatar.png"]];
+    [userAvatarImageView setFrame:CGRectMake(kOffset,
+                                             kOffset,
+                                             kAvatarSize,
+                                             kAvatarSize)];
     [userAvatarImageView setDelegate:self];
     [userAvatarImageView setContentMode:UIViewContentModeScaleAspectFill];
     [userAvatarImageView setClipsToBounds:YES];
@@ -56,11 +57,7 @@
     profileUsernameLabel.backgroundColor = [UIColor clearColor];
     profileUsernameLabel.font = DEFAULT_FONT_SIZE(15.0f);
     profileUsernameLabel.textColor = [UIColor whiteColor];
-    if (self.profileUser.fullname) {
-        profileUsernameLabel.text = self.profileUser.fullname;
-    } else {
-        profileUsernameLabel.text = self.profileUser.username;
-    }
+    profileUsernameLabel.text = [self.profileUser displayName];
     [self.view addSubview:profileUsernameLabel];
     
     UILabel *profileDistanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(kTextOffsetLeft,

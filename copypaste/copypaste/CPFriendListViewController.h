@@ -9,14 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "CPUser.h"
 #import "EGOImageView.h"
+#import "CPNavigationView.h"
 
-@protocol CPFriendListViewDelegate
-- (void)selectUser:(CPUser *)user;
-@end
+@interface CPFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EGOImageViewDelegate, CPNavigationDelegate>
 
-@interface CPFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EGOImageViewDelegate>
-
-@property (nonatomic, retain) UITableView *tableView;
-@property (nonatomic, weak) id<CPFriendListViewDelegate> delegate;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end

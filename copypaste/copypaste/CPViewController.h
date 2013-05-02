@@ -17,13 +17,13 @@
 #import "CPFriendListViewController.h"
 #import "CPUserView.h"
 
-@interface CPViewController : UIViewController <EGOImageButtonDelegate,GSSessionDelegate, WEPopoverControllerDelegate, UIAlertViewDelegate, CPMessageViewDelegate, CPUserViewDelegate, CPFriendListViewDelegate>
+@interface CPViewController : UIViewController <EGOImageButtonDelegate,GSSessionDelegate, WEPopoverControllerDelegate, UIAlertViewDelegate, CPMessageViewDelegate, CPUserViewDelegate>
 
-@property (nonatomic, retain) CPPasteboardView *myPasteboardHolderView;
-@property (nonatomic, retain) WEPopoverController *userProfilePopoverController;
+@property (nonatomic, strong) CPPasteboardView *myPasteboardHolderView;
+@property (nonatomic, strong) WEPopoverController *userProfilePopoverController;
 
-@property (nonatomic, retain) EGOImageButton *avatarImageButton;
-@property (nonatomic, retain) UIButton *helpButton;
+@property (nonatomic, strong) EGOImageButton *avatarImageButton;
+@property (nonatomic, strong) UIButton *helpButton;
 
 @property (nonatomic, strong) NSMutableArray *userViews;
 @property (nonatomic, strong) UIButton *moreUsersButton;

@@ -142,7 +142,9 @@
 }
 
 - (NSString *)displayName {
-    if (self.fullname) {
+    if (self.firstname) {
+        return self.firstname;
+    } else if (self.fullname) {
         return self.fullname;
     } else {
         return self.username;

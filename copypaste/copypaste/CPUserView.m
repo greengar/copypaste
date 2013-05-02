@@ -27,7 +27,7 @@
         self.avatarButton = [[EGOImageButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.width)];
         self.avatarButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
         self.avatarButton.delegate = self;
-        [self.avatarButton setBackgroundImage:[UIImage imageNamed:@"help.fw.png"] forState:UIControlStateNormal];
+        [self.avatarButton setBackgroundImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
         [self.avatarButton addTarget:self action:@selector(avatarButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.avatarButton];
         
@@ -93,17 +93,8 @@
         } else if (user.avatarURLString) {
             [self.avatarButton setImageURL:[NSURL URLWithString:user.avatarURLString]];
         }
-        // If user creates a new account, fullname is the same as username
-        // If user logs in with Facebook, fullname is the person's Full Name
-        // (1) firstname (2) fullname (3) username
-        // TODO: add/use firstname in User class
-        // TODO: use displayName
-        if (user.firstname)
-            self.nameLabel.text = user.firstname;
-        else if (user.fullname)
-            self.nameLabel.text = user.fullname;
-        else
-            self.nameLabel.text = user.username;
+        
+        self.nameLabel.text = [user displayName];
     }
 }
 

@@ -12,6 +12,6 @@
 
 @interface CPShortProfileViewController : UIViewController <EGOImageViewDelegate>
 
-@property (nonatomic, retain) CPUser *profileUser;
+@property (nonatomic, strong) CPUser *profileUser;
 
 @end

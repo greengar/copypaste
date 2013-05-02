@@ -24,16 +24,16 @@
 - (id)initWithFrame:(CGRect)frame message:(CPMessage *)message controller:(UIViewController *)baseController;
 - (void)showMeOnView:(UIView *)view;
 
-@property (nonatomic, retain) CPMessage *message;
-@property (nonatomic, retain) EGOImageView *userAvatarImageView;
-@property (nonatomic, retain) UILabel *usernameLabel;
-@property (nonatomic, retain) UILabel *distanceLabel;
-@property (nonatomic, retain) UILabel *timeLabel;
-@property (nonatomic, retain) CPTextView *pasteboardTextView;
-@property (nonatomic, retain) UIScrollView *pasteboardImageHolderView;
-@property (nonatomic, retain) UIImageView *pasteboardImageView;
+@property (nonatomic, strong) CPMessage *message;
+@property (nonatomic, strong) EGOImageView *userAvatarImageView;
+@property (nonatomic, strong) UILabel *usernameLabel;
+@property (nonatomic, strong) UILabel *distanceLabel;
+@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) CPTextView *pasteboardTextView;
+@property (nonatomic, strong) UIScrollView *pasteboardImageHolderView;
+@property (nonatomic, strong) UIImageView *pasteboardImageView;
 @property (nonatomic, assign) id<CPMessageViewDelegate> delegate;
-@property (nonatomic, retain) UIViewController *baseViewController;
-@property (nonatomic, retain) UIDocumentInteractionController *viewController;
+@property (nonatomic, strong) UIViewController *baseViewController;
+@property (nonatomic, strong) UIDocumentInteractionController *viewController;
 
 @end

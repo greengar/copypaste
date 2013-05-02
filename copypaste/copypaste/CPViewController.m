@@ -142,8 +142,6 @@
     }
     
     CPFriendListViewController *friendListViewController = [[CPFriendListViewController alloc] init];
-    friendListViewController.delegate = self;
-    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
     navigationController.navigationBarHidden = YES;
     [self presentViewController:navigationController animated:YES completion:nil];
@@ -273,37 +271,10 @@
 
 - (void)didTapPasteUser:(CPUser *)user
 {
-    NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
-    
-    if (itemToPaste) {
-        [[GSSession activeSession] sendMessage:itemToPaste toUser:user];
-        user.numOfCopyFromMe++;
-        
-        NSMutableArray *sendCondition = [NSMutableArray new];
-        [sendCondition addObject:@"sender_id"];
-        [sendCondition addObject:[[[GSSession activeSession] currentUser] uid]];
-        [sendCondition addObject:@"receiver_id"];
-        [sendCondition addObject:[user uid]];
-        
-        NSMutableArray *valueToSet = [NSMutableArray new];
-        [valueToSet addObject:@"num_of_msg"];
-        [valueToSet addObject:[NSNumber numberWithInt:user.numOfCopyFromMe]];
-        
-        [[GSSession activeSession] updateClass:@"CopyAndPaste"
-                                          with:valueToSet
-                                         where:sendCondition
-                                         block:^(BOOL succeed, NSError *error) {
-                                             [self updateUI];
-                                         }];
-        
-    } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can not paste"
-                                                            message:[NSString stringWithFormat:@"Your clipboard is empty, please copy something to paste to %@!", user.fullname]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
-    }
+    [[DataManager sharedManager] pasteToUser:user
+                                       block:^(BOOL succeed, NSError *error) {
+        [self updateUI];
+    }];
 }
 
 - (void)didTapAvatarUserView:(CPUserView *)userView

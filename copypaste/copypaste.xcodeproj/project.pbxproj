@@ -68,6 +68,9 @@
 		7B4B76C01727684400B1D810 /* CPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B76BF1727684400B1D810 /* CPTextView.m */; };
 		7B737885171E0398004A16F4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737884171E0398004A16F4 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7B73789A171E1148004A16F4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737899171E1148004A16F4 /* SystemConfiguration.framework */; };
+		7B7BB16D1732D4B10082A267 /* CPNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7BB16C1732D4B10082A267 /* CPNavigationView.m */; };
+		7B7BB1701732E46C0082A267 /* default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B7BB16E1732E46C0082A267 /* default_avatar.png */; };
+		7B7BB1711732E46C0082A267 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B7BB16F1732E46C0082A267 /* default_avatar@2x.png */; };
 		7BD22238171F33ED00E66FD5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD22237171F33ED00E66FD5 /* Security.framework */; };
 		7BFE09CE17319432008F751A /* CPFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE09CD17319432008F751A /* CPFriendListViewController.m */; };
 		7BFE09D61731FDA8008F751A /* CPFullProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE09D51731FDA8008F751A /* CPFullProfileViewController.m */; };
@@ -183,6 +186,10 @@
 		7B4B76BF1727684400B1D810 /* CPTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPTextView.m; sourceTree = "<group>"; };
 		7B737884171E0398004A16F4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7B737899171E1148004A16F4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		7B7BB16B1732D4B10082A267 /* CPNavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPNavigationView.h; sourceTree = "<group>"; };
+		7B7BB16C1732D4B10082A267 /* CPNavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPNavigationView.m; sourceTree = "<group>"; };
+		7B7BB16E1732E46C0082A267 /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_avatar.png; sourceTree = "<group>"; };
+		7B7BB16F1732E46C0082A267 /* default_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_avatar@2x.png"; sourceTree = "<group>"; };
 		7BD22237171F33ED00E66FD5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7BFE09CC17319432008F751A /* CPFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPFriendListViewController.h; sourceTree = "<group>"; };
 		7BFE09CD17319432008F751A /* CPFriendListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPFriendListViewController.m; sourceTree = "<group>"; };
@@ -266,6 +273,8 @@
 				A945DFD017260B7900F69D40 /* background-548h@2x.png */,
 				7B2CD38E1725B865006380F3 /* background.png */,
 				7B2CD38F1725B865006380F3 /* background@2x.png */,
+				7B7BB16E1732E46C0082A267 /* default_avatar.png */,
+				7B7BB16F1732E46C0082A267 /* default_avatar@2x.png */,
 				A9130A7A17288AD30079A261 /* header-clipboard3.png */,
 				A9130A7B17288AD30079A261 /* header-clipboard3@2x.png */,
 				7B2CD3921725B865006380F3 /* header.png */,
@@ -415,6 +424,8 @@
 				7B4B76BF1727684400B1D810 /* CPTextView.m */,
 				7B017804173097300081DC85 /* CPUserView.h */,
 				7B017805173097300081DC85 /* CPUserView.m */,
+				7B7BB16B1732D4B10082A267 /* CPNavigationView.h */,
+				7B7BB16C1732D4B10082A267 /* CPNavigationView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -651,6 +662,8 @@
 				7B017801173097120081DC85 /* pastebutton.fw@2x.png in Resources */,
 				7B017802173097120081DC85 /* pastebuttonlight.fw.png in Resources */,
 				7B017803173097120081DC85 /* pastebuttonlight.fw@2x.png in Resources */,
+				7B7BB1701732E46C0082A267 /* default_avatar.png in Resources */,
+				7B7BB1711732E46C0082A267 /* default_avatar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -707,6 +720,7 @@
 				7B017806173097310081DC85 /* CPUserView.m in Sources */,
 				7BFE09CE17319432008F751A /* CPFriendListViewController.m in Sources */,
 				7BFE09D61731FDA8008F751A /* CPFullProfileViewController.m in Sources */,
+				7B7BB16D1732D4B10082A267 /* CPNavigationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

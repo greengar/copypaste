@@ -10,10 +10,15 @@
 #import "DataManager.h"
 #import "CPFullProfileViewController.h"
 
+#define kNavigationBarHeight 66
 #define kAvatarImageTag 777
+#define kSortButtonWidth (self.view.frame.size.width-kNavigationBarHeight)/2
+#define kSortButtonHeight kNavigationBarHeight
 
 @interface CPFriendListViewController ()
-
+@property (nonatomic, strong) UIButton *sortLocationButton;
+@property (nonatomic, strong) UIButton *sortNameButton;
+@property (nonatomic, strong) NSMutableArray *availableUsers;
 @end
 
 @implementation CPFriendListViewController
@@ -25,13 +30,51 @@
         // Custom initialization
         self.view.backgroundColor = kCPBackgroundColor;
         
-        UIButton *topButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        topButton.frame = CGRectMake(0, 0, 320, 66);
-        topButton.backgroundColor = [UIColor clearColor];
-        [topButton addTarget:self action:@selector(topButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:topButton];
+        CPNavigationView *navigationView = [[CPNavigationView alloc] initWithFrame:CGRectMake(0,
+                                                                                              0,
+                                                                                              self.view.frame.size.width,
+                                                                                              kNavigationBarHeight)
+                                                                           hasBack:YES
+                                                                           hasDone:NO];
+        navigationView.delegate = self;
+        [self.view addSubview:navigationView];
         
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 66, 320, 394)];
+        self.availableUsers = [NSMutableArray arrayWithArray:[[DataManager sharedManager] availableUsers]];
+        
+        self.sortLocationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.sortLocationButton setFrame:CGRectMake(kNavigationBarHeight,
+                                                     0,
+                                                     kSortButtonWidth,
+                                                     kSortButtonHeight)];
+        [self.sortLocationButton setTitle:@"location" forState:UIControlStateNormal];
+        [self.sortLocationButton.titleLabel setTextColor:[UIColor whiteColor]];
+        [self.sortLocationButton.titleLabel setShadowColor:[UIColor blackColor]];
+        [self.sortLocationButton.titleLabel setShadowOffset:CGSizeMake(0, 1)];
+        [self.sortLocationButton setBackgroundColor:kCPPasteTextColor];
+        [self.sortLocationButton addTarget:self
+                               action:@selector(sortLocationButtonTapped:)
+                     forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.sortLocationButton];
+        
+        self.sortNameButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.sortNameButton setFrame:CGRectMake(self.view.frame.size.width-kSortButtonWidth,
+                                                 0,
+                                                 kSortButtonWidth,
+                                                 kSortButtonHeight)];
+        [self.sortNameButton setTitle:@"name" forState:UIControlStateNormal];
+        [self.sortNameButton.titleLabel setTextColor:[UIColor whiteColor]];
+        [self.sortNameButton.titleLabel setShadowColor:[UIColor blackColor]];
+        [self.sortNameButton.titleLabel setShadowOffset:CGSizeMake(0, 1)];
+        [self.sortNameButton setBackgroundColor:kCPBackgroundColor];
+        [self.sortNameButton addTarget:self
+                                action:@selector(sortNameButtonTapped:)
+                      forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.sortNameButton];
+        
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,
+                                                                       kNavigationBarHeight,
+                                                                       self.view.frame.size.width,
+                                                                       self.view.frame.size.height-kNavigationBarHeight)];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
@@ -40,8 +83,26 @@
     return self;
 }
 
-- (void)topButtonTapped:(id)sender {
+- (void)backButtonTapped {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)sortLocationButtonTapped:(id)sender {
+    [self.availableUsers removeAllObjects];
+    [self.availableUsers addObjectsFromArray:[[DataManager sharedManager] sortedAvailableUsersByLocation]];
+    [self.tableView reloadData];
+    
+    self.sortLocationButton.backgroundColor = kCPPasteTextColor;
+    self.sortNameButton.backgroundColor = kCPBackgroundColor;
+}
+
+- (void)sortNameButtonTapped:(id)sender {
+    [self.availableUsers removeAllObjects];
+    [self.availableUsers addObjectsFromArray:[[DataManager sharedManager] sortedAvailableUsersByName]];
+    [self.tableView reloadData];
+    
+    self.sortLocationButton.backgroundColor = kCPBackgroundColor;
+    self.sortNameButton.backgroundColor = kCPPasteTextColor;
 }
 
 - (void)viewDidLoad
@@ -57,7 +118,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[[DataManager sharedManager] availableUsers] count];
+    return [self.availableUsers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -66,7 +127,7 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:tableViewCellIdentifier];
-        cell.imageView.image = [UIImage imageNamed:@"help.fw.png"];
+        cell.imageView.image = [UIImage imageNamed:@"default_avatar.png"];
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.font = DEFAULT_FONT_SIZE(15.0f);
         cell.detailTextLabel.textColor = [UIColor whiteColor];
@@ -83,7 +144,7 @@
         [cell addSubview:avatarImage];        
     }
     
-    CPUser *user = [[[DataManager sharedManager] availableUsers] objectAtIndex:[indexPath row]];
+    CPUser *user = [self.availableUsers objectAtIndex:[indexPath row]];
     
     if (user.isAvatarCached) {
         [((EGOImageView *) [cell viewWithTag:kAvatarImageTag]) setImage:user.avatarImage];
@@ -98,10 +159,11 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    CPUser *user = [[[DataManager sharedManager] availableUsers] objectAtIndex:[indexPath row]];
-//    
-//    CPFullProfileViewController *profileViewController = [[CPFullProfileViewController alloc] init];
-//    [self.navigationController pushViewController:profileViewController animated:YES];
+    CPUser *user = [self.availableUsers objectAtIndex:[indexPath row]];
+    CPUser *actualUser = [[DataManager sharedManager] userById:user.uid];
+    CPFullProfileViewController *profileViewController = [[CPFullProfileViewController alloc] init];
+    profileViewController.profileUser = actualUser;
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (void)imageViewFailedToLoadImage:(EGOImageView *)imageView error:(NSError *)error {
