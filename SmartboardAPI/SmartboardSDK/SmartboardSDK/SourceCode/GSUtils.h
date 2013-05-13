@@ -37,13 +37,14 @@
 
 @interface GSUtils : NSObject
 
-+ (NSString *) getCurrentTime;
-+ (NSDate *) dateFromString:(NSString *)dateString;
-+ (NSString *) stringFromDate:(NSDate *)date;
-+ (NSString*) dateDiffFromInterval:(double)ti;
-+ (NSString*) dateDiffFromDate:(NSDate *)date;
++ (NSString*)getCurrentTime;
++ (NSDate*)dateFromString:(NSString *)dateString;
++ (NSString*)stringFromDate:(NSDate *)date;
++ (NSString*)dateDiffFromInterval:(double)ti;
++ (NSString*)dateDiffFromDate:(NSDate *)date;
 + (void)changeSearchBarReturnKeyToReturn:(UISearchBar *)searchBar;
 + (void)removeSearchBarBackground:(UISearchBar *)searchBar;
++ (BOOL)isValidURL:(NSString *)urlString;
 
 @end
 

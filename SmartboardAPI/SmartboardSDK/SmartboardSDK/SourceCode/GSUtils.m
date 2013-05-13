@@ -103,4 +103,10 @@
     [[searchBar.subviews objectAtIndex:0] removeFromSuperview];
 }
 
++ (BOOL)isValidURL:(NSString *)urlString {
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    return [NSURLConnection canHandleRequest:request];
+}
+
 @end
