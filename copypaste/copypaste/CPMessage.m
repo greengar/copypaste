@@ -11,6 +11,7 @@
 @implementation CPMessage
 @synthesize sender = _sender;
 @synthesize messageContent = _messageContent;
+@synthesize messageTime = _messageTime;
 @synthesize createdDateInterval = _createdDateInterval;
 
 - (NSString *) description {

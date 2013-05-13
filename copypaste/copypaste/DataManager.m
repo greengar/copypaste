@@ -13,6 +13,7 @@ static DataManager *shareManager = nil;
 
 @implementation DataManager
 @synthesize availableUsers = _nearByUserList;
+@synthesize receivedMessages = _receivedMessages;
 
 + (DataManager *)sharedManager {
     static DataManager *sharedManager;

@@ -11,11 +11,12 @@
 #import <Smartboard/Smartboard.h>
 
 #define kOffset 6
-#define kHeaderHeight 100
+#define kHeaderHeight kOffset+2+kAvatarSize+kOffset
 #define kButtonHeight 60
 #define kAvatarSize 76
 #define kLeftOffetForText kOffset+2+kAvatarSize+kOffset
 #define kTextHeight 25
+#define kButtonHeight 60
 
 @implementation CPMessageView
 @synthesize message = _message;
@@ -33,19 +34,7 @@
         self.layer.cornerRadius = 5;
         self.clipsToBounds = YES;
         
-        UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                         0,
-                                                                                         frame.size.width,
-                                                                                         frame.size.height)];
-        if (IS_IPHONE5) {
-            backgroundImageView.image = [UIImage imageNamed:@"background-548h.png"];
-        } else {
-            backgroundImageView.image = [UIImage imageNamed:@"background.png"];
-        }
-        backgroundImageView.backgroundColor = [UIColor whiteColor];
-        backgroundImageView.layer.cornerRadius = 5;
-        backgroundImageView.clipsToBounds = YES;
-        [self addSubview:backgroundImageView];
+        self.backgroundColor = kCPBackgroundColor;
         
         self.userAvatarImageView = [[EGOImageView alloc] initWithFrame:CGRectMake(kOffset+2,
                                                                                   kOffset+2,
@@ -69,7 +58,7 @@
                                                                        kTextHeight)];
         self.usernameLabel.backgroundColor = [UIColor clearColor];
         self.usernameLabel.font = DEFAULT_FONT_SIZE(15.0f);
-        self.usernameLabel.textColor = [UIColor whiteColor];
+        self.usernameLabel.textColor = [UIColor darkGrayColor];
         [self.usernameLabel setText:[NSString stringWithFormat:@"Sender: %@", message.sender.fullname]];
         [self addSubview:self.usernameLabel];
         
@@ -79,7 +68,7 @@
                                                                        kTextHeight)];
         self.distanceLabel.backgroundColor = [UIColor clearColor];
         self.distanceLabel.font = DEFAULT_FONT_SIZE(15.0f);
-        self.distanceLabel.textColor = [UIColor whiteColor];
+        self.distanceLabel.textColor = [UIColor darkGrayColor];
         [self.distanceLabel setText:[NSString stringWithFormat:@"Distance: %@", [message.sender distanceStringToUser:[[GSSession activeSession] currentUser]]]];
         [self addSubview:self.distanceLabel];
         
@@ -89,100 +78,43 @@
                                                                        kTextHeight)];
         self.timeLabel.backgroundColor = [UIColor clearColor];
         self.timeLabel.font = DEFAULT_FONT_SIZE(15.0f);
-        self.timeLabel.textColor = [UIColor whiteColor];
+        self.timeLabel.textColor = [UIColor darkGrayColor];
         [self.timeLabel setText:[NSString stringWithFormat:@"Time: %@", [GSUtils dateDiffFromInterval:message.createdDateInterval]]];
         [self addSubview:self.timeLabel];
         
-        UIImageView * pasteboardBackgroundImageView =
-        [[UIImageView alloc] initWithFrame:CGRectMake(kOffset,
-                                                      kHeaderHeight+kOffset,
-                                                      frame.size.width-2*kOffset,
-                                                      frame.size.height-2*kOffset-kHeaderHeight-kButtonHeight)];
-        pasteboardBackgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth
-                                                        | UIViewAutoresizingFlexibleHeight;
-        pasteboardBackgroundImageView.image = [[UIImage imageNamed:@"pasteboard.png"] stretchableImageWithLeftCapWidth:30
-                                                                                                          topCapHeight:30];
-        [self addSubview:pasteboardBackgroundImageView];
-        
         // The "pasteboard" string content
-        self.pasteboardTextView = [[CPTextView alloc] initWithFrame:CGRectMake(kOffset+2,
-                                                                               kHeaderHeight+kOffset+2,
-                                                                               frame.size.width-2*(kOffset+2),
-                                                                               frame.size.height-2*(kOffset+2)-kHeaderHeight-kButtonHeight)];
-        self.pasteboardTextView.backgroundColor = [UIColor clearColor];
-        self.pasteboardTextView.textColor = [UIColor whiteColor];
-        self.pasteboardTextView.textAlignment = UITextAlignmentCenter;
-        self.pasteboardTextView.editable = NO;
-        self.pasteboardTextView.font = DEFAULT_FONT_SIZE(16.0f);
-        self.pasteboardTextView.hidden = YES;
-        self.pasteboardTextView.layer.cornerRadius = 3;
-        self.pasteboardTextView.clipsToBounds = YES;
-        self.pasteboardTextView.delegate = self;
-        self.pasteboardTextView.bounces = YES;
-        self.pasteboardTextView.alwaysBounceVertical = YES;
-        [self addSubview:self.pasteboardTextView];
-        
-        // The "pasteboard" image scroll view
-        self.pasteboardImageHolderView = [[UIScrollView alloc] initWithFrame:CGRectMake(kOffset+2,
-                                                                                        kHeaderHeight+kOffset+2,
-                                                                                        frame.size.width-2*(kOffset+2),
-                                                                                        frame.size.height-2*(kOffset+2)-kHeaderHeight-kButtonHeight)];
-        self.pasteboardImageHolderView.backgroundColor = [UIColor clearColor];
-        self.pasteboardImageHolderView.hidden = YES;
-        self.pasteboardImageHolderView.layer.cornerRadius = 3;
-        self.pasteboardImageHolderView.clipsToBounds = YES;
-        self.pasteboardImageHolderView.delegate = self;
-        [self addSubview:self.pasteboardImageHolderView];
-        
-        // The "pasteboard" image content
-        self.pasteboardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                 0,
-                                                                                 self.pasteboardImageHolderView.frame.size.width,
-                                                                                 self.pasteboardImageHolderView.frame.size.height)];
-        self.pasteboardImageView.backgroundColor = [UIColor clearColor];
-        [self.pasteboardImageHolderView addSubview:self.pasteboardImageView];
-        
+        self.pasteboardView = [[CPPasteboardView alloc] initWithFrame:CGRectMake(0,
+                                                                                 kHeaderHeight+2,
+                                                                                 frame.size.width,
+                                                                                 300)];
+        [self addSubview:self.pasteboardView];
+            
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [saveButton setTitle:@"Save" forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(saveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [saveButton setFrame:CGRectMake(0, 400, 80, 60)];
+        [saveButton setFrame:CGRectMake(0, 400, 80, kButtonHeight)];
         [self addSubview:saveButton];
         
         UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [shareButton setTitle:@"Open In" forState:UIControlStateNormal];
         [shareButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [shareButton setFrame:CGRectMake(80, 400, 80, 60)];
+        [shareButton setFrame:CGRectMake(80, 400, 80, kButtonHeight)];
         [self addSubview:shareButton];
         
         UIButton *remindMeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [remindMeButton setTitle:@"Copy" forState:UIControlStateNormal];
         [remindMeButton addTarget:self action:@selector(copyButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [remindMeButton setFrame:CGRectMake(160, 400, 80, 60)];
+        [remindMeButton setFrame:CGRectMake(160, 400, 80, kButtonHeight)];
         [self addSubview:remindMeButton];
         
         UIButton *discardButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [discardButton setTitle:@"Discard" forState:UIControlStateNormal];
         [discardButton addTarget:self action:@selector(discardButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [discardButton setFrame:CGRectMake(240, 400, 80, 60)];
+        [discardButton setFrame:CGRectMake(240, 400, 80, kButtonHeight)];
         [self addSubview:discardButton];
         
-        // Update message content
-        if ([message.messageContent isKindOfClass:[NSString class]]) {
-            self.pasteboardTextView.hidden = NO;
-            [self.pasteboardTextView setText:((NSString *)message.messageContent)];
-            
-        } else if ([message.messageContent isKindOfClass:[UIImage class]]) {
-            self.pasteboardImageHolderView.hidden = NO;
-            [self.pasteboardImageView setImage:((UIImage *) message.messageContent)];
-            float imageWidth = ((UIImage *) message.messageContent).size.width;
-            float imageHeight = ((UIImage *) message.messageContent).size.height*self.pasteboardImageHolderView.frame.size.height/imageWidth;
-            self.pasteboardImageView.frame = CGRectMake(self.pasteboardImageView.frame.origin.x,
-                                                        self.pasteboardImageView.frame.origin.y,
-                                                        self.pasteboardImageView.frame.size.width,
-                                                        imageHeight);
-            self.pasteboardImageHolderView.contentSize = CGSizeMake(self.pasteboardImageHolderView.frame.size.width,
-                                                                    imageHeight);
-        }
+        [self.pasteboardView updateUIWithPasteObject:message.messageContent];
+        
     }
     return self;
 }
@@ -192,6 +124,7 @@
 }
 
 - (void)saveButtonTapped:(id)sender {
+    [self removeMessage];
     // If only text, so we just need to copy the content
     if ([self.message.messageContent isKindOfClass:[NSString class]]) {
         [self copyButtonTapped:nil];
@@ -213,6 +146,7 @@
 }
 
 - (void)shareButtonTapped:(id)sender {
+    [self removeMessage];
     // If only text, so we just need to copy the content
     if ([self.message.messageContent isKindOfClass:[NSString class]]) {
         [self copyButtonTapped:nil];
@@ -241,6 +175,7 @@
 }
 
 - (void)copyButtonTapped:(id)sender {
+    [self removeMessage];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     if ([self.message.messageContent isKindOfClass:[NSString class]]) {
         NSString *string = (NSString *) self.message.messageContent;
@@ -266,10 +201,16 @@
 }
 
 - (void)discardButtonTapped:(id)sender {
+    [self removeMessage];
     [self removeFromSuperview];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(discardMessage:)]) {
         [self.delegate discardMessage:self.message];
     }
+}
+
+- (void)removeMessage {
+    [[GSSession activeSession] removeMessageFromSender:self.message.sender
+                                                atTime:self.message.messageTime];
 }
 
 - (void)imageViewFailedToLoadImage:(EGOImageView *)imageView error:(NSError *)error {

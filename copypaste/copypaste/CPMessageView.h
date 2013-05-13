@@ -10,6 +10,7 @@
 #import "EGOImageView.h"
 #import "CPMessage.h"
 #import "CPTextView.h"
+#import "CPPasteboardView.h"
 
 @protocol CPMessageViewDelegate
 @optional
@@ -29,9 +30,7 @@
 @property (nonatomic, strong) UILabel *usernameLabel;
 @property (nonatomic, strong) UILabel *distanceLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) CPTextView *pasteboardTextView;
-@property (nonatomic, strong) UIScrollView *pasteboardImageHolderView;
-@property (nonatomic, strong) UIImageView *pasteboardImageView;
+@property (nonatomic, strong) CPPasteboardView *pasteboardView;
 @property (nonatomic, assign) id<CPMessageViewDelegate> delegate;
 @property (nonatomic, strong) UIViewController *baseViewController;
 @property (nonatomic, strong) UIDocumentInteractionController *viewController;

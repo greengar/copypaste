@@ -344,6 +344,7 @@
     CPMessage *newMessage = [[CPMessage alloc] init];
     [newMessage setSender:sender];
     [newMessage setMessageContent:messageContent];
+    [newMessage setMessageTime:messageTime];
     [newMessage setCreatedDateInterval:[[GSUtils dateFromString:messageTime] timeIntervalSince1970]];
     DLog(@"Receive message: %@", [newMessage description]);
     [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
@@ -351,7 +352,6 @@
     // Get more message from the sender
     sender.numOfPasteToMe++;
     
-    // Remove the value from the Firebase server, because it's catched
     [[GSSession activeSession] removeMessageFromSender:sender atTime:messageTime];
     
     CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,

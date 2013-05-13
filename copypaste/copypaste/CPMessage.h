@@ -13,6 +13,7 @@
 
 @property (nonatomic) GSUser *sender;
 @property (nonatomic) NSObject *messageContent;
+@property (nonatomic) NSString *messageTime;
 @property (nonatomic) NSTimeInterval createdDateInterval;
 
 @end
