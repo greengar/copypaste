@@ -120,11 +120,11 @@
 }
 
 - (void)showMeOnView:(UIView *)view {
+    self.message.sender.numOfUnreadMessage--;
     [view addSubview:self];
 }
 
 - (void)saveButtonTapped:(id)sender {
-    [self removeMessage];
     // If only text, so we just need to copy the content
     if ([self.message.messageContent isKindOfClass:[NSString class]]) {
         [self copyButtonTapped:nil];
@@ -146,7 +146,6 @@
 }
 
 - (void)shareButtonTapped:(id)sender {
-    [self removeMessage];
     // If only text, so we just need to copy the content
     if ([self.message.messageContent isKindOfClass:[NSString class]]) {
         [self copyButtonTapped:nil];
@@ -175,7 +174,6 @@
 }
 
 - (void)copyButtonTapped:(id)sender {
-    [self removeMessage];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     if ([self.message.messageContent isKindOfClass:[NSString class]]) {
         NSString *string = (NSString *) self.message.messageContent;
@@ -201,7 +199,6 @@
 }
 
 - (void)discardButtonTapped:(id)sender {
-    [self removeMessage];
     [self removeFromSuperview];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(discardMessage:)]) {
         [self.delegate discardMessage:self.message];

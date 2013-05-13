@@ -53,6 +53,14 @@
         [self.pasteButton setTitleEdgeInsets:UIEdgeInsetsMake(kNameLabelHeight+5, 0, 0, 0)];
         [self.pasteButton addTarget:self action:@selector(pasteButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         
+        self.badgeView = [[MKNumberBadgeView alloc] init];
+        [self.badgeView setFrame:CGRectMake(self.avatarButton.frame.origin.x,
+                                            self.avatarButton.frame.origin.y,
+                                            self.avatarButton.frame.size.width*2,
+                                            self.avatarButton.frame.size.height*2)];
+        [self.badgeView setValue:0];
+        [self addSubview:self.badgeView];
+        
     }
     return self;
 }
@@ -95,6 +103,7 @@
         }
         
         self.nameLabel.text = [user displayName];
+        self.badgeView.value = [user numOfUnreadMessage];
     }
 }
 

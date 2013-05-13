@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <Smartboard/Smartboard.h>
+#import "CPUser.h"
 
 @interface CPMessage : NSObject
 
-@property (nonatomic) GSUser *sender;
+@property (nonatomic) CPUser *sender;
 @property (nonatomic) NSObject *messageContent;
 @property (nonatomic) NSString *messageTime;
 @property (nonatomic) NSTimeInterval createdDateInterval;

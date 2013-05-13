@@ -9,6 +9,7 @@
 #import "CPUser.h"
 
 @implementation CPUser
+@synthesize numOfUnreadMessage = _numOfUnreadMessage;
 @synthesize priority = _priority;
 @synthesize numOfCopyFromMe = _numOfCopyFromMe;
 @synthesize numOfPasteToMe = numOfPasteToMe;

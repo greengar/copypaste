@@ -66,6 +66,8 @@
 		7B45752C1728A7E000675AE5 /* CPShortProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B45752B1728A7E000675AE5 /* CPShortProfileViewController.m */; };
 		7B4B76A7172745BF00B1D810 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4B76A6172745BF00B1D810 /* libicucore.dylib */; };
 		7B4B76C01727684400B1D810 /* CPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B76BF1727684400B1D810 /* CPTextView.m */; };
+		7B52242C174195930096984B /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B52242B174195930096984B /* MKNumberBadgeView.m */; };
+		7B52243017419F310096984B /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B52242F17419F310096984B /* ODRefreshControl.m */; };
 		7B737885171E0398004A16F4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737884171E0398004A16F4 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7B73789A171E1148004A16F4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B737899171E1148004A16F4 /* SystemConfiguration.framework */; };
 		7B7BB16D1732D4B10082A267 /* CPNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7BB16C1732D4B10082A267 /* CPNavigationView.m */; };
@@ -186,6 +188,10 @@
 		7B4B76A6172745BF00B1D810 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7B4B76BE1727684400B1D810 /* CPTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTextView.h; sourceTree = "<group>"; };
 		7B4B76BF1727684400B1D810 /* CPTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPTextView.m; sourceTree = "<group>"; };
+		7B52242A174195930096984B /* MKNumberBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNumberBadgeView.h; sourceTree = "<group>"; };
+		7B52242B174195930096984B /* MKNumberBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNumberBadgeView.m; sourceTree = "<group>"; };
+		7B52242E17419F310096984B /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
+		7B52242F17419F310096984B /* ODRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRefreshControl.m; sourceTree = "<group>"; };
 		7B737884171E0398004A16F4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7B737899171E1148004A16F4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7B7BB16B1732D4B10082A267 /* CPNavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPNavigationView.h; sourceTree = "<group>"; };
@@ -302,6 +308,8 @@
 		7B346705171CDA0A00B73449 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				7B52242D17419F310096984B /* ODRefreshControl */,
+				7B522429174195930096984B /* MKNumberBadgeView */,
 				7B34671B171CE35E00B73449 /* EGOImageLoading */,
 				7B41E4881729F389002157DF /* Popover */,
 			);
@@ -434,6 +442,24 @@
 				7B7BB16C1732D4B10082A267 /* CPNavigationView.m */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		7B522429174195930096984B /* MKNumberBadgeView */ = {
+			isa = PBXGroup;
+			children = (
+				7B52242A174195930096984B /* MKNumberBadgeView.h */,
+				7B52242B174195930096984B /* MKNumberBadgeView.m */,
+			);
+			path = MKNumberBadgeView;
+			sourceTree = "<group>";
+		};
+		7B52242D17419F310096984B /* ODRefreshControl */ = {
+			isa = PBXGroup;
+			children = (
+				7B52242E17419F310096984B /* ODRefreshControl.h */,
+				7B52242F17419F310096984B /* ODRefreshControl.m */,
+			);
+			path = ODRefreshControl;
 			sourceTree = "<group>";
 		};
 		7BD2223C171F359600E66FD5 /* ViewController */ = {
@@ -729,6 +755,8 @@
 				7BFE09CE17319432008F751A /* CPFriendListViewController.m in Sources */,
 				7BFE09D61731FDA8008F751A /* CPFullProfileViewController.m in Sources */,
 				7B7BB16D1732D4B10082A267 /* CPNavigationView.m in Sources */,
+				7B52242C174195930096984B /* MKNumberBadgeView.m in Sources */,
+				7B52243017419F310096984B /* ODRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

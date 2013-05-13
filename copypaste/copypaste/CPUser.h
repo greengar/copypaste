@@ -9,6 +9,7 @@
 #import <Smartboard/Smartboard.h>
 
 @interface CPUser : GSUser
+@property (nonatomic) int numOfUnreadMessage;
 @property (nonatomic) int priority;
 @property (nonatomic) int numOfCopyFromMe;
 @property (nonatomic) int numOfPasteToMe;

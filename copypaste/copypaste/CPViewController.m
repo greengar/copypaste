@@ -154,10 +154,6 @@
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
 - (void)finishAuthentication {
     [[GSSession activeSession] registerMessageReceiver:self];
     [[GSSession activeSession] getNearbyUserWithBlock:^(NSArray *listOfUsers, NSError *error) {
@@ -351,17 +347,19 @@
     
     // Get more message from the sender
     sender.numOfPasteToMe++;
+    sender.numOfUnreadMessage++;
     
     [[GSSession activeSession] removeMessageFromSender:sender atTime:messageTime];
     
-    CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
-                                                                                 0,
-                                                                                 self.view.frame.size.width,
-                                                                                 self.view.frame.size.height)
-                                                              message:newMessage
-                                                           controller:self];
-    [messageView setDelegate:self];
-    [messageView showMeOnView:self.view];
+//    Uncomment me to show the message detail view
+//    CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
+//                                                                                 0,
+//                                                                                 self.view.frame.size.width,
+//                                                                                 self.view.frame.size.height)
+//                                                              message:newMessage
+//                                                           controller:self];
+//    [messageView setDelegate:self];
+//    [messageView showMeOnView:self.view];
 }
 
 - (void)getFileURL:(NSNotification *)notification {
@@ -371,6 +369,10 @@
 }
 
 - (void)copyMessage:(CPMessage *)message {
+    [self updateUI];
+}
+
+- (void)discardMessage:(CPMessage *)message {
     [self updateUI];
 }
 

@@ -9,9 +9,12 @@
 #import "CPFriendListViewController.h"
 #import "DataManager.h"
 #import "CPFullProfileViewController.h"
+#import "MKNumberBadgeView.h"
+#import "ODRefreshControl.h"
 
 #define kNavigationBarHeight 66
 #define kAvatarImageTag 777
+#define kBadgeTag 778
 #define kSortButtonWidth (self.view.frame.size.width-kNavigationBarHeight)/2
 #define kSortButtonHeight kNavigationBarHeight
 #define kSearchBarHeight 44
@@ -99,6 +102,11 @@ typedef enum {
         [GSUtils changeSearchBarReturnKeyToReturn:self.searchBar];
         [self.searchBar setDelegate:self];
         self.tableView.tableHeaderView = self.searchBar;
+        
+        ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInScrollView:self.tableView];
+        [refreshControl addTarget:self
+                           action:@selector(dropViewDidBeginRefreshing:)
+                 forControlEvents:UIControlEventValueChanged];
     }
     return self;
 }
@@ -131,6 +139,58 @@ typedef enum {
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
+}
+
+- (void)dropViewDidBeginRefreshing:(ODRefreshControl *)refreshControl {
+    [[GSSession activeSession] getNearbyUserWithBlock:^(NSArray *listOfUsers, NSError *error) {
+        if ([listOfUsers count] == 0) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No nearby user"
+                                                                message:nil
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+            [refreshControl endRefreshing];
+        } else {
+            [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
+            [refreshControl endRefreshing];
+            
+            for (CPUser *user in [[DataManager sharedManager] availableUsers]) {
+                
+                // To get number of paste to me
+                NSMutableArray *queryCondition = [NSMutableArray new];
+                [queryCondition addObject:@"sender_id"];
+                [queryCondition addObject:user.uid];
+                [queryCondition addObject:@"receiver_id"];
+                [queryCondition addObject:[[[GSSession activeSession] currentUser] uid]];
+                
+                [[GSSession activeSession] queryClass:@"CopyAndPaste"
+                                                where:queryCondition
+                                                block:^(NSArray *objects, NSError *error) {
+                                                    for (GSObject *object in objects) {
+                                                        DLog(@"%@ has pasted %d messages to me", [object objectForKey:@"sender_id"], [[object objectForKey:@"num_of_msg"] intValue]);
+                                                        user.numOfPasteToMe = [[object objectForKey:@"num_of_msg"] intValue];
+                                                    }
+                                                }];
+                
+                // To get number of copy from me
+                [queryCondition removeAllObjects];
+                [queryCondition addObject:@"receiver_id"];
+                [queryCondition addObject:user.uid];
+                [queryCondition addObject:@"sender_id"];
+                [queryCondition addObject:[[[GSSession activeSession] currentUser] uid]];
+                
+                [[GSSession activeSession] queryClass:@"CopyAndPaste"
+                                                where:queryCondition
+                                                block:^(NSArray *objects, NSError *error) {
+                                                    for (GSObject *object in objects) {
+                                                        DLog(@"I have copied %d messages to %@", [[object objectForKey:@"num_of_msg"] intValue], [object objectForKey:@"receiver_id"]);
+                                                        user.numOfCopyFromMe = [[object objectForKey:@"num_of_msg"] intValue];
+                                                    }
+                                                }];
+            }
+        }
+    }];
 }
 
 - (void)sortLocationButtonTapped:(id)sender {
@@ -184,7 +244,15 @@ typedef enum {
         avatarImage.tag = kAvatarImageTag;
         avatarImage.contentMode = UIViewContentModeScaleAspectFill;
         avatarImage.clipsToBounds = YES;
-        [cell addSubview:avatarImage];        
+        [cell addSubview:avatarImage];
+        
+        MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
+        [badgeView setFrame:CGRectMake(cell.frame.size.width-cell.frame.size.height-1,
+                                       0,
+                                       cell.frame.size.height-1,
+                                       cell.frame.size.height-1)];
+        badgeView.tag = kBadgeTag;
+        [cell addSubview:badgeView];
     }
     
     CPUser *user = [self.availableUsers objectAtIndex:[indexPath row]];
@@ -197,6 +265,7 @@ typedef enum {
     cell.contentView.backgroundColor = ([indexPath row] % 2) ? kCPLightOrangeColor : kCPPasteTextColor;
     cell.textLabel.text = [user displayName];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"Location: %@", [user distanceStringToUser:[GSSession currentUser]]];
+    [((MKNumberBadgeView *) [cell viewWithTag:kBadgeTag]) setValue:user.numOfUnreadMessage];
     
     return cell;
 }
