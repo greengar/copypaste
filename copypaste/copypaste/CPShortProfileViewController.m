@@ -87,7 +87,7 @@
     profileReceiveMsgNumLabel.backgroundColor = [UIColor clearColor];
     profileReceiveMsgNumLabel.font = DEFAULT_FONT_SIZE(15.0f);
     profileReceiveMsgNumLabel.textColor = [UIColor whiteColor];
-    profileReceiveMsgNumLabel.text = [NSString stringWithFormat:@"Receive: %d", [self.profileUser numOfPasteToMe]];
+    profileReceiveMsgNumLabel.text = [NSString stringWithFormat:@"Received: %d", [self.profileUser numOfPasteToMe]];
     [self.view addSubview:profileReceiveMsgNumLabel];
     
     UILabel *profileLastSeenLabel = [[UILabel alloc] initWithFrame:CGRectMake(kTextOffsetLeft,
