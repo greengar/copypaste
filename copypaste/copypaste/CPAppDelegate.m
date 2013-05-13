@@ -18,7 +18,7 @@
     // Register for push notifications
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge |
                                                     UIRemoteNotificationTypeAlert |
-                                                    UIRemoteNotificationTypeSound]; 
+                                                    UIRemoteNotificationTypeSound];
     return YES;
 }
 
@@ -61,6 +61,7 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     DLog();
+    [[GSSession activeSession] application:application didReceiveRemoteNotification:userInfo];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
