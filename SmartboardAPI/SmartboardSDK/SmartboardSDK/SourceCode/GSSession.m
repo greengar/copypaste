@@ -35,6 +35,7 @@ static GSSession *activeSession = nil;
 - (void)setUserInitialApp;
 - (void)initOrUpdateGSUser;
 - (void)updateUserDataWithBlock:(GSResultBlock)block;
+- (void)sendPushNotificationToUserId:(NSString *)userId;
 - (Firebase *)getMyBaseFirebase;
 - (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time;
 @property (nonatomic, retain) Firebase *firebase;
@@ -320,7 +321,10 @@ static GSSession *activeSession = nil;
                                                                      kReceiverUIDKey:user.uid,
                                                                      kMessageTypeKey:messageType,
                                                                   kMessageContentKey:messageData,
-                                                                     kMessageTimeKey:messageTime}];
+                                                                     kMessageTimeKey:messageTime}
+                                                 withCompletionBlock:^(NSError *error) {
+                                                     [self sendPushNotificationToUserId:user.uid];
+                                                                     }];
         
     } else if ([messageContent isKindOfClass:[UIImage class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -365,6 +369,7 @@ static GSSession *activeSession = nil;
                                                                              kMessageTimeKey:messageTime}
                                                          withCompletionBlock:^(NSError *error) {
                                                              [GSSVProgressHUD dismiss];
+                                                             [self sendPushNotificationToUserId:user.uid];
                                                                                }];
             });
         });
@@ -519,6 +524,13 @@ static GSSession *activeSession = nil;
                                  block:^(BOOL succeed, NSError *error) {}];
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // Store the deviceToken in the current Installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:deviceToken];
+    [currentInstallation saveInBackground];
+}
+
 - (void)linkFacebookDataBlock:(GSResultBlock)block {
     // Create request for user's Facebook data
     FBRequest *request = [FBRequest requestForMe];
@@ -601,6 +613,16 @@ static GSSession *activeSession = nil;
     Firebase *timeFirebase = [senderFirebaseInReceiverBaseFirebase childByAppendingPath:timeFirebaseName];
     DLog(@"Create fire base: %@", [timeFirebase name]);
     return timeFirebase;
+}
+
+- (void)sendPushNotificationToUserId:(NSString *)userId {
+    PFQuery *query = [PFUser query];
+    [query getObjectWithId:userId];
+    
+    PFPush *push = [[PFPush alloc] init];
+    [push setQuery:query];
+    [push setMessage:[NSString stringWithFormat:@"%@ has just pasted you. Check a look at it?", [self.currentUser displayName]]];
+    [push sendPushInBackground];
 }
 
 + (id)allocWithZone:(NSZone *)zone {
