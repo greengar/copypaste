@@ -100,6 +100,9 @@
 // Call this in your app delegate's [application:RegisterForRemoteNotificationsWithDeviceToken:]
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
 
+// Call this in your app delegate's [application:didReceiveRemoteNotification:]
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;
+
 // Current logged in user
 @property (nonatomic, retain) GSUser *currentUser;
 

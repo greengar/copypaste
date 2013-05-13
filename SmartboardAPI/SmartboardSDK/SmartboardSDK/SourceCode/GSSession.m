@@ -35,7 +35,7 @@ static GSSession *activeSession = nil;
 - (void)setUserInitialApp;
 - (void)initOrUpdateGSUser;
 - (void)updateUserDataWithBlock:(GSResultBlock)block;
-- (void)sendPushNotificationToUserId:(NSString *)userId;
+- (void)sendPushNotificationContent:(NSObject *)object toUserId:(NSString *)userId;
 - (Firebase *)getMyBaseFirebase;
 - (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time;
 @property (nonatomic, retain) Firebase *firebase;
@@ -323,7 +323,8 @@ static GSSession *activeSession = nil;
                                                                   kMessageContentKey:messageData,
                                                                      kMessageTimeKey:messageTime}
                                                  withCompletionBlock:^(NSError *error) {
-                                                     [self sendPushNotificationToUserId:user.uid];
+                                                     [self sendPushNotificationContent:messageContent
+                                                                              toUserId:user.uid];
                                                                      }];
         
     } else if ([messageContent isKindOfClass:[UIImage class]]) {
@@ -369,7 +370,8 @@ static GSSession *activeSession = nil;
                                                                              kMessageTimeKey:messageTime}
                                                          withCompletionBlock:^(NSError *error) {
                                                              [GSSVProgressHUD dismiss];
-                                                             [self sendPushNotificationToUserId:user.uid];
+                                                             [self sendPushNotificationContent:messageContent
+                                                                                      toUserId:user.uid];
                                                                                }];
             });
         });
@@ -517,6 +519,9 @@ static GSSession *activeSession = nil;
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [self.currentUser updateWithPFUser:[PFUser currentUser]
                                  block:^(BOOL succeed, NSError *error) {}];
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setBadge:0];
+    [currentInstallation saveInBackground];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -529,6 +534,10 @@ static GSSession *activeSession = nil;
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    [[PFInstallation currentInstallation] setBadge:0];
 }
 
 - (void)linkFacebookDataBlock:(GSResultBlock)block {
@@ -586,6 +595,7 @@ static GSSession *activeSession = nil;
     } else {
         [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
     }
+    [[PFInstallation currentInstallation] setObject:[PFUser currentUser] forKey:@"user"];
 }
 
 - (void)updateUserDataWithBlock:(GSResultBlock)block {
@@ -615,13 +625,25 @@ static GSSession *activeSession = nil;
     return timeFirebase;
 }
 
-- (void)sendPushNotificationToUserId:(NSString *)userId {
-    PFQuery *query = [PFUser query];
-    [query getObjectWithId:userId];
+- (void)sendPushNotificationContent:(NSObject *)object toUserId:(NSString *)userId {
+    PFQuery *innerQuery = [PFUser query];
+    [innerQuery whereKey:@"objectId" equalTo:userId];
     
+    // Build the actual push notification target query
+    PFQuery *query = [PFInstallation query];
+    [query whereKey:@"user" matchesQuery:innerQuery];
+    
+    // Send the notification.
     PFPush *push = [[PFPush alloc] init];
+    NSString *content = [NSString stringWithFormat:@"%@ sent you something. Come and get it?", [self.currentUser displayName]];
+    if ([object isKindOfClass:[NSString class]]) {
+        content = [NSString stringWithFormat:@"%@ sent you a text. Come and get it?", [self.currentUser displayName]];;
+    } else if ([object isKindOfClass:[UIImage class]]) {
+        content = [NSString stringWithFormat:@"%@ sent you an image. Come and get it?", [self.currentUser displayName]];
+    }
+    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:content, @"alert", @"Increment", @"badge", nil];
     [push setQuery:query];
-    [push setMessage:[NSString stringWithFormat:@"%@ has just pasted you. Check a look at it?", [self.currentUser displayName]]];
+    [push setData:data];
     [push sendPushInBackground];
 }
 
