@@ -45,7 +45,7 @@
 + (void)changeSearchBarReturnKeyToReturn:(UISearchBar *)searchBar;
 + (void)removeSearchBarBackground:(UISearchBar *)searchBar;
 + (BOOL)isValidURL:(NSString *)urlString;
-
++ (int)maxValueSize;
 @end
 
 typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);

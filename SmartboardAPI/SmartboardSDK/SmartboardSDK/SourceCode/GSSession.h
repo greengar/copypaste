@@ -50,8 +50,11 @@
 // in order to catch new messages
 - (void)registerMessageReceiver:(id<GSSessionDelegate>)delegate;
 
-// Send message to the destination user
-- (void)sendMessage:(NSObject *)messageContent toUser:(GSUser *)user;
+// Send message dictionary key-value to the destination user
+- (void)sendData:(NSDictionary *)dictionary toUser:(GSUser *)user withBlock:(GSResultBlock)block;
+
+// Send push notification message to user
+- (void)sendPushNotificationMessage:(NSString *)message toUser:(GSUser *)user;
 
 // Remove the message from server, otherwise the message receiver may catch it again
 - (void)removeMessageFromSender:(GSUser *)user atTime:(NSString *)messageTime;

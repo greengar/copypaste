@@ -15,15 +15,17 @@
 }
 
 + (NSDate *)dateFromString:(NSString *)dateString {
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"EEEE MMMM d, YYYY hhmmss a"];
-    return [dateFormat dateFromString:dateString];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+    return [dateFormatter dateFromString:dateString];
 }
 
 + (NSString *)stringFromDate:(NSDate *)date {
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"EEEE MMMM d, YYYY hhmmss a"];
-    return [dateFormat stringFromDate:date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+    return [dateFormatter stringFromDate:date];
 }
 
 + (NSString*)dateDiffFromInterval:(double)ti {
@@ -107,6 +109,10 @@
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     return [NSURLConnection canHandleRequest:request];
+}
+
++ (int)maxValueSize {
+    return 10485760;
 }
 
 @end

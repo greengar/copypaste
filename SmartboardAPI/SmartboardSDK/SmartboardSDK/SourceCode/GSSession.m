@@ -15,7 +15,6 @@
 #import <Firebase/Firebase.h>
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
-#define kMaxSizeFirebaseString 10485760
 
 #define kSenderUIDKey @"sender"
 #define kSenderUsernameKey @"sender_name"
@@ -35,7 +34,6 @@ static GSSession *activeSession = nil;
 - (void)setUserInitialApp;
 - (void)initOrUpdateGSUser;
 - (void)updateUserDataWithBlock:(GSResultBlock)block;
-- (void)sendPushNotificationContent:(NSObject *)object toUserId:(NSString *)userId;
 - (Firebase *)getMyBaseFirebase;
 - (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time;
 @property (nonatomic, retain) Firebase *firebase;
@@ -242,140 +240,22 @@ static GSSession *activeSession = nil;
 
 - (void)receiveData:(FDataSnapshot *)snapshot {
     for (FDataSnapshot *childSnapshot in snapshot.children) {
-        NSString *senderUID = childSnapshot.value[kSenderUIDKey];
-        NSString *senderName = childSnapshot.value[kSenderUsernameKey];
-        NSString *senderAvatarURL = childSnapshot.value[kSenderAvatarURLKey];
-        double senderLongitude = [childSnapshot.value[kSenderLongitudeKey] doubleValue];
-        double senderLatitude = [childSnapshot.value[kSenderLatitudeKey] doubleValue];
-        NSString *receiverUID = childSnapshot.value[kReceiverUIDKey];
-        NSString *messageType = childSnapshot.value[kMessageTypeKey];
-        NSObject *messageContent = childSnapshot.value[kMessageContentKey];
-        NSString *messageTime = childSnapshot.value[kMessageTimeKey];
-        
         NSMutableDictionary *messageDict = [NSMutableDictionary new];
-        [messageDict setObject:senderUID forKey:kSenderUIDKey];
-        [messageDict setObject:senderName forKey:kSenderUsernameKey];
-        [messageDict setObject:senderAvatarURL forKey:kSenderAvatarURLKey];
-        [messageDict setObject:[NSNumber numberWithDouble:senderLongitude] forKey:kSenderLongitudeKey];
-        [messageDict setObject:[NSNumber numberWithDouble:senderLatitude] forKey:kSenderLatitudeKey];
-        [messageDict setObject:receiverUID forKey:kReceiverUIDKey];
-        [messageDict setObject:messageType forKey:kMessageTypeKey];
-        [messageDict setObject:messageTime forKey:kMessageTimeKey];
-        
-        if (![receiverUID isEqualToString:self.currentUser.uid]) {
-            DLog(@"This update from %@ to %@ is not for me: %@", senderUID, receiverUID, self.currentUser.uid);
-            return;
+        for (FDataSnapshot *child in childSnapshot.children) {
+            [messageDict setObject:child.value forKey:child.name];
         }
         
-        if ([messageType isEqualToString:@"string"]) {
-            [messageDict setObject:(NSString *)messageContent forKey:kMessageContentKey];
-            
-            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessage:)]) {
-                [self.delegate didReceiveMessage:messageDict];
-            }
-            
-        } else if ([messageType isEqualToString:@"image"]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [GSSVProgressHUD showWithStatus:@"Receiving image"];
-                
-                dispatch_async(dispatch_get_current_queue(), ^{
-                    if ([messageContent isKindOfClass:[NSArray class]]) {
-                        NSMutableString *messageString = [NSMutableString new];
-                        for (int i = 0; i < [((NSArray *) messageContent) count]; i++) {
-                            [messageString appendString:[((NSArray *) messageContent) objectAtIndex:i]];
-                        }
-                        NSData *imageData = [NSData gsDataFromBase64String:messageString];
-                        DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
-                        [messageDict setObject:[UIImage imageWithData:imageData] forKey:kMessageContentKey];
-                        
-                    } else {
-                        NSData *imageData = [NSData gsDataFromBase64String:((NSString *)messageContent)];
-                        DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
-                        [messageDict setObject:[UIImage imageWithData:imageData] forKey:kMessageContentKey];
-                    }
-                    
-                    [GSSVProgressHUD dismiss];
-                    if (self.delegate
-                        && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessage:)]) {
-                        [self.delegate didReceiveMessage:messageDict];
-                    }
-                });
-            });
+        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessage:)]) {
+            [self.delegate didReceiveMessage:messageDict];
         }
     }
 }
 
-- (void)sendMessage:(NSObject *)messageContent toUser:(GSUser *)user {
-    if ([messageContent isKindOfClass:[NSString class]]) {
-        NSString *messageType = @"string";
-        NSString *messageData = (NSString *)messageContent;
-        NSString *messageTime = [GSUtils getCurrentTime];
-        NSNumber *longitude = [NSNumber numberWithDouble:self.currentUser.location.longitude];
-        NSNumber *latitude = [NSNumber numberWithDouble:self.currentUser.location.latitude];
-        NSString *userAvatarString = self.currentUser.avatarURLString ? self.currentUser.avatarURLString : @"";
-        [[self generateFirebaseFor:user atTime:messageTime] setValue:@{kSenderUIDKey:self.currentUser.uid,
-                                                                  kSenderUsernameKey:[self currentUserName],
-                                                                 kSenderAvatarURLKey:userAvatarString,
-                                                                 kSenderLongitudeKey:longitude,
-                                                                  kSenderLatitudeKey:latitude,
-                                                                     kReceiverUIDKey:user.uid,
-                                                                     kMessageTypeKey:messageType,
-                                                                  kMessageContentKey:messageData,
-                                                                     kMessageTimeKey:messageTime}
-                                                 withCompletionBlock:^(NSError *error) {
-                                                     [self sendPushNotificationContent:messageContent
-                                                                              toUserId:user.uid];
-                                                                     }];
-        
-    } else if ([messageContent isKindOfClass:[UIImage class]]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [GSSVProgressHUD showWithStatus:@"Sending image"];
-            
-            dispatch_async(dispatch_get_current_queue(), ^{
-                NSData *imageData = UIImageJPEGRepresentation(((UIImage *) messageContent), 0.5);
-                DLog(@"Sent image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
-                NSString *messageType = @"image";
-                NSString *messageString = [imageData gsBase64EncodedString];
-                NSString *messageTime = [GSUtils getCurrentTime];
-                NSNumber *longitude = [NSNumber numberWithDouble:self.currentUser.location.longitude];
-                NSNumber *latitude = [NSNumber numberWithDouble:self.currentUser.location.latitude];
-                NSObject *messageData = @"";
-                
-                int numOfElement = round((float)[messageString length]/(float)kMaxSizeFirebaseString);
-                if (numOfElement > 1) { // More than 1 element
-                    NSMutableArray *elementArray = [NSMutableArray arrayWithCapacity:numOfElement];
-                    for (int i = 0; i < numOfElement; i++) {
-                        int location = kMaxSizeFirebaseString*i;
-                        int length = (kMaxSizeFirebaseString > ([messageString length]-location)
-                                      ? ([messageString length]-location)
-                                      : kMaxSizeFirebaseString);
-                        NSString *element = [messageString substringWithRange:NSMakeRange(location, length)];
-                        [elementArray addObject:element];
-                    }                    
-                    messageData = elementArray;
-                    
-                } else {
-                    messageData = messageString;
-                }
-                
-                
-                [[self generateFirebaseFor:user atTime:messageTime] setValue:@{kSenderUIDKey:self.currentUser.uid,
-                                                                          kSenderUsernameKey:[self currentUserName],
-                                                                         kSenderAvatarURLKey:self.currentUser.avatarURLString,
-                                                                         kSenderLongitudeKey:longitude,
-                                                                          kSenderLatitudeKey:latitude,
-                                                                             kReceiverUIDKey:user.uid,
-                                                                             kMessageTypeKey:messageType,
-                                                                          kMessageContentKey:messageData,
-                                                                             kMessageTimeKey:messageTime}
-                                                         withCompletionBlock:^(NSError *error) {
-                                                             [GSSVProgressHUD dismiss];
-                                                             [self sendPushNotificationContent:messageContent
-                                                                                      toUserId:user.uid];
-                                                                               }];
-            });
-        });
-    }
+- (void)sendData:(NSDictionary *)dictionary toUser:(GSUser *)user withBlock:(GSResultBlock)block {
+    [[self generateFirebaseFor:user atTime:[GSUtils getCurrentTime]] setValue:dictionary
+                                                          withCompletionBlock:^(NSError *error) {
+                                                              block(YES, error);
+    }];
 }
 
 - (void)removeMessageFromSender:(GSUser *)user atTime:(NSString *)messageTime {
@@ -625,9 +505,9 @@ static GSSession *activeSession = nil;
     return timeFirebase;
 }
 
-- (void)sendPushNotificationContent:(NSObject *)object toUserId:(NSString *)userId {
+- (void)sendPushNotificationMessage:(NSString *)message toUser:(GSUser *)user {
     PFQuery *innerQuery = [PFUser query];
-    [innerQuery whereKey:@"objectId" equalTo:userId];
+    [innerQuery whereKey:@"objectId" equalTo:user.uid];
     
     // Build the actual push notification target query
     PFQuery *query = [PFInstallation query];
@@ -635,13 +515,7 @@ static GSSession *activeSession = nil;
     
     // Send the notification.
     PFPush *push = [[PFPush alloc] init];
-    NSString *content = [NSString stringWithFormat:@"%@ sent you something. Come and get it?", [self.currentUser displayName]];
-    if ([object isKindOfClass:[NSString class]]) {
-        content = [NSString stringWithFormat:@"%@ sent you a text. Come and get it?", [self.currentUser displayName]];;
-    } else if ([object isKindOfClass:[UIImage class]]) {
-        content = [NSString stringWithFormat:@"%@ sent you an image. Come and get it?", [self.currentUser displayName]];
-    }
-    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:content, @"alert", @"Increment", @"badge", nil];
+    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:message, @"alert", @"Increment", @"badge", nil];
     [push setQuery:query];
     [push setData:data];
     [push sendPushInBackground];
