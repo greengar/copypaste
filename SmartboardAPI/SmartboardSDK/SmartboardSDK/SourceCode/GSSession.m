@@ -506,16 +506,20 @@ static GSSession *activeSession = nil;
 
 - (void)updateUserDataWithBlock:(GSResultBlock)block {
     [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
-        [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
-        [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
-        if (![[PFUser currentUser] objectForKey:@"fullname"]) {
-            [[PFUser currentUser] setObject:[[PFUser currentUser] username] forKey:@"fullname"];
+        if (error) {
+            block(NO, error);
+        } else {
+            [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
+            [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
+            if (![[PFUser currentUser] objectForKey:@"fullname"]) {
+                [[PFUser currentUser] setObject:[[PFUser currentUser] username] forKey:@"fullname"];
+            }
+            [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                [self goOnline:YES];
+                [self initOrUpdateGSUser];
+                block(YES, error);
+            }];
         }
-        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            [self goOnline:YES];
-            [self initOrUpdateGSUser];
-            block(YES, error);
-        }];
     }];
 }
 

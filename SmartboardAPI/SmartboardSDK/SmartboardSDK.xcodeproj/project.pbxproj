@@ -61,6 +61,9 @@
 		7B56A3F8172EE8670021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
 		7B56A3F9172EE86E0021E5DC /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */; };
 		7B56A3FA172EE8740021E5DC /* GSLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B8842A41742F87800797F49 /* GSReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B8842A21742F87800797F49 /* GSReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B8842A51742F87800797F49 /* GSReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8842A31742F87800797F49 /* GSReachability.m */; };
+		7B8842A61742F87800797F49 /* GSReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8842A31742F87800797F49 /* GSReachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A9B8D9FC1730883E00E7308F /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8D9FA1730883E00E7308F /* GSSignUpViewController.m */; };
 		A9B8D9FD1730887400E7308F /* GSSignUpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = A9B8D9F91730883E00E7308F /* GSSignUpViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9B8DA0517308BB400E7308F /* GSTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8D9FF17308BB400E7308F /* GSTheme.m */; };
@@ -130,6 +133,8 @@
 		7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GSBase64.m"; sourceTree = "<group>"; };
 		7B56A3F6172EE8670021E5DC /* GSLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSLogInViewController.h; sourceTree = "<group>"; };
 		7B56A3F7172EE8670021E5DC /* GSLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSLogInViewController.m; sourceTree = "<group>"; };
+		7B8842A21742F87800797F49 /* GSReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSReachability.h; sourceTree = "<group>"; };
+		7B8842A31742F87800797F49 /* GSReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSReachability.m; sourceTree = "<group>"; };
 		A9B8D9F91730883E00E7308F /* GSSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSignUpViewController.h; sourceTree = "<group>"; };
 		A9B8D9FA1730883E00E7308F /* GSSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSignUpViewController.m; sourceTree = "<group>"; };
 		A9B8D9FE17308BB400E7308F /* GSTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSTheme.h; sourceTree = "<group>"; };
@@ -304,6 +309,7 @@
 		7B56A3D4172EE7CA0021E5DC /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				7B88429C1742F81600797F49 /* GSReachability */,
 				A9B8DA0A17308DFD00E7308F /* OHAttributedLabel */,
 				7B56A3D8172EE7CA0021E5DC /* SVProgressHUD */,
 				7B56A3E3172EE7CA0021E5DC /* Utils */,
@@ -334,6 +340,15 @@
 				7B56A3E5172EE7CA0021E5DC /* NSData+GSBase64.m */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		7B88429C1742F81600797F49 /* GSReachability */ = {
+			isa = PBXGroup;
+			children = (
+				7B8842A21742F87800797F49 /* GSReachability.h */,
+				7B8842A31742F87800797F49 /* GSReachability.m */,
+			);
+			path = GSReachability;
 			sourceTree = "<group>";
 		};
 		A9B8DA0A17308DFD00E7308F /* OHAttributedLabel */ = {
@@ -420,6 +435,7 @@
 				A9B8DA2A17308DFD00E7308F /* OHParagraphStyle.h in Headers */,
 				A9B8DA2C17308DFD00E7308F /* OHASBasicHTMLParser.h in Headers */,
 				A9B8DA2E17308DFD00E7308F /* OHASBasicMarkupParser.h in Headers */,
+				7B8842A41742F87800797F49 /* GSReachability.h in Headers */,
 				A9B8DA3017308DFD00E7308F /* OHASMarkupParserBase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -545,6 +561,7 @@
 				7B56A3EE172EE7CA0021E5DC /* GSSVProgressHUD.m in Sources */,
 				7B56A3EF172EE7CA0021E5DC /* NSData+GSBase64.m in Sources */,
 				7B56A3F8172EE8670021E5DC /* GSLogInViewController.m in Sources */,
+				7B8842A51742F87800797F49 /* GSReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,6 +589,7 @@
 				A9B8DA2D17308DFD00E7308F /* OHASBasicHTMLParser.m in Sources */,
 				A9B8DA2F17308DFD00E7308F /* OHASBasicMarkupParser.m in Sources */,
 				A9B8DA3117308DFD00E7308F /* OHASMarkupParserBase.m in Sources */,
+				7B8842A61742F87800797F49 /* GSReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

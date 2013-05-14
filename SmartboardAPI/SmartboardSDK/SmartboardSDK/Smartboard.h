@@ -10,3 +10,4 @@
 #import <Smartboard/GSUser.h>
 #import <Smartboard/GSObject.h>
 #import <Smartboard/GSUtils.h>
+#import <Smartboard/GSReachability.h>
