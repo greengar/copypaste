@@ -8,6 +8,7 @@
 
 #import "CPFullProfileViewController.h"
 #import "DataManager.h"
+#import <Smartboard/GSSVProgressHUD.h>
 #import <Smartboard/GSTheme.h>
 
 #define kNavigationBarHeight 66
@@ -131,10 +132,30 @@
 }
 
 - (void)pasteButtonTapped:(id)sender {
-    [[DataManager sharedManager] pasteToUser:self.profileUser
-                                       block:^(BOOL succeed, NSError *error) {
-                                           self.profileSentMsgNumLabel.text = [NSString stringWithFormat:@"Sent: %d", [self.profileUser numOfCopyFromMe]];
-                                       }];
+    if (![[DataManager sharedManager] hasInternetConnection]) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                            message:@"You need an Internet Connection\nin order to paste content\nto other users"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    } else {
+        [[DataManager sharedManager] pasteToUser:self.profileUser
+                                           block:^(BOOL succeed, NSError *error) {
+                                               [GSSVProgressHUD dismiss];
+                                               if (succeed) {
+                                                   self.profileSentMsgNumLabel.text = [NSString stringWithFormat:@"Sent: %d", [self.profileUser numOfCopyFromMe]];
+                                               } else {
+                                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                                                       message:@"Can not connect server!\nPlease try again"
+                                                                                                      delegate:nil
+                                                                                             cancelButtonTitle:@"OK"
+                                                                                             otherButtonTitles:nil];
+                                                   [alertView show];
+                                               }
+                                           }];
+        [GSSVProgressHUD showWithStatus:@"Pasting..."];
+    }
 }
 
 @end

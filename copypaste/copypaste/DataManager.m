@@ -8,7 +8,6 @@
 
 #import "DataManager.h"
 #import <Smartboard/Smartboard.h>
-#import <Smartboard/GSSVProgressHUD.h>
 #import <Smartboard/NSData+GSBase64.h>
 
 #define kCheckedVersion_1_0 @"kCheckedVersion_1_0"
@@ -19,6 +18,7 @@ static DataManager *shareManager = nil;
 @synthesize availableUsers = _availableUsers;
 @synthesize receivedMessages = _receivedMessages;
 @synthesize checkedVersion_1_0 = _checkedVersion_1_0;
+@synthesize currentReachability = _currentReachability;
 
 + (DataManager *)sharedManager {
     static DataManager *sharedManager;
@@ -33,6 +33,7 @@ static DataManager *shareManager = nil;
         self.availableUsers = [[NSMutableArray alloc] init];
         self.receivedMessages = [[NSMutableArray alloc] init];
         [self loadPreference];
+        self.currentReachability = [GSReachability reachabilityForLocalWiFi];
     }
     return self;
 }
@@ -121,6 +122,10 @@ static DataManager *shareManager = nil;
     }];
 }
 
+- (BOOL)hasInternetConnection {
+    return ([self.currentReachability currentReachabilityStatus] != GSNotReachable);
+}
+
 - (void)pasteToUser:(CPUser *)user block:(GSResultBlock)block {
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     user.numOfCopyFromMe++;
@@ -151,8 +156,6 @@ static DataManager *shareManager = nil;
             }];
         } else if ([itemToPaste isKindOfClass:[UIImage class]]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [GSSVProgressHUD showWithStatus:@"Sending image"];
-                
                 dispatch_async(dispatch_get_current_queue(), ^{
                     NSData *imageData = UIImageJPEGRepresentation(((UIImage *) itemToPaste), 0.5);
                     DLog(@"Sent image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
@@ -190,8 +193,6 @@ static DataManager *shareManager = nil;
                     [dataToSend setObject:messageType forKey:@"type"];
                     [dataToSend setObject:messageData forKey:@"content"];
                     [dataToSend setObject:[GSUtils getCurrentTime] forKey:@"time"];
-                    
-                    [GSSVProgressHUD dismiss];
                     
                     [[GSSession activeSession] sendData:dataToSend toUser:user withBlock:^(BOOL succeed, NSError *error) {
                         NSString *message = [NSString stringWithFormat:@"%@ sent you an image. Come and get it now!", [[GSSession currentUser] displayName] ];
@@ -248,7 +249,6 @@ static DataManager *shareManager = nil;
     sortedByPriorityArray = [sortedByPriorityArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSInteger priority1 = [((CPUser *) obj1) priority];
         NSInteger priority2 = [((CPUser *) obj2) priority];
-        DLog(@"compare %d vs %d", priority1, priority2);
         return (priority1 < priority2);
     }];
     
@@ -260,8 +260,6 @@ static DataManager *shareManager = nil;
             break;
         }
     }
-    
-    DLog(@"Top 3 users are: %@", [top3UsersArray description]);
     return top3UsersArray;
 }
 

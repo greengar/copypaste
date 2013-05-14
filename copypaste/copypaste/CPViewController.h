@@ -24,6 +24,7 @@
 
 @property (nonatomic, strong) EGOImageButton *avatarImageButton;
 @property (nonatomic, strong) UIButton *helpButton;
+@property (nonatomic, strong) UIButton *noInternetConnectionButton;
 
 @property (nonatomic, strong) NSMutableArray *userViews;
 @property (nonatomic, strong) UIButton *moreUsersButton;

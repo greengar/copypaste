@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Smartboard/Smartboard.h>
 #import "CPMessage.h"
 #import "CPUser.h"
 
@@ -23,7 +24,9 @@
 - (NSArray *)sortedAvailableUsersByName;
 - (void)persistChecked_1_0;
 - (NSArray *)getTop3Users;
+- (BOOL)hasInternetConnection;
 
+@property (nonatomic, strong) GSReachability *currentReachability;
 @property (nonatomic, strong) NSMutableArray *availableUsers;
 @property (nonatomic, strong) NSMutableArray *receivedMessages;
 @property (nonatomic) BOOL checkedVersion_1_0;

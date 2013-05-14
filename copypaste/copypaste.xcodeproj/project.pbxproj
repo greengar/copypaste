@@ -308,9 +308,9 @@
 		7B346705171CDA0A00B73449 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				7B52242D17419F310096984B /* ODRefreshControl */,
-				7B522429174195930096984B /* MKNumberBadgeView */,
 				7B34671B171CE35E00B73449 /* EGOImageLoading */,
+				7B522429174195930096984B /* MKNumberBadgeView */,
+				7B52242D17419F310096984B /* ODRefreshControl */,
 				7B41E4881729F389002157DF /* Popover */,
 			);
 			path = Support;
