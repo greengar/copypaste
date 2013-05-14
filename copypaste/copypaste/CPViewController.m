@@ -60,7 +60,7 @@
     // The avatar image view of the logged in user
     self.avatarImageButton = [[EGOImageButton alloc] initWithFrame:CGRectMake(0, 0, helpImage.size.width, helpImage.size.height)];
     self.avatarImageButton.contentMode = UIViewContentModeScaleAspectFill;
-    [self.avatarImageButton setBackgroundImage:helpImage forState:UIControlStateNormal];
+    [self.avatarImageButton setBackgroundImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
     [self.avatarImageButton addTarget:self action:@selector(avatarImageButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.avatarImageButton];
     
@@ -75,18 +75,21 @@
     [self.view addSubview:self.myPasteboardHolderView];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateUI)
+                                             selector:@selector(reloadPasteboardView)
                                                  name:kNotificationApplicationDidBecomeActive
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(getFileURL:)
                                                  name:kNotificationOpenFileURL
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadTop3UsersView)
+                                                 name:kNotificationUpdateUserList
+                                               object:nil];
     
     self.userViews = [NSMutableArray arrayWithCapacity:3];
     
-    for (int i = 0; i < 3; i++)
-    {
+    for (int i = 0; i < 3; i++) {
         CPUserView *userView = [[CPUserView alloc] initWithFrame:CGRectMake(92 * i,
                                                                             self.view.frame.size.height-kUserViewHeight,
                                                                             kUserViewWidth,
@@ -165,6 +168,8 @@
 }
 
 - (void)finishAuthentication {
+    [self reloadCurrentUserView];
+    [self reloadPasteboardView];
     [[GSSession activeSession] registerMessageReceiver:self];
     [[GSSession activeSession] getNearbyUserWithBlock:^(NSArray *listOfUsers, NSError *error) {
         if ([listOfUsers count] == 0) {
@@ -177,7 +182,7 @@
             
         } else {
             [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
-            [self updateUI];
+            [self reloadTop3UsersView];
             
             for (CPUser *user in [[DataManager sharedManager] availableUsers]) {
                 
@@ -191,11 +196,11 @@
                 [[GSSession activeSession] queryClass:@"CopyAndPaste"
                                                 where:queryCondition
                                                 block:^(NSArray *objects, NSError *error) {
-                    for (GSObject *object in objects) {
-                        DLog(@"%@ has pasted %d messages to me", [object objectForKey:@"sender_id"], [[object objectForKey:@"num_of_msg"] intValue]);
-                        user.numOfPasteToMe = [[object objectForKey:@"num_of_msg"] intValue];
-                    }
-                }];
+                                                    for (GSObject *object in objects) {
+                                                        user.numOfPasteToMe = [[object objectForKey:@"num_of_msg"] intValue];
+                                                        [self reloadTop3UsersView];
+                                                    }
+                                                }];
                 
                 // To get number of copy from me
                 [queryCondition removeAllObjects];
@@ -207,15 +212,14 @@
                 [[GSSession activeSession] queryClass:@"CopyAndPaste"
                                                 where:queryCondition
                                                 block:^(NSArray *objects, NSError *error) {
-                    for (GSObject *object in objects) {
-                        DLog(@"I have copied %d messages to %@", [[object objectForKey:@"num_of_msg"] intValue], [object objectForKey:@"receiver_id"]);
-                        user.numOfCopyFromMe = [[object objectForKey:@"num_of_msg"] intValue];
-                    }
-                }];
+                                                    for (GSObject *object in objects) {
+                                                        user.numOfCopyFromMe = [[object objectForKey:@"num_of_msg"] intValue];
+                                                        [self reloadTop3UsersView];
+                                                    }
+                                                }];
             }
         }
     }];
-    [self updateUI];
 }
 
 - (void)didLoginSucceeded {
@@ -228,10 +232,10 @@
 }
 
 - (void)finishInstruction {
-    [self updateUI];
+    [self reloadPasteboardView];
 }
 
-- (void)updateUI {
+- (void)reloadPasteboardView {
     if (![[DataManager sharedManager] checkedVersion_1_0]) {
         [self.myPasteboardHolderView showInstruction];
     }
@@ -239,27 +243,6 @@
     [self hideOldCopiedContent];
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     [self.myPasteboardHolderView updateUIWithPasteObject:itemToPaste];
-        
-    if ([GSSession isAuthenticated]) {
-        CPUser *currentUser = (CPUser *) [[GSSession activeSession] currentUser];
-        if ([currentUser isAvatarCached]) {
-            [self.avatarImageButton setImage:currentUser.avatarImage forState:UIControlStateNormal];
-        } else if ([currentUser avatarURLString]) {
-            [self.avatarImageButton setImageURL:[NSURL URLWithString:currentUser.avatarURLString]];
-            [self.avatarImageButton setDelegate:self];
-        } else {
-            [self.avatarImageButton setImage:nil forState:UIControlStateNormal];
-        }
-    }
-    
-    [self reloadUserViews];
-    
-    if ([[[DataManager sharedManager] availableUsers] count] > 3) {
-        [self.moreUsersButton setTitle:@"more users" forState:UIControlStateNormal];
-        [self.moreUsersLoadingIndicator stopAnimating];
-    } else {
-        [self.moreUsersButton setTitle:@"" forState:UIControlStateNormal];
-    }
 }
 
 - (void)hideOldCopiedContent {
@@ -304,7 +287,7 @@
     
     [[DataManager sharedManager] pasteToUser:user
                                        block:^(BOOL succeed, NSError *error) {
-        [self updateUI];
+        [self reloadTop3UsersView];
     }];
 }
 
@@ -329,19 +312,36 @@
                                                      animated:NO];
 }
 
-- (void)reloadUserViews
-{
-    if ([[[DataManager sharedManager] availableUsers] count] == 0)
-    {
-        // TODO: animate disappearance of any existing user views
-    }
-    else
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            CPUser *user = [[[DataManager sharedManager] availableUsers] objectAtIndex:i];
-            [(CPUserView *)self.userViews[i] setUser:user];
+- (void)reloadCurrentUserView {
+    if ([GSSession isAuthenticated]) {
+        CPUser *currentUser = (CPUser *) [[GSSession activeSession] currentUser];
+        if ([currentUser isAvatarCached]) {
+            [self.avatarImageButton setImage:currentUser.avatarImage forState:UIControlStateNormal];
+        } else if ([currentUser avatarURLString]) {
+            [self.avatarImageButton setImageURL:[NSURL URLWithString:currentUser.avatarURLString]];
+            [self.avatarImageButton setDelegate:self];
+        } else {
+            [self.avatarImageButton setImage:nil forState:UIControlStateNormal];
         }
+    } else {
+        [self.avatarImageButton setImage:nil forState:UIControlStateNormal];
+    }
+}
+
+- (void)reloadTop3UsersView {
+    NSArray *top3Users = [[DataManager sharedManager] getTop3Users];
+    
+    for (int i = 0; i < [top3Users count]; i++) {
+        CPUser *user = [top3Users objectAtIndex:i];
+        [(CPUserView *)self.userViews[i] setUser:user];
+        [(CPUserView *)self.userViews[i] setNeedsDisplay];
+    }
+    
+    if ([[[DataManager sharedManager] availableUsers] count] > 3) {
+        [self.moreUsersButton setTitle:@"more users" forState:UIControlStateNormal];
+        [self.moreUsersLoadingIndicator stopAnimating];
+    } else {
+        [self.moreUsersButton setTitle:@"" forState:UIControlStateNormal];
     }
 }
 
@@ -431,15 +431,15 @@
 - (void)getFileURL:(NSNotification *)notification {
     NSData *data = [[notification userInfo] objectForKey:@"content"];
     [[UIPasteboard generalPasteboard] setData:data forPasteboardType:@"public.jpg"];
-    [self updateUI];
+    [self reloadPasteboardView];
 }
 
 - (void)copyMessage:(CPMessage *)message {
-    [self updateUI];
+    [self reloadPasteboardView];
 }
 
 - (void)discardMessage:(CPMessage *)message {
-    [self updateUI];
+    [self reloadPasteboardView];
 }
 
 - (void)imageViewLoadedImage:(EGOImageView *)imageView {
@@ -451,7 +451,7 @@
 }
 
 - (void)wepopoverControllerDidDismissPopover:(WEPopoverController *)popoverController {
-    [self updateUI];
+    [self reloadPasteboardView];
 }
 
 - (BOOL)wepopoverControllerShouldDismissPopover:(WEPopoverController *)popoverController {
@@ -459,7 +459,7 @@
 }
 
 - (void)popoverControllerDidDismissPopover:(WEPopoverController *)popoverController {
-    [self updateUI];
+    [self reloadPasteboardView];
 }
 
 - (BOOL)popoverControllerShouldDismissPopover:(WEPopoverController *)popoverController {

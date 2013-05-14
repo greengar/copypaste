@@ -16,7 +16,7 @@
 static DataManager *shareManager = nil;
 
 @implementation DataManager
-@synthesize availableUsers = _nearByUserList;
+@synthesize availableUsers = _availableUsers;
 @synthesize receivedMessages = _receivedMessages;
 @synthesize checkedVersion_1_0 = _checkedVersion_1_0;
 
@@ -123,6 +123,7 @@ static DataManager *shareManager = nil;
 
 - (void)pasteToUser:(CPUser *)user block:(GSResultBlock)block {
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
+    user.numOfCopyFromMe++;
     
     if (itemToPaste) {
         if ([itemToPaste isKindOfClass:[NSString class]]) {
@@ -201,8 +202,6 @@ static DataManager *shareManager = nil;
             });
         }
         
-        user.numOfCopyFromMe++;
-        
         NSMutableArray *sendCondition = [NSMutableArray new];
         [sendCondition addObject:@"sender_id"];
         [sendCondition addObject:[[[GSSession activeSession] currentUser] uid]];
@@ -242,6 +241,28 @@ static DataManager *shareManager = nil;
         return [displayName1 compare:displayName2];
     }];
     return sortedByNameArray;
+}
+
+- (NSArray *)getTop3Users {
+    NSArray *sortedByPriorityArray = [NSArray arrayWithArray:self.availableUsers];
+    sortedByPriorityArray = [sortedByPriorityArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSInteger priority1 = [((CPUser *) obj1) priority];
+        NSInteger priority2 = [((CPUser *) obj2) priority];
+        DLog(@"compare %d vs %d", priority1, priority2);
+        return (priority1 < priority2);
+    }];
+    
+    NSMutableArray *top3UsersArray = [NSMutableArray new];
+    for (int i = 0; i < 3; i++) {
+        if ([sortedByPriorityArray count] > i) {
+            [top3UsersArray addObject:[sortedByPriorityArray objectAtIndex:i]];
+        } else {
+            break;
+        }
+    }
+    
+    DLog(@"Top 3 users are: %@", [top3UsersArray description]);
+    return top3UsersArray;
 }
 
 - (void)loadPreference {

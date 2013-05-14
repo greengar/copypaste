@@ -12,5 +12,22 @@
 @synthesize numOfUnreadMessage = _numOfUnreadMessage;
 @synthesize priority = _priority;
 @synthesize numOfCopyFromMe = _numOfCopyFromMe;
-@synthesize numOfPasteToMe = numOfPasteToMe;
+@synthesize numOfPasteToMe = _numOfPasteToMe;
+
+- (void)setNumOfCopyFromMe:(int)numOfCopyFromMe {
+    _numOfCopyFromMe = numOfCopyFromMe;
+    _priority += numOfCopyFromMe;
+}
+
+- (void)setNumOfPasteToMe:(int)numOfPasteToMe {
+    _numOfPasteToMe = numOfPasteToMe;
+    _priority += numOfPasteToMe;
+}
+
+- (void)setIsOnline:(BOOL)isOnline {
+    [super setIsOnline:isOnline];
+    if (self.isOnline) {
+        _priority += 1;
+    }
+}
 @end

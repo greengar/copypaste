@@ -151,9 +151,11 @@ typedef enum {
                                                       otherButtonTitles:nil];
             [alertView show];
             [refreshControl endRefreshing];
+            [self.tableView reloadData];
+            
         } else {
             [[DataManager sharedManager] updateNearbyUsers:listOfUsers];
-            [refreshControl endRefreshing];
+            [self.tableView reloadData];
             
             for (CPUser *user in [[DataManager sharedManager] availableUsers]) {
                 
@@ -168,7 +170,6 @@ typedef enum {
                                                 where:queryCondition
                                                 block:^(NSArray *objects, NSError *error) {
                                                     for (GSObject *object in objects) {
-                                                        DLog(@"%@ has pasted %d messages to me", [object objectForKey:@"sender_id"], [[object objectForKey:@"num_of_msg"] intValue]);
                                                         user.numOfPasteToMe = [[object objectForKey:@"num_of_msg"] intValue];
                                                     }
                                                 }];
@@ -183,10 +184,12 @@ typedef enum {
                 [[GSSession activeSession] queryClass:@"CopyAndPaste"
                                                 where:queryCondition
                                                 block:^(NSArray *objects, NSError *error) {
+                                                    [refreshControl endRefreshing];
                                                     for (GSObject *object in objects) {
-                                                        DLog(@"I have copied %d messages to %@", [[object objectForKey:@"num_of_msg"] intValue], [object objectForKey:@"receiver_id"]);
                                                         user.numOfCopyFromMe = [[object objectForKey:@"num_of_msg"] intValue];
                                                     }
+                                                    [self.tableView reloadData];
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationUpdateUserList object:nil];
                                                 }];
             }
         }

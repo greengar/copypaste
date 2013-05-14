@@ -45,3 +45,6 @@ UIUserInterfaceIdiomPhone)
 
 #define kNotificationApplicationDidBecomeActive @"kNotificationApplicationDidBecomeActive"
 #define kNotificationOpenFileURL @"kNotificationOpenFileURL"
+#define kNotificationUpdateUserList @"kNotificationUpdateUserList"
+
+

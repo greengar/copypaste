@@ -13,7 +13,7 @@
 @interface CPUserView ()
 
 @property (nonatomic, strong) UIButton *pasteButton;
-
+@property (nonatomic) CGRect originalFrame;
 @end
 
 @implementation CPUserView
@@ -65,6 +65,7 @@
         [self.badgeView setValue:0];
         [self addSubview:self.badgeView];
         
+        self.originalFrame = frame;
     }
     return self;
 }
@@ -98,16 +99,33 @@
     }
 }
 
-- (void)setUser:(CPUser *)user
-{
+- (void)setUser:(CPUser *)user {
+    if (_user && ![[_user uid] isEqualToString:[user uid]]) { // This user is a new one
+        [self updateData:user];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.frame = CGRectMake(self.originalFrame.origin.x,
+                                    self.originalFrame.origin.y+self.originalFrame.size.height,
+                                    self.originalFrame.size.width,
+                                    self.originalFrame.size.height);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.5 animations:^{
+                self.frame = self.originalFrame;
+            }];
+        }];
+    } else {
+        [self updateData:user];
+    }
+}
+
+- (void)updateData:(CPUser *)user {
     _user = user;
     if (user != nil) {
-        // TODO: animate if necessary
-        
         if (user.isAvatarCached) {
             [self.avatarButton setImage:user.avatarImage forState:UIControlStateNormal];
         } else if (user.avatarURLString) {
             [self.avatarButton setImageURL:[NSURL URLWithString:user.avatarURLString]];
+        } else {
+            [self.avatarButton setImage:nil forState:UIControlStateNormal];
         }
         
         [self.loadingIndicator stopAnimating];
@@ -120,25 +138,14 @@
 
 #pragma mark - EGOImageButtonDelegate
 
-- (void)imageButtonLoadedImage:(EGOImageButton*)imageButton
-{
+- (void)imageButtonLoadedImage:(EGOImageButton*)imageButton {
     [imageButton setNeedsDisplay];
     self.user.avatarImage = imageButton.imageView.image;
     self.user.isAvatarCached = YES;
 }
 
-- (void)imageButtonFailedToLoadImage:(EGOImageButton*)imageButton error:(NSError*)error
-{
+- (void)imageButtonFailedToLoadImage:(EGOImageButton*)imageButton error:(NSError*)error {
     [imageButton cancelImageLoad];
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

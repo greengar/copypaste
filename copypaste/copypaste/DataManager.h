@@ -22,6 +22,7 @@
 - (NSArray *)sortedAvailableUsersByLocation;
 - (NSArray *)sortedAvailableUsersByName;
 - (void)persistChecked_1_0;
+- (NSArray *)getTop3Users;
 
 @property (nonatomic, strong) NSMutableArray *availableUsers;
 @property (nonatomic, strong) NSMutableArray *receivedMessages;
