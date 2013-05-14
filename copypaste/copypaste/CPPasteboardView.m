@@ -7,6 +7,7 @@
 //
 
 #import "CPPasteboardView.h"
+#import "DataManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kOffset 6
@@ -28,6 +29,7 @@
 @synthesize pasteboardTextView = _myPasteboardTextView;
 @synthesize pasteboardImageHolderView = _myPasteboardImageHolderView;
 @synthesize pasteboardImageView = _myPasteboardImageView;
+@synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -74,8 +76,45 @@
         self.pasteboardImageView.backgroundColor = [UIColor clearColor];
         [self.pasteboardImageHolderView addSubview:self.pasteboardImageView];
         
+        self.instructionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.instructionButton.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+        self.instructionButton.hidden = YES;
+        self.instructionButton.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+        [self.instructionButton addTarget:self
+                                   action:@selector(hideInstruction)
+                         forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.instructionButton];
+        
+        UILabel *instructionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        instructionLabel.font = DEFAULT_FONT_SIZE(16.0f);
+        instructionLabel.backgroundColor = [UIColor clearColor];
+        instructionLabel.textColor = [UIColor whiteColor];
+        instructionLabel.numberOfLines = 0;
+        instructionLabel.textAlignment = UITextAlignmentCenter;
+        instructionLabel.text = @"You will see images/texts\nyou copied to clipboard here\n\nThen you can paste it to other people\n\nThe list of available users\nis showing below";
+        [self.instructionButton addSubview:instructionLabel];
+        
     }
     return self;
+}
+
+- (void)showInstruction {
+    self.instructionButton.hidden = NO;
+    
+}
+
+- (void)hideInstruction {
+    self.instructionButton.alpha = 1.0;
+    [UIView animateWithDuration:1.0 animations:^{
+        self.instructionButton.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        self.instructionButton.hidden = YES;
+        self.instructionButton.alpha = 1.0;
+        [[DataManager sharedManager] persistChecked_1_0];
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(finishInstruction)]) {
+            [self.delegate finishInstruction];
+        }
+    }];
 }
 
 - (void)updateUIWithPasteObject:(NSObject *)objectFromClipboard {

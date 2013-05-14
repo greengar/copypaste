@@ -21,6 +21,7 @@
 #define kHeaderViewHeight 52
 #define kPasteboardMinimumHeight (IS_IPHONE5 ? 328 : 240)
 #define kUserViewHeight 155
+#define kUserViewWidth 91
 
 @interface CPViewController ()
 
@@ -70,6 +71,7 @@
     // The "my pasteboard holder view"
     const float y = logo.frame.origin.y * 2 + logo.frame.size.height;
     self.myPasteboardHolderView = [[CPPasteboardView alloc] initWithFrame:CGRectMake(0, y, self.view.frame.size.width, self.view.frame.size.height - y - kUserViewHeight)];
+    self.myPasteboardHolderView.delegate = self;
     [self.view addSubview:self.myPasteboardHolderView];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -87,18 +89,16 @@
     {
         CPUserView *userView = [[CPUserView alloc] initWithFrame:CGRectMake(92 * i,
                                                                             self.view.frame.size.height-kUserViewHeight,
-                                                                            91,
+                                                                            kUserViewWidth,
                                                                             kUserViewHeight)];
         userView.delegate = self;
         userView.isLight = (i % 2) ? NO : YES;
-        userView.nameLabel.text = @"Loading...";
         [self.view addSubview:userView];
         [self.userViews addObject:userView];
     }
     
-    self.moreUsersButton = [UIButton buttonWithType:UIButtonTypeCustom];
     float x = 92*3;
-    self.moreUsersButton.frame = CGRectMake(0, 0, kUserViewHeight, self.view.frame.size.width-x); // Just init
+    self.moreUsersButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kUserViewHeight, self.view.frame.size.width-x)]; // Just init
     self.moreUsersButton.center = CGPointMake(x+(self.view.frame.size.width-x)/2,
                                               self.view.frame.size.height-kUserViewHeight/2); // Correct frame
     self.moreUsersButton.transform = CGAffineTransformMakeRotation(-M_PI/2); // Rotate left
@@ -109,6 +109,11 @@
                              action:@selector(moreUsersButtonTapped:)
                    forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.moreUsersButton];
+    
+    self.moreUsersLoadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.moreUsersLoadingIndicator.center = CGPointMake((self.view.frame.size.width+x)/2, self.view.frame.size.height-kUserViewHeight/2);
+    [self.moreUsersLoadingIndicator startAnimating];
+    [self.view addSubview:self.moreUsersLoadingIndicator];
     
     double delayInSeconds = 0.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -144,8 +149,11 @@
     [alertView show];
 }
 
-- (void)moreUsersButtonTapped:(id)sender
-{
+- (void)moreUsersButtonTapped:(id)sender {
+    if (![[DataManager sharedManager] checkedVersion_1_0]) {
+        [self.myPasteboardHolderView hideInstruction];
+    }
+    
     if ([[[DataManager sharedManager] availableUsers] count] < 3) { // No more users
         return;
     }
@@ -219,7 +227,15 @@
     // I think we have nothing to do now
 }
 
+- (void)finishInstruction {
+    [self updateUI];
+}
+
 - (void)updateUI {
+    if (![[DataManager sharedManager] checkedVersion_1_0]) {
+        [self.myPasteboardHolderView showInstruction];
+    }
+    
     [self hideOldCopiedContent];
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     [self.myPasteboardHolderView updateUIWithPasteObject:itemToPaste];
@@ -238,8 +254,9 @@
     
     [self reloadUserViews];
     
-    if ([[[DataManager sharedManager] availableUsers] count]) {
+    if ([[[DataManager sharedManager] availableUsers] count] > 3) {
         [self.moreUsersButton setTitle:@"more users" forState:UIControlStateNormal];
+        [self.moreUsersLoadingIndicator stopAnimating];
     } else {
         [self.moreUsersButton setTitle:@"" forState:UIControlStateNormal];
     }
@@ -280,16 +297,22 @@
     [self didTapPasteUser:user];
 }
 
-- (void)didTapPasteUser:(CPUser *)user
-{
+- (void)didTapPasteUser:(CPUser *)user {
+    if (![[DataManager sharedManager] checkedVersion_1_0]) {
+        [self.myPasteboardHolderView hideInstruction];
+    }
+    
     [[DataManager sharedManager] pasteToUser:user
                                        block:^(BOOL succeed, NSError *error) {
         [self updateUI];
     }];
 }
 
-- (void)didTapAvatarUserView:(CPUserView *)userView
-{
+- (void)didTapAvatarUserView:(CPUserView *)userView {
+    if (![[DataManager sharedManager] checkedVersion_1_0]) {
+        [self.myPasteboardHolderView hideInstruction];
+    }
+    
     CPUser *user = userView.user;
     
     CPShortProfileViewController *profileViewController = [[CPShortProfileViewController alloc] init];

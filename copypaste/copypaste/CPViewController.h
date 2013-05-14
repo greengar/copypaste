@@ -17,7 +17,7 @@
 #import "CPFriendListViewController.h"
 #import "CPUserView.h"
 
-@interface CPViewController : UIViewController <EGOImageButtonDelegate,GSSessionDelegate, WEPopoverControllerDelegate, UIAlertViewDelegate, CPMessageViewDelegate, CPUserViewDelegate>
+@interface CPViewController : UIViewController <EGOImageButtonDelegate,GSSessionDelegate, WEPopoverControllerDelegate, UIAlertViewDelegate, CPMessageViewDelegate, CPUserViewDelegate, CPPasteboardDelegate>
 
 @property (nonatomic, strong) CPPasteboardView *myPasteboardHolderView;
 @property (nonatomic, strong) WEPopoverController *userProfilePopoverController;
@@ -27,5 +27,6 @@
 
 @property (nonatomic, strong) NSMutableArray *userViews;
 @property (nonatomic, strong) UIButton *moreUsersButton;
+@property (nonatomic, strong) UIActivityIndicatorView *moreUsersLoadingIndicator;
 
 @end

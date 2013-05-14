@@ -9,14 +9,22 @@
 #import <UIKit/UIKit.h>
 #import "CPTextView.h"
 
+@protocol CPPasteboardDelegate
+- (void)finishInstruction;
+@end
+
 @interface CPPasteboardView : UIView <UIScrollViewDelegate, UITextViewDelegate>
 
+- (void)showInstruction;
+- (void)hideInstruction;
 - (void)updateUIWithPasteObject:(NSObject *)objectFromClipboard;
 
+@property (nonatomic, strong) UIButton *instructionButton;
 @property (nonatomic, strong) UIImageView *pasteboardBackgroundImageView;
 @property (nonatomic, strong) UIImageView *pasteboardHeaderImageView;
 @property (nonatomic, strong) CPTextView *pasteboardTextView;
 @property (nonatomic, strong) UIScrollView *pasteboardImageHolderView;
 @property (nonatomic, strong) UIImageView *pasteboardImageView;
+@property (nonatomic, assign) id<CPPasteboardDelegate> delegate;
 
 @end

@@ -25,6 +25,7 @@
 @property (nonatomic, strong) CPUser *user;
 @property (nonatomic, strong) EGOImageButton *avatarButton;
 @property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, strong) MKNumberBadgeView *badgeView;
 @property (nonatomic) BOOL isLight;
 @property (nonatomic, weak) id<CPUserViewDelegate> delegate;

@@ -11,11 +11,14 @@
 #import <Smartboard/GSSVProgressHUD.h>
 #import <Smartboard/NSData+GSBase64.h>
 
+#define kCheckedVersion_1_0 @"kCheckedVersion_1_0"
+
 static DataManager *shareManager = nil;
 
 @implementation DataManager
 @synthesize availableUsers = _nearByUserList;
 @synthesize receivedMessages = _receivedMessages;
+@synthesize checkedVersion_1_0 = _checkedVersion_1_0;
 
 + (DataManager *)sharedManager {
     static DataManager *sharedManager;
@@ -29,6 +32,7 @@ static DataManager *shareManager = nil;
     if (self) {
         self.availableUsers = [[NSMutableArray alloc] init];
         self.receivedMessages = [[NSMutableArray alloc] init];
+        [self loadPreference];
     }
     return self;
 }
@@ -238,6 +242,16 @@ static DataManager *shareManager = nil;
         return [displayName1 compare:displayName2];
     }];
     return sortedByNameArray;
+}
+
+- (void)loadPreference {
+    self.checkedVersion_1_0 = [NSDEF boolForKey:kCheckedVersion_1_0];
+}
+
+- (void)persistChecked_1_0 {
+    self.checkedVersion_1_0 = YES;
+    [NSDEF setBool:self.checkedVersion_1_0 forKey:kCheckedVersion_1_0];
+    [NSDEF synchronize];
 }
 
 + (id)allocWithZone:(NSZone *)zone {

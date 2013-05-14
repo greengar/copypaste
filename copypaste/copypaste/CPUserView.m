@@ -27,7 +27,6 @@
         self.avatarButton = [[EGOImageButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.width)];
         self.avatarButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
         self.avatarButton.delegate = self;
-        [self.avatarButton setBackgroundImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
         [self.avatarButton addTarget:self action:@selector(avatarButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.avatarButton];
         
@@ -36,6 +35,11 @@
                                                                       frame.size.width,
                                                                       frame.size.height - self.avatarButton.frame.size.height)];
         [self addSubview:self.pasteButton];
+        
+        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.loadingIndicator.center = self.avatarButton.center;
+        [self.loadingIndicator startAnimating];
+        [self addSubview:self.loadingIndicator];
         
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, frame.size.width-10, kNameLabelHeight)];
         self.nameLabel.textAlignment = UITextAlignmentCenter;
@@ -46,7 +50,7 @@
         [self.nameLabel setShadowColor:[UIColor colorWithWhite:0 alpha:0.4]];
         [self.pasteButton addSubview:self.nameLabel];
         
-        [self.pasteButton setTitle:@"paste" forState:UIControlStateNormal];
+        [self.pasteButton setTitle:@"" forState:UIControlStateNormal];
         [self.pasteButton.titleLabel setShadowOffset:CGSizeMake(0, 1)];
         [self.pasteButton.titleLabel setShadowColor:[UIColor colorWithWhite:0 alpha:0.4]];
         [self.pasteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -67,12 +71,16 @@
 
 - (void)avatarButtonTapped:(id)sender
 {
-    [self.delegate didTapAvatarUserView:self];
+    if (self.user) {
+        [self.delegate didTapAvatarUserView:self];
+    }
 }
 
 - (void)pasteButtonTapped:(id)sender
 {
-    [self.delegate didTapPasteUser:self.user];
+    if (self.user) {
+        [self.delegate didTapPasteUser:self.user];
+    }
 }
 
 - (void)setIsLight:(BOOL)light
@@ -102,6 +110,9 @@
             [self.avatarButton setImageURL:[NSURL URLWithString:user.avatarURLString]];
         }
         
+        [self.loadingIndicator stopAnimating];
+        [self.avatarButton setBackgroundImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
+        [self.pasteButton setTitle:@"paste" forState:UIControlStateNormal];
         self.nameLabel.text = [user displayName];
         self.badgeView.value = [user numOfUnreadMessage];
     }

@@ -21,8 +21,10 @@
 - (void)pasteToUser:(CPUser *)user block:(GSResultBlock)block;
 - (NSArray *)sortedAvailableUsersByLocation;
 - (NSArray *)sortedAvailableUsersByName;
+- (void)persistChecked_1_0;
 
 @property (nonatomic, strong) NSMutableArray *availableUsers;
 @property (nonatomic, strong) NSMutableArray *receivedMessages;
+@property (nonatomic) BOOL checkedVersion_1_0;
 
 @end
