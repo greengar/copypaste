@@ -34,6 +34,7 @@
 @property (nonatomic)         BOOL isFacebookUser;
 @property (nonatomic, retain) NSString *facebookId;
 @property (nonatomic, retain) NSString *facebookScreenName;
+@property (nonatomic)         BOOL isOnline;
 
 - (id)initWithPFUser:(PFUser *)pfUser;
 - (id)initWithPFUser:(PFUser *)pfUser cacheAvatar:(BOOL)cache;

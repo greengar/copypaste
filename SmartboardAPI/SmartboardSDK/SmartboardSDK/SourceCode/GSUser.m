@@ -25,6 +25,7 @@
 @synthesize isFacebookUser = _isFacebookUser;
 @synthesize facebookId = _facebookId;
 @synthesize facebookScreenName = _facebookScreenName;
+@synthesize isOnline = _isOnline;
 
 - (id)initWithPFUser:(PFUser *)pfUser {
     return [self initWithPFUser:pfUser cacheAvatar:YES];
@@ -44,7 +45,8 @@
         self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
         self.facebookId = pfUser[@"facebook_id"];
         self.facebookScreenName = pfUser[@"facebook_screen_name"];
-        // DLog(@"Parse from %@ to %@", pfUser, self);
+        self.isOnline = [pfUser[@"is_online"] boolValue];
+        
         if (cache) {
             [self cacheAvatar];
         }
@@ -69,7 +71,7 @@
     self.isFacebookUser = [pfUser[@"facebook_linked"] boolValue];
     self.facebookId = pfUser[@"facebook_id"];
     self.facebookScreenName = pfUser[@"facebook_screen_name"];
-    // DLog(@"Parse from %@ to %@", pfUser, self);
+    self.isOnline = [pfUser[@"is_online"] boolValue];
     
     if (cache) {
         [self cacheAvatar];
@@ -106,7 +108,7 @@
         self.isFacebookUser = gssUser.isFacebookUser;
         self.facebookId = gssUser.facebookId;
         self.facebookScreenName = gssUser.facebookScreenName;
-        // DLog(@"Parse from %@ to %@", gssUser, self);
+        self.isOnline = gssUser.isOnline;
         
         if (cache) {
             [self cacheAvatar];
@@ -134,7 +136,7 @@
     self.isFacebookUser = gssUser.isFacebookUser;
     self.facebookId = gssUser.facebookId;
     self.facebookScreenName = gssUser.facebookScreenName;
-    // DLog(@"Parse from %@ to %@", gssUser, self);
+    self.isOnline = gssUser.isOnline;
     
     if (cache) {
         [self cacheAvatar];
@@ -178,6 +180,10 @@
 
 + (GSUser *)userInfoFromDictionary:(NSDictionary *)userInfo {
     return [[[self class] alloc] initWithDictionary:userInfo];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@", self.displayName];
 }
 
 #define kGSSuid @"gssuid"

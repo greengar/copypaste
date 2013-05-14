@@ -34,6 +34,7 @@ static GSSession *activeSession = nil;
 - (void)setUserInitialApp;
 - (void)initOrUpdateGSUser;
 - (void)updateUserDataWithBlock:(GSResultBlock)block;
+- (void)goOnline:(BOOL)online;
 - (Firebase *)getMyBaseFirebase;
 - (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time;
 @property (nonatomic, retain) Firebase *firebase;
@@ -58,6 +59,7 @@ static GSSession *activeSession = nil;
 - (id)init {
     if (self = [super init]) {
         if ([PFUser currentUser]) {
+            [self goOnline:YES];
             [self initOrUpdateGSUser];
         }
     }
@@ -132,6 +134,7 @@ static GSSession *activeSession = nil;
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
         [self initEssentialDataBlock:^(BOOL succeed, NSError *error) {
+            [self goOnline:YES];
             [self setUserInitialApp];
             [self initOrUpdateGSUser];
             [self.delegate didLoginSucceeded]; // Dismiss the PFSignUpViewController
@@ -177,11 +180,13 @@ static GSSession *activeSession = nil;
         
         if ([PFFacebookUtils isLinkedWithUser:user]) {
             [self linkFacebookDataBlock:^(BOOL succeed, NSError *error) {
+                [self goOnline:YES];
                 [self initOrUpdateGSUser]; // create GSUser object
                 [self.delegate didLoginSucceeded]; // dismiss the log in view controller
             }];
         } else {
             [self initEssentialDataBlock:^(BOOL succeed, NSError *error) {
+                [self goOnline:YES];
                 [self initOrUpdateGSUser]; // create GSUser object
                 [self.delegate didLoginSucceeded]; // dismiss the log in view controller
             }];
@@ -388,26 +393,40 @@ static GSSession *activeSession = nil;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [self.currentUser updateWithPFUser:[PFUser currentUser]
-                                 block:^(BOOL succeed, NSError *error) {}];
+    if ([GSSession isAuthenticated]) {
+        [self.currentUser updateWithPFUser:[PFUser currentUser]
+                                     block:^(BOOL succeed, NSError *error) {}];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [self.currentUser updateWithPFUser:[PFUser currentUser]
-                                 block:^(BOOL succeed, NSError *error) {}];
+    if ([GSSession isAuthenticated]) {
+        [self.currentUser updateWithPFUser:[PFUser currentUser]
+                                     block:^(BOOL succeed, NSError *error) {
+                                         [self goOnline:NO];
+                                     }];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [self.currentUser updateWithPFUser:[PFUser currentUser]
-                                 block:^(BOOL succeed, NSError *error) {}];
+    if ([GSSession isAuthenticated]) {
+        [self.currentUser updateWithPFUser:[PFUser currentUser]
+                                     block:^(BOOL succeed, NSError *error) {
+                                         [self goOnline:YES];
+                                     }];
+    }
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setBadge:0];
     [currentInstallation saveInBackground];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    [self.currentUser updateWithPFUser:[PFUser currentUser]
-                                 block:^(BOOL succeed, NSError *error) {}];
+    if ([GSSession isAuthenticated]) {
+        [self.currentUser updateWithPFUser:[PFUser currentUser]
+                                     block:^(BOOL succeed, NSError *error) {
+                                         [self goOnline:NO];
+                                     }];
+    }
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -479,6 +498,12 @@ static GSSession *activeSession = nil;
     [[PFInstallation currentInstallation] setObject:[PFUser currentUser] forKey:@"user"];
 }
 
+- (void)goOnline:(BOOL)online {
+    [[PFUser currentUser] setObject:[NSNumber numberWithBool:online] forKey:@"is_online"];
+    [[PFUser currentUser] saveInBackground];
+    [self.currentUser parseDataFromPFUser:[PFUser currentUser]];
+}
+
 - (void)updateUserDataWithBlock:(GSResultBlock)block {
     [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
         [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
@@ -487,6 +512,7 @@ static GSSession *activeSession = nil;
             [[PFUser currentUser] setObject:[[PFUser currentUser] username] forKey:@"fullname"];
         }
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [self goOnline:YES];
             [self initOrUpdateGSUser];
             block(YES, error);
         }];
