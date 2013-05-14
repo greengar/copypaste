@@ -11,6 +11,8 @@
 #import <Smartboard/Smartboard.h>
 #import <Smartboard/OHAttributedLabel.h>
 #import <Smartboard/GSTheme.h>
+#import <Smartboard/GSSVProgressHUD.h>
+#import <Smartboard/NSData+GSBase64.h>
 
 #define kContentViewTag 777
 #define kLabelViewTag 778
@@ -320,9 +322,8 @@
     }
 }
 
-- (void)didReceiveMessage:(NSDictionary *)dictInfo {
+- (void)showMessage:(NSObject *)messageContent info:(NSDictionary *)dictInfo {
     NSString *senderUID = [dictInfo objectForKey:@"sender"];
-    NSObject *messageContent = [dictInfo objectForKey:@"content"];
     NSString *messageTime = [dictInfo objectForKey:@"time"];
     CPUser *sender = [[DataManager sharedManager] userById:senderUID];
     
@@ -351,15 +352,54 @@
     
     [[GSSession activeSession] removeMessageFromSender:sender atTime:messageTime];
     
-//    Uncomment me to show the message detail view
-//    CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
-//                                                                                 0,
-//                                                                                 self.view.frame.size.width,
-//                                                                                 self.view.frame.size.height)
-//                                                              message:newMessage
-//                                                           controller:self];
-//    [messageView setDelegate:self];
-//    [messageView showMeOnView:self.view];
+    CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
+                                                                                 0,
+                                                                                 self.view.frame.size.width,
+                                                                                 self.view.frame.size.height)
+                                                              message:newMessage
+                                                           controller:self];
+    [messageView setDelegate:self];
+    [messageView showMeOnView:self.view];
+}
+
+- (void)didReceiveMessage:(NSDictionary *)dictInfo {
+    NSString *receiverId = [dictInfo objectForKey:@"receiver"];
+    if (![receiverId isEqualToString:[GSSession currentUser].uid]) {
+        // It's not for me, so just ignore it
+        return;
+    }
+    
+    NSString *messageType = [dictInfo objectForKey:@"type"];
+    if ([messageType isEqualToString:@"string"]) {
+        NSObject *messageContent = [dictInfo objectForKey:@"content"];
+        [self showMessage:messageContent info:dictInfo];
+        
+    } else if ([messageType isEqualToString:@"image"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [GSSVProgressHUD showWithStatus:@"Receiving image"];
+            
+            dispatch_async(dispatch_get_current_queue(), ^{
+                NSObject *messageContent;
+                NSObject *messageRawContent = [dictInfo objectForKey:@"content"];
+                if ([messageRawContent isKindOfClass:[NSArray class]]) {
+                    NSMutableString *messageString = [NSMutableString new];
+                    for (int i = 0; i < [((NSArray *) messageRawContent) count]; i++) {
+                        [messageString appendString:[((NSArray *) messageRawContent) objectAtIndex:i]];
+                    }
+                    NSData *imageData = [NSData gsDataFromBase64String:messageString];
+                    DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
+                    messageContent = (NSObject *)[UIImage imageWithData:imageData];
+                    
+                } else {
+                    NSData *imageData = [NSData gsDataFromBase64String:((NSString *)messageRawContent)];
+                    DLog(@"Receive image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
+                    messageContent = [UIImage imageWithData:imageData];
+                }
+                [self showMessage:messageContent info:dictInfo];
+                [GSSVProgressHUD dismiss];
+            });
+        });
+    }
 }
 
 - (void)getFileURL:(NSNotification *)notification {

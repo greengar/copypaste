@@ -8,6 +8,8 @@
 
 #import "DataManager.h"
 #import <Smartboard/Smartboard.h>
+#import <Smartboard/GSSVProgressHUD.h>
+#import <Smartboard/NSData+GSBase64.h>
 
 static DataManager *shareManager = nil;
 
@@ -104,7 +106,82 @@ static DataManager *shareManager = nil;
     NSObject *itemToPaste = [[DataManager sharedManager] getThingsFromClipboard];
     
     if (itemToPaste) {
-        [[GSSession activeSession] sendMessage:itemToPaste toUser:user];
+        if ([itemToPaste isKindOfClass:[NSString class]]) {
+            NSString *messageType = @"string";
+            NSString *messageData = (NSString *)itemToPaste;
+            NSNumber *longitude = [NSNumber numberWithDouble:[GSSession currentUser].location.longitude];
+            NSNumber *latitude = [NSNumber numberWithDouble:[GSSession currentUser].location.latitude];
+            NSString *userAvatarString = [GSSession currentUser].avatarURLString ? [GSSession currentUser].avatarURLString : @"";
+            
+            NSMutableDictionary *dataToSend = [NSMutableDictionary new];
+            [dataToSend setObject:[GSSession currentUser].uid forKey:@"sender"];
+            [dataToSend setObject:[[GSSession currentUser] displayName] forKey:@"sender_name"];
+            [dataToSend setObject:userAvatarString forKey:@"sender_avatar"];
+            [dataToSend setObject:longitude forKey:@"sender_long"];
+            [dataToSend setObject:latitude forKey:@"sender_lat"];
+            [dataToSend setObject:user.uid forKey:@"receiver"];
+            [dataToSend setObject:messageType forKey:@"type"];
+            [dataToSend setObject:messageData forKey:@"content"];
+            [dataToSend setObject:[GSUtils getCurrentTime] forKey:@"time"];
+            
+            [[GSSession activeSession] sendData:dataToSend toUser:user withBlock:^(BOOL succeed, NSError *error) {
+                NSString *message = [NSString stringWithFormat:@"%@ sent you text. Come and get it now!", [[GSSession currentUser] displayName] ];
+                [[GSSession activeSession] sendPushNotificationMessage:message
+                                                                toUser:user];
+            }];
+        } else if ([itemToPaste isKindOfClass:[UIImage class]]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [GSSVProgressHUD showWithStatus:@"Sending image"];
+                
+                dispatch_async(dispatch_get_current_queue(), ^{
+                    NSData *imageData = UIImageJPEGRepresentation(((UIImage *) itemToPaste), 0.5);
+                    DLog(@"Sent image Size: %fMB", (float)[imageData length]/(float)(1024*1024));
+                    NSString *messageType = @"image";
+                    NSString *messageString = [imageData gsBase64EncodedString];
+                    NSNumber *longitude = [NSNumber numberWithDouble:[GSSession currentUser].location.longitude];
+                    NSNumber *latitude = [NSNumber numberWithDouble:[GSSession currentUser].location.latitude];
+                    NSString *userAvatarString = [GSSession currentUser].avatarURLString ? [GSSession currentUser].avatarURLString : @"";
+                    NSObject *messageData = nil;
+                    
+                    int numOfElement = round((float)[messageString length]/(float)[GSUtils maxValueSize]);
+                    if (numOfElement > 1) { // More than 1 element
+                        NSMutableArray *elementArray = [NSMutableArray arrayWithCapacity:numOfElement];
+                        for (int i = 0; i < numOfElement; i++) {
+                            int location = [GSUtils maxValueSize]*i;
+                            int length = ([GSUtils maxValueSize] > ([messageString length]-location)
+                                          ? ([messageString length]-location)
+                                          : [GSUtils maxValueSize]);
+                            NSString *element = [messageString substringWithRange:NSMakeRange(location, length)];
+                            [elementArray addObject:element];
+                        }
+                        messageData = elementArray;
+                        
+                    } else {
+                        messageData = messageString;
+                    }
+                    
+                    NSMutableDictionary *dataToSend = [NSMutableDictionary new];
+                    [dataToSend setObject:[GSSession currentUser].uid forKey:@"sender"];
+                    [dataToSend setObject:[[GSSession currentUser] displayName] forKey:@"sender_name"];
+                    [dataToSend setObject:userAvatarString forKey:@"sender_avatar"];
+                    [dataToSend setObject:longitude forKey:@"sender_long"];
+                    [dataToSend setObject:latitude forKey:@"sender_lat"];
+                    [dataToSend setObject:user.uid forKey:@"receiver"];
+                    [dataToSend setObject:messageType forKey:@"type"];
+                    [dataToSend setObject:messageData forKey:@"content"];
+                    [dataToSend setObject:[GSUtils getCurrentTime] forKey:@"time"];
+                    
+                    [GSSVProgressHUD dismiss];
+                    
+                    [[GSSession activeSession] sendData:dataToSend toUser:user withBlock:^(BOOL succeed, NSError *error) {
+                        NSString *message = [NSString stringWithFormat:@"%@ sent you an image. Come and get it now!", [[GSSession currentUser] displayName] ];
+                        [[GSSession activeSession] sendPushNotificationMessage:message
+                                                                        toUser:user];
+                    }];
+                });
+            });
+        }
+        
         user.numOfCopyFromMe++;
         
         NSMutableArray *sendCondition = [NSMutableArray new];

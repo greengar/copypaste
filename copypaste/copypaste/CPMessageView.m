@@ -122,6 +122,11 @@
 - (void)showMeOnView:(UIView *)view {
     self.message.sender.numOfUnreadMessage--;
     [view addSubview:self];
+    self.frame = CGRectMake(0, view.frame.size.height, view.frame.size.width, view.frame.size.height);
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.frame = CGRectMake(0, 0, view.frame.size.width, view.frame.size.height);
+    }];
 }
 
 - (void)saveButtonTapped:(id)sender {
