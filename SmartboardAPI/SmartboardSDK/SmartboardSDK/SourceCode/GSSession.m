@@ -244,6 +244,7 @@ static GSSession *activeSession = nil;
         for (FDataSnapshot *child in childSnapshot.children) {
             [messageDict setObject:child.value forKey:child.name];
         }
+        [messageDict setObject:childSnapshot.name forKey:@"uid"];
         
         if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessage:)]) {
             [self.delegate didReceiveMessage:messageDict];

@@ -113,7 +113,7 @@
         [discardButton setFrame:CGRectMake(240, 400, 80, kButtonHeight)];
         [self addSubview:discardButton];
         
-        [self.pasteboardView updateUIWithPasteObject:message.messageContent];
+        [self.pasteboardView updateUIWithPasteObject:message.content];
         
     }
     return self;
@@ -131,12 +131,12 @@
 
 - (void)saveButtonTapped:(id)sender {
     // If only text, so we just need to copy the content
-    if ([self.message.messageContent isKindOfClass:[NSString class]]) {
+    if ([self.message.content isKindOfClass:[NSString class]]) {
         [self copyButtonTapped:nil];
         
-    } else if ([self.message.messageContent isKindOfClass:[UIImage class]]) {
+    } else if ([self.message.content isKindOfClass:[UIImage class]]) {
         if (self.baseViewController) {
-            UIImage *image = (UIImage *) self.message.messageContent;
+            UIImage *image = (UIImage *) self.message.content;
             NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
             NSArray *imageArray = @[imageData];
             UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:imageArray
@@ -152,11 +152,11 @@
 
 - (void)shareButtonTapped:(id)sender {
     // If only text, so we just need to copy the content
-    if ([self.message.messageContent isKindOfClass:[NSString class]]) {
+    if ([self.message.content isKindOfClass:[NSString class]]) {
         [self copyButtonTapped:nil];
         
-    } else if ([self.message.messageContent isKindOfClass:[UIImage class]]) {
-        UIImage *image = (UIImage *) self.message.messageContent;
+    } else if ([self.message.content isKindOfClass:[UIImage class]]) {
+        UIImage *image = (UIImage *) self.message.content;
         NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
         NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *filePath = [basePath stringByAppendingPathComponent:@"copypaste Image.jpg"];
@@ -180,13 +180,13 @@
 
 - (void)copyButtonTapped:(id)sender {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    if ([self.message.messageContent isKindOfClass:[NSString class]]) {
-        NSString *string = (NSString *) self.message.messageContent;
+    if ([self.message.content isKindOfClass:[NSString class]]) {
+        NSString *string = (NSString *) self.message.content;
         NSData *stringData = [string dataUsingEncoding:NSUTF8StringEncoding];
         [pasteboard setData:stringData forPasteboardType:@"public.text"];
         
-    } else if ([self.message.messageContent isKindOfClass:[UIImage class]]) {
-        UIImage *image = (UIImage *) self.message.messageContent;
+    } else if ([self.message.content isKindOfClass:[UIImage class]]) {
+        UIImage *image = (UIImage *) self.message.content;
         NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
         [pasteboard setData:imageData forPasteboardType:@"public.jpg"];
     }

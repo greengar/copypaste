@@ -325,6 +325,7 @@
 - (void)showMessage:(NSObject *)messageContent info:(NSDictionary *)dictInfo {
     NSString *senderUID = [dictInfo objectForKey:@"sender"];
     NSString *messageTime = [dictInfo objectForKey:@"time"];
+    NSString *messageUid = [dictInfo objectForKey:@"uid"];
     CPUser *sender = [[DataManager sharedManager] userById:senderUID];
     
     if (sender == nil) { // The sender is not a nearby user
@@ -339,27 +340,29 @@
     }
     
     CPMessage *newMessage = [[CPMessage alloc] init];
+    [newMessage setUid:messageUid];
     [newMessage setSender:sender];
-    [newMessage setMessageContent:messageContent];
+    [newMessage setContent:messageContent];
     [newMessage setMessageTime:messageTime];
     [newMessage setCreatedDateInterval:[[GSUtils dateFromString:messageTime] timeIntervalSince1970]];
     DLog(@"Receive message: %@", [newMessage description]);
-    [[[DataManager sharedManager] receivedMessages] addObject:newMessage];
     
-    // Get more message from the sender
-    sender.numOfPasteToMe++;
-    sender.numOfUnreadMessage++;
-    
-    [[GSSession activeSession] removeMessageFromSender:sender atTime:messageTime];
-    
-    CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
-                                                                                 0,
-                                                                                 self.view.frame.size.width,
-                                                                                 self.view.frame.size.height)
-                                                              message:newMessage
-                                                           controller:self];
-    [messageView setDelegate:self];
-    [messageView showMeOnView:self.view];
+    if ([[DataManager sharedManager] updateMessageList:newMessage]) {
+        // Get more message from the sender
+        sender.numOfPasteToMe++;
+        sender.numOfUnreadMessage++;
+        
+        [[GSSession activeSession] removeMessageFromSender:sender atTime:messageTime];
+        
+        CPMessageView *messageView = [[CPMessageView alloc] initWithFrame:CGRectMake(0,
+                                                                                     0,
+                                                                                     self.view.frame.size.width,
+                                                                                     self.view.frame.size.height)
+                                                                  message:newMessage
+                                                               controller:self];
+        [messageView setDelegate:self];
+        [messageView showMeOnView:self.view];
+    }
 }
 
 - (void)didReceiveMessage:(NSDictionary *)dictInfo {

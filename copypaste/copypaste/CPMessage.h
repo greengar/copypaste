@@ -12,8 +12,9 @@
 
 @interface CPMessage : NSObject
 
+@property (nonatomic) NSString *uid;
 @property (nonatomic) CPUser *sender;
-@property (nonatomic) NSObject *messageContent;
+@property (nonatomic) NSObject *content;
 @property (nonatomic) NSString *messageTime;
 @property (nonatomic) NSTimeInterval createdDateInterval;
 

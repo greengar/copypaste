@@ -15,6 +15,7 @@
 + (DataManager *) sharedManager;
 - (NSObject *) getThingsFromClipboard;
 - (void)updateNearbyUsers:(NSArray *)nearbyList;
+- (BOOL)updateMessageList:(CPMessage *)message;
 - (CPUser *)userById:(NSString *)uid;
 - (void)getNumOfMessageFromUser:(CPUser *)fromUser toUser:(CPUser *)toUser;
 - (void)pasteToUser:(CPUser *)user block:(GSResultBlock)block;

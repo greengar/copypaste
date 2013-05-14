@@ -79,6 +79,21 @@ static DataManager *shareManager = nil;
     }
 }
 
+- (BOOL)updateMessageList:(CPMessage *)message {
+    BOOL isExisted = NO;
+    for (CPMessage *existedMessage in self.receivedMessages) {
+        if ([message.uid isEqualToString:existedMessage.uid]) {
+            isExisted = YES;
+            break;
+        }
+    }
+    if (!isExisted) {
+        [self.receivedMessages addObject:message];
+        return YES;
+    }
+    return NO;
+}
+
 - (CPUser *)userById:(NSString *)uid {
     CPUser *desiredUser = nil;
     for (CPUser *user in self.availableUsers) {

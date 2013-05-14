@@ -9,8 +9,9 @@
 #import "CPMessage.h"
 
 @implementation CPMessage
+@synthesize uid = _uid;
 @synthesize sender = _sender;
-@synthesize messageContent = _messageContent;
+@synthesize content = _messageContent;
 @synthesize messageTime = _messageTime;
 @synthesize createdDateInterval = _createdDateInterval;
 
