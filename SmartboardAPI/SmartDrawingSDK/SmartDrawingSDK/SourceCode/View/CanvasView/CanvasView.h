@@ -16,10 +16,4 @@
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
 
-@property (nonatomic, strong) UIButton *undoButton;
-@property (nonatomic, strong) UIButton *redoButton;
-@property (nonatomic, strong) MainPaintingView *drawingView;
-@property (nonatomic, strong) ColorTabView *colorTabView;
-@property (nonatomic, strong) ColorPickerView *colorPickerView;
-
 @end

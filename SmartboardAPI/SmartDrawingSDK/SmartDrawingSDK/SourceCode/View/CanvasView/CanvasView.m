@@ -11,6 +11,13 @@
 
 #define kUndoPickerWidth 69
 #define kURButtonWidthHeight 64
+@interface CanvasView()
+@property (nonatomic, strong) UIButton *undoButton;
+@property (nonatomic, strong) UIButton *redoButton;
+@property (nonatomic, strong) MainPaintingView *drawingView;
+@property (nonatomic, strong) ColorTabView *colorTabView;
+@property (nonatomic, strong) ColorPickerView *colorPickerView;
+@end
 
 @implementation CanvasView
 @synthesize undoButton = _undoButton;
@@ -26,7 +33,7 @@
         // Initialization code
         
         // OpenGL View
-        self.drawingView = [[MainPaintingView alloc] initWithFrame:frame];
+        self.drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.drawingView setDelegate:self];
         [self addSubview:self.drawingView];
         
@@ -34,8 +41,10 @@
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [self.drawingView initialDrawing];
-            [self.drawingView loadFromSavedPhotoAlbum:image];
-            [self.drawingView addCurrentImageToUndoRedoSpace];
+            if (image) {
+                [self.drawingView loadFromSavedPhotoAlbum:image];
+                [self.drawingView addCurrentImageToUndoRedoSpace];
+            }
         });
         
         // Bottom color tabs
@@ -56,8 +65,30 @@
         
         // Undo and Redo
         [self initializeUndoRedoButtonsWithFrame:frame];
+        
+        UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [doneButton setFrame:CGRectMake((frame.size.width-80)/2, 0, 80, 44)];
+        [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+        [doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:doneButton];
     }
     return self;
+}
+
+- (UIView *)contentView {
+    return self.drawingView;
+}
+
+- (void)finishCanvasView {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementExited:)]) {
+        [self.delegate elementExited:self];
+    }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesEnded:touches withEvent:event];
 }
 
 - (void)selectColorTabAtIndex:(int)index {

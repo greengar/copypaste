@@ -11,6 +11,7 @@
 #import "CanvasView.h"
 #import "MainPaintingView.h"
 #import "SettingManager.h"
+#import "SDBoard.h"
 
 static SDSession *activeSession = nil;
 
@@ -34,14 +35,20 @@ static SDSession *activeSession = nil;
     return self;
 }
 
-- (void)loadImageIntoSmartboardDrawingSDK:(UIImage *)image
-                           fromController:(UIViewController *)controller
-                                 delegate:(id<SDSessionDelegate>)delegate {
+- (void)presentSmartboardControllerFromController:(UIViewController *)controller
+                                        withImage:(UIImage *)image
+                                         delegate:(id<SDSessionDelegate>)delegate {
     self.delegate = delegate;
-    
-    // OpenGL View
-	self.rootView = [[CanvasView alloc] initWithFrame:controller.view.frame image:image];
-    [controller.view addSubview:self.rootView];
+
+    SDBoard *rootController = [[SDBoard alloc] init];
+    [rootController setDelegate:self];
+    [controller presentViewController:rootController animated:YES completion:NULL];
+}
+
+- (void)editPhotoFinished:(UIImage *)image {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(editPhotoFinished:)]) {
+        [self.delegate editPhotoFinished:image];
+    }
 }
 
 + (id)allocWithZone:(NSZone *)zone {

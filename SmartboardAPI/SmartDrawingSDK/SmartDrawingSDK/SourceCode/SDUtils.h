@@ -115,6 +115,10 @@ typedef enum {
 - (void)editPhotoFinished:(UIImage *)image;
 @end
 
+@protocol SDRootViewControllerDelegate
+- (void)editPhotoFinished:(UIImage *)image;
+@end
+
 @interface SDUtils : NSObject
 
 + (NSString*)getCurrentTime;

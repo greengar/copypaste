@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "SDUtils.h"
 
-@interface SDSession : NSObject
+@interface SDSession : NSObject <SDRootViewControllerDelegate>
 
 // Get the active session
 + (SDSession *)activeSession;
 
-- (void)loadImageIntoSmartboardDrawingSDK:(UIImage *)image
-                           fromController:(UIViewController *)controller
-                                 delegate:(id<SDSessionDelegate>)delegate;
+- (void)presentSmartboardControllerFromController:(UIViewController *)controller
+                                        withImage:(UIImage *)image
+                                         delegate:(id<SDSessionDelegate>)delegate;
 
 // The SDSession's delegate
 @property (nonatomic, assign) id<SDSessionDelegate> delegate;
