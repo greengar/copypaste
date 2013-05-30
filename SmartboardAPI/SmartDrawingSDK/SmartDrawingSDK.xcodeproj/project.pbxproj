@@ -1,0 +1,955 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		7BBFA47A1753E232001964D3 /* BuildSmartDrawingSDK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 7BBFA47B1753E232001964D3 /* Build configuration list for PBXAggregateTarget "BuildSmartDrawingSDK" */;
+			buildPhases = (
+				7BBFA47E1753E245001964D3 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = BuildSmartDrawingSDK;
+			productName = BuildSmartDrawingSDK;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		7B0858AA1756E05600B4F871 /* ColorPickerImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858701756E05600B4F871 /* ColorPickerImageView.h */; };
+		7B0858AB1756E05600B4F871 /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858711756E05600B4F871 /* ColorPickerImageView.m */; };
+		7B0858AC1756E05600B4F871 /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858711756E05600B4F871 /* ColorPickerImageView.m */; };
+		7B0858AD1756E05600B4F871 /* ColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858721756E05600B4F871 /* ColorPickerView.h */; };
+		7B0858AE1756E05600B4F871 /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858731756E05600B4F871 /* ColorPickerView.m */; };
+		7B0858AF1756E05600B4F871 /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858731756E05600B4F871 /* ColorPickerView.m */; };
+		7B0858B01756E05600B4F871 /* ColorTabView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858741756E05600B4F871 /* ColorTabView.h */; };
+		7B0858B11756E05600B4F871 /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858751756E05600B4F871 /* ColorTabView.m */; };
+		7B0858B21756E05600B4F871 /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858751756E05600B4F871 /* ColorTabView.m */; };
+		7B0858B31756E05600B4F871 /* GSColorCircle.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858761756E05600B4F871 /* GSColorCircle.h */; };
+		7B0858B41756E05600B4F871 /* GSColorCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858771756E05600B4F871 /* GSColorCircle.m */; };
+		7B0858B51756E05600B4F871 /* GSColorCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858771756E05600B4F871 /* GSColorCircle.m */; };
+		7B0858B61756E05600B4F871 /* MySlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858781756E05600B4F871 /* MySlider.h */; };
+		7B0858B71756E05600B4F871 /* MySlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858791756E05600B4F871 /* MySlider.m */; };
+		7B0858B81756E05600B4F871 /* MySlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858791756E05600B4F871 /* MySlider.m */; };
+		7B0858B91756E05600B4F871 /* PreviewArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08587A1756E05600B4F871 /* PreviewArea.h */; };
+		7B0858BA1756E05600B4F871 /* PreviewArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587B1756E05600B4F871 /* PreviewArea.m */; };
+		7B0858BB1756E05600B4F871 /* PreviewArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587B1756E05600B4F871 /* PreviewArea.m */; };
+		7B0858BC1756E05600B4F871 /* TabWrapperView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08587C1756E05600B4F871 /* TabWrapperView.h */; };
+		7B0858BD1756E05600B4F871 /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587D1756E05600B4F871 /* TabWrapperView.m */; };
+		7B0858BE1756E05600B4F871 /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587D1756E05600B4F871 /* TabWrapperView.m */; };
+		7B0858BF1756E05600B4F871 /* CanvasView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08587E1756E05600B4F871 /* CanvasView.h */; };
+		7B0858C01756E05600B4F871 /* CanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587F1756E05600B4F871 /* CanvasView.m */; };
+		7B0858C11756E05600B4F871 /* CanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587F1756E05600B4F871 /* CanvasView.m */; };
+		7B0858C21756E05600B4F871 /* Painting.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858821756E05600B4F871 /* Painting.h */; };
+		7B0858C31756E05600B4F871 /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858831756E05600B4F871 /* Painting.m */; };
+		7B0858C41756E05600B4F871 /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858831756E05600B4F871 /* Painting.m */; };
+		7B0858C51756E05600B4F871 /* PaintingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858841756E05600B4F871 /* PaintingManager.h */; };
+		7B0858C61756E05600B4F871 /* PaintingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858851756E05600B4F871 /* PaintingManager.m */; };
+		7B0858C71756E05600B4F871 /* PaintingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858851756E05600B4F871 /* PaintingManager.m */; };
+		7B0858C81756E05600B4F871 /* SettingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858861756E05600B4F871 /* SettingManager.h */; };
+		7B0858C91756E05600B4F871 /* SettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858871756E05600B4F871 /* SettingManager.m */; };
+		7B0858CA1756E05600B4F871 /* SettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858871756E05600B4F871 /* SettingManager.m */; };
+		7B0858CB1756E05600B4F871 /* ColorTabElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858891756E05600B4F871 /* ColorTabElement.h */; };
+		7B0858CC1756E05600B4F871 /* ColorTabElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588A1756E05600B4F871 /* ColorTabElement.m */; };
+		7B0858CD1756E05600B4F871 /* ColorTabElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588A1756E05600B4F871 /* ColorTabElement.m */; };
+		7B0858CE1756E05600B4F871 /* GSMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08588B1756E05600B4F871 /* GSMutableDictionary.h */; };
+		7B0858CF1756E05600B4F871 /* GSMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588C1756E05600B4F871 /* GSMutableDictionary.m */; };
+		7B0858D01756E05600B4F871 /* GSMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588C1756E05600B4F871 /* GSMutableDictionary.m */; };
+		7B0858D11756E05600B4F871 /* GSTouchData.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08588D1756E05600B4F871 /* GSTouchData.h */; };
+		7B0858D21756E05600B4F871 /* GSTouchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588E1756E05600B4F871 /* GSTouchData.m */; };
+		7B0858D31756E05600B4F871 /* GSTouchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588E1756E05600B4F871 /* GSTouchData.m */; };
+		7B0858D41756E05600B4F871 /* DrawingLayerInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858901756E05600B4F871 /* DrawingLayerInfo.h */; };
+		7B0858D51756E05600B4F871 /* DrawingLayerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858911756E05600B4F871 /* DrawingLayerInfo.m */; };
+		7B0858D61756E05600B4F871 /* DrawingLayerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858911756E05600B4F871 /* DrawingLayerInfo.m */; };
+		7B0858D71756E05600B4F871 /* EAGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858921756E05600B4F871 /* EAGLView.h */; };
+		7B0858D81756E05600B4F871 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858931756E05600B4F871 /* EAGLView.m */; };
+		7B0858D91756E05600B4F871 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858931756E05600B4F871 /* EAGLView.m */; };
+		7B0858DA1756E05600B4F871 /* FB2GLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858941756E05600B4F871 /* FB2GLView.h */; };
+		7B0858DB1756E05600B4F871 /* FB2GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858951756E05600B4F871 /* FB2GLView.m */; };
+		7B0858DC1756E05600B4F871 /* FB2GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858951756E05600B4F871 /* FB2GLView.m */; };
+		7B0858DD1756E05600B4F871 /* MainPaintingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858961756E05600B4F871 /* MainPaintingView.h */; };
+		7B0858DE1756E05600B4F871 /* MainPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858971756E05600B4F871 /* MainPaintingView.m */; };
+		7B0858DF1756E05600B4F871 /* MainPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858971756E05600B4F871 /* MainPaintingView.m */; };
+		7B0858E01756E05600B4F871 /* PaintingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858981756E05600B4F871 /* PaintingView.h */; };
+		7B0858E11756E05600B4F871 /* PaintingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858991756E05600B4F871 /* PaintingView.mm */; };
+		7B0858E21756E05600B4F871 /* PaintingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858991756E05600B4F871 /* PaintingView.mm */; };
+		7B0858E31756E05600B4F871 /* ClearPaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08589B1756E05600B4F871 /* ClearPaintingCmd.h */; };
+		7B0858E41756E05600B4F871 /* ClearPaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08589C1756E05600B4F871 /* ClearPaintingCmd.m */; };
+		7B0858E51756E05600B4F871 /* ClearPaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08589C1756E05600B4F871 /* ClearPaintingCmd.m */; };
+		7B0858E61756E05600B4F871 /* ImagePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08589D1756E05600B4F871 /* ImagePaintingCmd.h */; };
+		7B0858E71756E05600B4F871 /* ImagePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08589E1756E05600B4F871 /* ImagePaintingCmd.m */; };
+		7B0858E81756E05600B4F871 /* ImagePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08589E1756E05600B4F871 /* ImagePaintingCmd.m */; };
+		7B0858E91756E05600B4F871 /* MultiStrokePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08589F1756E05600B4F871 /* MultiStrokePaintingCmd.h */; };
+		7B0858EA1756E05600B4F871 /* MultiStrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A01756E05600B4F871 /* MultiStrokePaintingCmd.m */; };
+		7B0858EB1756E05600B4F871 /* MultiStrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A01756E05600B4F871 /* MultiStrokePaintingCmd.m */; };
+		7B0858EC1756E05600B4F871 /* PaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858A11756E05600B4F871 /* PaintingCmd.h */; };
+		7B0858ED1756E05600B4F871 /* PaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A21756E05600B4F871 /* PaintingCmd.m */; };
+		7B0858EE1756E05600B4F871 /* PaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A21756E05600B4F871 /* PaintingCmd.m */; };
+		7B0858EF1756E05600B4F871 /* StrokePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858A31756E05600B4F871 /* StrokePaintingCmd.h */; };
+		7B0858F01756E05600B4F871 /* StrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A41756E05600B4F871 /* StrokePaintingCmd.m */; };
+		7B0858F11756E05600B4F871 /* StrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A41756E05600B4F871 /* StrokePaintingCmd.m */; };
+		7B0858F21756E05600B4F871 /* SDBaseView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858A51756E05600B4F871 /* SDBaseView.h */; };
+		7B0858F31756E05600B4F871 /* SDBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A61756E05600B4F871 /* SDBaseView.m */; };
+		7B0858F41756E05600B4F871 /* SDBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A61756E05600B4F871 /* SDBaseView.m */; };
+		7B7ACF6A175545F200076146 /* SmartDrawing.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B7ACF69175545F000076146 /* SmartDrawing.bundle */; };
+		7B7ACF6B175545F200076146 /* SmartDrawing.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B7ACF69175545F000076146 /* SmartDrawing.bundle */; };
+		7B7ACFDB1755A87100076146 /* SDSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF941755A87100076146 /* SDSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B7ACFDC1755A87100076146 /* SDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF951755A87100076146 /* SDSession.m */; };
+		7B7ACFDD1755A87100076146 /* SDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF951755A87100076146 /* SDSession.m */; };
+		7B7ACFDE1755A87100076146 /* SDUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF961755A87100076146 /* SDUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B7ACFDF1755A87100076146 /* SDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF971755A87100076146 /* SDUtils.m */; };
+		7B7ACFE01755A87100076146 /* SDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF971755A87100076146 /* SDUtils.m */; };
+		7B7ACFE11755A87100076146 /* ccMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF991755A87100076146 /* ccMacros.h */; };
+		7B7ACFE21755A87100076146 /* CGPointExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9A1755A87100076146 /* CGPointExtension.h */; };
+		7B7ACFE31755A87100076146 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF9B1755A87100076146 /* CGPointExtension.m */; };
+		7B7ACFE41755A87100076146 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF9B1755A87100076146 /* CGPointExtension.m */; };
+		7B7ACFE51755A87100076146 /* ImageManipulation.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9C1755A87100076146 /* ImageManipulation.h */; };
+		7B7ACFE61755A87100076146 /* UIColor+GSString.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9D1755A87100076146 /* UIColor+GSString.h */; };
+		7B7ACFE71755A87100076146 /* UIColor+GSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF9E1755A87100076146 /* UIColor+GSString.m */; };
+		7B7ACFE81755A87100076146 /* UIColor+GSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF9E1755A87100076146 /* UIColor+GSString.m */; };
+		7B7ACFE91755A87100076146 /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9F1755A87100076146 /* UIDevice+Hardware.h */; };
+		7B7ACFEA1755A87100076146 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */; };
+		7B7ACFEB1755A87100076146 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */; };
+		7BA1096C1753C22100B0CCCA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096B1753C22100B0CCCA /* UIKit.framework */; };
+		7BA1096E1753C22100B0CCCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096D1753C22100B0CCCA /* Foundation.framework */; };
+		7BA109701753C22100B0CCCA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096F1753C22100B0CCCA /* CoreGraphics.framework */; };
+		7BA109761753C22100B0CCCA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BA109741753C22100B0CCCA /* InfoPlist.strings */; };
+		7BA109781753C22100B0CCCA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA109771753C22100B0CCCA /* main.m */; };
+		7BA1097C1753C22100B0CCCA /* SDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA1097B1753C22100B0CCCA /* SDAppDelegate.m */; };
+		7BA1097E1753C22100B0CCCA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BA1097D1753C22100B0CCCA /* Default.png */; };
+		7BA109801753C22100B0CCCA /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BA1097F1753C22100B0CCCA /* Default@2x.png */; };
+		7BA109821753C22100B0CCCA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BA109811753C22100B0CCCA /* Default-568h@2x.png */; };
+		7BA1099A1753C57100B0CCCA /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 7BA109991753C57100B0CCCA /* Readme.md */; };
+		7BBFA4571753E121001964D3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1098D1753C2EB00B0CCCA /* CoreFoundation.framework */; };
+		7BBFA45D1753E121001964D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BBFA45B1753E121001964D3 /* InfoPlist.strings */; };
+		7BBFA4631753E1A6001964D3 /* SmartDrawing.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA1099C1753C59800B0CCCA /* SmartDrawing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7B0858701756E05600B4F871 /* ColorPickerImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerImageView.h; sourceTree = "<group>"; };
+		7B0858711756E05600B4F871 /* ColorPickerImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerImageView.m; sourceTree = "<group>"; };
+		7B0858721756E05600B4F871 /* ColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerView.h; sourceTree = "<group>"; };
+		7B0858731756E05600B4F871 /* ColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerView.m; sourceTree = "<group>"; };
+		7B0858741756E05600B4F871 /* ColorTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTabView.h; sourceTree = "<group>"; };
+		7B0858751756E05600B4F871 /* ColorTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTabView.m; sourceTree = "<group>"; };
+		7B0858761756E05600B4F871 /* GSColorCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSColorCircle.h; sourceTree = "<group>"; };
+		7B0858771756E05600B4F871 /* GSColorCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSColorCircle.m; sourceTree = "<group>"; };
+		7B0858781756E05600B4F871 /* MySlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySlider.h; sourceTree = "<group>"; };
+		7B0858791756E05600B4F871 /* MySlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySlider.m; sourceTree = "<group>"; };
+		7B08587A1756E05600B4F871 /* PreviewArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewArea.h; sourceTree = "<group>"; };
+		7B08587B1756E05600B4F871 /* PreviewArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewArea.m; sourceTree = "<group>"; };
+		7B08587C1756E05600B4F871 /* TabWrapperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabWrapperView.h; sourceTree = "<group>"; };
+		7B08587D1756E05600B4F871 /* TabWrapperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabWrapperView.m; sourceTree = "<group>"; };
+		7B08587E1756E05600B4F871 /* CanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasView.h; sourceTree = "<group>"; };
+		7B08587F1756E05600B4F871 /* CanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasView.m; sourceTree = "<group>"; };
+		7B0858821756E05600B4F871 /* Painting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painting.h; sourceTree = "<group>"; };
+		7B0858831756E05600B4F871 /* Painting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Painting.m; sourceTree = "<group>"; };
+		7B0858841756E05600B4F871 /* PaintingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingManager.h; sourceTree = "<group>"; };
+		7B0858851756E05600B4F871 /* PaintingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintingManager.m; sourceTree = "<group>"; };
+		7B0858861756E05600B4F871 /* SettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingManager.h; sourceTree = "<group>"; };
+		7B0858871756E05600B4F871 /* SettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingManager.m; sourceTree = "<group>"; };
+		7B0858891756E05600B4F871 /* ColorTabElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTabElement.h; sourceTree = "<group>"; };
+		7B08588A1756E05600B4F871 /* ColorTabElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTabElement.m; sourceTree = "<group>"; };
+		7B08588B1756E05600B4F871 /* GSMutableDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSMutableDictionary.h; sourceTree = "<group>"; };
+		7B08588C1756E05600B4F871 /* GSMutableDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSMutableDictionary.m; sourceTree = "<group>"; };
+		7B08588D1756E05600B4F871 /* GSTouchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSTouchData.h; sourceTree = "<group>"; };
+		7B08588E1756E05600B4F871 /* GSTouchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSTouchData.m; sourceTree = "<group>"; };
+		7B0858901756E05600B4F871 /* DrawingLayerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingLayerInfo.h; sourceTree = "<group>"; };
+		7B0858911756E05600B4F871 /* DrawingLayerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawingLayerInfo.m; sourceTree = "<group>"; };
+		7B0858921756E05600B4F871 /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
+		7B0858931756E05600B4F871 /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
+		7B0858941756E05600B4F871 /* FB2GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FB2GLView.h; sourceTree = "<group>"; };
+		7B0858951756E05600B4F871 /* FB2GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FB2GLView.m; sourceTree = "<group>"; };
+		7B0858961756E05600B4F871 /* MainPaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPaintingView.h; sourceTree = "<group>"; };
+		7B0858971756E05600B4F871 /* MainPaintingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPaintingView.m; sourceTree = "<group>"; };
+		7B0858981756E05600B4F871 /* PaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingView.h; sourceTree = "<group>"; };
+		7B0858991756E05600B4F871 /* PaintingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PaintingView.mm; sourceTree = "<group>"; };
+		7B08589B1756E05600B4F871 /* ClearPaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearPaintingCmd.h; sourceTree = "<group>"; };
+		7B08589C1756E05600B4F871 /* ClearPaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearPaintingCmd.m; sourceTree = "<group>"; };
+		7B08589D1756E05600B4F871 /* ImagePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePaintingCmd.h; sourceTree = "<group>"; };
+		7B08589E1756E05600B4F871 /* ImagePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePaintingCmd.m; sourceTree = "<group>"; };
+		7B08589F1756E05600B4F871 /* MultiStrokePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiStrokePaintingCmd.h; sourceTree = "<group>"; };
+		7B0858A01756E05600B4F871 /* MultiStrokePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiStrokePaintingCmd.m; sourceTree = "<group>"; };
+		7B0858A11756E05600B4F871 /* PaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingCmd.h; sourceTree = "<group>"; };
+		7B0858A21756E05600B4F871 /* PaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintingCmd.m; sourceTree = "<group>"; };
+		7B0858A31756E05600B4F871 /* StrokePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrokePaintingCmd.h; sourceTree = "<group>"; };
+		7B0858A41756E05600B4F871 /* StrokePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrokePaintingCmd.m; sourceTree = "<group>"; };
+		7B0858A51756E05600B4F871 /* SDBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBaseView.h; sourceTree = "<group>"; };
+		7B0858A61756E05600B4F871 /* SDBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBaseView.m; sourceTree = "<group>"; };
+		7B7ACF69175545F000076146 /* SmartDrawing.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SmartDrawing.bundle; sourceTree = "<group>"; };
+		7B7ACF941755A87100076146 /* SDSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDSession.h; sourceTree = "<group>"; };
+		7B7ACF951755A87100076146 /* SDSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDSession.m; sourceTree = "<group>"; };
+		7B7ACF961755A87100076146 /* SDUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDUtils.h; sourceTree = "<group>"; };
+		7B7ACF971755A87100076146 /* SDUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDUtils.m; sourceTree = "<group>"; };
+		7B7ACF991755A87100076146 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
+		7B7ACF9A1755A87100076146 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
+		7B7ACF9B1755A87100076146 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
+		7B7ACF9C1755A87100076146 /* ImageManipulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManipulation.h; sourceTree = "<group>"; };
+		7B7ACF9D1755A87100076146 /* UIColor+GSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GSString.h"; sourceTree = "<group>"; };
+		7B7ACF9E1755A87100076146 /* UIColor+GSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GSString.m"; sourceTree = "<group>"; };
+		7B7ACF9F1755A87100076146 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
+		7BA109681753C22100B0CCCA /* SmartDrawingSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartDrawingSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7BA1096B1753C22100B0CCCA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		7BA1096D1753C22100B0CCCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		7BA1096F1753C22100B0CCCA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		7BA109731753C22100B0CCCA /* SmartDrawingSDK-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SmartDrawingSDK-Info.plist"; sourceTree = "<group>"; };
+		7BA109751753C22100B0CCCA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7BA109771753C22100B0CCCA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7BA109791753C22100B0CCCA /* SmartDrawingSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SmartDrawingSDK-Prefix.pch"; sourceTree = "<group>"; };
+		7BA1097A1753C22100B0CCCA /* SDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDAppDelegate.h; sourceTree = "<group>"; };
+		7BA1097B1753C22100B0CCCA /* SDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDAppDelegate.m; sourceTree = "<group>"; };
+		7BA1097D1753C22100B0CCCA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		7BA1097F1753C22100B0CCCA /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		7BA109811753C22100B0CCCA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		7BA1098D1753C2EB00B0CCCA /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		7BA109991753C57100B0CCCA /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
+		7BA1099C1753C59800B0CCCA /* SmartDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmartDrawing.h; sourceTree = "<group>"; };
+		7BBFA4561753E121001964D3 /* SmartDrawing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartDrawing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7BBFA45A1753E121001964D3 /* SmartDrawing-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SmartDrawing-Info.plist"; sourceTree = "<group>"; };
+		7BBFA45C1753E121001964D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7BBFA45E1753E121001964D3 /* SmartDrawing-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SmartDrawing-Prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7BA109651753C22100B0CCCA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BA1096C1753C22100B0CCCA /* UIKit.framework in Frameworks */,
+				7BA1096E1753C22100B0CCCA /* Foundation.framework in Frameworks */,
+				7BA109701753C22100B0CCCA /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7BBFA4531753E121001964D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BBFA4571753E121001964D3 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7B08586D1756E05600B4F871 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7B0858A51756E05600B4F871 /* SDBaseView.h */,
+				7B0858A61756E05600B4F871 /* SDBaseView.m */,
+				7B08586E1756E05600B4F871 /* CanvasView */,
+				7B0858A71756E05600B4F871 /* StickersView */,
+				7B0858A81756E05600B4F871 /* TextView */,
+				7B0858A91756E05600B4F871 /* WebView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		7B08586E1756E05600B4F871 /* CanvasView */ = {
+			isa = PBXGroup;
+			children = (
+				7B08587E1756E05600B4F871 /* CanvasView.h */,
+				7B08587F1756E05600B4F871 /* CanvasView.m */,
+				7B08586F1756E05600B4F871 /* CanvasControlVIew */,
+				7B0858801756E05600B4F871 /* OpenGLView */,
+			);
+			path = CanvasView;
+			sourceTree = "<group>";
+		};
+		7B08586F1756E05600B4F871 /* CanvasControlVIew */ = {
+			isa = PBXGroup;
+			children = (
+				7B0858701756E05600B4F871 /* ColorPickerImageView.h */,
+				7B0858711756E05600B4F871 /* ColorPickerImageView.m */,
+				7B0858721756E05600B4F871 /* ColorPickerView.h */,
+				7B0858731756E05600B4F871 /* ColorPickerView.m */,
+				7B0858741756E05600B4F871 /* ColorTabView.h */,
+				7B0858751756E05600B4F871 /* ColorTabView.m */,
+				7B0858761756E05600B4F871 /* GSColorCircle.h */,
+				7B0858771756E05600B4F871 /* GSColorCircle.m */,
+				7B0858781756E05600B4F871 /* MySlider.h */,
+				7B0858791756E05600B4F871 /* MySlider.m */,
+				7B08587A1756E05600B4F871 /* PreviewArea.h */,
+				7B08587B1756E05600B4F871 /* PreviewArea.m */,
+				7B08587C1756E05600B4F871 /* TabWrapperView.h */,
+				7B08587D1756E05600B4F871 /* TabWrapperView.m */,
+			);
+			path = CanvasControlVIew;
+			sourceTree = "<group>";
+		};
+		7B0858801756E05600B4F871 /* OpenGLView */ = {
+			isa = PBXGroup;
+			children = (
+				7B0858811756E05600B4F871 /* Manager */,
+				7B0858881756E05600B4F871 /* Model */,
+				7B08588F1756E05600B4F871 /* OpenGLES */,
+				7B08589A1756E05600B4F871 /* PaintingCommand */,
+			);
+			path = OpenGLView;
+			sourceTree = "<group>";
+		};
+		7B0858811756E05600B4F871 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				7B0858821756E05600B4F871 /* Painting.h */,
+				7B0858831756E05600B4F871 /* Painting.m */,
+				7B0858841756E05600B4F871 /* PaintingManager.h */,
+				7B0858851756E05600B4F871 /* PaintingManager.m */,
+				7B0858861756E05600B4F871 /* SettingManager.h */,
+				7B0858871756E05600B4F871 /* SettingManager.m */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		7B0858881756E05600B4F871 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7B0858891756E05600B4F871 /* ColorTabElement.h */,
+				7B08588A1756E05600B4F871 /* ColorTabElement.m */,
+				7B08588B1756E05600B4F871 /* GSMutableDictionary.h */,
+				7B08588C1756E05600B4F871 /* GSMutableDictionary.m */,
+				7B08588D1756E05600B4F871 /* GSTouchData.h */,
+				7B08588E1756E05600B4F871 /* GSTouchData.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7B08588F1756E05600B4F871 /* OpenGLES */ = {
+			isa = PBXGroup;
+			children = (
+				7B0858901756E05600B4F871 /* DrawingLayerInfo.h */,
+				7B0858911756E05600B4F871 /* DrawingLayerInfo.m */,
+				7B0858921756E05600B4F871 /* EAGLView.h */,
+				7B0858931756E05600B4F871 /* EAGLView.m */,
+				7B0858941756E05600B4F871 /* FB2GLView.h */,
+				7B0858951756E05600B4F871 /* FB2GLView.m */,
+				7B0858961756E05600B4F871 /* MainPaintingView.h */,
+				7B0858971756E05600B4F871 /* MainPaintingView.m */,
+				7B0858981756E05600B4F871 /* PaintingView.h */,
+				7B0858991756E05600B4F871 /* PaintingView.mm */,
+			);
+			path = OpenGLES;
+			sourceTree = "<group>";
+		};
+		7B08589A1756E05600B4F871 /* PaintingCommand */ = {
+			isa = PBXGroup;
+			children = (
+				7B08589B1756E05600B4F871 /* ClearPaintingCmd.h */,
+				7B08589C1756E05600B4F871 /* ClearPaintingCmd.m */,
+				7B08589D1756E05600B4F871 /* ImagePaintingCmd.h */,
+				7B08589E1756E05600B4F871 /* ImagePaintingCmd.m */,
+				7B08589F1756E05600B4F871 /* MultiStrokePaintingCmd.h */,
+				7B0858A01756E05600B4F871 /* MultiStrokePaintingCmd.m */,
+				7B0858A11756E05600B4F871 /* PaintingCmd.h */,
+				7B0858A21756E05600B4F871 /* PaintingCmd.m */,
+				7B0858A31756E05600B4F871 /* StrokePaintingCmd.h */,
+				7B0858A41756E05600B4F871 /* StrokePaintingCmd.m */,
+			);
+			path = PaintingCommand;
+			sourceTree = "<group>";
+		};
+		7B0858A71756E05600B4F871 /* StickersView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = StickersView;
+			sourceTree = "<group>";
+		};
+		7B0858A81756E05600B4F871 /* TextView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TextView;
+			sourceTree = "<group>";
+		};
+		7B0858A91756E05600B4F871 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
+		7B7ACF931755A87100076146 /* SourceCode */ = {
+			isa = PBXGroup;
+			children = (
+				7B7ACF941755A87100076146 /* SDSession.h */,
+				7B7ACF951755A87100076146 /* SDSession.m */,
+				7B7ACF961755A87100076146 /* SDUtils.h */,
+				7B7ACF971755A87100076146 /* SDUtils.m */,
+				7B08586D1756E05600B4F871 /* View */,
+				7B7ACF981755A87100076146 /* Support */,
+			);
+			path = SourceCode;
+			sourceTree = "<group>";
+		};
+		7B7ACF981755A87100076146 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				7B7ACF991755A87100076146 /* ccMacros.h */,
+				7B7ACF9A1755A87100076146 /* CGPointExtension.h */,
+				7B7ACF9B1755A87100076146 /* CGPointExtension.m */,
+				7B7ACF9C1755A87100076146 /* ImageManipulation.h */,
+				7B7ACF9D1755A87100076146 /* UIColor+GSString.h */,
+				7B7ACF9E1755A87100076146 /* UIColor+GSString.m */,
+				7B7ACF9F1755A87100076146 /* UIDevice+Hardware.h */,
+				7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		7BA1095F1753C22100B0CCCA = {
+			isa = PBXGroup;
+			children = (
+				7BA109711753C22100B0CCCA /* SmartDrawingSDK */,
+				7BBFA4581753E121001964D3 /* SmartDrawing */,
+				7BA1096A1753C22100B0CCCA /* Frameworks */,
+				7BA109691753C22100B0CCCA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7BA109691753C22100B0CCCA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7BA109681753C22100B0CCCA /* SmartDrawingSDK.app */,
+				7BBFA4561753E121001964D3 /* SmartDrawing.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7BA1096A1753C22100B0CCCA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7BA1096B1753C22100B0CCCA /* UIKit.framework */,
+				7BA1096D1753C22100B0CCCA /* Foundation.framework */,
+				7BA1096F1753C22100B0CCCA /* CoreGraphics.framework */,
+				7BA1098D1753C2EB00B0CCCA /* CoreFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7BA109711753C22100B0CCCA /* SmartDrawingSDK */ = {
+			isa = PBXGroup;
+			children = (
+				7BA109991753C57100B0CCCA /* Readme.md */,
+				7BA1099B1753C57700B0CCCA /* Class */,
+				7B7ACF69175545F000076146 /* SmartDrawing.bundle */,
+				7BA1097A1753C22100B0CCCA /* SDAppDelegate.h */,
+				7BA1097B1753C22100B0CCCA /* SDAppDelegate.m */,
+				7BA10A0E1753D8B700B0CCCA /* SDKs */,
+				7BA109721753C22100B0CCCA /* Supporting Files */,
+			);
+			path = SmartDrawingSDK;
+			sourceTree = "<group>";
+		};
+		7BA109721753C22100B0CCCA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7BA109731753C22100B0CCCA /* SmartDrawingSDK-Info.plist */,
+				7BA109741753C22100B0CCCA /* InfoPlist.strings */,
+				7BA109771753C22100B0CCCA /* main.m */,
+				7BA109791753C22100B0CCCA /* SmartDrawingSDK-Prefix.pch */,
+				7BA1097D1753C22100B0CCCA /* Default.png */,
+				7BA1097F1753C22100B0CCCA /* Default@2x.png */,
+				7BA109811753C22100B0CCCA /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7BA1099B1753C57700B0CCCA /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				7BA1099C1753C59800B0CCCA /* SmartDrawing.h */,
+				7B7ACF931755A87100076146 /* SourceCode */,
+			);
+			name = Class;
+			sourceTree = "<group>";
+		};
+		7BA10A0E1753D8B700B0CCCA /* SDKs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SDKs;
+			sourceTree = "<group>";
+		};
+		7BBFA4581753E121001964D3 /* SmartDrawing */ = {
+			isa = PBXGroup;
+			children = (
+				7BBFA4591753E121001964D3 /* Supporting Files */,
+			);
+			path = SmartDrawing;
+			sourceTree = "<group>";
+		};
+		7BBFA4591753E121001964D3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7BBFA45A1753E121001964D3 /* SmartDrawing-Info.plist */,
+				7BBFA45B1753E121001964D3 /* InfoPlist.strings */,
+				7BBFA45E1753E121001964D3 /* SmartDrawing-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		7BBFA4621753E19B001964D3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BBFA4631753E1A6001964D3 /* SmartDrawing.h in Headers */,
+				7B7ACFDB1755A87100076146 /* SDSession.h in Headers */,
+				7B7ACFDE1755A87100076146 /* SDUtils.h in Headers */,
+				7B7ACFE11755A87100076146 /* ccMacros.h in Headers */,
+				7B7ACFE21755A87100076146 /* CGPointExtension.h in Headers */,
+				7B7ACFE51755A87100076146 /* ImageManipulation.h in Headers */,
+				7B7ACFE61755A87100076146 /* UIColor+GSString.h in Headers */,
+				7B7ACFE91755A87100076146 /* UIDevice+Hardware.h in Headers */,
+				7B0858AA1756E05600B4F871 /* ColorPickerImageView.h in Headers */,
+				7B0858AD1756E05600B4F871 /* ColorPickerView.h in Headers */,
+				7B0858B01756E05600B4F871 /* ColorTabView.h in Headers */,
+				7B0858B31756E05600B4F871 /* GSColorCircle.h in Headers */,
+				7B0858B61756E05600B4F871 /* MySlider.h in Headers */,
+				7B0858B91756E05600B4F871 /* PreviewArea.h in Headers */,
+				7B0858BC1756E05600B4F871 /* TabWrapperView.h in Headers */,
+				7B0858BF1756E05600B4F871 /* CanvasView.h in Headers */,
+				7B0858C21756E05600B4F871 /* Painting.h in Headers */,
+				7B0858C51756E05600B4F871 /* PaintingManager.h in Headers */,
+				7B0858C81756E05600B4F871 /* SettingManager.h in Headers */,
+				7B0858CB1756E05600B4F871 /* ColorTabElement.h in Headers */,
+				7B0858CE1756E05600B4F871 /* GSMutableDictionary.h in Headers */,
+				7B0858D11756E05600B4F871 /* GSTouchData.h in Headers */,
+				7B0858D41756E05600B4F871 /* DrawingLayerInfo.h in Headers */,
+				7B0858D71756E05600B4F871 /* EAGLView.h in Headers */,
+				7B0858DA1756E05600B4F871 /* FB2GLView.h in Headers */,
+				7B0858DD1756E05600B4F871 /* MainPaintingView.h in Headers */,
+				7B0858E01756E05600B4F871 /* PaintingView.h in Headers */,
+				7B0858E31756E05600B4F871 /* ClearPaintingCmd.h in Headers */,
+				7B0858E61756E05600B4F871 /* ImagePaintingCmd.h in Headers */,
+				7B0858E91756E05600B4F871 /* MultiStrokePaintingCmd.h in Headers */,
+				7B0858EC1756E05600B4F871 /* PaintingCmd.h in Headers */,
+				7B0858EF1756E05600B4F871 /* StrokePaintingCmd.h in Headers */,
+				7B0858F21756E05600B4F871 /* SDBaseView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		7BA109671753C22100B0CCCA /* SmartDrawingSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7BA109851753C22100B0CCCA /* Build configuration list for PBXNativeTarget "SmartDrawingSDK" */;
+			buildPhases = (
+				7BA109641753C22100B0CCCA /* Sources */,
+				7BA109651753C22100B0CCCA /* Frameworks */,
+				7BA109661753C22100B0CCCA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SmartDrawingSDK;
+			productName = SmartDrawingSDK;
+			productReference = 7BA109681753C22100B0CCCA /* SmartDrawingSDK.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7BBFA4551753E121001964D3 /* SmartDrawing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7BBFA45F1753E121001964D3 /* Build configuration list for PBXNativeTarget "SmartDrawing" */;
+			buildPhases = (
+				7BBFA4521753E121001964D3 /* Sources */,
+				7BBFA4531753E121001964D3 /* Frameworks */,
+				7BBFA4541753E121001964D3 /* Resources */,
+				7BBFA4621753E19B001964D3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SmartDrawing;
+			productName = SmartDrawing;
+			productReference = 7BBFA4561753E121001964D3 /* SmartDrawing.framework */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7BA109601753C22100B0CCCA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = SD;
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Greengar;
+			};
+			buildConfigurationList = 7BA109631753C22100B0CCCA /* Build configuration list for PBXProject "SmartDrawingSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7BA1095F1753C22100B0CCCA;
+			productRefGroup = 7BA109691753C22100B0CCCA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7BA109671753C22100B0CCCA /* SmartDrawingSDK */,
+				7BBFA4551753E121001964D3 /* SmartDrawing */,
+				7BBFA47A1753E232001964D3 /* BuildSmartDrawingSDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7BA109661753C22100B0CCCA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BA109761753C22100B0CCCA /* InfoPlist.strings in Resources */,
+				7BA1097E1753C22100B0CCCA /* Default.png in Resources */,
+				7BA109801753C22100B0CCCA /* Default@2x.png in Resources */,
+				7BA109821753C22100B0CCCA /* Default-568h@2x.png in Resources */,
+				7BA1099A1753C57100B0CCCA /* Readme.md in Resources */,
+				7B7ACF6A175545F200076146 /* SmartDrawing.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7BBFA4541753E121001964D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BBFA45D1753E121001964D3 /* InfoPlist.strings in Resources */,
+				7B7ACF6B175545F200076146 /* SmartDrawing.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7BBFA47E1753E245001964D3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Sets the target folders and the final framework product.\nFMK_NAME=SmartDrawing\nFMK_VERSION=1\n\n# Install dir will be the final output to the framework.\n# The following line create it in the root folder of the current project.\nINSTALL_DIR=${SRCROOT}/Products/${FMK_NAME}.framework\n\n# Working dir will be deleted after the framework creation.\nWRK_DIR=build\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos/${FMK_NAME}.framework\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator/${FMK_NAME}.framework\n\n# Building both architectures.\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator\n\n# Cleaning the oldest.\nif [ -d \"${INSTALL_DIR}\" ]\nthen\nrm -rf \"${INSTALL_DIR}\"\nfi\n\n# Creates and renews the final product folder.\nmkdir -p \"${INSTALL_DIR}\"\nmkdir -p \"${INSTALL_DIR}/Versions\"\nmkdir -p \"${INSTALL_DIR}/Versions/${FMK_VERSION}\"\nmkdir -p \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources\"\nmkdir -p \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers\"\n\n# Creates the internal links.\n# It MUST uses relative path, otherwise will not work when the folder is copied/moved.\nln -s \"${FMK_VERSION}\" \"${INSTALL_DIR}/Versions/Current\"\nln -s \"Versions/Current/Headers\" \"${INSTALL_DIR}/Headers\"\nln -s \"Versions/Current/Resources\" \"${INSTALL_DIR}/Resources\"\nln -s \"Versions/Current/${FMK_NAME}\" \"${INSTALL_DIR}/${FMK_NAME}\"\n\n# Copies the headers and resources files to the final product folder.\ncp -R \"${DEVICE_DIR}/Headers/\" \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers/\"\ncp -R \"${DEVICE_DIR}/\" \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/\"\n\n# Removes the binary and header from the resources folder.\nrm -r \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/Headers\" \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/${FMK_NAME}\"\n\n# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.\nlipo -create \"${DEVICE_DIR}/${FMK_NAME}\" \"${SIMULATOR_DIR}/${FMK_NAME}\" -output \"${INSTALL_DIR}/Versions/${FMK_VERSION}/${FMK_NAME}\"\n\nrm -r \"${WRK_DIR}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7BA109641753C22100B0CCCA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BA109781753C22100B0CCCA /* main.m in Sources */,
+				7BA1097C1753C22100B0CCCA /* SDAppDelegate.m in Sources */,
+				7B7ACFDC1755A87100076146 /* SDSession.m in Sources */,
+				7B7ACFDF1755A87100076146 /* SDUtils.m in Sources */,
+				7B7ACFE31755A87100076146 /* CGPointExtension.m in Sources */,
+				7B7ACFE71755A87100076146 /* UIColor+GSString.m in Sources */,
+				7B7ACFEA1755A87100076146 /* UIDevice+Hardware.m in Sources */,
+				7B0858AB1756E05600B4F871 /* ColorPickerImageView.m in Sources */,
+				7B0858AE1756E05600B4F871 /* ColorPickerView.m in Sources */,
+				7B0858B11756E05600B4F871 /* ColorTabView.m in Sources */,
+				7B0858B41756E05600B4F871 /* GSColorCircle.m in Sources */,
+				7B0858B71756E05600B4F871 /* MySlider.m in Sources */,
+				7B0858BA1756E05600B4F871 /* PreviewArea.m in Sources */,
+				7B0858BD1756E05600B4F871 /* TabWrapperView.m in Sources */,
+				7B0858C01756E05600B4F871 /* CanvasView.m in Sources */,
+				7B0858C31756E05600B4F871 /* Painting.m in Sources */,
+				7B0858C61756E05600B4F871 /* PaintingManager.m in Sources */,
+				7B0858C91756E05600B4F871 /* SettingManager.m in Sources */,
+				7B0858CC1756E05600B4F871 /* ColorTabElement.m in Sources */,
+				7B0858CF1756E05600B4F871 /* GSMutableDictionary.m in Sources */,
+				7B0858D21756E05600B4F871 /* GSTouchData.m in Sources */,
+				7B0858D51756E05600B4F871 /* DrawingLayerInfo.m in Sources */,
+				7B0858D81756E05600B4F871 /* EAGLView.m in Sources */,
+				7B0858DB1756E05600B4F871 /* FB2GLView.m in Sources */,
+				7B0858DE1756E05600B4F871 /* MainPaintingView.m in Sources */,
+				7B0858E11756E05600B4F871 /* PaintingView.mm in Sources */,
+				7B0858E41756E05600B4F871 /* ClearPaintingCmd.m in Sources */,
+				7B0858E71756E05600B4F871 /* ImagePaintingCmd.m in Sources */,
+				7B0858EA1756E05600B4F871 /* MultiStrokePaintingCmd.m in Sources */,
+				7B0858ED1756E05600B4F871 /* PaintingCmd.m in Sources */,
+				7B0858F01756E05600B4F871 /* StrokePaintingCmd.m in Sources */,
+				7B0858F31756E05600B4F871 /* SDBaseView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7BBFA4521753E121001964D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B7ACFDD1755A87100076146 /* SDSession.m in Sources */,
+				7B7ACFE01755A87100076146 /* SDUtils.m in Sources */,
+				7B7ACFE41755A87100076146 /* CGPointExtension.m in Sources */,
+				7B7ACFE81755A87100076146 /* UIColor+GSString.m in Sources */,
+				7B7ACFEB1755A87100076146 /* UIDevice+Hardware.m in Sources */,
+				7B0858AC1756E05600B4F871 /* ColorPickerImageView.m in Sources */,
+				7B0858AF1756E05600B4F871 /* ColorPickerView.m in Sources */,
+				7B0858B21756E05600B4F871 /* ColorTabView.m in Sources */,
+				7B0858B51756E05600B4F871 /* GSColorCircle.m in Sources */,
+				7B0858B81756E05600B4F871 /* MySlider.m in Sources */,
+				7B0858BB1756E05600B4F871 /* PreviewArea.m in Sources */,
+				7B0858BE1756E05600B4F871 /* TabWrapperView.m in Sources */,
+				7B0858C11756E05600B4F871 /* CanvasView.m in Sources */,
+				7B0858C41756E05600B4F871 /* Painting.m in Sources */,
+				7B0858C71756E05600B4F871 /* PaintingManager.m in Sources */,
+				7B0858CA1756E05600B4F871 /* SettingManager.m in Sources */,
+				7B0858CD1756E05600B4F871 /* ColorTabElement.m in Sources */,
+				7B0858D01756E05600B4F871 /* GSMutableDictionary.m in Sources */,
+				7B0858D31756E05600B4F871 /* GSTouchData.m in Sources */,
+				7B0858D61756E05600B4F871 /* DrawingLayerInfo.m in Sources */,
+				7B0858D91756E05600B4F871 /* EAGLView.m in Sources */,
+				7B0858DC1756E05600B4F871 /* FB2GLView.m in Sources */,
+				7B0858DF1756E05600B4F871 /* MainPaintingView.m in Sources */,
+				7B0858E21756E05600B4F871 /* PaintingView.mm in Sources */,
+				7B0858E51756E05600B4F871 /* ClearPaintingCmd.m in Sources */,
+				7B0858E81756E05600B4F871 /* ImagePaintingCmd.m in Sources */,
+				7B0858EB1756E05600B4F871 /* MultiStrokePaintingCmd.m in Sources */,
+				7B0858EE1756E05600B4F871 /* PaintingCmd.m in Sources */,
+				7B0858F11756E05600B4F871 /* StrokePaintingCmd.m in Sources */,
+				7B0858F41756E05600B4F871 /* SDBaseView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		7BA109741753C22100B0CCCA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7BA109751753C22100B0CCCA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		7BBFA45B1753E121001964D3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7BBFA45C1753E121001964D3 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7BA109831753C22100B0CCCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"FTGLES/freetype2-ios/include/**",
+					"FTGLES/ftgles/ftgles/src/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7BA109841753C22100B0CCCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"FTGLES/freetype2-ios/include/**",
+					"FTGLES/ftgles/ftgles/src/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7BA109861753C22100B0CCCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SmartDrawingSDK/SmartDrawingSDK-Prefix.pch";
+				HEADER_SEARCH_PATHS = FTGLES/ftgles/ftgles/src;
+				INFOPLIST_FILE = "SmartDrawingSDK/SmartDrawingSDK-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/SmartDrawingSDK/SDKs\"",
+					"\"$(SRCROOT)/SmartDrawingSDK/SDKs/FTGLES/ftgles/Xcode\"",
+					"\"$(SRCROOT)/SmartDrawingSDK/SDKs/FTGLES/freetype2-ios\"",
+					"\"$(SRCROOT)/SmartDrawingSDK/FTGLES/ftgles/Xcode\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		7BA109871753C22100B0CCCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SmartDrawingSDK/SmartDrawingSDK-Prefix.pch";
+				HEADER_SEARCH_PATHS = FTGLES/ftgles/ftgles/src;
+				INFOPLIST_FILE = "SmartDrawingSDK/SmartDrawingSDK-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/SmartDrawingSDK/SDKs\"",
+					"\"$(SRCROOT)/SmartDrawingSDK/SDKs/FTGLES/ftgles/Xcode\"",
+					"\"$(SRCROOT)/SmartDrawingSDK/SDKs/FTGLES/freetype2-ios\"",
+					"\"$(SRCROOT)/SmartDrawingSDK/FTGLES/ftgles/Xcode\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		7BBFA4601753E121001964D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SmartDrawing/SmartDrawing-Prefix.pch";
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "SmartDrawing/SmartDrawing-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = mh_object;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		7BBFA4611753E121001964D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SmartDrawing/SmartDrawing-Prefix.pch";
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "SmartDrawing/SmartDrawing-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = mh_object;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		7BBFA47C1753E232001964D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		7BBFA47D1753E232001964D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7BA109631753C22100B0CCCA /* Build configuration list for PBXProject "SmartDrawingSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BA109831753C22100B0CCCA /* Debug */,
+				7BA109841753C22100B0CCCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7BA109851753C22100B0CCCA /* Build configuration list for PBXNativeTarget "SmartDrawingSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BA109861753C22100B0CCCA /* Debug */,
+				7BA109871753C22100B0CCCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7BBFA45F1753E121001964D3 /* Build configuration list for PBXNativeTarget "SmartDrawing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BBFA4601753E121001964D3 /* Debug */,
+				7BBFA4611753E121001964D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7BBFA47B1753E232001964D3 /* Build configuration list for PBXAggregateTarget "BuildSmartDrawingSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BBFA47C1753E232001964D3 /* Debug */,
+				7BBFA47D1753E232001964D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7BA109601753C22100B0CCCA /* Project object */;
+}
