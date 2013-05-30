@@ -16,6 +16,7 @@
 static SDSession *activeSession = nil;
 
 @interface SDSession()
+@property (nonatomic, assign) UIViewController *rootController;
 @property (nonatomic, strong) CanvasView *rootView;
 @end
 
@@ -39,15 +40,19 @@ static SDSession *activeSession = nil;
                                         withImage:(UIImage *)image
                                          delegate:(id<SDSessionDelegate>)delegate {
     self.delegate = delegate;
-
-    SDBoard *rootController = [[SDBoard alloc] init];
-    [rootController setDelegate:self];
-    [controller presentViewController:rootController animated:YES completion:NULL];
+    self.rootController = controller;
+    SDBoard *rootBoard = [[SDBoard alloc] init];
+    [rootBoard setDelegate:self];
+    [rootBoard setBackgroundImage:image];
+    [controller presentViewController:rootBoard animated:YES completion:NULL];
 }
 
-- (void)editPhotoFinished:(UIImage *)image {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(editPhotoFinished:)]) {
-        [self.delegate editPhotoFinished:image];
+- (void)doneEditingBoardWithResult:(UIImage *)image {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(doneEditingPhotoWithResult:)]) {
+        if (self.rootController) {
+            [self.rootController dismissViewControllerAnimated:YES completion:NULL];
+        }
+        [self.delegate doneEditingPhotoWithResult:image];
     }
 }
 

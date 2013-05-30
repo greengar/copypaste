@@ -13,10 +13,12 @@
 
 @protocol SDPageDelegate
 - (void)pageSelected:(SDPage *)page;
+- (void)doneEditingPage:(SDPage *)page;
 @end
 
 @interface SDPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, SDBaseViewDelegate>
 
+- (void)setBackgroundImage:(UIImage *)image;
 - (void)select;
 
 @property (nonatomic, strong) NSString *uid;

@@ -10,6 +10,10 @@
 
 @implementation SDUtils
 
++ (NSString *)generateUniqueId {
+    return [NSString stringWithFormat:@"SD%f", [[NSDate date] timeIntervalSince1970]];
+}
+
 + (NSString *)getCurrentTime {
     return [self stringFromDate:[NSDate date]];
 }

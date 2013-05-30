@@ -7,6 +7,7 @@
 //
 
 #import "SDBaseView.h"
+#import "SDUtils.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SDBaseView()
@@ -26,7 +27,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        
+        self.uid = [SDUtils generateUniqueId];
+        
         self.layer.borderWidth = 1;
         self.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         

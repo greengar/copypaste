@@ -12,7 +12,9 @@
 
 @interface SDBoard : UIViewController <SDPageDelegate>
 
-@property (nonatomic, strong) NSMutableArray *pages;
-@property (nonatomic, assign) id<SDRootViewControllerDelegate> delegate;
-@property (nonatomic, strong) UIImage *backgroundImage;
+- (void)setBackgroundImage:(UIImage *)image;
+
+@property (nonatomic, strong) NSString *uid;
+@property (nonatomic, assign) id<SDBoardDelegate> delegate;
+
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SDUtils.h"
 
-@interface SDSession : NSObject <SDRootViewControllerDelegate>
+@interface SDSession : NSObject <SDBoardDelegate>
 
 // Get the active session
 + (SDSession *)activeSession;

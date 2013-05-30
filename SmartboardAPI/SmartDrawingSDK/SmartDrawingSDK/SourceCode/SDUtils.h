@@ -112,15 +112,16 @@ typedef enum {
 #define kToolsMinimizedKey @"kToolsMinimizedKey"
 
 @protocol SDSessionDelegate
-- (void)editPhotoFinished:(UIImage *)image;
+- (void)doneEditingPhotoWithResult:(UIImage *)image;
 @end
 
-@protocol SDRootViewControllerDelegate
-- (void)editPhotoFinished:(UIImage *)image;
+@protocol SDBoardDelegate
+- (void)doneEditingBoardWithResult:(UIImage *)image;
 @end
 
 @interface SDUtils : NSObject
 
++ (NSString*)generateUniqueId;
 + (NSString*)getCurrentTime;
 + (NSDate*)dateFromString:(NSString *)dateString;
 + (NSString*)stringFromDate:(NSDate *)date;

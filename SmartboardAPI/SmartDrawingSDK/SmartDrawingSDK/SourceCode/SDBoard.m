@@ -9,35 +9,42 @@
 #import "SDBoard.h"
 
 @interface SDBoard ()
+@property (nonatomic, strong) NSMutableArray *pages;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 - (void)selectPage:(SDPage *)page;
 @end
 
 @implementation SDBoard
+@synthesize uid = _uid;
+@synthesize pages = _pages;
 @synthesize delegate = _delegate;
-@synthesize backgroundImage = _backgroundImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.uid = [SDUtils generateUniqueId];
         self.pages = [[NSMutableArray alloc] init];
         
-        // TODO: read data for this board
+        SDPage *firstPage = [[SDPage alloc] initWithFrame:CGRectMake(0,
+                                                                     0,
+                                                                     self.view.frame.size.width,
+                                                                     self.view.frame.size.height)];
+        [firstPage setDelegate:self];
+        [self selectPage:firstPage];
+        [firstPage select];
     }
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    SDPage *firstPage = [[SDPage alloc] initWithFrame:CGRectMake(0,
-                                                                 0,
-                                                                 self.view.frame.size.width,
-                                                                 self.view.frame.size.height)];
-    [self selectPage:firstPage];
-    [firstPage select];
+- (void)setBackgroundImage:(UIImage *)image {
+    if (image) {
+        self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        [self.backgroundImageView setImage:image];
+        [self.view addSubview:self.backgroundImageView];
+        [self.view sendSubviewToBack:self.backgroundImageView];
+    }
 }
 
 - (void)selectPage:(SDPage *)page {
@@ -55,16 +62,22 @@
         [self.view addSubview:page];
     }
 }
+
 - (void)pageSelected:(SDPage *)page {
     
 }
 
-- (void)setBackgroundImage:(UIImage *)backgroundImage {
-    _backgroundImage = backgroundImage;
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:backgroundImage];
-    self.backgroundImageView.center = self.view.center;
-    [self.view addSubview:self.backgroundImageView];
-    [self.view sendSubviewToBack:self.backgroundImageView];
+- (void)doneEditingPage:(SDPage *)page {
+    if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
+        [self.delegate doneEditingBoardWithResult:[self exportBoardToUIImage]];
+    }
+}
+
+- (UIImage *)exportBoardToUIImage {
+    if (self.backgroundImageView) {
+        return [self.backgroundImageView image];
+    }
+    return nil;
 }
 
 - (void)didReceiveMemoryWarning
