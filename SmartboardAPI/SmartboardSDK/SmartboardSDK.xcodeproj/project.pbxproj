@@ -712,6 +712,7 @@
 					"\"$(SRCROOT)/SmartboardSDK/SDKs\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartboardSDKBundle/SmartboardSDKBundle-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -745,6 +746,7 @@
 					"\"$(SRCROOT)/SmartboardSDK/SDKs\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartboardSDKBundle/SmartboardSDKBundle-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
