@@ -40,7 +40,7 @@
         [self.fontPreviewLabel setText:@"Font Preview"];
         [self addSubview:self.fontPreviewLabel];
         
-        [self updateColor];
+        [self updatePreview];
         
         GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
         [doneButton setTitle:@"Done" forState:UIControlStateNormal];
@@ -60,10 +60,13 @@
     [super setHidden:hidden];
     if (!hidden) {
         if (self.currentTextView) {
-            [self.fontPreviewLabel setFont:[UIFont fontWithName:[self.currentTextView myFontName]
-                                                           size:[self.currentTextView myFontSize]]];
-            [self.fontPreviewLabel setTextColor:[self.currentTextView myColor]];
+            [self.colorPickerImageView setCircleX:self.currentTextView.myColorLocX
+                                                y:self.currentTextView.myColorLocY
+                                            color:self.currentTextView.myColor];
+            [self.colorPickerImageView setNeedsDisplay];
         }
+        
+        [self updatePreview];
     }
 }
 
@@ -72,15 +75,19 @@
 }
 
 - (void)colorPicked {
-    [self updateColor];
+    [self updatePreview];
 }
 
-- (void)updateColor {
+- (void)updatePreview {
     if (self.currentTextView) {
-        [self.currentTextView updateWithColor:[[SettingManager sharedManager] currentFontColor] x:-50 y:-50];
+        [self.fontPreviewLabel setFont:[UIFont fontWithName:self.currentTextView.myFontName
+                                                       size:self.currentTextView.myFontSize]];
+        [self.fontPreviewLabel setTextColor:self.currentTextView.myColor];
+    } else {
+        [self.fontPreviewLabel setFont:[UIFont fontWithName:[[SettingManager sharedManager] currentFontName]
+                                                       size:[[SettingManager sharedManager] currentFontSize]]];
+        [self.fontPreviewLabel setTextColor:[[SettingManager sharedManager] currentFontColor]];
     }
-    
-    [self.fontPreviewLabel setTextColor:[[SettingManager sharedManager] currentFontColor]];
 }
 
 @end

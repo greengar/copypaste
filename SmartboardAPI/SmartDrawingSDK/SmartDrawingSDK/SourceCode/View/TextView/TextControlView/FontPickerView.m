@@ -53,7 +53,7 @@
         [self.fontPreviewLabel setText:@"Font Preview"];
         [self addSubview:self.fontPreviewLabel];
         
-        [self updateFont];
+        [self updatePreview];
         
         GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
         [doneButton setTitle:@"Done" forState:UIControlStateNormal];
@@ -78,10 +78,8 @@
                                inComponent:kFontNameIndex animated:YES];
             [self.fontPickerView selectRow:[self selectedSize:[self.currentTextView myFontSize]]
                                inComponent:kFontSizeIndex animated:YES];
-            [self.fontPreviewLabel setFont:[UIFont fontWithName:[self.currentTextView myFontName]
-                                                           size:[self.currentTextView myFontSize]]];
-            [self.fontPreviewLabel setTextColor:[self.currentTextView myColor]];
         }
+        [self updatePreview];
     }
 }
 
@@ -113,18 +111,27 @@
 	} else {
 		[SettingManager sharedManager].currentFontSize = [[self.fontSizes objectAtIndex:row] intValue];
 	}
-    [self updateFont];
+    [self updateCurrentTextView];
+    [self updatePreview];
 }
 
-- (void)updateFont {
+- (void)updateCurrentTextView {
     if (self.currentTextView) {
         [self.currentTextView updateWithFontName:[[SettingManager sharedManager] currentFontName]
                                             size:[[SettingManager sharedManager] currentFontSize]];
     }
-    
-    [self.fontPreviewLabel setFont:[UIFont fontWithName:[[SettingManager sharedManager] currentFontName]
-                                                   size:[[SettingManager sharedManager] currentFontSize]]];
-    [self.fontPreviewLabel setTextColor:[[SettingManager sharedManager] currentFontColor]];
+}
+
+- (void)updatePreview {
+    if (self.currentTextView) {
+        [self.fontPreviewLabel setFont:[UIFont fontWithName:self.currentTextView.myFontName
+                                                       size:self.currentTextView.myFontSize]];
+        [self.fontPreviewLabel setTextColor:self.currentTextView.myColor];
+    } else {
+        [self.fontPreviewLabel setFont:[UIFont fontWithName:[[SettingManager sharedManager] currentFontName]
+                                                       size:[[SettingManager sharedManager] currentFontSize]]];
+        [self.fontPreviewLabel setTextColor:[[SettingManager sharedManager] currentFontColor]];
+    }
 }
 
 - (int)selectedSize:(int)size_ {
