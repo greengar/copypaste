@@ -24,26 +24,56 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.view.backgroundColor = [UIColor whiteColor];
         self.uid = [SDUtils generateUniqueId];
         self.pages = [[NSMutableArray alloc] init];
         
-        SDPage *firstPage = [[SDPage alloc] initWithFrame:CGRectMake(0,
-                                                                     0,
-                                                                     self.view.frame.size.width,
-                                                                     self.view.frame.size.height)];
-        [firstPage setDelegate:self];
-        [self selectPage:firstPage];
-        [firstPage select];
+        // There's always at least 1 page
+        [self addNewPage];
     }
     return self;
 }
 
 - (void)setBackgroundImage:(UIImage *)image {
-    if (image) {
-        self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        [self.backgroundImageView setImage:image];
-        [self.view addSubview:self.backgroundImageView];
-        [self.view sendSubviewToBack:self.backgroundImageView];
+    if (!image) {
+        image = [UIImage imageNamed:@"Default.png"];
+    }
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.backgroundImageView setImage:image];
+    [self.view addSubview:self.backgroundImageView];
+    [self.view sendSubviewToBack:self.backgroundImageView];
+    
+    [[self.pages objectAtIndex:0] setBackgroundImage:image];
+}
+
+#pragma mark - Pages Handler
+- (void)addNewPage {
+    SDPage *page = [[SDPage alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [page setDelegate:self];
+    [self selectPage:page];
+    [self.pages addObject:page];
+}
+
+- (void)removePageWithId:(NSString *)uid {
+    SDPage *pageToRemove = nil;
+    for (SDPage *page in self.pages) {
+        if ([page.uid isEqualToString:uid]) {
+            pageToRemove = page;
+            break;
+        }
+    }
+    
+    if (pageToRemove) {
+        [self.pages removeObject:pageToRemove];
+        [pageToRemove removeFromSuperview];
+    }
+}
+
+- (void)rearrangePageFromIndex:(int)from toIndex:(int)to {
+    if (from >= 0 && from < [self.pages count] && to >= 0 && to < [self.pages count]) {
+        SDPage *pageToRearrange = [self.pages objectAtIndex:from];
+        [self.pages removeObjectAtIndex:from];
+        [self.pages insertObject:pageToRearrange atIndex:to];
     }
 }
 
@@ -61,12 +91,15 @@
     } else {
         [self.view addSubview:page];
     }
+    
+    [page select];
 }
 
 - (void)pageSelected:(SDPage *)page {
-    
+    // Nothing to do right now
 }
 
+#pragma mark - Export output data
 - (void)doneEditingPage:(SDPage *)page {
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
         [self.delegate doneEditingBoardWithResult:[self exportBoardToUIImage]];
@@ -80,12 +113,14 @@
     return nil;
 }
 
+#pragma mark - Life cycle
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Orientation
 // pre-iOS 6 support
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return NO;

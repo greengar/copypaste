@@ -8,6 +8,7 @@
 
 #import "CanvasView.h"
 #import "SettingManager.h"
+#import "GSButton.h"
 
 #define kUndoPickerWidth 69
 #define kURButtonWidthHeight 64
@@ -31,6 +32,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.allowToEdit = YES;
+        self.allowToMove = NO;
+        
+        self.backgroundColor = [UIColor clearColor];
         
         // OpenGL View
         self.drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
@@ -66,9 +71,9 @@
         // Undo and Redo
         [self initializeUndoRedoButtonsWithFrame:frame];
         
-        UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [doneButton setFrame:CGRectMake((frame.size.width-80)/2, 0, 80, 44)];
-        [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+        GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeRoundedRect themeStyle:BlueButtonStyle];
+        [doneButton setFrame:CGRectMake(0, frame.size.height-44, frame.size.width/5, 44)];
+        [doneButton setTitle:@"Canvas" forState:UIControlStateNormal];
         [doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:doneButton];
     }
@@ -80,15 +85,20 @@
 }
 
 - (void)finishCanvasView {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementExited:)]) {
-        [self.delegate elementExited:self];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementDeselected:)]) {
+        [self setAllowToMove:YES];
+        [self setAllowToEdit:YES];
+        [self setAllowToSelect:YES];
+        [self.delegate elementDeselected:self];
     }
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {}
+- (void)select {
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    [super touchesEnded:touches withEvent:event];
+}
+
+- (void)deselect {
+    
 }
 
 - (void)selectColorTabAtIndex:(int)index {

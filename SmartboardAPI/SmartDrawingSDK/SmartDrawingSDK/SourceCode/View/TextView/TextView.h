@@ -10,4 +10,11 @@
 
 @interface TextView : SDBaseView <UITextViewDelegate>
 
+@property (nonatomic, strong) NSString  *myFontName;
+@property (nonatomic)         int        myFontSize;
+@property (nonatomic, strong) UIColor   *myColor;
+
+- (void)updateWithFontName:(NSString *)fontName size:(int)fontSize;
+- (void)updateWithColor:(UIColor *)color;
+
 @end

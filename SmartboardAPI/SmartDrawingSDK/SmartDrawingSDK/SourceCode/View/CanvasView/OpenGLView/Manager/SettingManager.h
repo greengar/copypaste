@@ -21,6 +21,9 @@
 #define kOpacityKeyFormat                   @"kOpacityKeyFormat%d"
 #define kToolKeyFormat                      @"kToolKeyFormat%d"
 #define kColorKeyFormat                     @"kColorKeyFormat%d"
+#define kTextNameKey                        @"kTextNameKey"
+#define kTextColorKey                       @"kTextColorKey"
+#define kTextSizeKey                        @"kTextSizeKey"
 #define kColorCoordinateKeyFormat           @"kColorCoordinateKeyFormat%d"
 
 #define kUpdateUndoRedoNotification         @"Update Undo Redo Notification"
@@ -51,22 +54,7 @@
 
 @class MCWhiteboard;
 
-@interface SettingManager : NSObject {
-    
-    // Color Tab Setting
-    NSMutableArray  *colorTabList;
-    int             currentColorTab;
-    
-    // General Setting
-    ToolType        currentTool;
-    ShakeActionType currentShakeAction;
-    BOOL            isShakeActionConfirm;
-    BOOL            isShowColorTab;
-    BOOL            isEnablePanZoom;
-    BOOL            isEnableAutosave;
-    
-    CGFloat         tempOpacity;
-}
+@interface SettingManager : NSObject
 
 + (SettingManager *) sharedManager;
 + (UIFont *) lightFontWithSize:(float)size;
@@ -93,19 +81,24 @@
 - (void) loadGeneralSetting;        // Called once only at first launch
 - (void) loadAboutSetting;
 - (void) loadEraserSetting;
+- (void) loadTextSetting;
 - (void) persistColorTabSetting;    // Must be called to persist all changed colors
 - (void) persistColorTabSettingAtCurrentIndex;  // Must be called to persist current Color Tab
 - (void) persistGeneralSetting;     // Must be called to persist all general settings
 - (void) persistAboutSetting;
 - (void) persistEraserSetting;
+- (void) persistTextSetting;
 
 @property (nonatomic)           float           textureScale;
-@property (nonatomic, retain)   NSMutableArray  *colorTabList;
+@property (nonatomic, strong)   NSMutableArray  *colorTabList;
 @property (nonatomic)           ToolType        currentTool;
 @property (nonatomic)           ShakeActionType currentShakeAction;
 @property (nonatomic)           BOOL            isShakeActionConfirm;
 @property (nonatomic)           BOOL            isShowColorTab;
 @property (nonatomic)           BOOL            isEnablePanZoom;
 @property (nonatomic)           BOOL            isEnableAutosave;
+@property (nonatomic, strong)   NSString        *currentFontName;
+@property (nonatomic, strong)   UIColor         *currentFontColor;
+@property (nonatomic)           int             currentFontSize;
 
 @end

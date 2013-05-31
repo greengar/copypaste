@@ -11,43 +11,76 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SDBaseView()
-@property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
-@property (nonatomic, strong) UIRotationGestureRecognizer *rotationGesture;
-@property (nonatomic, strong) UIPinchGestureRecognizer *pinchGesture;
 @end
 
 @implementation SDBaseView
 @synthesize uid = _uid;
 @synthesize delegate = _delegate;
-@synthesize panGesture = _panGesture;
-@synthesize rotationGesture = _rotationGesture;
-@synthesize pinchGesture = _pinchGesture;
+@synthesize allowToMove = _allowToMove;
+@synthesize allowToEdit = _allowToEdit;
+@synthesize allowToSelect = _allowToSelect;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
         self.uid = [SDUtils generateUniqueId];
+        self.allowToMove = YES;
+        self.allowToEdit = YES;
+        self.allowToSelect = YES;
         
         self.layer.borderWidth = 1;
         self.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         
-        self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(elementPan:)];
-        self.panGesture.maximumNumberOfTouches = 1;
-        self.panGesture.delegate = self;
-        
-        self.rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(elementRotate:)];
-        self.rotationGesture.delegate = self;
-        
-        self.pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(elementScale:)];
-        self.pinchGesture.delegate = self;
-        
-        [self addGestureRecognizer:self.panGesture];
-        [self addGestureRecognizer:self.rotationGesture];
-        [self addGestureRecognizer:self.pinchGesture];
     }
     return self;
+}
+
+- (void)setAllowToMove:(BOOL)allowToMove {
+    _allowToMove = allowToMove;
+    if (_allowToMove) {
+        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                                     action:@selector(elementPan:)];
+        panGesture.maximumNumberOfTouches = 1;
+        panGesture.delegate = self;
+        
+        UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
+                                                                                                    action:@selector(elementRotate:)];
+        rotationGesture.delegate = self;
+        
+        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self
+                                                                                           action:@selector(elementScale:)];
+        pinchGesture.delegate = self;
+        
+        [self addGestureRecognizer:panGesture];
+        [self addGestureRecognizer:rotationGesture];
+        [self addGestureRecognizer:pinchGesture];
+        
+    } else {
+        for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
+            if (![gesture isKindOfClass:[UITapGestureRecognizer class]]) {
+                [self removeGestureRecognizer:gesture];
+            }
+        }
+    }
+}
+
+- (void)setAllowToSelect:(BOOL)allowToSelect {
+    _allowToSelect = allowToSelect;
+    if (_allowToSelect) {
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                     action:@selector(elementTap:)];
+        tapGesture.delegate = self;
+        
+        [self addGestureRecognizer:tapGesture];
+        
+    } else {
+        for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
+            if ([gesture isKindOfClass:[UITapGestureRecognizer class]]) {
+                [self removeGestureRecognizer:gesture];
+            }
+        }
+    }
 }
 
 - (UIView *)contentView {
@@ -64,6 +97,31 @@
 
 - (void)scaleTo:(float)scale {
     [self setTransform:CGAffineTransformScale(self.transform, scale, scale)];
+}
+
+- (void)select {
+    if ([self contentView]) {
+        [[self contentView] becomeFirstResponder];
+        [[self superview] bringSubviewToFront:self];
+        self.layer.borderWidth = 1;
+    };
+}
+
+- (void)deselect {
+    if ([self contentView]) {
+        [[self contentView] resignFirstResponder];
+        self.layer.borderWidth = 0;
+    };
+    
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementDeselected:)]) {
+        [self.delegate elementDeselected:self];
+    }
+}
+
+- (void)elementTap:(UITapGestureRecognizer *)tapGesture {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementSelected:)]) {
+        [self.delegate elementSelected:self];
+    }
 }
 
 - (void)elementPan:(UIPanGestureRecognizer *)panGesture {
@@ -87,14 +145,6 @@
         float scale = pinchGesture.scale;
         [self scaleTo:scale];
         [pinchGesture setScale:1.0f];
-    }
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementSelected:)]) {
-        [self.delegate elementSelected:self];
     }
 }
 

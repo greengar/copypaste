@@ -12,7 +12,7 @@
 
 @protocol SDBaseViewDelegate
 - (void)elementSelected:(SDBaseView *)element;
-- (void)elementExited:(SDBaseView *)element;
+- (void)elementDeselected:(SDBaseView *)element;
 @end
 
 @interface SDBaseView : UIView <UIGestureRecognizerDelegate>
@@ -21,8 +21,13 @@
 - (void)moveTo:(CGPoint)dest;
 - (void)rotateTo:(float)rotation;
 - (void)scaleTo:(float)scale;
+- (void)select;
+- (void)deselect;
 
 @property (nonatomic, strong) NSString *uid;
+@property (nonatomic) BOOL allowToMove;
+@property (nonatomic) BOOL allowToEdit;
+@property (nonatomic) BOOL allowToSelect;
 @property (nonatomic, assign) id<SDBaseViewDelegate> delegate;
 
 @end

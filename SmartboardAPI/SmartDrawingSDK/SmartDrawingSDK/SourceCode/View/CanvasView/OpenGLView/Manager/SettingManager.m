@@ -13,9 +13,25 @@
 
 static SettingManager *shareManager = nil;
 
-@implementation SettingManager
+@interface SettingManager()
+@property (nonatomic)           int             currentColorTab;
+@property (nonatomic)           CGFloat         tempOpacity;
+@end
 
-@synthesize textureScale, currentTool, currentShakeAction, isShowColorTab, isShakeActionConfirm, isEnablePanZoom, isEnableAutosave, colorTabList;
+@implementation SettingManager
+@synthesize currentColorTab =_currentColorTab;
+@synthesize tempOpacity = _tempOpacity;
+@synthesize textureScale = _textureScale;
+@synthesize currentTool = _currentTool;
+@synthesize currentShakeAction = _currentShakeAction;
+@synthesize isShowColorTab = _isShowColorTab;
+@synthesize isShakeActionConfirm = _isShakeActionConfirm;
+@synthesize isEnablePanZoom = _isEnablePanZoom;
+@synthesize isEnableAutosave = _isEnableAutosave;
+@synthesize colorTabList = _colorTabList;
+@synthesize currentFontName = _currentFontName;
+@synthesize currentFontSize = _currentFontSize;
+@synthesize currentFontColor = _currentFontColor;
 
 + (SettingManager *)sharedManager { 
     static SettingManager *sharedManager; 
@@ -133,30 +149,31 @@ static SettingManager *shareManager = nil;
         
         // Load Setting from Preferences
         [self loadColorTabSetting];
+        [self loadTextSetting];
         [self loadGeneralSetting];
     }
     return self;
 }
 
 - (ColorTabElement *) getCurrentColorTab {
-    return [self getColorTabAtIndex:currentColorTab];
+    return [self getColorTabAtIndex:self.currentColorTab];
 }
 
 - (ColorTabElement *) getColorTabAtIndex:(int)index {
-    if (index >= 0 && index < [colorTabList count]) {
+    if (index >= 0 && index < [self.colorTabList count]) {
         return [self.colorTabList objectAtIndex:index];
     }
     return nil;
 }
 
 - (int) getCurrentColorTabIndex {
-    return currentColorTab;
+    return self.currentColorTab;
 }
 
 - (void) setCurrentColorTab:(int)currentIndex {
     if (currentIndex >= 0 && currentIndex < [self.colorTabList count]) {
-        currentColorTab = currentIndex;
-        ColorTabElement *currentTab = [self.colorTabList objectAtIndex:currentColorTab];
+        _currentColorTab = currentIndex;
+        ColorTabElement *currentTab = [self.colorTabList objectAtIndex:self.currentColorTab];
         
         // Save the color to Painting Manager
         [[PaintingManager sharedManager] updateColor:currentTab.tabColor.CGColor of:nil];
@@ -173,7 +190,7 @@ static SettingManager *shareManager = nil;
 }
 
 - (void) setCurrentColorTabWithPointSize:(float)pointSize {
-    ColorTabElement *currentTab = [self.colorTabList objectAtIndex:currentColorTab];
+    ColorTabElement *currentTab = [self.colorTabList objectAtIndex:self.currentColorTab];
     currentTab.pointSize = pointSize;
     
     [[PaintingManager sharedManager] updatePointSize:pointSize of:nil];
@@ -182,7 +199,7 @@ static SettingManager *shareManager = nil;
 }
 
 - (void) setCurrentColorTabWithOpacity:(float)opacity {
-    ColorTabElement *currentTab = [self.colorTabList objectAtIndex:currentColorTab];
+    ColorTabElement *currentTab = [self.colorTabList objectAtIndex:self.currentColorTab];
     currentTab.opacity = opacity;
     
     [[PaintingManager sharedManager] updateOpacity:opacity of:nil];
@@ -191,7 +208,7 @@ static SettingManager *shareManager = nil;
 }
 
 - (void) setCurrentColorTabWithColor:(UIColor *)color2 atOffsetX:(float)offsetX atOffsetY:(float)offsetY {
-    ColorTabElement *currentTab = [self.colorTabList objectAtIndex:currentColorTab];
+    ColorTabElement *currentTab = [self.colorTabList objectAtIndex:self.currentColorTab];
     currentTab.tabColor = color2;
     currentTab.offsetXOnSpectrum = offsetX;
     currentTab.offsetYOnSpectrum = offsetY;
@@ -202,23 +219,23 @@ static SettingManager *shareManager = nil;
 }
 
 - (void) loadColorTabSetting {
-    currentColorTab = [[NSDEF objectForKey:kSelectedTabKey] intValue];
+    self.currentColorTab = [[NSDEF objectForKey:kSelectedTabKey] intValue];
     
-    if (currentColorTab < 0 || currentColorTab >= [colorTabList count]) { // Invalid current tab index, because of the different number of tabs on iPad and iPhone
-        currentColorTab = [colorTabList count] - 1; // Set to the last valid tab
+    if (self.currentColorTab < 0 || self.currentColorTab >= [self.colorTabList count]) { // Invalid current tab index, because of the different number of tabs on iPad and iPhone
+        self.currentColorTab = [self.colorTabList count] - 1; // Set to the last valid tab
         
-        if (currentColorTab == kEraserTabIndex) { // But if it's the eraser
-            currentColorTab = currentColorTab - 1; // We should use another color tab instead
+        if (self.currentColorTab == kEraserTabIndex) { // But if it's the eraser
+            self.currentColorTab = self.currentColorTab - 1; // We should use another color tab instead
         }
         
-        if (currentColorTab < 0 || currentColorTab >= [colorTabList count]) { // Just to be save
-            currentColorTab = 0; // If we try to use one valid tab and the current index of color tab is invalid again, just use the first color tab
+        if (self.currentColorTab < 0 || self.currentColorTab >= [self.colorTabList count]) { // Just to be save
+            self.currentColorTab = 0; // If we try to use one valid tab and the current index of color tab is invalid again, just use the first color tab
         }
     }
     
     for (int i = 0; i < [self.colorTabList count]; i++) {
         
-        ColorTabElement *currentTab = [colorTabList objectAtIndex:i];
+        ColorTabElement *currentTab = [self.colorTabList objectAtIndex:i];
         
         NSNumber *number = [NSDEF objectForKey:[NSString stringWithFormat:kPointSizeKeyFormat, i]];
         if (number) {
@@ -243,6 +260,29 @@ static SettingManager *shareManager = nil;
     }
 }
 
+- (void) loadTextSetting {
+    NSNumber *sizeNumber = [NSDEF objectForKey:kTextSizeKey];
+    if (sizeNumber) {
+        self.currentFontSize = [sizeNumber intValue];
+    } else {
+        self.currentFontSize = kDefaultFontSize;
+    }
+    
+    NSString *fontString = [NSDEF objectForKey:kTextNameKey];
+    if (fontString) {
+        self.currentFontName = fontString;
+    } else {
+        self.currentFontName = kDefaultFontName;
+    }
+    
+    NSString *colorString = [NSDEF objectForKey:kTextColorKey];
+    if (colorString) {
+        self.currentFontColor = [UIColor gsColorFromString:colorString];
+    } else {
+        self.currentFontColor = [UIColor darkGrayColor];
+    }
+}
+
 - (void) loadGeneralSetting {
     self.currentShakeAction = [NSDEF integerForKey:kCurrentShakeActionPreference];
     self.isShakeActionConfirm = [NSDEF boolForKey:kIsShakeActionConfirmPreference];
@@ -262,8 +302,8 @@ static SettingManager *shareManager = nil;
 }
 
 - (void) persistColorTabSetting {
-    for (int i = 0; i < [colorTabList count]; i++) {
-        ColorTabElement *currentTab = [colorTabList objectAtIndex:i];
+    for (int i = 0; i < [self.colorTabList count]; i++) {
+        ColorTabElement *currentTab = [self.colorTabList objectAtIndex:i];
         [NSDEF setObject:[NSNumber numberWithFloat:currentTab.opacity] forKey:[NSString stringWithFormat:kOpacityKeyFormat, i]];
         [NSDEF setObject:[NSNumber numberWithFloat:currentTab.pointSize] forKey:[NSString stringWithFormat:kPointSizeKeyFormat, i]];
         [NSDEF setObject:[currentTab.tabColor gsStringWithX:currentTab.offsetXOnSpectrum
@@ -274,13 +314,20 @@ static SettingManager *shareManager = nil;
     [NSDEF synchronize];
 }
 
+- (void) persistTextSetting {
+    [NSDEF setObject:self.currentFontName forKey:kTextNameKey];
+    [NSDEF setObject:[self.currentFontColor gsString] forKey:kTextColorKey];
+    [NSDEF setObject:[NSNumber numberWithInt:self.currentFontSize] forKey:kTextSizeKey];
+    [NSDEF synchronize];
+}
+
 - (void) persistColorTabSettingAtCurrentIndex {
-    ColorTabElement *currentTab = [colorTabList objectAtIndex:currentColorTab];
-    [NSDEF setObject:[NSNumber numberWithFloat:currentTab.opacity] forKey:[NSString stringWithFormat:kOpacityKeyFormat, currentColorTab]];
-    [NSDEF setObject:[NSNumber numberWithFloat:currentTab.pointSize] forKey:[NSString stringWithFormat:kPointSizeKeyFormat, currentColorTab]];
+    ColorTabElement *currentTab = [self.colorTabList objectAtIndex:self.currentColorTab];
+    [NSDEF setObject:[NSNumber numberWithFloat:currentTab.opacity] forKey:[NSString stringWithFormat:kOpacityKeyFormat, self.currentColorTab]];
+    [NSDEF setObject:[NSNumber numberWithFloat:currentTab.pointSize] forKey:[NSString stringWithFormat:kPointSizeKeyFormat, self.currentColorTab]];
     [NSDEF setObject:[currentTab.tabColor gsStringWithX:currentTab.offsetXOnSpectrum
                                                       y:currentTab.offsetYOnSpectrum]
-              forKey:[NSString stringWithFormat:kColorKeyFormat, currentColorTab]];
+              forKey:[NSString stringWithFormat:kColorKeyFormat, self.currentColorTab]];
     [NSDEF synchronize];
 }
 
@@ -290,7 +337,7 @@ static SettingManager *shareManager = nil;
     [NSDEF setBool:self.isEnablePanZoom forKey:kIsEnablePanZoomPreference];
     [NSDEF setBool:self.isShowColorTab forKey:kIsShowColorTabPreference];
     [NSDEF setBool:self.isEnableAutosave forKey:kIsEnableAutosavePreference];
-    [NSDEF setInteger:currentColorTab forKey:kSelectedTabKey];
+    [NSDEF setInteger:self.currentColorTab forKey:kSelectedTabKey];
     [NSDEF synchronize];
 }
 
@@ -308,12 +355,12 @@ static SettingManager *shareManager = nil;
 }
 
 - (void)setupRenderPoint {
-    tempOpacity = [[[PaintingManager sharedManager] getPainting:nil] getColor][3];
-    [[PaintingManager sharedManager] updateOpacity:(1.0 - powf(1.0 - tempOpacity, [[PaintingManager sharedManager] getPointSizeOf:nil]*[UIScreen mainScreen].scale )) of:nil];
+    self.tempOpacity = [[[PaintingManager sharedManager] getPainting:nil] getColor][3];
+    [[PaintingManager sharedManager] updateOpacity:(1.0 - powf(1.0 - self.tempOpacity, [[PaintingManager sharedManager] getPointSizeOf:nil]*[UIScreen mainScreen].scale )) of:nil];
 }
 
 - (void)teardownRenderPoint {
-    [[PaintingManager sharedManager] updateOpacity:tempOpacity of:nil];
+    [[PaintingManager sharedManager] updateOpacity:self.tempOpacity of:nil];
 }
 
 + (id)allocWithZone:(NSZone *)zone {

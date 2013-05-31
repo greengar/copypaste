@@ -9,19 +9,34 @@
 #import "SDPage.h"
 #import "CanvasView.h"
 #import "TextView.h"
+#import "StickersView.h"
+#import "BackgroundView.h"
 #import "SDUtils.h"
+#import "GSButton.h"
 
 #define kToolBarItemWidth   (frame.size.width/5)
 #define kToolBarItemHeight  44
+
 #define kCanvasButtonIndex  0
 #define kTextButtonIndex    (kCanvasButtonIndex+1)
 #define kHistoryButtonIndex (kCanvasButtonIndex+2)
 #define kLockButtonIndex    (kCanvasButtonIndex+3)
 #define kDoneButtonIndex    (kCanvasButtonIndex+4)
 
+#define kTextFontButtonIndex 0
+#define kTextColorButtonIndex (kTextFontButtonIndex+1)
+
+#define kDefaultTextBoxWidth 200
+#define kDefaultTextBoxHeight 60
+
+#define kFontPickerHeight 344
+
 @interface SDPage()
+@property (nonatomic, strong) UIView         *toolBarView;
 @property (nonatomic, strong) NSMutableArray *toolBarButtons;
-@property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, strong) NSMutableArray *textToolBarButtons;
+@property (nonatomic, strong) FontPickerView *fontPickerView;
+@property (nonatomic, strong) BackgroundView *backgroundImageView;
 @end
 
 @implementation SDPage
@@ -30,6 +45,7 @@
 @synthesize backgroundImageView = _backgroundImageView;
 @synthesize elementViews = _elementViews;
 @synthesize selectedElementView = _selectedElementView;
+@synthesize fontPickerView = _fontPickerView;
 @synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame
@@ -39,47 +55,118 @@
         // Initialization code
         self.uid = [SDUtils generateUniqueId];
         
-        self.toolBarButtons = [[NSMutableArray alloc] init];
+        self.toolBarButtons = [[NSMutableArray alloc] initWithCapacity:5];
+        self.textToolBarButtons = [[NSMutableArray alloc] initWithCapacity:2];
         self.elementViews = [[NSMutableArray alloc] init];
         
         self.backgroundColor = [UIColor clearColor];
         
-        UIButton *canvasButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [canvasButton setTitle:@"Canvas" forState:UIControlStateNormal];
-        [canvasButton setFrame:CGRectMake(0, frame.size.height-kToolBarItemHeight, kToolBarItemWidth, kToolBarItemHeight)];
-        [canvasButton addTarget:self action:@selector(newCanvas) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:canvasButton];
-        [self.toolBarButtons addObject:canvasButton];
+        self.toolBarView = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                                    frame.size.height-kToolBarItemHeight,
+                                                                    frame.size.width,
+                                                                    kToolBarItemHeight)];
+        [self addSubview:self.toolBarView];
         
-        UIButton *textButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [textButton setTitle:@"Text" forState:UIControlStateNormal];
-        [textButton setFrame:CGRectMake(kToolBarItemWidth, frame.size.height-kToolBarItemHeight, kToolBarItemWidth, kToolBarItemHeight)];
-        [textButton addTarget:self action:@selector(newText) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:textButton];
-        [self.toolBarButtons addObject:textButton];
+        [self initToolBarButtonsWithFrame:frame];
+        [self initTextToolBarButtonsWithFrame:frame];
         
-        UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [historyButton setTitle:@"History" forState:UIControlStateNormal];
-        [historyButton setFrame:CGRectMake(kToolBarItemWidth*2, frame.size.height-kToolBarItemHeight, kToolBarItemWidth, kToolBarItemHeight)];
-        [historyButton addTarget:self action:@selector(showHistory) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:historyButton];
-        [self.toolBarButtons addObject:historyButton];
+        // Default: show tool bar
+        [self showToolBar];
         
-        UIButton *lockButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [lockButton setTitle:@"Lock" forState:UIControlStateNormal];
-        [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, frame.size.height-kToolBarItemHeight, kToolBarItemWidth, kToolBarItemHeight)];
-        [lockButton addTarget:self action:@selector(lockPage) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:lockButton];
-        [self.toolBarButtons addObject:lockButton];
-        
-        UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-        [doneButton setFrame:CGRectMake(kToolBarItemWidth*4, frame.size.height-kToolBarItemHeight, kToolBarItemWidth, kToolBarItemHeight)];
-        [doneButton addTarget:self action:@selector(doneEditing) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:doneButton];
-        [self.toolBarButtons addObject:doneButton];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWasShown:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillBeHidden:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
     return self;
+}
+
+#pragma mark - Tool Bar Buttons
+- (void)initToolBarButtonsWithFrame:(CGRect)frame {
+    GSButton *canvasButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:BlueButtonStyle];
+    [canvasButton setTitle:@"Canvas" forState:UIControlStateNormal];
+    [canvasButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [canvasButton addTarget:self action:@selector(newCanvas) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolBarView addSubview:canvasButton];
+    [self.toolBarButtons addObject:canvasButton];
+    
+    GSButton *textButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:TanButtonStyle];
+    [textButton setTitle:@"Text" forState:UIControlStateNormal];
+    [textButton setFrame:CGRectMake(kToolBarItemWidth, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [textButton addTarget:self action:@selector(newText) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolBarView addSubview:textButton];
+    [self.toolBarButtons addObject:textButton];
+    
+    GSButton *historyButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:OrangeButtonStyle];
+    [historyButton setTitle:@"History" forState:UIControlStateNormal];
+    [historyButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [historyButton addTarget:self action:@selector(showHistory) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolBarView addSubview:historyButton];
+    [self.toolBarButtons addObject:historyButton];
+    
+    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:WhiteButtonStyle];
+    [lockButton setTitle:@"Lock" forState:UIControlStateNormal];
+    [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [lockButton addTarget:self action:@selector(lockPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolBarView addSubview:lockButton];
+    [self.toolBarButtons addObject:lockButton];
+    
+    GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
+    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneButton setFrame:CGRectMake(kToolBarItemWidth*4, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [doneButton addTarget:self action:@selector(doneEditing) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolBarView addSubview:doneButton];
+    [self.toolBarButtons addObject:doneButton];
+}
+
+- (void)initTextToolBarButtonsWithFrame:(CGRect)frame {
+    GSButton *fontButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:OrangeButtonStyle];
+    [fontButton setTitle:@"Font" forState:UIControlStateNormal];
+    [fontButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [fontButton addTarget:self action:@selector(selectFont) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolBarView addSubview:fontButton];
+    [self.textToolBarButtons addObject:fontButton];
+    
+    GSButton *colorButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
+    [colorButton setTitle:@"Color" forState:UIControlStateNormal];
+    [colorButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [colorButton addTarget:self action:@selector(selectColor) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolBarView addSubview:colorButton];
+    [self.textToolBarButtons addObject:colorButton];
+    
+    [self.textToolBarButtons addObject:[self.toolBarButtons objectAtIndex:kTextButtonIndex]];
+    
+    self.fontPickerView = [[FontPickerView alloc] initWithFrame:CGRectMake(0,
+                                                                           self.frame.size.height-kFontPickerHeight,
+                                                                           self.frame.size.width,
+                                                                           kFontPickerHeight)];
+    
+    [self.fontPickerView setHidden:YES];
+    [self addSubview:self.fontPickerView];
+}
+
+- (void)showToolBar {
+    for (GSButton *button in self.textToolBarButtons) {
+        [button setHidden:YES];
+    }
+    for (GSButton *button in self.toolBarButtons) {
+        [button setHidden:NO];
+    }
+    [self bringSubviewToFront:self.toolBarView];
+}
+
+- (void)showTextToolBar {
+    for (GSButton *button in self.toolBarButtons) {
+        [button setHidden:YES];
+    }
+    for (GSButton *button in self.textToolBarButtons) {
+        [button setHidden:NO];
+    }
+    [self bringSubviewToFront:self.toolBarView];
 }
 
 #pragma mark - Delegates back to super
@@ -91,12 +178,20 @@
 
 #pragma mark - Background image
 - (void)setBackgroundImage:(UIImage *)image {
-    if (image) {
-        self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.frame];
-        [self.backgroundImageView setImage:image];
-        [self addSubview:self.backgroundImageView];
-        [self sendSubviewToBack:self.backgroundImageView];
+    if (!image) {
+        image = [UIImage imageNamed:@"Default.png"];
     }
+    
+    self.backgroundImageView = [[BackgroundView alloc] initWithFrame:CGRectMake(0,
+                                                                                0,
+                                                                                self.frame.size.width,
+                                                                                self.frame.size.height)
+                                                               image:image];
+    [self.backgroundImageView setDelegate:self];
+    [self addSubview:self.backgroundImageView];
+    [self.elementViews insertObject:self.backgroundImageView atIndex:0];
+    
+    [self sendSubviewToBack:self.backgroundImageView];
 }
 
 #pragma mark - Tool Bar Buttons
@@ -106,16 +201,19 @@
     [self addSubview:canvasView];
     [self.elementViews addObject:canvasView];
     
-    self.selectedElementView = canvasView;
+    [self elementSelected:canvasView];
 }
 
 - (void)newText {
-    TextView *textView = [[TextView alloc] initWithFrame:CGRectMake(30, 100, 200, 44)];
+    TextView *textView = [[TextView alloc] initWithFrame:CGRectMake((self.frame.size.width-kDefaultTextBoxWidth)/2,
+                                                                    self.frame.size.height/4,
+                                                                    kDefaultTextBoxWidth,
+                                                                    kDefaultTextBoxHeight)];
     [textView setDelegate:self];
     [self addSubview:textView];
     [self.elementViews addObject:textView];
     
-    self.selectedElementView = textView;
+    [self elementSelected:textView];
 }
 
 - (void)showHistory {
@@ -129,22 +227,82 @@
 - (void)doneEditing {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(doneEditingPage:)]) {
         [self.delegate doneEditingPage:self];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
 
+- (void)selectFont {
+    [self.selectedElementView deselect];
+    [self.fontPickerView setCurrentTextView:((TextView *)self.selectedElementView)];
+    [self.fontPickerView setHidden:NO];
+    [self bringSubviewToFront:self.fontPickerView];
+}
+
+- (void)selectColor {
+    
+}
 #pragma mark - Elements Delegate
-- (void)elementSelected:(SDBaseView *)element {
+- (void)deselectAll {
     for (SDBaseView *existedElement in self.elementViews) {
-        if ([element.uid isEqualToString:existedElement.uid]) {
-            self.selectedElementView = element;
-            [[self.selectedElementView superview] bringSubviewToFront:self.selectedElementView];
-            break;
-        }
+        [existedElement deselect];
     }
 }
 
-- (void)elementExited:(SDBaseView *)element {
-    [element removeFromSuperview];
+- (void)elementSelected:(SDBaseView *)element {
+    self.selectedElementView = element;
+    [self deselectAll];
+    [element select];
+    
+    if ([element isKindOfClass:[TextView class]]) {
+        [self showTextToolBar];
+    } else {
+        [self showToolBar];
+    }
 }
+
+- (void)elementDeselected:(SDBaseView *)element {
+    if ([element isKindOfClass:[TextView class]]) {
+        [self.fontPickerView setHidden:YES];
+    }
+}
+
+#pragma mark - UI for Text View
+- (void)showControlForTextView {
+    
+}
+
+#pragma mark - Keyboard Delegate
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    if ([self.selectedElementView isKindOfClass:[TextView class]]) {
+        // Show Text Control
+        [self showTextToolBar];
+    }
+    
+    [UIView animateWithDuration:0.2f animations:^{
+        CGRect frame = self.toolBarView.frame;
+        frame.origin.y -= kbSize.height;
+        self.toolBarView.frame = frame;
+    }];
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    if (![self.selectedElementView isKindOfClass:[TextView class]]) {
+        // Show Text Control
+        [self showToolBar];
+    }
+    
+    [UIView animateWithDuration:0.2f animations:^{        
+        CGRect frame = self.toolBarView.frame;
+        frame.origin.y += kbSize.height;
+        self.toolBarView.frame = frame;
+    }];
+}
+
 
 @end

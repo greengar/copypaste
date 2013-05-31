@@ -19,9 +19,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.backgroundColor = [UIColor clearColor];
+        
         self.placeHolderLabel = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.placeHolderLabel setTextColor:[UIColor lightGrayColor]];
         [self.placeHolderLabel setUserInteractionEnabled:NO];
+        [self.placeHolderLabel setBackgroundColor:[UIColor clearColor]];
         [self addSubview:self.placeHolderLabel];
         [self sendSubviewToBack:self.placeHolderLabel];
         
@@ -39,6 +42,11 @@
     } else {
         [self.placeHolderLabel setHidden:YES];
     }
+}
+
+- (void)setFont:(UIFont *)font {
+    [super setFont:font];
+    [self.placeHolderLabel setFont:font];
 }
 
 - (void)setPlaceHolderText:(NSString *)placeHolderText {

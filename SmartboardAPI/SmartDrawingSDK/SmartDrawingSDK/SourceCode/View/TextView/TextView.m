@@ -8,13 +8,17 @@
 
 #import "TextView.h"
 #import "PlaceHolderTextView.h"
+#import "SettingManager.h"
 
 @interface TextView()
 @property (nonatomic, strong) PlaceHolderTextView *textView;
 @end
 
 @implementation TextView
-@synthesize textView;
+@synthesize textView = _textView;
+@synthesize myFontName = _myFontName;
+@synthesize myFontSize = _myFontSize;
+@synthesize myColor = _myColor;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -27,12 +31,34 @@
         [self.textView setFont:[UIFont systemFontOfSize:17.0f]];
         [self.textView setDelegate:self];
         [self.textView setPlaceHolderText:@"Enter Text"];
+        
+        [self updateWithFontName:[[SettingManager sharedManager] currentFontName]
+                            size:[[SettingManager sharedManager] currentFontSize]];
+        [self updateWithColor:[[SettingManager sharedManager] currentFontColor]];
+        
         [self addSubview:self.textView];
     }
     return self;
 }
 
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementSelected:)]) {
+        [self.delegate elementSelected:self];
+    }
+}
+
 - (UIView *)contentView {
     return self.textView;
+}
+
+- (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
+    self.myFontName = fontName;
+    self.myFontSize = fontSize;
+    [self.textView setFont:[UIFont fontWithName:fontName size:fontSize]];
+}
+
+- (void)updateWithColor:(UIColor *)color {
+    self.myColor = color;
+    [self.textView setTextColor:color];
 }
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SDBaseView.h"
+#import "FontPickerView.h"
 
 @class SDPage;
 
