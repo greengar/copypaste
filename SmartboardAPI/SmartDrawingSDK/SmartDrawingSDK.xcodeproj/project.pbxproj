@@ -21,121 +21,127 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		7B0858AA1756E05600B4F871 /* ColorPickerImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858701756E05600B4F871 /* ColorPickerImageView.h */; };
-		7B0858AB1756E05600B4F871 /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858711756E05600B4F871 /* ColorPickerImageView.m */; };
-		7B0858AC1756E05600B4F871 /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858711756E05600B4F871 /* ColorPickerImageView.m */; };
-		7B0858AD1756E05600B4F871 /* ColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858721756E05600B4F871 /* ColorPickerView.h */; };
-		7B0858AE1756E05600B4F871 /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858731756E05600B4F871 /* ColorPickerView.m */; };
-		7B0858AF1756E05600B4F871 /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858731756E05600B4F871 /* ColorPickerView.m */; };
-		7B0858B01756E05600B4F871 /* ColorTabView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858741756E05600B4F871 /* ColorTabView.h */; };
-		7B0858B11756E05600B4F871 /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858751756E05600B4F871 /* ColorTabView.m */; };
-		7B0858B21756E05600B4F871 /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858751756E05600B4F871 /* ColorTabView.m */; };
-		7B0858B31756E05600B4F871 /* GSColorCircle.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858761756E05600B4F871 /* GSColorCircle.h */; };
-		7B0858B41756E05600B4F871 /* GSColorCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858771756E05600B4F871 /* GSColorCircle.m */; };
-		7B0858B51756E05600B4F871 /* GSColorCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858771756E05600B4F871 /* GSColorCircle.m */; };
-		7B0858B61756E05600B4F871 /* MySlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858781756E05600B4F871 /* MySlider.h */; };
-		7B0858B71756E05600B4F871 /* MySlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858791756E05600B4F871 /* MySlider.m */; };
-		7B0858B81756E05600B4F871 /* MySlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858791756E05600B4F871 /* MySlider.m */; };
-		7B0858B91756E05600B4F871 /* PreviewArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08587A1756E05600B4F871 /* PreviewArea.h */; };
-		7B0858BA1756E05600B4F871 /* PreviewArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587B1756E05600B4F871 /* PreviewArea.m */; };
-		7B0858BB1756E05600B4F871 /* PreviewArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587B1756E05600B4F871 /* PreviewArea.m */; };
-		7B0858BC1756E05600B4F871 /* TabWrapperView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08587C1756E05600B4F871 /* TabWrapperView.h */; };
-		7B0858BD1756E05600B4F871 /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587D1756E05600B4F871 /* TabWrapperView.m */; };
-		7B0858BE1756E05600B4F871 /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587D1756E05600B4F871 /* TabWrapperView.m */; };
-		7B0858BF1756E05600B4F871 /* CanvasView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08587E1756E05600B4F871 /* CanvasView.h */; };
-		7B0858C01756E05600B4F871 /* CanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587F1756E05600B4F871 /* CanvasView.m */; };
-		7B0858C11756E05600B4F871 /* CanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08587F1756E05600B4F871 /* CanvasView.m */; };
-		7B0858C21756E05600B4F871 /* Painting.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858821756E05600B4F871 /* Painting.h */; };
-		7B0858C31756E05600B4F871 /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858831756E05600B4F871 /* Painting.m */; };
-		7B0858C41756E05600B4F871 /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858831756E05600B4F871 /* Painting.m */; };
-		7B0858C51756E05600B4F871 /* PaintingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858841756E05600B4F871 /* PaintingManager.h */; };
-		7B0858C61756E05600B4F871 /* PaintingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858851756E05600B4F871 /* PaintingManager.m */; };
-		7B0858C71756E05600B4F871 /* PaintingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858851756E05600B4F871 /* PaintingManager.m */; };
-		7B0858C81756E05600B4F871 /* SettingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858861756E05600B4F871 /* SettingManager.h */; };
-		7B0858C91756E05600B4F871 /* SettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858871756E05600B4F871 /* SettingManager.m */; };
-		7B0858CA1756E05600B4F871 /* SettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858871756E05600B4F871 /* SettingManager.m */; };
-		7B0858CB1756E05600B4F871 /* ColorTabElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858891756E05600B4F871 /* ColorTabElement.h */; };
-		7B0858CC1756E05600B4F871 /* ColorTabElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588A1756E05600B4F871 /* ColorTabElement.m */; };
-		7B0858CD1756E05600B4F871 /* ColorTabElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588A1756E05600B4F871 /* ColorTabElement.m */; };
-		7B0858CE1756E05600B4F871 /* GSMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08588B1756E05600B4F871 /* GSMutableDictionary.h */; };
-		7B0858CF1756E05600B4F871 /* GSMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588C1756E05600B4F871 /* GSMutableDictionary.m */; };
-		7B0858D01756E05600B4F871 /* GSMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588C1756E05600B4F871 /* GSMutableDictionary.m */; };
-		7B0858D11756E05600B4F871 /* GSTouchData.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08588D1756E05600B4F871 /* GSTouchData.h */; };
-		7B0858D21756E05600B4F871 /* GSTouchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588E1756E05600B4F871 /* GSTouchData.m */; };
-		7B0858D31756E05600B4F871 /* GSTouchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08588E1756E05600B4F871 /* GSTouchData.m */; };
-		7B0858D41756E05600B4F871 /* DrawingLayerInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858901756E05600B4F871 /* DrawingLayerInfo.h */; };
-		7B0858D51756E05600B4F871 /* DrawingLayerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858911756E05600B4F871 /* DrawingLayerInfo.m */; };
-		7B0858D61756E05600B4F871 /* DrawingLayerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858911756E05600B4F871 /* DrawingLayerInfo.m */; };
-		7B0858D71756E05600B4F871 /* EAGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858921756E05600B4F871 /* EAGLView.h */; };
-		7B0858D81756E05600B4F871 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858931756E05600B4F871 /* EAGLView.m */; };
-		7B0858D91756E05600B4F871 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858931756E05600B4F871 /* EAGLView.m */; };
-		7B0858DA1756E05600B4F871 /* FB2GLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858941756E05600B4F871 /* FB2GLView.h */; };
-		7B0858DB1756E05600B4F871 /* FB2GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858951756E05600B4F871 /* FB2GLView.m */; };
-		7B0858DC1756E05600B4F871 /* FB2GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858951756E05600B4F871 /* FB2GLView.m */; };
-		7B0858DD1756E05600B4F871 /* MainPaintingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858961756E05600B4F871 /* MainPaintingView.h */; };
-		7B0858DE1756E05600B4F871 /* MainPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858971756E05600B4F871 /* MainPaintingView.m */; };
-		7B0858DF1756E05600B4F871 /* MainPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858971756E05600B4F871 /* MainPaintingView.m */; };
-		7B0858E01756E05600B4F871 /* PaintingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858981756E05600B4F871 /* PaintingView.h */; };
-		7B0858E11756E05600B4F871 /* PaintingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858991756E05600B4F871 /* PaintingView.mm */; };
-		7B0858E21756E05600B4F871 /* PaintingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858991756E05600B4F871 /* PaintingView.mm */; };
-		7B0858E31756E05600B4F871 /* ClearPaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08589B1756E05600B4F871 /* ClearPaintingCmd.h */; };
-		7B0858E41756E05600B4F871 /* ClearPaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08589C1756E05600B4F871 /* ClearPaintingCmd.m */; };
-		7B0858E51756E05600B4F871 /* ClearPaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08589C1756E05600B4F871 /* ClearPaintingCmd.m */; };
-		7B0858E61756E05600B4F871 /* ImagePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08589D1756E05600B4F871 /* ImagePaintingCmd.h */; };
-		7B0858E71756E05600B4F871 /* ImagePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08589E1756E05600B4F871 /* ImagePaintingCmd.m */; };
-		7B0858E81756E05600B4F871 /* ImagePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08589E1756E05600B4F871 /* ImagePaintingCmd.m */; };
-		7B0858E91756E05600B4F871 /* MultiStrokePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B08589F1756E05600B4F871 /* MultiStrokePaintingCmd.h */; };
-		7B0858EA1756E05600B4F871 /* MultiStrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A01756E05600B4F871 /* MultiStrokePaintingCmd.m */; };
-		7B0858EB1756E05600B4F871 /* MultiStrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A01756E05600B4F871 /* MultiStrokePaintingCmd.m */; };
-		7B0858EC1756E05600B4F871 /* PaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858A11756E05600B4F871 /* PaintingCmd.h */; };
-		7B0858ED1756E05600B4F871 /* PaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A21756E05600B4F871 /* PaintingCmd.m */; };
-		7B0858EE1756E05600B4F871 /* PaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A21756E05600B4F871 /* PaintingCmd.m */; };
-		7B0858EF1756E05600B4F871 /* StrokePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858A31756E05600B4F871 /* StrokePaintingCmd.h */; };
-		7B0858F01756E05600B4F871 /* StrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A41756E05600B4F871 /* StrokePaintingCmd.m */; };
-		7B0858F11756E05600B4F871 /* StrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A41756E05600B4F871 /* StrokePaintingCmd.m */; };
-		7B0858F21756E05600B4F871 /* SDBaseView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0858A51756E05600B4F871 /* SDBaseView.h */; };
-		7B0858F31756E05600B4F871 /* SDBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A61756E05600B4F871 /* SDBaseView.m */; };
-		7B0858F41756E05600B4F871 /* SDBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0858A61756E05600B4F871 /* SDBaseView.m */; };
 		7B7ACF6A175545F200076146 /* SmartDrawing.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B7ACF69175545F000076146 /* SmartDrawing.bundle */; };
 		7B7ACF6B175545F200076146 /* SmartDrawing.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B7ACF69175545F000076146 /* SmartDrawing.bundle */; };
-		7B7ACFDB1755A87100076146 /* SDSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF941755A87100076146 /* SDSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7B7ACFDC1755A87100076146 /* SDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF951755A87100076146 /* SDSession.m */; };
-		7B7ACFDD1755A87100076146 /* SDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF951755A87100076146 /* SDSession.m */; };
-		7B7ACFDE1755A87100076146 /* SDUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF961755A87100076146 /* SDUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7B7ACFDF1755A87100076146 /* SDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF971755A87100076146 /* SDUtils.m */; };
-		7B7ACFE01755A87100076146 /* SDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF971755A87100076146 /* SDUtils.m */; };
-		7B7ACFE11755A87100076146 /* ccMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF991755A87100076146 /* ccMacros.h */; };
-		7B7ACFE21755A87100076146 /* CGPointExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9A1755A87100076146 /* CGPointExtension.h */; };
-		7B7ACFE31755A87100076146 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF9B1755A87100076146 /* CGPointExtension.m */; };
-		7B7ACFE41755A87100076146 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF9B1755A87100076146 /* CGPointExtension.m */; };
-		7B7ACFE51755A87100076146 /* ImageManipulation.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9C1755A87100076146 /* ImageManipulation.h */; };
-		7B7ACFE61755A87100076146 /* UIColor+GSString.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9D1755A87100076146 /* UIColor+GSString.h */; };
-		7B7ACFE71755A87100076146 /* UIColor+GSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF9E1755A87100076146 /* UIColor+GSString.m */; };
-		7B7ACFE81755A87100076146 /* UIColor+GSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACF9E1755A87100076146 /* UIColor+GSString.m */; };
-		7B7ACFE91755A87100076146 /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9F1755A87100076146 /* UIDevice+Hardware.h */; };
-		7B7ACFEA1755A87100076146 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */; };
-		7B7ACFEB1755A87100076146 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */; };
-		7B93461D17593BCF0024A707 /* FontColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93461517593BCF0024A707 /* FontColorPickerView.h */; };
-		7B93461E17593BCF0024A707 /* FontColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461617593BCF0024A707 /* FontColorPickerView.m */; };
-		7B93461F17593BCF0024A707 /* FontColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461617593BCF0024A707 /* FontColorPickerView.m */; };
-		7B93462017593BCF0024A707 /* FontPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93461717593BCF0024A707 /* FontPickerView.h */; };
-		7B93462117593BCF0024A707 /* FontPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461817593BCF0024A707 /* FontPickerView.m */; };
-		7B93462217593BCF0024A707 /* FontPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461817593BCF0024A707 /* FontPickerView.m */; };
-		7B93462317593BCF0024A707 /* PlaceHolderTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93461917593BCF0024A707 /* PlaceHolderTextView.h */; };
-		7B93462417593BCF0024A707 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461A17593BCF0024A707 /* PlaceHolderTextView.m */; };
-		7B93462517593BCF0024A707 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461A17593BCF0024A707 /* PlaceHolderTextView.m */; };
-		7B93462617593BCF0024A707 /* TextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93461B17593BCF0024A707 /* TextView.h */; };
-		7B93462717593BCF0024A707 /* TextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461C17593BCF0024A707 /* TextView.m */; };
-		7B93462817593BCF0024A707 /* TextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461C17593BCF0024A707 /* TextView.m */; };
-		7B93462D17593BD80024A707 /* BackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93462917593BD80024A707 /* BackgroundView.h */; };
-		7B93462E17593BD80024A707 /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93462A17593BD80024A707 /* BackgroundView.m */; };
-		7B93462F17593BD80024A707 /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93462A17593BD80024A707 /* BackgroundView.m */; };
-		7B93463017593BD80024A707 /* StickersView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93462B17593BD80024A707 /* StickersView.h */; };
-		7B93463117593BD80024A707 /* StickersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93462C17593BD80024A707 /* StickersView.m */; };
-		7B93463217593BD80024A707 /* StickersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93462C17593BD80024A707 /* StickersView.m */; };
-		7B93463617593BEA0024A707 /* GSButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93463417593BEA0024A707 /* GSButton.h */; };
-		7B93463717593BEA0024A707 /* GSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93463517593BEA0024A707 /* GSButton.m */; };
-		7B93463817593BEA0024A707 /* GSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93463517593BEA0024A707 /* GSButton.m */; };
+		7B9346DC175940300024A707 /* SDBoard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93467E1759402F0024A707 /* SDBoard.h */; };
+		7B9346DD175940300024A707 /* SDBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93467F1759402F0024A707 /* SDBoard.m */; };
+		7B9346DE175940300024A707 /* SDBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93467F1759402F0024A707 /* SDBoard.m */; };
+		7B9346DF175940300024A707 /* SDPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346801759402F0024A707 /* SDPage.h */; };
+		7B9346E0175940300024A707 /* SDPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346811759402F0024A707 /* SDPage.m */; };
+		7B9346E1175940300024A707 /* SDPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346811759402F0024A707 /* SDPage.m */; };
+		7B9346E2175940300024A707 /* SDSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346821759402F0024A707 /* SDSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B9346E3175940300024A707 /* SDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346831759402F0024A707 /* SDSession.m */; };
+		7B9346E4175940300024A707 /* SDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346831759402F0024A707 /* SDSession.m */; };
+		7B9346E5175940300024A707 /* SDUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346841759402F0024A707 /* SDUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B9346E6175940300024A707 /* SDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346851759402F0024A707 /* SDUtils.m */; };
+		7B9346E7175940300024A707 /* SDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346851759402F0024A707 /* SDUtils.m */; };
+		7B9346E8175940300024A707 /* ccMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346871759402F0024A707 /* ccMacros.h */; };
+		7B9346E9175940300024A707 /* CGPointExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346881759402F0024A707 /* CGPointExtension.h */; };
+		7B9346EA175940300024A707 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346891759402F0024A707 /* CGPointExtension.m */; };
+		7B9346EB175940300024A707 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346891759402F0024A707 /* CGPointExtension.m */; };
+		7B9346EC175940300024A707 /* ImageManipulation.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93468A1759402F0024A707 /* ImageManipulation.h */; };
+		7B9346ED175940300024A707 /* UIColor+GSString.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93468B1759402F0024A707 /* UIColor+GSString.h */; };
+		7B9346EE175940300024A707 /* UIColor+GSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93468C1759402F0024A707 /* UIColor+GSString.m */; };
+		7B9346EF175940300024A707 /* UIColor+GSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93468C1759402F0024A707 /* UIColor+GSString.m */; };
+		7B9346F0175940300024A707 /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93468D1759402F0024A707 /* UIDevice+Hardware.h */; };
+		7B9346F1175940300024A707 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93468E1759402F0024A707 /* UIDevice+Hardware.m */; };
+		7B9346F2175940300024A707 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93468E1759402F0024A707 /* UIDevice+Hardware.m */; };
+		7B9346F3175940300024A707 /* ColorPickerImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346921759402F0024A707 /* ColorPickerImageView.h */; };
+		7B9346F4175940300024A707 /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346931759402F0024A707 /* ColorPickerImageView.m */; };
+		7B9346F5175940300024A707 /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346931759402F0024A707 /* ColorPickerImageView.m */; };
+		7B9346F6175940300024A707 /* ColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346941759402F0024A707 /* ColorPickerView.h */; };
+		7B9346F7175940300024A707 /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346951759402F0024A707 /* ColorPickerView.m */; };
+		7B9346F8175940300024A707 /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346951759402F0024A707 /* ColorPickerView.m */; };
+		7B9346F9175940300024A707 /* ColorTabView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346961759402F0024A707 /* ColorTabView.h */; };
+		7B9346FA175940300024A707 /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346971759402F0024A707 /* ColorTabView.m */; };
+		7B9346FB175940300024A707 /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346971759402F0024A707 /* ColorTabView.m */; };
+		7B9346FC175940300024A707 /* GSColorCircle.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346981759402F0024A707 /* GSColorCircle.h */; };
+		7B9346FD175940300024A707 /* GSColorCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346991759402F0024A707 /* GSColorCircle.m */; };
+		7B9346FE175940300024A707 /* GSColorCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346991759402F0024A707 /* GSColorCircle.m */; };
+		7B9346FF175940300024A707 /* MySlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93469A1759402F0024A707 /* MySlider.h */; };
+		7B934700175940300024A707 /* MySlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93469B1759402F0024A707 /* MySlider.m */; };
+		7B934701175940300024A707 /* MySlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93469B1759402F0024A707 /* MySlider.m */; };
+		7B934702175940300024A707 /* PreviewArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93469C1759402F0024A707 /* PreviewArea.h */; };
+		7B934703175940300024A707 /* PreviewArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93469D1759402F0024A707 /* PreviewArea.m */; };
+		7B934704175940300024A707 /* PreviewArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93469D1759402F0024A707 /* PreviewArea.m */; };
+		7B934705175940300024A707 /* TabWrapperView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93469E1759402F0024A707 /* TabWrapperView.h */; };
+		7B934706175940300024A707 /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93469F1759402F0024A707 /* TabWrapperView.m */; };
+		7B934707175940300024A707 /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93469F1759402F0024A707 /* TabWrapperView.m */; };
+		7B934708175940300024A707 /* CanvasView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346A01759402F0024A707 /* CanvasView.h */; };
+		7B934709175940300024A707 /* CanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346A11759402F0024A707 /* CanvasView.m */; };
+		7B93470A175940300024A707 /* CanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346A11759402F0024A707 /* CanvasView.m */; };
+		7B93470B175940300024A707 /* Painting.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346A41759402F0024A707 /* Painting.h */; };
+		7B93470C175940300024A707 /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346A51759402F0024A707 /* Painting.m */; };
+		7B93470D175940300024A707 /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346A51759402F0024A707 /* Painting.m */; };
+		7B93470E175940300024A707 /* PaintingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346A61759402F0024A707 /* PaintingManager.h */; };
+		7B93470F175940300024A707 /* PaintingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346A71759402F0024A707 /* PaintingManager.m */; };
+		7B934710175940300024A707 /* PaintingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346A71759402F0024A707 /* PaintingManager.m */; };
+		7B934711175940300024A707 /* SettingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346A81759402F0024A707 /* SettingManager.h */; };
+		7B934712175940300024A707 /* SettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346A91759402F0024A707 /* SettingManager.m */; };
+		7B934713175940300024A707 /* SettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346A91759402F0024A707 /* SettingManager.m */; };
+		7B934714175940300024A707 /* ColorTabElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346AB1759402F0024A707 /* ColorTabElement.h */; };
+		7B934715175940300024A707 /* ColorTabElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346AC1759402F0024A707 /* ColorTabElement.m */; };
+		7B934716175940300024A707 /* ColorTabElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346AC1759402F0024A707 /* ColorTabElement.m */; };
+		7B934717175940300024A707 /* GSMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346AD1759402F0024A707 /* GSMutableDictionary.h */; };
+		7B934718175940300024A707 /* GSMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346AE1759402F0024A707 /* GSMutableDictionary.m */; };
+		7B934719175940300024A707 /* GSMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346AE1759402F0024A707 /* GSMutableDictionary.m */; };
+		7B93471A175940300024A707 /* GSTouchData.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346AF1759402F0024A707 /* GSTouchData.h */; };
+		7B93471B175940300024A707 /* GSTouchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B01759402F0024A707 /* GSTouchData.m */; };
+		7B93471C175940300024A707 /* GSTouchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B01759402F0024A707 /* GSTouchData.m */; };
+		7B93471D175940300024A707 /* DrawingLayerInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346B21759402F0024A707 /* DrawingLayerInfo.h */; };
+		7B93471E175940300024A707 /* DrawingLayerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B31759402F0024A707 /* DrawingLayerInfo.m */; };
+		7B93471F175940300024A707 /* DrawingLayerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B31759402F0024A707 /* DrawingLayerInfo.m */; };
+		7B934720175940300024A707 /* EAGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346B41759402F0024A707 /* EAGLView.h */; };
+		7B934721175940300024A707 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B51759402F0024A707 /* EAGLView.m */; };
+		7B934722175940300024A707 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B51759402F0024A707 /* EAGLView.m */; };
+		7B934723175940300024A707 /* FB2GLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346B61759402F0024A707 /* FB2GLView.h */; };
+		7B934724175940300024A707 /* FB2GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B71759402F0024A707 /* FB2GLView.m */; };
+		7B934725175940300024A707 /* FB2GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B71759402F0024A707 /* FB2GLView.m */; };
+		7B934726175940300024A707 /* MainPaintingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346B81759402F0024A707 /* MainPaintingView.h */; };
+		7B934727175940300024A707 /* MainPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B91759402F0024A707 /* MainPaintingView.m */; };
+		7B934728175940300024A707 /* MainPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346B91759402F0024A707 /* MainPaintingView.m */; };
+		7B934729175940300024A707 /* PaintingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346BA1759402F0024A707 /* PaintingView.h */; };
+		7B93472A175940300024A707 /* PaintingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346BB1759402F0024A707 /* PaintingView.mm */; };
+		7B93472B175940300024A707 /* PaintingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346BB1759402F0024A707 /* PaintingView.mm */; };
+		7B93472C175940300024A707 /* ClearPaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346BD1759402F0024A707 /* ClearPaintingCmd.h */; };
+		7B93472D175940300024A707 /* ClearPaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346BE1759402F0024A707 /* ClearPaintingCmd.m */; };
+		7B93472E175940300024A707 /* ClearPaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346BE1759402F0024A707 /* ClearPaintingCmd.m */; };
+		7B93472F175940300024A707 /* ImagePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346BF1759402F0024A707 /* ImagePaintingCmd.h */; };
+		7B934730175940300024A707 /* ImagePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C01759402F0024A707 /* ImagePaintingCmd.m */; };
+		7B934731175940300024A707 /* ImagePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C01759402F0024A707 /* ImagePaintingCmd.m */; };
+		7B934732175940300024A707 /* MultiStrokePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346C11759402F0024A707 /* MultiStrokePaintingCmd.h */; };
+		7B934733175940300024A707 /* MultiStrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C21759402F0024A707 /* MultiStrokePaintingCmd.m */; };
+		7B934734175940300024A707 /* MultiStrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C21759402F0024A707 /* MultiStrokePaintingCmd.m */; };
+		7B934735175940300024A707 /* PaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346C31759402F0024A707 /* PaintingCmd.h */; };
+		7B934736175940300024A707 /* PaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C41759402F0024A707 /* PaintingCmd.m */; };
+		7B934737175940300024A707 /* PaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C41759402F0024A707 /* PaintingCmd.m */; };
+		7B934738175940300024A707 /* StrokePaintingCmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346C51759402F0024A707 /* StrokePaintingCmd.h */; };
+		7B934739175940300024A707 /* StrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C61759402F0024A707 /* StrokePaintingCmd.m */; };
+		7B93473A175940300024A707 /* StrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C61759402F0024A707 /* StrokePaintingCmd.m */; };
+		7B93473B175940300024A707 /* GSButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346C81759402F0024A707 /* GSButton.h */; };
+		7B93473C175940300024A707 /* GSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C91759402F0024A707 /* GSButton.m */; };
+		7B93473D175940300024A707 /* GSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346C91759402F0024A707 /* GSButton.m */; };
+		7B93473E175940300024A707 /* SDBaseView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346CA1759402F0024A707 /* SDBaseView.h */; };
+		7B93473F175940300024A707 /* SDBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346CB1759402F0024A707 /* SDBaseView.m */; };
+		7B934740175940300024A707 /* SDBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346CB1759402F0024A707 /* SDBaseView.m */; };
+		7B934741175940300024A707 /* BackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346CD1759402F0024A707 /* BackgroundView.h */; };
+		7B934742175940300024A707 /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346CE1759402F0024A707 /* BackgroundView.m */; };
+		7B934743175940300024A707 /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346CE1759402F0024A707 /* BackgroundView.m */; };
+		7B934744175940300024A707 /* StickersView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346CF1759402F0024A707 /* StickersView.h */; };
+		7B934745175940300024A707 /* StickersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346D01759402F0024A707 /* StickersView.m */; };
+		7B934746175940300024A707 /* StickersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346D01759402F0024A707 /* StickersView.m */; };
+		7B934747175940300024A707 /* FontColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346D31759402F0024A707 /* FontColorPickerView.h */; };
+		7B934748175940300024A707 /* FontColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346D41759402F0024A707 /* FontColorPickerView.m */; };
+		7B934749175940300024A707 /* FontColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346D41759402F0024A707 /* FontColorPickerView.m */; };
+		7B93474A175940300024A707 /* FontPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346D51759402F0024A707 /* FontPickerView.h */; };
+		7B93474B175940300024A707 /* FontPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346D61759402F0024A707 /* FontPickerView.m */; };
+		7B93474C175940300024A707 /* FontPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346D61759402F0024A707 /* FontPickerView.m */; };
+		7B93474D175940300024A707 /* PlaceHolderTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346D7175940300024A707 /* PlaceHolderTextView.h */; };
+		7B93474E175940300024A707 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346D8175940300024A707 /* PlaceHolderTextView.m */; };
+		7B93474F175940300024A707 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346D8175940300024A707 /* PlaceHolderTextView.m */; };
+		7B934750175940300024A707 /* TextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9346D9175940300024A707 /* TextView.h */; };
+		7B934751175940300024A707 /* TextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346DA175940300024A707 /* TextView.m */; };
+		7B934752175940300024A707 /* TextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9346DA175940300024A707 /* TextView.m */; };
 		7BA1096C1753C22100B0CCCA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096B1753C22100B0CCCA /* UIKit.framework */; };
 		7BA1096E1753C22100B0CCCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096D1753C22100B0CCCA /* Foundation.framework */; };
 		7BA109701753C22100B0CCCA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096F1753C22100B0CCCA /* CoreGraphics.framework */; };
@@ -152,83 +158,87 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7B0858701756E05600B4F871 /* ColorPickerImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerImageView.h; sourceTree = "<group>"; };
-		7B0858711756E05600B4F871 /* ColorPickerImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerImageView.m; sourceTree = "<group>"; };
-		7B0858721756E05600B4F871 /* ColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerView.h; sourceTree = "<group>"; };
-		7B0858731756E05600B4F871 /* ColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerView.m; sourceTree = "<group>"; };
-		7B0858741756E05600B4F871 /* ColorTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTabView.h; sourceTree = "<group>"; };
-		7B0858751756E05600B4F871 /* ColorTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTabView.m; sourceTree = "<group>"; };
-		7B0858761756E05600B4F871 /* GSColorCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSColorCircle.h; sourceTree = "<group>"; };
-		7B0858771756E05600B4F871 /* GSColorCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSColorCircle.m; sourceTree = "<group>"; };
-		7B0858781756E05600B4F871 /* MySlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySlider.h; sourceTree = "<group>"; };
-		7B0858791756E05600B4F871 /* MySlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySlider.m; sourceTree = "<group>"; };
-		7B08587A1756E05600B4F871 /* PreviewArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewArea.h; sourceTree = "<group>"; };
-		7B08587B1756E05600B4F871 /* PreviewArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewArea.m; sourceTree = "<group>"; };
-		7B08587C1756E05600B4F871 /* TabWrapperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabWrapperView.h; sourceTree = "<group>"; };
-		7B08587D1756E05600B4F871 /* TabWrapperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabWrapperView.m; sourceTree = "<group>"; };
-		7B08587E1756E05600B4F871 /* CanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasView.h; sourceTree = "<group>"; };
-		7B08587F1756E05600B4F871 /* CanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasView.m; sourceTree = "<group>"; };
-		7B0858821756E05600B4F871 /* Painting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painting.h; sourceTree = "<group>"; };
-		7B0858831756E05600B4F871 /* Painting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Painting.m; sourceTree = "<group>"; };
-		7B0858841756E05600B4F871 /* PaintingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingManager.h; sourceTree = "<group>"; };
-		7B0858851756E05600B4F871 /* PaintingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintingManager.m; sourceTree = "<group>"; };
-		7B0858861756E05600B4F871 /* SettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingManager.h; sourceTree = "<group>"; };
-		7B0858871756E05600B4F871 /* SettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingManager.m; sourceTree = "<group>"; };
-		7B0858891756E05600B4F871 /* ColorTabElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTabElement.h; sourceTree = "<group>"; };
-		7B08588A1756E05600B4F871 /* ColorTabElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTabElement.m; sourceTree = "<group>"; };
-		7B08588B1756E05600B4F871 /* GSMutableDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSMutableDictionary.h; sourceTree = "<group>"; };
-		7B08588C1756E05600B4F871 /* GSMutableDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSMutableDictionary.m; sourceTree = "<group>"; };
-		7B08588D1756E05600B4F871 /* GSTouchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSTouchData.h; sourceTree = "<group>"; };
-		7B08588E1756E05600B4F871 /* GSTouchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSTouchData.m; sourceTree = "<group>"; };
-		7B0858901756E05600B4F871 /* DrawingLayerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingLayerInfo.h; sourceTree = "<group>"; };
-		7B0858911756E05600B4F871 /* DrawingLayerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawingLayerInfo.m; sourceTree = "<group>"; };
-		7B0858921756E05600B4F871 /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
-		7B0858931756E05600B4F871 /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
-		7B0858941756E05600B4F871 /* FB2GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FB2GLView.h; sourceTree = "<group>"; };
-		7B0858951756E05600B4F871 /* FB2GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FB2GLView.m; sourceTree = "<group>"; };
-		7B0858961756E05600B4F871 /* MainPaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPaintingView.h; sourceTree = "<group>"; };
-		7B0858971756E05600B4F871 /* MainPaintingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPaintingView.m; sourceTree = "<group>"; };
-		7B0858981756E05600B4F871 /* PaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingView.h; sourceTree = "<group>"; };
-		7B0858991756E05600B4F871 /* PaintingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PaintingView.mm; sourceTree = "<group>"; };
-		7B08589B1756E05600B4F871 /* ClearPaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearPaintingCmd.h; sourceTree = "<group>"; };
-		7B08589C1756E05600B4F871 /* ClearPaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearPaintingCmd.m; sourceTree = "<group>"; };
-		7B08589D1756E05600B4F871 /* ImagePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePaintingCmd.h; sourceTree = "<group>"; };
-		7B08589E1756E05600B4F871 /* ImagePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePaintingCmd.m; sourceTree = "<group>"; };
-		7B08589F1756E05600B4F871 /* MultiStrokePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiStrokePaintingCmd.h; sourceTree = "<group>"; };
-		7B0858A01756E05600B4F871 /* MultiStrokePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiStrokePaintingCmd.m; sourceTree = "<group>"; };
-		7B0858A11756E05600B4F871 /* PaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingCmd.h; sourceTree = "<group>"; };
-		7B0858A21756E05600B4F871 /* PaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintingCmd.m; sourceTree = "<group>"; };
-		7B0858A31756E05600B4F871 /* StrokePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrokePaintingCmd.h; sourceTree = "<group>"; };
-		7B0858A41756E05600B4F871 /* StrokePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrokePaintingCmd.m; sourceTree = "<group>"; };
-		7B0858A51756E05600B4F871 /* SDBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBaseView.h; sourceTree = "<group>"; };
-		7B0858A61756E05600B4F871 /* SDBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBaseView.m; sourceTree = "<group>"; };
 		7B7ACF69175545F000076146 /* SmartDrawing.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SmartDrawing.bundle; sourceTree = "<group>"; };
-		7B7ACF941755A87100076146 /* SDSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDSession.h; sourceTree = "<group>"; };
-		7B7ACF951755A87100076146 /* SDSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDSession.m; sourceTree = "<group>"; };
-		7B7ACF961755A87100076146 /* SDUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDUtils.h; sourceTree = "<group>"; };
-		7B7ACF971755A87100076146 /* SDUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDUtils.m; sourceTree = "<group>"; };
-		7B7ACF991755A87100076146 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
-		7B7ACF9A1755A87100076146 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
-		7B7ACF9B1755A87100076146 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
-		7B7ACF9C1755A87100076146 /* ImageManipulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManipulation.h; sourceTree = "<group>"; };
-		7B7ACF9D1755A87100076146 /* UIColor+GSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GSString.h"; sourceTree = "<group>"; };
-		7B7ACF9E1755A87100076146 /* UIColor+GSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GSString.m"; sourceTree = "<group>"; };
-		7B7ACF9F1755A87100076146 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
-		7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
-		7B93461517593BCF0024A707 /* FontColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontColorPickerView.h; sourceTree = "<group>"; };
-		7B93461617593BCF0024A707 /* FontColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontColorPickerView.m; sourceTree = "<group>"; };
-		7B93461717593BCF0024A707 /* FontPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontPickerView.h; sourceTree = "<group>"; };
-		7B93461817593BCF0024A707 /* FontPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontPickerView.m; sourceTree = "<group>"; };
-		7B93461917593BCF0024A707 /* PlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceHolderTextView.h; sourceTree = "<group>"; };
-		7B93461A17593BCF0024A707 /* PlaceHolderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceHolderTextView.m; sourceTree = "<group>"; };
-		7B93461B17593BCF0024A707 /* TextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextView.h; sourceTree = "<group>"; };
-		7B93461C17593BCF0024A707 /* TextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextView.m; sourceTree = "<group>"; };
-		7B93462917593BD80024A707 /* BackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
-		7B93462A17593BD80024A707 /* BackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
-		7B93462B17593BD80024A707 /* StickersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickersView.h; sourceTree = "<group>"; };
-		7B93462C17593BD80024A707 /* StickersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickersView.m; sourceTree = "<group>"; };
-		7B93463417593BEA0024A707 /* GSButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSButton.h; sourceTree = "<group>"; };
-		7B93463517593BEA0024A707 /* GSButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSButton.m; sourceTree = "<group>"; };
+		7B93467E1759402F0024A707 /* SDBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBoard.h; sourceTree = "<group>"; };
+		7B93467F1759402F0024A707 /* SDBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBoard.m; sourceTree = "<group>"; };
+		7B9346801759402F0024A707 /* SDPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPage.h; sourceTree = "<group>"; };
+		7B9346811759402F0024A707 /* SDPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDPage.m; sourceTree = "<group>"; };
+		7B9346821759402F0024A707 /* SDSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDSession.h; sourceTree = "<group>"; };
+		7B9346831759402F0024A707 /* SDSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDSession.m; sourceTree = "<group>"; };
+		7B9346841759402F0024A707 /* SDUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDUtils.h; sourceTree = "<group>"; };
+		7B9346851759402F0024A707 /* SDUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDUtils.m; sourceTree = "<group>"; };
+		7B9346871759402F0024A707 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
+		7B9346881759402F0024A707 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
+		7B9346891759402F0024A707 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
+		7B93468A1759402F0024A707 /* ImageManipulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManipulation.h; sourceTree = "<group>"; };
+		7B93468B1759402F0024A707 /* UIColor+GSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GSString.h"; sourceTree = "<group>"; };
+		7B93468C1759402F0024A707 /* UIColor+GSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GSString.m"; sourceTree = "<group>"; };
+		7B93468D1759402F0024A707 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		7B93468E1759402F0024A707 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
+		7B9346921759402F0024A707 /* ColorPickerImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerImageView.h; sourceTree = "<group>"; };
+		7B9346931759402F0024A707 /* ColorPickerImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerImageView.m; sourceTree = "<group>"; };
+		7B9346941759402F0024A707 /* ColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerView.h; sourceTree = "<group>"; };
+		7B9346951759402F0024A707 /* ColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerView.m; sourceTree = "<group>"; };
+		7B9346961759402F0024A707 /* ColorTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTabView.h; sourceTree = "<group>"; };
+		7B9346971759402F0024A707 /* ColorTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTabView.m; sourceTree = "<group>"; };
+		7B9346981759402F0024A707 /* GSColorCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSColorCircle.h; sourceTree = "<group>"; };
+		7B9346991759402F0024A707 /* GSColorCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSColorCircle.m; sourceTree = "<group>"; };
+		7B93469A1759402F0024A707 /* MySlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySlider.h; sourceTree = "<group>"; };
+		7B93469B1759402F0024A707 /* MySlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySlider.m; sourceTree = "<group>"; };
+		7B93469C1759402F0024A707 /* PreviewArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewArea.h; sourceTree = "<group>"; };
+		7B93469D1759402F0024A707 /* PreviewArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewArea.m; sourceTree = "<group>"; };
+		7B93469E1759402F0024A707 /* TabWrapperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabWrapperView.h; sourceTree = "<group>"; };
+		7B93469F1759402F0024A707 /* TabWrapperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabWrapperView.m; sourceTree = "<group>"; };
+		7B9346A01759402F0024A707 /* CanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasView.h; sourceTree = "<group>"; };
+		7B9346A11759402F0024A707 /* CanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasView.m; sourceTree = "<group>"; };
+		7B9346A41759402F0024A707 /* Painting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painting.h; sourceTree = "<group>"; };
+		7B9346A51759402F0024A707 /* Painting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Painting.m; sourceTree = "<group>"; };
+		7B9346A61759402F0024A707 /* PaintingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingManager.h; sourceTree = "<group>"; };
+		7B9346A71759402F0024A707 /* PaintingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintingManager.m; sourceTree = "<group>"; };
+		7B9346A81759402F0024A707 /* SettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingManager.h; sourceTree = "<group>"; };
+		7B9346A91759402F0024A707 /* SettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingManager.m; sourceTree = "<group>"; };
+		7B9346AB1759402F0024A707 /* ColorTabElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTabElement.h; sourceTree = "<group>"; };
+		7B9346AC1759402F0024A707 /* ColorTabElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTabElement.m; sourceTree = "<group>"; };
+		7B9346AD1759402F0024A707 /* GSMutableDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSMutableDictionary.h; sourceTree = "<group>"; };
+		7B9346AE1759402F0024A707 /* GSMutableDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSMutableDictionary.m; sourceTree = "<group>"; };
+		7B9346AF1759402F0024A707 /* GSTouchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSTouchData.h; sourceTree = "<group>"; };
+		7B9346B01759402F0024A707 /* GSTouchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSTouchData.m; sourceTree = "<group>"; };
+		7B9346B21759402F0024A707 /* DrawingLayerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingLayerInfo.h; sourceTree = "<group>"; };
+		7B9346B31759402F0024A707 /* DrawingLayerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawingLayerInfo.m; sourceTree = "<group>"; };
+		7B9346B41759402F0024A707 /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
+		7B9346B51759402F0024A707 /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
+		7B9346B61759402F0024A707 /* FB2GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FB2GLView.h; sourceTree = "<group>"; };
+		7B9346B71759402F0024A707 /* FB2GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FB2GLView.m; sourceTree = "<group>"; };
+		7B9346B81759402F0024A707 /* MainPaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPaintingView.h; sourceTree = "<group>"; };
+		7B9346B91759402F0024A707 /* MainPaintingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPaintingView.m; sourceTree = "<group>"; };
+		7B9346BA1759402F0024A707 /* PaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingView.h; sourceTree = "<group>"; };
+		7B9346BB1759402F0024A707 /* PaintingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PaintingView.mm; sourceTree = "<group>"; };
+		7B9346BD1759402F0024A707 /* ClearPaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearPaintingCmd.h; sourceTree = "<group>"; };
+		7B9346BE1759402F0024A707 /* ClearPaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearPaintingCmd.m; sourceTree = "<group>"; };
+		7B9346BF1759402F0024A707 /* ImagePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePaintingCmd.h; sourceTree = "<group>"; };
+		7B9346C01759402F0024A707 /* ImagePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePaintingCmd.m; sourceTree = "<group>"; };
+		7B9346C11759402F0024A707 /* MultiStrokePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiStrokePaintingCmd.h; sourceTree = "<group>"; };
+		7B9346C21759402F0024A707 /* MultiStrokePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiStrokePaintingCmd.m; sourceTree = "<group>"; };
+		7B9346C31759402F0024A707 /* PaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingCmd.h; sourceTree = "<group>"; };
+		7B9346C41759402F0024A707 /* PaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintingCmd.m; sourceTree = "<group>"; };
+		7B9346C51759402F0024A707 /* StrokePaintingCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrokePaintingCmd.h; sourceTree = "<group>"; };
+		7B9346C61759402F0024A707 /* StrokePaintingCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrokePaintingCmd.m; sourceTree = "<group>"; };
+		7B9346C81759402F0024A707 /* GSButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSButton.h; sourceTree = "<group>"; };
+		7B9346C91759402F0024A707 /* GSButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSButton.m; sourceTree = "<group>"; };
+		7B9346CA1759402F0024A707 /* SDBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBaseView.h; sourceTree = "<group>"; };
+		7B9346CB1759402F0024A707 /* SDBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBaseView.m; sourceTree = "<group>"; };
+		7B9346CD1759402F0024A707 /* BackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
+		7B9346CE1759402F0024A707 /* BackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
+		7B9346CF1759402F0024A707 /* StickersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickersView.h; sourceTree = "<group>"; };
+		7B9346D01759402F0024A707 /* StickersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickersView.m; sourceTree = "<group>"; };
+		7B9346D31759402F0024A707 /* FontColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontColorPickerView.h; sourceTree = "<group>"; };
+		7B9346D41759402F0024A707 /* FontColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontColorPickerView.m; sourceTree = "<group>"; };
+		7B9346D51759402F0024A707 /* FontPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontPickerView.h; sourceTree = "<group>"; };
+		7B9346D61759402F0024A707 /* FontPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontPickerView.m; sourceTree = "<group>"; };
+		7B9346D7175940300024A707 /* PlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceHolderTextView.h; sourceTree = "<group>"; };
+		7B9346D8175940300024A707 /* PlaceHolderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceHolderTextView.m; sourceTree = "<group>"; };
+		7B9346D9175940300024A707 /* TextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextView.h; sourceTree = "<group>"; };
+		7B9346DA175940300024A707 /* TextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextView.m; sourceTree = "<group>"; };
 		7BA109681753C22100B0CCCA /* SmartDrawingSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartDrawingSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BA1096B1753C22100B0CCCA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7BA1096D1753C22100B0CCCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -273,199 +283,203 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7B08586D1756E05600B4F871 /* View */ = {
+		7B93467D1759402F0024A707 /* SourceCode */ = {
 			isa = PBXGroup;
 			children = (
-				7B0858A51756E05600B4F871 /* SDBaseView.h */,
-				7B0858A61756E05600B4F871 /* SDBaseView.m */,
-				7B08586E1756E05600B4F871 /* CanvasView */,
-				7B0858A71756E05600B4F871 /* StickersView */,
-				7B0858A81756E05600B4F871 /* TextView */,
-				7B0858A91756E05600B4F871 /* WebView */,
-				7B93463317593BEA0024A707 /* GreengarThemeView */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		7B08586E1756E05600B4F871 /* CanvasView */ = {
-			isa = PBXGroup;
-			children = (
-				7B08587E1756E05600B4F871 /* CanvasView.h */,
-				7B08587F1756E05600B4F871 /* CanvasView.m */,
-				7B08586F1756E05600B4F871 /* CanvasControlVIew */,
-				7B0858801756E05600B4F871 /* OpenGLView */,
-			);
-			path = CanvasView;
-			sourceTree = "<group>";
-		};
-		7B08586F1756E05600B4F871 /* CanvasControlVIew */ = {
-			isa = PBXGroup;
-			children = (
-				7B0858701756E05600B4F871 /* ColorPickerImageView.h */,
-				7B0858711756E05600B4F871 /* ColorPickerImageView.m */,
-				7B0858721756E05600B4F871 /* ColorPickerView.h */,
-				7B0858731756E05600B4F871 /* ColorPickerView.m */,
-				7B0858741756E05600B4F871 /* ColorTabView.h */,
-				7B0858751756E05600B4F871 /* ColorTabView.m */,
-				7B0858761756E05600B4F871 /* GSColorCircle.h */,
-				7B0858771756E05600B4F871 /* GSColorCircle.m */,
-				7B0858781756E05600B4F871 /* MySlider.h */,
-				7B0858791756E05600B4F871 /* MySlider.m */,
-				7B08587A1756E05600B4F871 /* PreviewArea.h */,
-				7B08587B1756E05600B4F871 /* PreviewArea.m */,
-				7B08587C1756E05600B4F871 /* TabWrapperView.h */,
-				7B08587D1756E05600B4F871 /* TabWrapperView.m */,
-			);
-			path = CanvasControlVIew;
-			sourceTree = "<group>";
-		};
-		7B0858801756E05600B4F871 /* OpenGLView */ = {
-			isa = PBXGroup;
-			children = (
-				7B0858811756E05600B4F871 /* Manager */,
-				7B0858881756E05600B4F871 /* Model */,
-				7B08588F1756E05600B4F871 /* OpenGLES */,
-				7B08589A1756E05600B4F871 /* PaintingCommand */,
-			);
-			path = OpenGLView;
-			sourceTree = "<group>";
-		};
-		7B0858811756E05600B4F871 /* Manager */ = {
-			isa = PBXGroup;
-			children = (
-				7B0858821756E05600B4F871 /* Painting.h */,
-				7B0858831756E05600B4F871 /* Painting.m */,
-				7B0858841756E05600B4F871 /* PaintingManager.h */,
-				7B0858851756E05600B4F871 /* PaintingManager.m */,
-				7B0858861756E05600B4F871 /* SettingManager.h */,
-				7B0858871756E05600B4F871 /* SettingManager.m */,
-			);
-			path = Manager;
-			sourceTree = "<group>";
-		};
-		7B0858881756E05600B4F871 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				7B0858891756E05600B4F871 /* ColorTabElement.h */,
-				7B08588A1756E05600B4F871 /* ColorTabElement.m */,
-				7B08588B1756E05600B4F871 /* GSMutableDictionary.h */,
-				7B08588C1756E05600B4F871 /* GSMutableDictionary.m */,
-				7B08588D1756E05600B4F871 /* GSTouchData.h */,
-				7B08588E1756E05600B4F871 /* GSTouchData.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		7B08588F1756E05600B4F871 /* OpenGLES */ = {
-			isa = PBXGroup;
-			children = (
-				7B0858901756E05600B4F871 /* DrawingLayerInfo.h */,
-				7B0858911756E05600B4F871 /* DrawingLayerInfo.m */,
-				7B0858921756E05600B4F871 /* EAGLView.h */,
-				7B0858931756E05600B4F871 /* EAGLView.m */,
-				7B0858941756E05600B4F871 /* FB2GLView.h */,
-				7B0858951756E05600B4F871 /* FB2GLView.m */,
-				7B0858961756E05600B4F871 /* MainPaintingView.h */,
-				7B0858971756E05600B4F871 /* MainPaintingView.m */,
-				7B0858981756E05600B4F871 /* PaintingView.h */,
-				7B0858991756E05600B4F871 /* PaintingView.mm */,
-			);
-			path = OpenGLES;
-			sourceTree = "<group>";
-		};
-		7B08589A1756E05600B4F871 /* PaintingCommand */ = {
-			isa = PBXGroup;
-			children = (
-				7B08589B1756E05600B4F871 /* ClearPaintingCmd.h */,
-				7B08589C1756E05600B4F871 /* ClearPaintingCmd.m */,
-				7B08589D1756E05600B4F871 /* ImagePaintingCmd.h */,
-				7B08589E1756E05600B4F871 /* ImagePaintingCmd.m */,
-				7B08589F1756E05600B4F871 /* MultiStrokePaintingCmd.h */,
-				7B0858A01756E05600B4F871 /* MultiStrokePaintingCmd.m */,
-				7B0858A11756E05600B4F871 /* PaintingCmd.h */,
-				7B0858A21756E05600B4F871 /* PaintingCmd.m */,
-				7B0858A31756E05600B4F871 /* StrokePaintingCmd.h */,
-				7B0858A41756E05600B4F871 /* StrokePaintingCmd.m */,
-			);
-			path = PaintingCommand;
-			sourceTree = "<group>";
-		};
-		7B0858A71756E05600B4F871 /* StickersView */ = {
-			isa = PBXGroup;
-			children = (
-				7B93462917593BD80024A707 /* BackgroundView.h */,
-				7B93462A17593BD80024A707 /* BackgroundView.m */,
-				7B93462B17593BD80024A707 /* StickersView.h */,
-				7B93462C17593BD80024A707 /* StickersView.m */,
-			);
-			path = StickersView;
-			sourceTree = "<group>";
-		};
-		7B0858A81756E05600B4F871 /* TextView */ = {
-			isa = PBXGroup;
-			children = (
-				7B93461417593BCF0024A707 /* TextControlView */,
-				7B93461B17593BCF0024A707 /* TextView.h */,
-				7B93461C17593BCF0024A707 /* TextView.m */,
-			);
-			path = TextView;
-			sourceTree = "<group>";
-		};
-		7B0858A91756E05600B4F871 /* WebView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = WebView;
-			sourceTree = "<group>";
-		};
-		7B7ACF931755A87100076146 /* SourceCode */ = {
-			isa = PBXGroup;
-			children = (
-				7B7ACF941755A87100076146 /* SDSession.h */,
-				7B7ACF951755A87100076146 /* SDSession.m */,
-				7B7ACF961755A87100076146 /* SDUtils.h */,
-				7B7ACF971755A87100076146 /* SDUtils.m */,
-				7B08586D1756E05600B4F871 /* View */,
-				7B7ACF981755A87100076146 /* Support */,
+				7B93467E1759402F0024A707 /* SDBoard.h */,
+				7B93467F1759402F0024A707 /* SDBoard.m */,
+				7B9346801759402F0024A707 /* SDPage.h */,
+				7B9346811759402F0024A707 /* SDPage.m */,
+				7B9346821759402F0024A707 /* SDSession.h */,
+				7B9346831759402F0024A707 /* SDSession.m */,
+				7B9346841759402F0024A707 /* SDUtils.h */,
+				7B9346851759402F0024A707 /* SDUtils.m */,
+				7B9346861759402F0024A707 /* Support */,
+				7B93468F1759402F0024A707 /* View */,
 			);
 			path = SourceCode;
 			sourceTree = "<group>";
 		};
-		7B7ACF981755A87100076146 /* Support */ = {
+		7B9346861759402F0024A707 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				7B7ACF991755A87100076146 /* ccMacros.h */,
-				7B7ACF9A1755A87100076146 /* CGPointExtension.h */,
-				7B7ACF9B1755A87100076146 /* CGPointExtension.m */,
-				7B7ACF9C1755A87100076146 /* ImageManipulation.h */,
-				7B7ACF9D1755A87100076146 /* UIColor+GSString.h */,
-				7B7ACF9E1755A87100076146 /* UIColor+GSString.m */,
-				7B7ACF9F1755A87100076146 /* UIDevice+Hardware.h */,
-				7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */,
+				7B9346871759402F0024A707 /* ccMacros.h */,
+				7B9346881759402F0024A707 /* CGPointExtension.h */,
+				7B9346891759402F0024A707 /* CGPointExtension.m */,
+				7B93468A1759402F0024A707 /* ImageManipulation.h */,
+				7B93468B1759402F0024A707 /* UIColor+GSString.h */,
+				7B93468C1759402F0024A707 /* UIColor+GSString.m */,
+				7B93468D1759402F0024A707 /* UIDevice+Hardware.h */,
+				7B93468E1759402F0024A707 /* UIDevice+Hardware.m */,
 			);
 			path = Support;
 			sourceTree = "<group>";
 		};
-		7B93461417593BCF0024A707 /* TextControlView */ = {
+		7B93468F1759402F0024A707 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7B93461517593BCF0024A707 /* FontColorPickerView.h */,
-				7B93461617593BCF0024A707 /* FontColorPickerView.m */,
-				7B93461717593BCF0024A707 /* FontPickerView.h */,
-				7B93461817593BCF0024A707 /* FontPickerView.m */,
-				7B93461917593BCF0024A707 /* PlaceHolderTextView.h */,
-				7B93461A17593BCF0024A707 /* PlaceHolderTextView.m */,
+				7B9346CA1759402F0024A707 /* SDBaseView.h */,
+				7B9346CB1759402F0024A707 /* SDBaseView.m */,
+				7B9346901759402F0024A707 /* CanvasView */,
+				7B9346CC1759402F0024A707 /* StickersView */,
+				7B9346D11759402F0024A707 /* TextView */,
+				7B9346DB175940300024A707 /* WebView */,
+				7B9346C71759402F0024A707 /* GreengarThemeView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		7B9346901759402F0024A707 /* CanvasView */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346A01759402F0024A707 /* CanvasView.h */,
+				7B9346A11759402F0024A707 /* CanvasView.m */,
+				7B9346911759402F0024A707 /* CanvasControlVIew */,
+				7B9346A21759402F0024A707 /* OpenGLView */,
+			);
+			path = CanvasView;
+			sourceTree = "<group>";
+		};
+		7B9346911759402F0024A707 /* CanvasControlVIew */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346921759402F0024A707 /* ColorPickerImageView.h */,
+				7B9346931759402F0024A707 /* ColorPickerImageView.m */,
+				7B9346941759402F0024A707 /* ColorPickerView.h */,
+				7B9346951759402F0024A707 /* ColorPickerView.m */,
+				7B9346961759402F0024A707 /* ColorTabView.h */,
+				7B9346971759402F0024A707 /* ColorTabView.m */,
+				7B9346981759402F0024A707 /* GSColorCircle.h */,
+				7B9346991759402F0024A707 /* GSColorCircle.m */,
+				7B93469A1759402F0024A707 /* MySlider.h */,
+				7B93469B1759402F0024A707 /* MySlider.m */,
+				7B93469C1759402F0024A707 /* PreviewArea.h */,
+				7B93469D1759402F0024A707 /* PreviewArea.m */,
+				7B93469E1759402F0024A707 /* TabWrapperView.h */,
+				7B93469F1759402F0024A707 /* TabWrapperView.m */,
+			);
+			path = CanvasControlVIew;
+			sourceTree = "<group>";
+		};
+		7B9346A21759402F0024A707 /* OpenGLView */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346A31759402F0024A707 /* Manager */,
+				7B9346AA1759402F0024A707 /* Model */,
+				7B9346B11759402F0024A707 /* OpenGLES */,
+				7B9346BC1759402F0024A707 /* PaintingCommand */,
+			);
+			path = OpenGLView;
+			sourceTree = "<group>";
+		};
+		7B9346A31759402F0024A707 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346A41759402F0024A707 /* Painting.h */,
+				7B9346A51759402F0024A707 /* Painting.m */,
+				7B9346A61759402F0024A707 /* PaintingManager.h */,
+				7B9346A71759402F0024A707 /* PaintingManager.m */,
+				7B9346A81759402F0024A707 /* SettingManager.h */,
+				7B9346A91759402F0024A707 /* SettingManager.m */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		7B9346AA1759402F0024A707 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346AB1759402F0024A707 /* ColorTabElement.h */,
+				7B9346AC1759402F0024A707 /* ColorTabElement.m */,
+				7B9346AD1759402F0024A707 /* GSMutableDictionary.h */,
+				7B9346AE1759402F0024A707 /* GSMutableDictionary.m */,
+				7B9346AF1759402F0024A707 /* GSTouchData.h */,
+				7B9346B01759402F0024A707 /* GSTouchData.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7B9346B11759402F0024A707 /* OpenGLES */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346B21759402F0024A707 /* DrawingLayerInfo.h */,
+				7B9346B31759402F0024A707 /* DrawingLayerInfo.m */,
+				7B9346B41759402F0024A707 /* EAGLView.h */,
+				7B9346B51759402F0024A707 /* EAGLView.m */,
+				7B9346B61759402F0024A707 /* FB2GLView.h */,
+				7B9346B71759402F0024A707 /* FB2GLView.m */,
+				7B9346B81759402F0024A707 /* MainPaintingView.h */,
+				7B9346B91759402F0024A707 /* MainPaintingView.m */,
+				7B9346BA1759402F0024A707 /* PaintingView.h */,
+				7B9346BB1759402F0024A707 /* PaintingView.mm */,
+			);
+			path = OpenGLES;
+			sourceTree = "<group>";
+		};
+		7B9346BC1759402F0024A707 /* PaintingCommand */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346BD1759402F0024A707 /* ClearPaintingCmd.h */,
+				7B9346BE1759402F0024A707 /* ClearPaintingCmd.m */,
+				7B9346BF1759402F0024A707 /* ImagePaintingCmd.h */,
+				7B9346C01759402F0024A707 /* ImagePaintingCmd.m */,
+				7B9346C11759402F0024A707 /* MultiStrokePaintingCmd.h */,
+				7B9346C21759402F0024A707 /* MultiStrokePaintingCmd.m */,
+				7B9346C31759402F0024A707 /* PaintingCmd.h */,
+				7B9346C41759402F0024A707 /* PaintingCmd.m */,
+				7B9346C51759402F0024A707 /* StrokePaintingCmd.h */,
+				7B9346C61759402F0024A707 /* StrokePaintingCmd.m */,
+			);
+			path = PaintingCommand;
+			sourceTree = "<group>";
+		};
+		7B9346C71759402F0024A707 /* GreengarThemeView */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346C81759402F0024A707 /* GSButton.h */,
+				7B9346C91759402F0024A707 /* GSButton.m */,
+			);
+			path = GreengarThemeView;
+			sourceTree = "<group>";
+		};
+		7B9346CC1759402F0024A707 /* StickersView */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346CD1759402F0024A707 /* BackgroundView.h */,
+				7B9346CE1759402F0024A707 /* BackgroundView.m */,
+				7B9346CF1759402F0024A707 /* StickersView.h */,
+				7B9346D01759402F0024A707 /* StickersView.m */,
+			);
+			path = StickersView;
+			sourceTree = "<group>";
+		};
+		7B9346D11759402F0024A707 /* TextView */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346D9175940300024A707 /* TextView.h */,
+				7B9346DA175940300024A707 /* TextView.m */,
+				7B9346D21759402F0024A707 /* TextControlView */,
+			);
+			path = TextView;
+			sourceTree = "<group>";
+		};
+		7B9346D21759402F0024A707 /* TextControlView */ = {
+			isa = PBXGroup;
+			children = (
+				7B9346D31759402F0024A707 /* FontColorPickerView.h */,
+				7B9346D41759402F0024A707 /* FontColorPickerView.m */,
+				7B9346D51759402F0024A707 /* FontPickerView.h */,
+				7B9346D61759402F0024A707 /* FontPickerView.m */,
+				7B9346D7175940300024A707 /* PlaceHolderTextView.h */,
+				7B9346D8175940300024A707 /* PlaceHolderTextView.m */,
 			);
 			path = TextControlView;
 			sourceTree = "<group>";
 		};
-		7B93463317593BEA0024A707 /* GreengarThemeView */ = {
+		7B9346DB175940300024A707 /* WebView */ = {
 			isa = PBXGroup;
 			children = (
-				7B93463417593BEA0024A707 /* GSButton.h */,
-				7B93463517593BEA0024A707 /* GSButton.m */,
 			);
-			path = GreengarThemeView;
+			path = WebView;
 			sourceTree = "<group>";
 		};
 		7BA1095F1753C22100B0CCCA = {
@@ -530,7 +544,7 @@
 			isa = PBXGroup;
 			children = (
 				7BA1099C1753C59800B0CCCA /* SmartDrawing.h */,
-				7B7ACF931755A87100076146 /* SourceCode */,
+				7B93467D1759402F0024A707 /* SourceCode */,
 			);
 			name = Class;
 			sourceTree = "<group>";
@@ -568,45 +582,47 @@
 			buildActionMask = 2147483647;
 			files = (
 				7BBFA4631753E1A6001964D3 /* SmartDrawing.h in Headers */,
-				7B7ACFDB1755A87100076146 /* SDSession.h in Headers */,
-				7B7ACFDE1755A87100076146 /* SDUtils.h in Headers */,
-				7B7ACFE11755A87100076146 /* ccMacros.h in Headers */,
-				7B7ACFE21755A87100076146 /* CGPointExtension.h in Headers */,
-				7B7ACFE51755A87100076146 /* ImageManipulation.h in Headers */,
-				7B7ACFE61755A87100076146 /* UIColor+GSString.h in Headers */,
-				7B7ACFE91755A87100076146 /* UIDevice+Hardware.h in Headers */,
-				7B0858AA1756E05600B4F871 /* ColorPickerImageView.h in Headers */,
-				7B0858AD1756E05600B4F871 /* ColorPickerView.h in Headers */,
-				7B0858B01756E05600B4F871 /* ColorTabView.h in Headers */,
-				7B0858B31756E05600B4F871 /* GSColorCircle.h in Headers */,
-				7B0858B61756E05600B4F871 /* MySlider.h in Headers */,
-				7B0858B91756E05600B4F871 /* PreviewArea.h in Headers */,
-				7B0858BC1756E05600B4F871 /* TabWrapperView.h in Headers */,
-				7B0858BF1756E05600B4F871 /* CanvasView.h in Headers */,
-				7B0858C21756E05600B4F871 /* Painting.h in Headers */,
-				7B0858C51756E05600B4F871 /* PaintingManager.h in Headers */,
-				7B0858C81756E05600B4F871 /* SettingManager.h in Headers */,
-				7B0858CB1756E05600B4F871 /* ColorTabElement.h in Headers */,
-				7B0858CE1756E05600B4F871 /* GSMutableDictionary.h in Headers */,
-				7B0858D11756E05600B4F871 /* GSTouchData.h in Headers */,
-				7B0858D41756E05600B4F871 /* DrawingLayerInfo.h in Headers */,
-				7B0858D71756E05600B4F871 /* EAGLView.h in Headers */,
-				7B0858DA1756E05600B4F871 /* FB2GLView.h in Headers */,
-				7B0858DD1756E05600B4F871 /* MainPaintingView.h in Headers */,
-				7B0858E01756E05600B4F871 /* PaintingView.h in Headers */,
-				7B0858E31756E05600B4F871 /* ClearPaintingCmd.h in Headers */,
-				7B0858E61756E05600B4F871 /* ImagePaintingCmd.h in Headers */,
-				7B0858E91756E05600B4F871 /* MultiStrokePaintingCmd.h in Headers */,
-				7B0858EC1756E05600B4F871 /* PaintingCmd.h in Headers */,
-				7B0858EF1756E05600B4F871 /* StrokePaintingCmd.h in Headers */,
-				7B0858F21756E05600B4F871 /* SDBaseView.h in Headers */,
-				7B93461D17593BCF0024A707 /* FontColorPickerView.h in Headers */,
-				7B93462017593BCF0024A707 /* FontPickerView.h in Headers */,
-				7B93462317593BCF0024A707 /* PlaceHolderTextView.h in Headers */,
-				7B93462617593BCF0024A707 /* TextView.h in Headers */,
-				7B93462D17593BD80024A707 /* BackgroundView.h in Headers */,
-				7B93463017593BD80024A707 /* StickersView.h in Headers */,
-				7B93463617593BEA0024A707 /* GSButton.h in Headers */,
+				7B9346E2175940300024A707 /* SDSession.h in Headers */,
+				7B9346E5175940300024A707 /* SDUtils.h in Headers */,
+				7B9346DC175940300024A707 /* SDBoard.h in Headers */,
+				7B9346DF175940300024A707 /* SDPage.h in Headers */,
+				7B9346E8175940300024A707 /* ccMacros.h in Headers */,
+				7B9346E9175940300024A707 /* CGPointExtension.h in Headers */,
+				7B9346EC175940300024A707 /* ImageManipulation.h in Headers */,
+				7B9346ED175940300024A707 /* UIColor+GSString.h in Headers */,
+				7B9346F0175940300024A707 /* UIDevice+Hardware.h in Headers */,
+				7B9346F3175940300024A707 /* ColorPickerImageView.h in Headers */,
+				7B9346F6175940300024A707 /* ColorPickerView.h in Headers */,
+				7B9346F9175940300024A707 /* ColorTabView.h in Headers */,
+				7B9346FC175940300024A707 /* GSColorCircle.h in Headers */,
+				7B9346FF175940300024A707 /* MySlider.h in Headers */,
+				7B934702175940300024A707 /* PreviewArea.h in Headers */,
+				7B934705175940300024A707 /* TabWrapperView.h in Headers */,
+				7B934708175940300024A707 /* CanvasView.h in Headers */,
+				7B93470B175940300024A707 /* Painting.h in Headers */,
+				7B93470E175940300024A707 /* PaintingManager.h in Headers */,
+				7B934711175940300024A707 /* SettingManager.h in Headers */,
+				7B934714175940300024A707 /* ColorTabElement.h in Headers */,
+				7B934717175940300024A707 /* GSMutableDictionary.h in Headers */,
+				7B93471A175940300024A707 /* GSTouchData.h in Headers */,
+				7B93471D175940300024A707 /* DrawingLayerInfo.h in Headers */,
+				7B934720175940300024A707 /* EAGLView.h in Headers */,
+				7B934723175940300024A707 /* FB2GLView.h in Headers */,
+				7B934726175940300024A707 /* MainPaintingView.h in Headers */,
+				7B934729175940300024A707 /* PaintingView.h in Headers */,
+				7B93472C175940300024A707 /* ClearPaintingCmd.h in Headers */,
+				7B93472F175940300024A707 /* ImagePaintingCmd.h in Headers */,
+				7B934732175940300024A707 /* MultiStrokePaintingCmd.h in Headers */,
+				7B934735175940300024A707 /* PaintingCmd.h in Headers */,
+				7B934738175940300024A707 /* StrokePaintingCmd.h in Headers */,
+				7B93473B175940300024A707 /* GSButton.h in Headers */,
+				7B93473E175940300024A707 /* SDBaseView.h in Headers */,
+				7B934741175940300024A707 /* BackgroundView.h in Headers */,
+				7B934744175940300024A707 /* StickersView.h in Headers */,
+				7B934747175940300024A707 /* FontColorPickerView.h in Headers */,
+				7B93474A175940300024A707 /* FontPickerView.h in Headers */,
+				7B93474D175940300024A707 /* PlaceHolderTextView.h in Headers */,
+				7B934750175940300024A707 /* TextView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,43 +741,45 @@
 			files = (
 				7BA109781753C22100B0CCCA /* main.m in Sources */,
 				7BA1097C1753C22100B0CCCA /* SDAppDelegate.m in Sources */,
-				7B7ACFDC1755A87100076146 /* SDSession.m in Sources */,
-				7B7ACFDF1755A87100076146 /* SDUtils.m in Sources */,
-				7B7ACFE31755A87100076146 /* CGPointExtension.m in Sources */,
-				7B7ACFE71755A87100076146 /* UIColor+GSString.m in Sources */,
-				7B7ACFEA1755A87100076146 /* UIDevice+Hardware.m in Sources */,
-				7B0858AB1756E05600B4F871 /* ColorPickerImageView.m in Sources */,
-				7B0858AE1756E05600B4F871 /* ColorPickerView.m in Sources */,
-				7B0858B11756E05600B4F871 /* ColorTabView.m in Sources */,
-				7B0858B41756E05600B4F871 /* GSColorCircle.m in Sources */,
-				7B0858B71756E05600B4F871 /* MySlider.m in Sources */,
-				7B0858BA1756E05600B4F871 /* PreviewArea.m in Sources */,
-				7B0858BD1756E05600B4F871 /* TabWrapperView.m in Sources */,
-				7B0858C01756E05600B4F871 /* CanvasView.m in Sources */,
-				7B0858C31756E05600B4F871 /* Painting.m in Sources */,
-				7B0858C61756E05600B4F871 /* PaintingManager.m in Sources */,
-				7B0858C91756E05600B4F871 /* SettingManager.m in Sources */,
-				7B0858CC1756E05600B4F871 /* ColorTabElement.m in Sources */,
-				7B0858CF1756E05600B4F871 /* GSMutableDictionary.m in Sources */,
-				7B0858D21756E05600B4F871 /* GSTouchData.m in Sources */,
-				7B0858D51756E05600B4F871 /* DrawingLayerInfo.m in Sources */,
-				7B0858D81756E05600B4F871 /* EAGLView.m in Sources */,
-				7B0858DB1756E05600B4F871 /* FB2GLView.m in Sources */,
-				7B0858DE1756E05600B4F871 /* MainPaintingView.m in Sources */,
-				7B0858E11756E05600B4F871 /* PaintingView.mm in Sources */,
-				7B0858E41756E05600B4F871 /* ClearPaintingCmd.m in Sources */,
-				7B0858E71756E05600B4F871 /* ImagePaintingCmd.m in Sources */,
-				7B0858EA1756E05600B4F871 /* MultiStrokePaintingCmd.m in Sources */,
-				7B0858ED1756E05600B4F871 /* PaintingCmd.m in Sources */,
-				7B0858F01756E05600B4F871 /* StrokePaintingCmd.m in Sources */,
-				7B0858F31756E05600B4F871 /* SDBaseView.m in Sources */,
-				7B93461E17593BCF0024A707 /* FontColorPickerView.m in Sources */,
-				7B93462117593BCF0024A707 /* FontPickerView.m in Sources */,
-				7B93462417593BCF0024A707 /* PlaceHolderTextView.m in Sources */,
-				7B93462717593BCF0024A707 /* TextView.m in Sources */,
-				7B93462E17593BD80024A707 /* BackgroundView.m in Sources */,
-				7B93463117593BD80024A707 /* StickersView.m in Sources */,
-				7B93463717593BEA0024A707 /* GSButton.m in Sources */,
+				7B9346DD175940300024A707 /* SDBoard.m in Sources */,
+				7B9346E0175940300024A707 /* SDPage.m in Sources */,
+				7B9346E3175940300024A707 /* SDSession.m in Sources */,
+				7B9346E6175940300024A707 /* SDUtils.m in Sources */,
+				7B9346EA175940300024A707 /* CGPointExtension.m in Sources */,
+				7B9346EE175940300024A707 /* UIColor+GSString.m in Sources */,
+				7B9346F1175940300024A707 /* UIDevice+Hardware.m in Sources */,
+				7B9346F4175940300024A707 /* ColorPickerImageView.m in Sources */,
+				7B9346F7175940300024A707 /* ColorPickerView.m in Sources */,
+				7B9346FA175940300024A707 /* ColorTabView.m in Sources */,
+				7B9346FD175940300024A707 /* GSColorCircle.m in Sources */,
+				7B934700175940300024A707 /* MySlider.m in Sources */,
+				7B934703175940300024A707 /* PreviewArea.m in Sources */,
+				7B934706175940300024A707 /* TabWrapperView.m in Sources */,
+				7B934709175940300024A707 /* CanvasView.m in Sources */,
+				7B93470C175940300024A707 /* Painting.m in Sources */,
+				7B93470F175940300024A707 /* PaintingManager.m in Sources */,
+				7B934712175940300024A707 /* SettingManager.m in Sources */,
+				7B934715175940300024A707 /* ColorTabElement.m in Sources */,
+				7B934718175940300024A707 /* GSMutableDictionary.m in Sources */,
+				7B93471B175940300024A707 /* GSTouchData.m in Sources */,
+				7B93471E175940300024A707 /* DrawingLayerInfo.m in Sources */,
+				7B934721175940300024A707 /* EAGLView.m in Sources */,
+				7B934724175940300024A707 /* FB2GLView.m in Sources */,
+				7B934727175940300024A707 /* MainPaintingView.m in Sources */,
+				7B93472A175940300024A707 /* PaintingView.mm in Sources */,
+				7B93472D175940300024A707 /* ClearPaintingCmd.m in Sources */,
+				7B934730175940300024A707 /* ImagePaintingCmd.m in Sources */,
+				7B934733175940300024A707 /* MultiStrokePaintingCmd.m in Sources */,
+				7B934736175940300024A707 /* PaintingCmd.m in Sources */,
+				7B934739175940300024A707 /* StrokePaintingCmd.m in Sources */,
+				7B93473C175940300024A707 /* GSButton.m in Sources */,
+				7B93473F175940300024A707 /* SDBaseView.m in Sources */,
+				7B934742175940300024A707 /* BackgroundView.m in Sources */,
+				7B934745175940300024A707 /* StickersView.m in Sources */,
+				7B934748175940300024A707 /* FontColorPickerView.m in Sources */,
+				7B93474B175940300024A707 /* FontPickerView.m in Sources */,
+				7B93474E175940300024A707 /* PlaceHolderTextView.m in Sources */,
+				7B934751175940300024A707 /* TextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,43 +787,45 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B7ACFDD1755A87100076146 /* SDSession.m in Sources */,
-				7B7ACFE01755A87100076146 /* SDUtils.m in Sources */,
-				7B7ACFE41755A87100076146 /* CGPointExtension.m in Sources */,
-				7B7ACFE81755A87100076146 /* UIColor+GSString.m in Sources */,
-				7B7ACFEB1755A87100076146 /* UIDevice+Hardware.m in Sources */,
-				7B0858AC1756E05600B4F871 /* ColorPickerImageView.m in Sources */,
-				7B0858AF1756E05600B4F871 /* ColorPickerView.m in Sources */,
-				7B0858B21756E05600B4F871 /* ColorTabView.m in Sources */,
-				7B0858B51756E05600B4F871 /* GSColorCircle.m in Sources */,
-				7B0858B81756E05600B4F871 /* MySlider.m in Sources */,
-				7B0858BB1756E05600B4F871 /* PreviewArea.m in Sources */,
-				7B0858BE1756E05600B4F871 /* TabWrapperView.m in Sources */,
-				7B0858C11756E05600B4F871 /* CanvasView.m in Sources */,
-				7B0858C41756E05600B4F871 /* Painting.m in Sources */,
-				7B0858C71756E05600B4F871 /* PaintingManager.m in Sources */,
-				7B0858CA1756E05600B4F871 /* SettingManager.m in Sources */,
-				7B0858CD1756E05600B4F871 /* ColorTabElement.m in Sources */,
-				7B0858D01756E05600B4F871 /* GSMutableDictionary.m in Sources */,
-				7B0858D31756E05600B4F871 /* GSTouchData.m in Sources */,
-				7B0858D61756E05600B4F871 /* DrawingLayerInfo.m in Sources */,
-				7B0858D91756E05600B4F871 /* EAGLView.m in Sources */,
-				7B0858DC1756E05600B4F871 /* FB2GLView.m in Sources */,
-				7B0858DF1756E05600B4F871 /* MainPaintingView.m in Sources */,
-				7B0858E21756E05600B4F871 /* PaintingView.mm in Sources */,
-				7B0858E51756E05600B4F871 /* ClearPaintingCmd.m in Sources */,
-				7B0858E81756E05600B4F871 /* ImagePaintingCmd.m in Sources */,
-				7B0858EB1756E05600B4F871 /* MultiStrokePaintingCmd.m in Sources */,
-				7B0858EE1756E05600B4F871 /* PaintingCmd.m in Sources */,
-				7B0858F11756E05600B4F871 /* StrokePaintingCmd.m in Sources */,
-				7B0858F41756E05600B4F871 /* SDBaseView.m in Sources */,
-				7B93461F17593BCF0024A707 /* FontColorPickerView.m in Sources */,
-				7B93462217593BCF0024A707 /* FontPickerView.m in Sources */,
-				7B93462517593BCF0024A707 /* PlaceHolderTextView.m in Sources */,
-				7B93462817593BCF0024A707 /* TextView.m in Sources */,
-				7B93462F17593BD80024A707 /* BackgroundView.m in Sources */,
-				7B93463217593BD80024A707 /* StickersView.m in Sources */,
-				7B93463817593BEA0024A707 /* GSButton.m in Sources */,
+				7B9346DE175940300024A707 /* SDBoard.m in Sources */,
+				7B9346E1175940300024A707 /* SDPage.m in Sources */,
+				7B9346E4175940300024A707 /* SDSession.m in Sources */,
+				7B9346E7175940300024A707 /* SDUtils.m in Sources */,
+				7B9346EB175940300024A707 /* CGPointExtension.m in Sources */,
+				7B9346EF175940300024A707 /* UIColor+GSString.m in Sources */,
+				7B9346F2175940300024A707 /* UIDevice+Hardware.m in Sources */,
+				7B9346F5175940300024A707 /* ColorPickerImageView.m in Sources */,
+				7B9346F8175940300024A707 /* ColorPickerView.m in Sources */,
+				7B9346FB175940300024A707 /* ColorTabView.m in Sources */,
+				7B9346FE175940300024A707 /* GSColorCircle.m in Sources */,
+				7B934701175940300024A707 /* MySlider.m in Sources */,
+				7B934704175940300024A707 /* PreviewArea.m in Sources */,
+				7B934707175940300024A707 /* TabWrapperView.m in Sources */,
+				7B93470A175940300024A707 /* CanvasView.m in Sources */,
+				7B93470D175940300024A707 /* Painting.m in Sources */,
+				7B934710175940300024A707 /* PaintingManager.m in Sources */,
+				7B934713175940300024A707 /* SettingManager.m in Sources */,
+				7B934716175940300024A707 /* ColorTabElement.m in Sources */,
+				7B934719175940300024A707 /* GSMutableDictionary.m in Sources */,
+				7B93471C175940300024A707 /* GSTouchData.m in Sources */,
+				7B93471F175940300024A707 /* DrawingLayerInfo.m in Sources */,
+				7B934722175940300024A707 /* EAGLView.m in Sources */,
+				7B934725175940300024A707 /* FB2GLView.m in Sources */,
+				7B934728175940300024A707 /* MainPaintingView.m in Sources */,
+				7B93472B175940300024A707 /* PaintingView.mm in Sources */,
+				7B93472E175940300024A707 /* ClearPaintingCmd.m in Sources */,
+				7B934731175940300024A707 /* ImagePaintingCmd.m in Sources */,
+				7B934734175940300024A707 /* MultiStrokePaintingCmd.m in Sources */,
+				7B934737175940300024A707 /* PaintingCmd.m in Sources */,
+				7B93473A175940300024A707 /* StrokePaintingCmd.m in Sources */,
+				7B93473D175940300024A707 /* GSButton.m in Sources */,
+				7B934740175940300024A707 /* SDBaseView.m in Sources */,
+				7B934743175940300024A707 /* BackgroundView.m in Sources */,
+				7B934746175940300024A707 /* StickersView.m in Sources */,
+				7B934749175940300024A707 /* FontColorPickerView.m in Sources */,
+				7B93474C175940300024A707 /* FontPickerView.m in Sources */,
+				7B93474F175940300024A707 /* PlaceHolderTextView.m in Sources */,
+				7B934752175940300024A707 /* TextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

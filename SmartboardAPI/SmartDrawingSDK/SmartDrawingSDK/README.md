@@ -7,4 +7,5 @@ HOW TO BUILD AND USE SMARTBOARD DRAWING SDK
 5. Navigate to SmartDrawing SDK/Products/SmartDrawing.framework/Resources/
 6. Drag the SmartDrawing.bundle to your project
 7. Add OpenGLES.framework and QuartzCore.framework to your project
-8. Import <SmartDrawing/SmartDrawing.h> to use
+8. Go to your project Build Settings, add an Other Linker Flags: -lstdc++
+9. Import <SmartDrawing/SmartDrawing.h> to use
