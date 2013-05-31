@@ -1,6 +1,6 @@
 //
 //  TextView.m
-//  TestSDSDK
+//  SmartDrawingSDK
 //
 //  Created by Hector Zhao on 5/30/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.

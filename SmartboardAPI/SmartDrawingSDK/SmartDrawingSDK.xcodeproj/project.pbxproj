@@ -115,6 +115,27 @@
 		7B7ACFE91755A87100076146 /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7ACF9F1755A87100076146 /* UIDevice+Hardware.h */; };
 		7B7ACFEA1755A87100076146 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */; };
 		7B7ACFEB1755A87100076146 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */; };
+		7B93461D17593BCF0024A707 /* FontColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93461517593BCF0024A707 /* FontColorPickerView.h */; };
+		7B93461E17593BCF0024A707 /* FontColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461617593BCF0024A707 /* FontColorPickerView.m */; };
+		7B93461F17593BCF0024A707 /* FontColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461617593BCF0024A707 /* FontColorPickerView.m */; };
+		7B93462017593BCF0024A707 /* FontPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93461717593BCF0024A707 /* FontPickerView.h */; };
+		7B93462117593BCF0024A707 /* FontPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461817593BCF0024A707 /* FontPickerView.m */; };
+		7B93462217593BCF0024A707 /* FontPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461817593BCF0024A707 /* FontPickerView.m */; };
+		7B93462317593BCF0024A707 /* PlaceHolderTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93461917593BCF0024A707 /* PlaceHolderTextView.h */; };
+		7B93462417593BCF0024A707 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461A17593BCF0024A707 /* PlaceHolderTextView.m */; };
+		7B93462517593BCF0024A707 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461A17593BCF0024A707 /* PlaceHolderTextView.m */; };
+		7B93462617593BCF0024A707 /* TextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93461B17593BCF0024A707 /* TextView.h */; };
+		7B93462717593BCF0024A707 /* TextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461C17593BCF0024A707 /* TextView.m */; };
+		7B93462817593BCF0024A707 /* TextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93461C17593BCF0024A707 /* TextView.m */; };
+		7B93462D17593BD80024A707 /* BackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93462917593BD80024A707 /* BackgroundView.h */; };
+		7B93462E17593BD80024A707 /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93462A17593BD80024A707 /* BackgroundView.m */; };
+		7B93462F17593BD80024A707 /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93462A17593BD80024A707 /* BackgroundView.m */; };
+		7B93463017593BD80024A707 /* StickersView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93462B17593BD80024A707 /* StickersView.h */; };
+		7B93463117593BD80024A707 /* StickersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93462C17593BD80024A707 /* StickersView.m */; };
+		7B93463217593BD80024A707 /* StickersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93462C17593BD80024A707 /* StickersView.m */; };
+		7B93463617593BEA0024A707 /* GSButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B93463417593BEA0024A707 /* GSButton.h */; };
+		7B93463717593BEA0024A707 /* GSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93463517593BEA0024A707 /* GSButton.m */; };
+		7B93463817593BEA0024A707 /* GSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B93463517593BEA0024A707 /* GSButton.m */; };
 		7BA1096C1753C22100B0CCCA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096B1753C22100B0CCCA /* UIKit.framework */; };
 		7BA1096E1753C22100B0CCCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096D1753C22100B0CCCA /* Foundation.framework */; };
 		7BA109701753C22100B0CCCA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1096F1753C22100B0CCCA /* CoreGraphics.framework */; };
@@ -194,6 +215,20 @@
 		7B7ACF9E1755A87100076146 /* UIColor+GSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GSString.m"; sourceTree = "<group>"; };
 		7B7ACF9F1755A87100076146 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
 		7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
+		7B93461517593BCF0024A707 /* FontColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontColorPickerView.h; sourceTree = "<group>"; };
+		7B93461617593BCF0024A707 /* FontColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontColorPickerView.m; sourceTree = "<group>"; };
+		7B93461717593BCF0024A707 /* FontPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontPickerView.h; sourceTree = "<group>"; };
+		7B93461817593BCF0024A707 /* FontPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontPickerView.m; sourceTree = "<group>"; };
+		7B93461917593BCF0024A707 /* PlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceHolderTextView.h; sourceTree = "<group>"; };
+		7B93461A17593BCF0024A707 /* PlaceHolderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceHolderTextView.m; sourceTree = "<group>"; };
+		7B93461B17593BCF0024A707 /* TextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextView.h; sourceTree = "<group>"; };
+		7B93461C17593BCF0024A707 /* TextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextView.m; sourceTree = "<group>"; };
+		7B93462917593BD80024A707 /* BackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
+		7B93462A17593BD80024A707 /* BackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
+		7B93462B17593BD80024A707 /* StickersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickersView.h; sourceTree = "<group>"; };
+		7B93462C17593BD80024A707 /* StickersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickersView.m; sourceTree = "<group>"; };
+		7B93463417593BEA0024A707 /* GSButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSButton.h; sourceTree = "<group>"; };
+		7B93463517593BEA0024A707 /* GSButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSButton.m; sourceTree = "<group>"; };
 		7BA109681753C22100B0CCCA /* SmartDrawingSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartDrawingSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BA1096B1753C22100B0CCCA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7BA1096D1753C22100B0CCCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -247,6 +282,7 @@
 				7B0858A71756E05600B4F871 /* StickersView */,
 				7B0858A81756E05600B4F871 /* TextView */,
 				7B0858A91756E05600B4F871 /* WebView */,
+				7B93463317593BEA0024A707 /* GreengarThemeView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -357,6 +393,10 @@
 		7B0858A71756E05600B4F871 /* StickersView */ = {
 			isa = PBXGroup;
 			children = (
+				7B93462917593BD80024A707 /* BackgroundView.h */,
+				7B93462A17593BD80024A707 /* BackgroundView.m */,
+				7B93462B17593BD80024A707 /* StickersView.h */,
+				7B93462C17593BD80024A707 /* StickersView.m */,
 			);
 			path = StickersView;
 			sourceTree = "<group>";
@@ -364,6 +404,9 @@
 		7B0858A81756E05600B4F871 /* TextView */ = {
 			isa = PBXGroup;
 			children = (
+				7B93461417593BCF0024A707 /* TextControlView */,
+				7B93461B17593BCF0024A707 /* TextView.h */,
+				7B93461C17593BCF0024A707 /* TextView.m */,
 			);
 			path = TextView;
 			sourceTree = "<group>";
@@ -401,6 +444,28 @@
 				7B7ACFA01755A87100076146 /* UIDevice+Hardware.m */,
 			);
 			path = Support;
+			sourceTree = "<group>";
+		};
+		7B93461417593BCF0024A707 /* TextControlView */ = {
+			isa = PBXGroup;
+			children = (
+				7B93461517593BCF0024A707 /* FontColorPickerView.h */,
+				7B93461617593BCF0024A707 /* FontColorPickerView.m */,
+				7B93461717593BCF0024A707 /* FontPickerView.h */,
+				7B93461817593BCF0024A707 /* FontPickerView.m */,
+				7B93461917593BCF0024A707 /* PlaceHolderTextView.h */,
+				7B93461A17593BCF0024A707 /* PlaceHolderTextView.m */,
+			);
+			path = TextControlView;
+			sourceTree = "<group>";
+		};
+		7B93463317593BEA0024A707 /* GreengarThemeView */ = {
+			isa = PBXGroup;
+			children = (
+				7B93463417593BEA0024A707 /* GSButton.h */,
+				7B93463517593BEA0024A707 /* GSButton.m */,
+			);
+			path = GreengarThemeView;
 			sourceTree = "<group>";
 		};
 		7BA1095F1753C22100B0CCCA = {
@@ -535,6 +600,13 @@
 				7B0858EC1756E05600B4F871 /* PaintingCmd.h in Headers */,
 				7B0858EF1756E05600B4F871 /* StrokePaintingCmd.h in Headers */,
 				7B0858F21756E05600B4F871 /* SDBaseView.h in Headers */,
+				7B93461D17593BCF0024A707 /* FontColorPickerView.h in Headers */,
+				7B93462017593BCF0024A707 /* FontPickerView.h in Headers */,
+				7B93462317593BCF0024A707 /* PlaceHolderTextView.h in Headers */,
+				7B93462617593BCF0024A707 /* TextView.h in Headers */,
+				7B93462D17593BD80024A707 /* BackgroundView.h in Headers */,
+				7B93463017593BD80024A707 /* StickersView.h in Headers */,
+				7B93463617593BEA0024A707 /* GSButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -683,6 +755,13 @@
 				7B0858ED1756E05600B4F871 /* PaintingCmd.m in Sources */,
 				7B0858F01756E05600B4F871 /* StrokePaintingCmd.m in Sources */,
 				7B0858F31756E05600B4F871 /* SDBaseView.m in Sources */,
+				7B93461E17593BCF0024A707 /* FontColorPickerView.m in Sources */,
+				7B93462117593BCF0024A707 /* FontPickerView.m in Sources */,
+				7B93462417593BCF0024A707 /* PlaceHolderTextView.m in Sources */,
+				7B93462717593BCF0024A707 /* TextView.m in Sources */,
+				7B93462E17593BD80024A707 /* BackgroundView.m in Sources */,
+				7B93463117593BD80024A707 /* StickersView.m in Sources */,
+				7B93463717593BEA0024A707 /* GSButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,6 +799,13 @@
 				7B0858EE1756E05600B4F871 /* PaintingCmd.m in Sources */,
 				7B0858F11756E05600B4F871 /* StrokePaintingCmd.m in Sources */,
 				7B0858F41756E05600B4F871 /* SDBaseView.m in Sources */,
+				7B93461F17593BCF0024A707 /* FontColorPickerView.m in Sources */,
+				7B93462217593BCF0024A707 /* FontPickerView.m in Sources */,
+				7B93462517593BCF0024A707 /* PlaceHolderTextView.m in Sources */,
+				7B93462817593BCF0024A707 /* TextView.m in Sources */,
+				7B93462F17593BD80024A707 /* BackgroundView.m in Sources */,
+				7B93463217593BD80024A707 /* StickersView.m in Sources */,
+				7B93463817593BEA0024A707 /* GSButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
