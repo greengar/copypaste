@@ -145,7 +145,7 @@
 		7BA1097E1753C22100B0CCCA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BA1097D1753C22100B0CCCA /* Default.png */; };
 		7BA109801753C22100B0CCCA /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BA1097F1753C22100B0CCCA /* Default@2x.png */; };
 		7BA109821753C22100B0CCCA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BA109811753C22100B0CCCA /* Default-568h@2x.png */; };
-		7BA1099A1753C57100B0CCCA /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 7BA109991753C57100B0CCCA /* Readme.md */; };
+		7BA1099A1753C57100B0CCCA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7BA109991753C57100B0CCCA /* README.md */; };
 		7BBFA4571753E121001964D3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA1098D1753C2EB00B0CCCA /* CoreFoundation.framework */; };
 		7BBFA45D1753E121001964D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BBFA45B1753E121001964D3 /* InfoPlist.strings */; };
 		7BBFA4631753E1A6001964D3 /* SmartDrawing.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA1099C1753C59800B0CCCA /* SmartDrawing.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -243,7 +243,7 @@
 		7BA1097F1753C22100B0CCCA /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		7BA109811753C22100B0CCCA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7BA1098D1753C2EB00B0CCCA /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		7BA109991753C57100B0CCCA /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
+		7BA109991753C57100B0CCCA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		7BA1099C1753C59800B0CCCA /* SmartDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmartDrawing.h; sourceTree = "<group>"; };
 		7BBFA4561753E121001964D3 /* SmartDrawing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartDrawing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BBFA45A1753E121001964D3 /* SmartDrawing-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SmartDrawing-Info.plist"; sourceTree = "<group>"; };
@@ -501,7 +501,7 @@
 		7BA109711753C22100B0CCCA /* SmartDrawingSDK */ = {
 			isa = PBXGroup;
 			children = (
-				7BA109991753C57100B0CCCA /* Readme.md */,
+				7BA109991753C57100B0CCCA /* README.md */,
 				7BA1099B1753C57700B0CCCA /* Class */,
 				7B7ACF69175545F000076146 /* SmartDrawing.bundle */,
 				7BA1097A1753C22100B0CCCA /* SDAppDelegate.h */,
@@ -686,7 +686,7 @@
 				7BA1097E1753C22100B0CCCA /* Default.png in Resources */,
 				7BA109801753C22100B0CCCA /* Default@2x.png in Resources */,
 				7BA109821753C22100B0CCCA /* Default-568h@2x.png in Resources */,
-				7BA1099A1753C57100B0CCCA /* Readme.md in Resources */,
+				7BA1099A1753C57100B0CCCA /* README.md in Resources */,
 				7B7ACF6A175545F200076146 /* SmartDrawing.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
