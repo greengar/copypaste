@@ -23,7 +23,6 @@
 #define kMaxPointSize               32.0
 #define kDefaultPointSize           9.0
 #define kEraseButtonWidth           100.0
-#define kColorSpectrum              160
 #define kPreviewAreaTopMargin       9
 #define kBrushToolsViewY            (kOffset + 87 + (kOffset + 70 - (460 - frame.size.height)) + 25 + 16)
 #define kOpacityLabelY              (kLabelHeight + kSliderHeight - 3)

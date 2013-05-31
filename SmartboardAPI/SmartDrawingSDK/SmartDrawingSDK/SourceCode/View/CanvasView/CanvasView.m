@@ -110,7 +110,6 @@
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.3];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [UIView setAnimationDidStopSelector:@selector(finishShowHidePickerAnimation)];
         [UIView setAnimationDelegate:self];
         self.colorPickerView.alpha = 1.0f;
         self.colorPickerView.frame = CGRectMake(0,
@@ -123,7 +122,6 @@
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.3];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [UIView setAnimationDidStopSelector:@selector(finishShowHidePickerAnimation)];
         [UIView setAnimationDelegate:self];
         self.colorPickerView.alpha = 0.0f;
         self.colorPickerView.frame = CGRectMake(0,
@@ -132,10 +130,6 @@
                                                 self.colorPickerView.frame.size.height);
         [UIView commitAnimations];
     }
-}
-
-- (void)finishShowHidePickerAnimation {
-    [self.colorTabView finishShowHidePicker:(self.colorPickerView.alpha == 1.0f)];
 }
 
 - (void)updateSelectedColor {

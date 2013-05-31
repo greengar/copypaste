@@ -13,8 +13,10 @@
 @property (nonatomic, strong) NSString  *myFontName;
 @property (nonatomic)         int        myFontSize;
 @property (nonatomic, strong) UIColor   *myColor;
+@property (nonatomic)         float      myColorLocX;
+@property (nonatomic)         float      myColorLocY;
 
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize;
-- (void)updateWithColor:(UIColor *)color;
+- (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y;
 
 @end

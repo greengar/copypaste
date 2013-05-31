@@ -110,6 +110,8 @@ typedef enum {
 
 #define kButtonHeight       44
 
+#define kColorSpectrum      160
+
 #define kToolsMinimizedKey @"kToolsMinimizedKey"
 
 #define		FONT_SIZES			[NSNumber numberWithInt:6],[NSNumber numberWithInt:8],[NSNumber numberWithInt:9],[NSNumber numberWithInt:10],[NSNumber numberWithInt:11],[NSNumber numberWithInt:12],[NSNumber numberWithInt:14],[NSNumber numberWithInt:16],[NSNumber numberWithInt:18],[NSNumber numberWithInt:20],[NSNumber numberWithInt:22],[NSNumber numberWithInt:24],[NSNumber numberWithInt:25],[NSNumber numberWithInt:26],[NSNumber numberWithInt:28],[NSNumber numberWithInt:29],[NSNumber numberWithInt:30],[NSNumber numberWithInt:32],[NSNumber numberWithInt:40],[NSNumber numberWithInt:50],nil

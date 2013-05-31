@@ -11,8 +11,11 @@
 #import <QuartzCore/CoreAnimation.h>
 #import "GSColorCircle.h"
 #import "SettingManager.h"
+#import "SDBaseView.h"
+#import "TextView.h"
 
 @implementation ColorPickerImageView
+@synthesize holderView = _holderView;
 @synthesize pickedColorDelegate;
 
 - (id)initWithImage:(UIImage *)image {
@@ -27,7 +30,17 @@
     CGPoint point = [touch locationInView:self]; //where image was tapped
     if (point.y >= 0 && point.x >= 0 && point.y < self.frame.size.height && point.x < self.frame.size.width) {
         UIColor * lastColor = [self getPixelColorAtLocation:point];
-        [[SettingManager sharedManager] setCurrentColorTabWithColor:lastColor atOffsetX:point.x atOffsetY:point.y];
+        
+        if (self.holderView && [self.holderView isKindOfClass:[TextView class]]) {
+            [((TextView *) self.holderView) updateWithColor:lastColor x:point.x y:point.y];
+            [[SettingManager sharedManager] setCurrentFontColor:lastColor];
+            
+        } else {
+            [[SettingManager sharedManager] setCurrentColorTabWithColor:lastColor
+                                                              atOffsetX:point.x
+                                                              atOffsetY:point.y];
+        }
+        
         for (int i = 0; i < [pickedColorDelegateArray count]; i++) {
             if ([[pickedColorDelegateArray objectAtIndex:i] respondsToSelector:@selector(colorPicked)]) {
                 [[pickedColorDelegateArray objectAtIndex:i] colorPicked];
@@ -63,7 +76,11 @@
 
 - (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
     [self touchesEvent:touches];
-    [[SettingManager sharedManager] persistColorTabSettingAtCurrentIndex];    
+    if (self.holderView && [self.holderView isKindOfClass:[TextView class]]) {
+        [[SettingManager sharedManager] persistTextSetting];
+    } else {
+        [[SettingManager sharedManager] persistColorTabSettingAtCurrentIndex];
+    }
 }
 
 - (UIColor*) getPixelColorAtLocation:(CGPoint)point {

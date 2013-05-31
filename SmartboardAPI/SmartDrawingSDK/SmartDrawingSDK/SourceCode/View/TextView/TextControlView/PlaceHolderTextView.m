@@ -42,6 +42,21 @@
     } else {
         [self.placeHolderLabel setHidden:YES];
     }
+    
+    [self updateFrame];
+}
+
+- (void)updateFrame {
+    CGRect frame = self.frame;
+    frame.size.height = self.contentSize.height;
+    self.frame = frame;
+
+    if ([self superview]) {
+        [self superview].frame = CGRectMake([self superview].frame.origin.x,
+                                            [self superview].frame.origin.y,
+                                            self.frame.size.width,
+                                            self.frame.size.height);
+    }
 }
 
 - (void)setFont:(UIFont *)font {

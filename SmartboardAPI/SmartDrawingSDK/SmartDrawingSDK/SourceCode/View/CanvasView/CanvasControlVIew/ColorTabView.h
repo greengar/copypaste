@@ -17,7 +17,6 @@
 
 @interface ColorTabView : UIView
 
-- (void)finishShowHidePicker:(BOOL)isShown;
 - (void)updateColorTab;
 
 @property (nonatomic, strong) NSArray *tabArray;

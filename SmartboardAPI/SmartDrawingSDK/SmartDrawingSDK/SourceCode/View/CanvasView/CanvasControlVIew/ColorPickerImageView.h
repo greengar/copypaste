@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class SDBaseView;
+
 @protocol ColorPickerImageViewDelegate
 - (void) colorPicked;
 @end
@@ -32,6 +34,7 @@
 }
 
 @property (nonatomic, retain) id pickedColorDelegate;
+@property (nonatomic, assign) SDBaseView *holderView;
 
 - (void) registerDelegate:(id)delegate;
 - (UIColor*) getPixelColorAtLocation:(CGPoint)point;

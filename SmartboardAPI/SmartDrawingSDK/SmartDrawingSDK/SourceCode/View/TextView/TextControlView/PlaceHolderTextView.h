@@ -11,5 +11,6 @@
 @interface PlaceHolderTextView : UITextView <UITextInput>
 
 - (void)setPlaceHolderText:(NSString *)placeHolderText;
+- (void)updateFrame;
 
 @end

@@ -80,6 +80,7 @@
                                inComponent:kFontSizeIndex animated:YES];
             [self.fontPreviewLabel setFont:[UIFont fontWithName:[self.currentTextView myFontName]
                                                            size:[self.currentTextView myFontSize]]];
+            [self.fontPreviewLabel setTextColor:[self.currentTextView myColor]];
         }
     }
 }
@@ -123,6 +124,7 @@
     
     [self.fontPreviewLabel setFont:[UIFont fontWithName:[[SettingManager sharedManager] currentFontName]
                                                    size:[[SettingManager sharedManager] currentFontSize]]];
+    [self.fontPreviewLabel setTextColor:[[SettingManager sharedManager] currentFontColor]];
 }
 
 - (int)selectedSize:(int)size_ {

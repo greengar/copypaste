@@ -30,12 +30,14 @@
 #define kDefaultTextBoxHeight 60
 
 #define kFontPickerHeight 344
+#define kFontColorPickerHeight 288
 
 @interface SDPage()
 @property (nonatomic, strong) UIView         *toolBarView;
 @property (nonatomic, strong) NSMutableArray *toolBarButtons;
 @property (nonatomic, strong) NSMutableArray *textToolBarButtons;
 @property (nonatomic, strong) FontPickerView *fontPickerView;
+@property (nonatomic, strong) FontColorPickerView *fontColorPickerView;
 @property (nonatomic, strong) BackgroundView *backgroundImageView;
 @end
 
@@ -46,6 +48,7 @@
 @synthesize elementViews = _elementViews;
 @synthesize selectedElementView = _selectedElementView;
 @synthesize fontPickerView = _fontPickerView;
+@synthesize fontColorPickerView = _fontColorPickerView;
 @synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame
@@ -147,6 +150,12 @@
     
     [self.fontPickerView setHidden:YES];
     [self addSubview:self.fontPickerView];
+    
+    self.fontColorPickerView = [[FontColorPickerView alloc] initWithFrame:CGRectMake(0,
+                                                                                     self.frame.size.height-kFontColorPickerHeight,
+                                                                                     self.frame.size.width, kFontColorPickerHeight)];
+    [self.fontColorPickerView setHidden:YES];
+    [self addSubview:self.fontColorPickerView];
 }
 
 - (void)showToolBar {
@@ -232,14 +241,21 @@
 }
 
 - (void)selectFont {
-    [self.selectedElementView deselect];
-    [self.fontPickerView setCurrentTextView:((TextView *)self.selectedElementView)];
-    [self.fontPickerView setHidden:NO];
-    [self bringSubviewToFront:self.fontPickerView];
+    if ([self.selectedElementView isKindOfClass:[TextView class]]) {
+        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
+        [self.fontPickerView setCurrentTextView:((TextView *)self.selectedElementView)];
+        [self.fontPickerView setHidden:NO];
+        [self bringSubviewToFront:self.fontPickerView];
+    }
 }
 
 - (void)selectColor {
-    
+    if ([self.selectedElementView isKindOfClass:[TextView class]]) {
+        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
+        [self.fontColorPickerView setCurrentTextView:((TextView *)self.selectedElementView)];
+        [self.fontColorPickerView setHidden:NO];
+        [self bringSubviewToFront:self.fontColorPickerView];
+    }
 }
 #pragma mark - Elements Delegate
 - (void)deselectAll {
@@ -263,6 +279,7 @@
 - (void)elementDeselected:(SDBaseView *)element {
     if ([element isKindOfClass:[TextView class]]) {
         [self.fontPickerView setHidden:YES];
+        [self.fontColorPickerView setHidden:YES];
     }
 }
 

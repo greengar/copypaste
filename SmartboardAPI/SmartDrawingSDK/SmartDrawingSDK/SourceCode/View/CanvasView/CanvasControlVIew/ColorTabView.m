@@ -121,14 +121,4 @@
     }
 }
 
-- (void)finishShowHidePicker:(BOOL)isShown {
-    if (isShown) {
-        self.hideShowImageInTabArray.image = [UIImage imageNamed:@"SmartDrawing.bundle/arrow_down_48.png"];
-        self.hideShowImageInTabArray.highlightedImage = [UIImage imageNamed:@"SmartDrawing.bundle/arrow_down_48_highlighted.png"];
-    } else {
-        self.hideShowImageInTabArray.image = [UIImage imageNamed:@"SmartDrawing.bundle/arrow_up_48.png"];
-        self.hideShowImageInTabArray.highlightedImage = [UIImage imageNamed:@"SmartDrawing.bundle/arrow_up_48_highlighted.png"];
-    }
-}
-
 @end

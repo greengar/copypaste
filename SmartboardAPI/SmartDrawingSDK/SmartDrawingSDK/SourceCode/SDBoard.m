@@ -36,7 +36,7 @@
 
 - (void)setBackgroundImage:(UIImage *)image {
     if (!image) {
-        image = [UIImage imageNamed:@"Default.png"];
+        image = [UIImage imageNamed:@"SmartDrawing.bundle/DefaultBackground.png"];
     }
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.backgroundImageView setImage:image];

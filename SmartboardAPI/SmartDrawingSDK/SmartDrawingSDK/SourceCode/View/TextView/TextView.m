@@ -30,11 +30,13 @@
         [self.textView setTextColor:[UIColor darkGrayColor]];
         [self.textView setFont:[UIFont systemFontOfSize:17.0f]];
         [self.textView setDelegate:self];
+        [self.textView setAutocorrectionType:UITextAutocorrectionTypeNo];
+        [self.textView setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
         [self.textView setPlaceHolderText:@"Enter Text"];
         
         [self updateWithFontName:[[SettingManager sharedManager] currentFontName]
                             size:[[SettingManager sharedManager] currentFontSize]];
-        [self updateWithColor:[[SettingManager sharedManager] currentFontColor]];
+        [self updateWithColor:[[SettingManager sharedManager] currentFontColor] x:-50 y:-50];
         
         [self addSubview:self.textView];
     }
@@ -51,14 +53,29 @@
     return self.textView;
 }
 
+- (void)select {
+    [super select];
+    [self.textView updateFrame];
+    [self.textView setPlaceHolderText:@"Enter Text"];
+}
+
+- (void)deselect {
+    [super deselect];
+    [self.textView setPlaceHolderText:@""];
+}
+
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
     self.myFontName = fontName;
     self.myFontSize = fontSize;
     [self.textView setFont:[UIFont fontWithName:fontName size:fontSize]];
+    [self.textView updateFrame];
 }
 
-- (void)updateWithColor:(UIColor *)color {
+- (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y {
     self.myColor = color;
+    self.myColorLocX = x;
+    self.myColorLocY = y;
     [self.textView setTextColor:color];
+    [self.textView updateFrame];
 }
 @end
