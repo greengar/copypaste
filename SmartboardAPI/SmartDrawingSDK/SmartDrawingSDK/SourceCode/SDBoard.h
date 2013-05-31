@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SDUtils.h"
 #import "SDPage.h"
+#import "SDBaseView.h"
 
-@interface SDBoard : UIViewController <SDPageDelegate>
+@interface SDBoard : UIViewController <SDPageDelegate, SDBaseViewDelegate>
 
 - (void)setBackgroundImage:(UIImage *)image;
 

@@ -11,6 +11,7 @@
 @class SDBaseView;
 
 @protocol SDBaseViewDelegate
+@optional
 - (void)elementSelected:(SDBaseView *)element;
 - (void)elementDeselected:(SDBaseView *)element;
 @end

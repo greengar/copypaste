@@ -10,6 +10,10 @@
 
 @implementation SDUtils
 
++ (int)getBuildVersion {
+    return 1;
+}
+
 + (NSString *)generateUniqueId {
     return [NSString stringWithFormat:@"SD%f", [[NSDate date] timeIntervalSince1970]];
 }

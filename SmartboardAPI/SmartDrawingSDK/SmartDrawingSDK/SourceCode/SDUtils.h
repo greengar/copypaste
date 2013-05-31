@@ -130,6 +130,7 @@ typedef enum {
 
 @interface SDUtils : NSObject
 
++ (int)getBuildVersion;
 + (NSString*)generateUniqueId;
 + (NSString*)getCurrentTime;
 + (NSDate*)dateFromString:(NSString *)dateString;

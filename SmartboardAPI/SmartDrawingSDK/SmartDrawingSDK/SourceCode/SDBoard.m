@@ -7,6 +7,7 @@
 //
 
 #import "SDBoard.h"
+#import "CanvasView.h"
 
 @interface SDBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
@@ -38,12 +39,29 @@
     if (!image) {
         image = [UIImage imageNamed:@"SmartDrawing.bundle/DefaultBackground.png"];
     }
-    self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.backgroundImageView setImage:image];
-    [self.view addSubview:self.backgroundImageView];
-    [self.view sendSubviewToBack:self.backgroundImageView];
-    
-    [[self.pages objectAtIndex:0] setBackgroundImage:image];
+    switch ([SDUtils getBuildVersion]) {
+        case 1: {
+            CanvasView *canvasView = [[CanvasView alloc] initWithFrame:CGRectMake(0,
+                                                                                  0,
+                                                                                  self.view.frame.size.width,
+                                                                                  self.view.frame.size.height)
+                                                                 image:image];
+            [canvasView setDelegate:self];
+            [self.view addSubview:canvasView];
+        }   break;
+            
+        default: {
+            self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                                                     0,
+                                                                                     self.view.frame.size.width,
+                                                                                     self.view.frame.size.height)];
+            [self.backgroundImageView setImage:image];
+            [self.view addSubview:self.backgroundImageView];
+            [self.view sendSubviewToBack:self.backgroundImageView];
+            
+            [[self.pages objectAtIndex:0] setBackgroundImage:image];
+        }   break;
+    }
 }
 
 #pragma mark - Pages Handler
@@ -118,6 +136,15 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Build version 1.0: just OpenGL View:
+- (void)elementDeselected:(SDBaseView *)element {
+    CanvasView *canvasView = (CanvasView *) element;
+    MainPaintingView *drawingView = (MainPaintingView *) [canvasView contentView];
+    if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
+        [self.delegate doneEditingBoardWithResult:[drawingView glToUIImage]];
+    }
 }
 
 #pragma mark - Orientation

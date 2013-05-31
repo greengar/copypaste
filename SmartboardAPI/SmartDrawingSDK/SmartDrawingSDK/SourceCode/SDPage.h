@@ -14,6 +14,7 @@
 @class SDPage;
 
 @protocol SDPageDelegate
+@optional
 - (void)pageSelected:(SDPage *)page;
 - (void)doneEditingPage:(SDPage *)page;
 @end

@@ -41,6 +41,7 @@ static SDSession *activeSession = nil;
                                          delegate:(id<SDSessionDelegate>)delegate {
     self.delegate = delegate;
     self.rootController = controller;
+    
     SDBoard *rootBoard = [[SDBoard alloc] init];
     [rootBoard setDelegate:self];
     [rootBoard setBackgroundImage:image];

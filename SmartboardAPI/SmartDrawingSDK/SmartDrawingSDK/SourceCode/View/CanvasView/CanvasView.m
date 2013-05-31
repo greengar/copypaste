@@ -71,9 +71,9 @@
         // Undo and Redo
         [self initializeUndoRedoButtonsWithFrame:frame];
         
-        GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeRoundedRect themeStyle:BlueButtonStyle];
+        GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeRoundedRect themeStyle:GreenButtonStyle];
         [doneButton setFrame:CGRectMake(0, frame.size.height-44, frame.size.width/5, 44)];
-        [doneButton setTitle:@"Canvas" forState:UIControlStateNormal];
+        [doneButton setTitle:@"Done" forState:UIControlStateNormal];
         [doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:doneButton];
     }
