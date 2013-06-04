@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @class SDBaseView;
 
@@ -24,7 +25,7 @@
 - (void)scaleTo:(float)scale;
 - (void)select;
 - (void)deselect;
-
+- (void)resetTransform;
 - (void)elementTap:(UITapGestureRecognizer *)tapGesture;
 
 @property (nonatomic, strong) NSString *uid;
@@ -32,5 +33,7 @@
 @property (nonatomic) BOOL allowToEdit;
 @property (nonatomic) BOOL allowToSelect;
 @property (nonatomic, assign) id<SDBaseViewDelegate> delegate;
+@property (nonatomic) CGAffineTransform defaultTransform;
+@property (nonatomic) CGAffineTransform currentTransform;
 
 @end

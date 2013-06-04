@@ -118,6 +118,7 @@
     [self setAllowToMove:YES];
     [self setAllowToSelect:YES];
     [self.previewAreaView.layer setBorderWidth:0];
+    [self setTransform:self.currentTransform];
 }
 
 - (void)setAllowToSelect:(BOOL)allowToSelect {
@@ -151,7 +152,7 @@
     if (self.allowToEdit) {
         // For the Canvas View, it should always be full screen
         if ([self superview]) {
-            self.frame = CGRectMake(0, 0, [self superview].frame.size.width, [self superview].frame.size.height);
+            [self resetTransform];
         }
     }
 }

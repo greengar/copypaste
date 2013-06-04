@@ -19,6 +19,8 @@
 @synthesize allowToMove = _allowToMove;
 @synthesize allowToEdit = _allowToEdit;
 @synthesize allowToSelect = _allowToSelect;
+@synthesize defaultTransform = _defaultTransform;
+@synthesize currentTransform = _currentTransform;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -28,6 +30,8 @@
         self.allowToMove = YES;
         self.allowToEdit = YES;
         self.allowToSelect = YES;
+        self.defaultTransform = self.transform;
+        self.currentTransform = self.transform;
         
         self.layer.borderWidth = 2;
         self.layer.borderColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"SmartDrawing.bundle/DottedImage.png"]] CGColor];
@@ -97,6 +101,17 @@
 
 - (void)scaleTo:(float)scale {
     [self setTransform:CGAffineTransformScale(self.transform, scale, scale)];
+}
+
+- (void)resetTransform {
+    [self setTransform:self.defaultTransform];
+}
+
+- (void)setTransform:(CGAffineTransform)transform {
+    if (!CGAffineTransformEqualToTransform(transform, self.defaultTransform)) {
+        self.currentTransform = transform;
+    }
+    [super setTransform:transform];
 }
 
 - (void)select {
