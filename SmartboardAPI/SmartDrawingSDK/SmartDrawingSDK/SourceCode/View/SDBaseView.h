@@ -25,6 +25,8 @@
 - (void)select;
 - (void)deselect;
 
+- (void)elementTap:(UITapGestureRecognizer *)tapGesture;
+
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic) BOOL allowToMove;
 @property (nonatomic) BOOL allowToEdit;

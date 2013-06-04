@@ -42,6 +42,8 @@
 @synthesize transforms;
 @synthesize isDrawingStroke;
 @synthesize _zoomOffsetFromTop;
+@synthesize topLeftBounding;
+@synthesize bottomRightBounding;
 
 #pragma mark - Initialize
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView {
@@ -399,6 +401,11 @@
 // Cannot assume this line is supposed to be in my color (may be remote color)
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end {
     not_run_when_in_background
+    
+    CGRect previewAreaRect = [self getBoundingOfDrawingUpdateFromPoint:start toPoint:end];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updateBoundingRect:)]) {
+        [self.delegate updateBoundingRect:previewAreaRect];
+    }
     
     if(extDrawingView) {
         //NAM: Conversion to rotate 90
@@ -1507,6 +1514,63 @@
 }
 
 #pragma mark - Supports
+- (CGRect)getBoundingOfDrawingUpdateFromPoint:(CGPoint)start toPoint:(CGPoint)end {
+    CGPoint touchStart = CGPointMake(start.x, self.bounds.size.height-start.y);
+    CGPoint touchEnd = CGPointMake(end.x, self.bounds.size.height-end.y);
+    
+    if (CGPointEqualToPoint(self.topLeftBounding, CGPointZero)) {
+        self.topLeftBounding = touchStart;
+    }
+    
+    if (CGPointEqualToPoint(self.bottomRightBounding, CGPointZero)) {
+        self.bottomRightBounding = touchStart;
+    }
+    
+    CGPoint topLeft = self.topLeftBounding;
+    CGPoint bottomRight = self.bottomRightBounding;
+    
+    float pointSize = 0;
+    glGetFloatv(GL_POINT_SIZE, &pointSize);
+    float scale = [[UIScreen mainScreen] respondsToSelector:@selector(scale)]?[[UIScreen mainScreen] scale]:1;
+    pointSize = pointSize/scale;
+    
+    if (touchStart.x-pointSize/2 < self.topLeftBounding.x) {
+        topLeft.x = touchStart.x-pointSize/2;
+    }
+    
+    if (touchStart.x+pointSize/2 > self.bottomRightBounding.x) {
+        bottomRight.x = touchStart.x+pointSize/2;
+    }
+    
+    if (touchStart.y-pointSize/2 < self.topLeftBounding.y) {
+        topLeft.y = touchStart.y-pointSize/2;
+    }
+    
+    if (touchStart.y+pointSize/2 > self.bottomRightBounding.y) {
+        bottomRight.y = touchStart.y+pointSize/2;
+    }
+    
+    if (touchEnd.x-pointSize/2 < self.topLeftBounding.x) {
+        topLeft.x = touchEnd.x-pointSize/2;
+    }
+    
+    if (touchEnd.x+pointSize/2 > self.bottomRightBounding.x) {
+        bottomRight.x = touchEnd.x+pointSize/2;
+    }
+    
+    if (touchEnd.y-pointSize/2 < self.topLeftBounding.y) {
+        topLeft.y = touchEnd.y-pointSize/2;
+    }
+    
+    if (touchEnd.y+pointSize/2 > self.bottomRightBounding.y) {
+        bottomRight.y = touchEnd.y+pointSize/2;
+    }
+    self.topLeftBounding = topLeft;
+    self.bottomRightBounding = bottomRight;
+    
+    return CGRectMake(topLeft.x, topLeft.y, bottomRight.x-topLeft.x, bottomRight.y-topLeft.y);
+}
+
 void CGAffineToGL2(const CGAffineTransform *t, GLfloat *m)
 {
     // | m[0] m[4] m[8]  m[12] |     | m11 m21 m31 m41 |     | a c 0 tx |

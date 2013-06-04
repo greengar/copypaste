@@ -39,6 +39,7 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)doneRedo:(int)redoCount;
 - (void)checkUndo:(int)undoCount;
 - (void)checkRedo:(int)redoCount;
+- (void)updateBoundingRect:(CGRect)boundingRect;
 @end
 
 @interface MainPaintingView : PaintingView <UIGestureRecognizerDelegate> {
@@ -86,6 +87,8 @@ static const CGFloat kZoomMinScale = 0.8;
 @property (nonatomic) int                             extRotation;
 @property (nonatomic) int                             _zoomOffsetFromTop;
 @property (nonatomic, assign) id<MainPaintViewDelegate> delegate;
+@property (nonatomic) CGPoint                         topLeftBounding;
+@property (nonatomic) CGPoint                         bottomRightBounding;
 
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView;
 - (void)initialDrawing;

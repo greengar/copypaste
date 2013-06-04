@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SDBaseView.h"
+#import "CanvasView.h"
 #import "FontPickerView.h"
 #import "FontColorPickerView.h"
 
@@ -19,7 +20,7 @@
 - (void)doneEditingPage:(SDPage *)page;
 @end
 
-@interface SDPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, SDBaseViewDelegate>
+@interface SDPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, SDBaseViewDelegate, CanvasViewDelegate>
 
 - (void)setBackgroundImage:(UIImage *)image;
 - (void)select;

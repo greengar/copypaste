@@ -286,9 +286,14 @@
     if ([element isKindOfClass:[TextView class]]) {
         [self.fontPickerView setHidden:YES];
         [self.fontColorPickerView setHidden:YES];
+    } else if ([element isKindOfClass:[CanvasView class]]) {
+        [self showToolBar];
     }
 }
 
+- (void)canvas:(CanvasView *)canvas ignoreTapGesture:(UIPanGestureRecognizer *)gesture {
+    
+}
 #pragma mark - UI for Text View
 - (void)showControlForTextView {
     

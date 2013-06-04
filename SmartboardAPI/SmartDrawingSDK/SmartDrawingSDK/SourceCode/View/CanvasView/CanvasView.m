@@ -19,6 +19,7 @@
 @property (nonatomic, strong) ColorTabView *colorTabView;
 @property (nonatomic, strong) ColorPickerView *colorPickerView;
 @property (nonatomic, strong) GSButton *doneButton;
+@property (nonatomic) UIView *previewAreaView;
 @end
 
 @implementation CanvasView
@@ -28,6 +29,8 @@
 @synthesize colorTabView = _colorTabView;
 @synthesize colorPickerView = _colorPickerView;
 @synthesize doneButton = _doneButton;
+@synthesize previewAreaView = _previewAreaView;
+@synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
@@ -55,6 +58,15 @@
             }
         });
         
+        self.previewAreaView = [[UIView alloc] initWithFrame:CGRectZero];
+        [self.drawingView setTopLeftBounding:CGPointZero];
+        [self.drawingView setBottomRightBounding:CGPointZero];
+        [self addSubview:self.previewAreaView];
+        [self.previewAreaView setBackgroundColor:[UIColor clearColor]];
+        [self.previewAreaView setUserInteractionEnabled:NO];
+        [self.previewAreaView.layer setBorderWidth:1];
+        [self.previewAreaView.layer setBorderColor:[[UIColor colorWithPatternImage:[UIImage imageNamed:@"SmartDrawing.bundle/DottedImage.png"]] CGColor]];
+        
         // Bottom color tabs
         self.colorTabView = [[ColorTabView alloc] initWithFrame:CGRectMake(0,
                                                                            frame.size.height-kLauncherHeight,
@@ -79,6 +91,7 @@
         [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
         [self.doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.doneButton];
+        
     }
     return self;
 }
@@ -96,6 +109,7 @@
     [self setAllowToEdit:YES];
     [self setAllowToMove:NO];
     [self setAllowToSelect:NO];
+    [self.previewAreaView.layer setBorderWidth:2];
 }
 
 - (void)deselect {
@@ -103,6 +117,7 @@
     [self setAllowToEdit:NO];
     [self setAllowToMove:YES];
     [self setAllowToSelect:YES];
+    [self.previewAreaView.layer setBorderWidth:0];
 }
 
 - (void)setAllowToSelect:(BOOL)allowToSelect {
@@ -132,6 +147,7 @@
 
 - (void)setAllowToEdit:(BOOL)allowToEdit {
     [super setAllowToEdit:allowToEdit];
+    
     if (self.allowToEdit) {
         // For the Canvas View, it should always be full screen
         if ([self superview]) {
@@ -140,6 +156,42 @@
     }
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    if (self.allowToEdit) {
+        return [super hitTest:point withEvent:event];
+    } else {
+        UIView *hitView = [super hitTest:point withEvent:event];
+        if (hitView == self && CGRectContainsPoint(self.previewAreaView.frame, point)) {
+            return hitView;
+        }
+        return nil;
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    CGPoint location = [touch locationInView:self];
+    if (CGRectContainsPoint(self.previewAreaView.frame, location)) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)elementTap:(UITapGestureRecognizer *)tapGesture {
+    CGPoint location = [tapGesture locationInView:self];
+    if (CGRectContainsPoint(self.previewAreaView.frame, location)) {
+        [super elementTap:(UITapGestureRecognizer *)tapGesture];
+    } else {
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(canvas:ignoreTapGesture:)]) {
+            [self.delegate canvas:self ignoreTapGesture:tapGesture];
+        }
+    }
+}
+
+- (void)updateBoundingRect:(CGRect)boundingRect {
+    self.previewAreaView.frame = boundingRect;
+}
+
+#pragma mark - Picker
 - (void)selectColorTabAtIndex:(int)index {
     [self.colorPickerView selectColorTabAtIndex:index];
 }

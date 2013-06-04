@@ -12,8 +12,15 @@
 #import "ColorTabView.h"
 #import "ColorPickerView.h"
 
+@class CanvasView;
+
+@protocol CanvasViewDelegate <SDBaseViewDelegate>
+- (void)canvas:(CanvasView *)canvas ignoreTapGesture:(UITapGestureRecognizer *)gesture;
+@end
+
 @interface CanvasView : SDBaseView <ColorTabViewDelegate, ColorPickerViewDelegate, MainPaintViewDelegate>
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
 
+@property (nonatomic, assign) id<CanvasViewDelegate> delegate;
 @end

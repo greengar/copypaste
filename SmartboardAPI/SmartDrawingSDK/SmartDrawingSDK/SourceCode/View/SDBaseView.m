@@ -29,8 +29,8 @@
         self.allowToEdit = YES;
         self.allowToSelect = YES;
         
-        self.layer.borderWidth = 1;
-        self.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+        self.layer.borderWidth = 2;
+        self.layer.borderColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"SmartDrawing.bundle/DottedImage.png"]] CGColor];
         
     }
     return self;
