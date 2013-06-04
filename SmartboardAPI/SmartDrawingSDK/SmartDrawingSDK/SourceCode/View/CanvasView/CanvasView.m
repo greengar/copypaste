@@ -18,6 +18,7 @@
 @property (nonatomic, strong) MainPaintingView *drawingView;
 @property (nonatomic, strong) ColorTabView *colorTabView;
 @property (nonatomic, strong) ColorPickerView *colorPickerView;
+@property (nonatomic, strong) GSButton *doneButton;
 @end
 
 @implementation CanvasView
@@ -26,6 +27,7 @@
 @synthesize drawingView = _drawingView;
 @synthesize colorTabView = _colorTabView;
 @synthesize colorPickerView = _colorPickerView;
+@synthesize doneButton = _doneButton;
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
@@ -34,6 +36,7 @@
         // Initialization code
         self.allowToEdit = YES;
         self.allowToMove = NO;
+        self.allowToSelect = NO;
         
         self.backgroundColor = [UIColor clearColor];
         
@@ -71,11 +74,11 @@
         // Undo and Redo
         [self initializeUndoRedoButtonsWithFrame:frame];
         
-        GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeRoundedRect themeStyle:GreenButtonStyle];
-        [doneButton setFrame:CGRectMake(0, frame.size.height-44, frame.size.width/5, 44)];
-        [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-        [doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:doneButton];
+        self.doneButton = [GSButton buttonWithType:UIButtonTypeRoundedRect themeStyle:GreenButtonStyle];
+        [self.doneButton setFrame:CGRectMake(0, frame.size.height-44, frame.size.width/5, 44)];
+        [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
+        [self.doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.doneButton];
     }
     return self;
 }
@@ -85,20 +88,56 @@
 }
 
 - (void)finishCanvasView {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementDeselected:)]) {
-        [self setAllowToMove:YES];
-        [self setAllowToEdit:YES];
-        [self setAllowToSelect:YES];
-        [self.delegate elementDeselected:self];
-    }
+    [self deselect];
 }
 
 - (void)select {
-
+    [super select];
+    [self setAllowToEdit:YES];
+    [self setAllowToMove:NO];
+    [self setAllowToSelect:NO];
 }
 
 - (void)deselect {
+    [super deselect];
+    [self setAllowToEdit:NO];
+    [self setAllowToMove:YES];
+    [self setAllowToSelect:YES];
+}
+
+- (void)setAllowToSelect:(BOOL)allowToSelect {
+    [super setAllowToSelect:allowToSelect];
+}
+
+- (void)setAllowToMove:(BOOL)allowToMove {
+    [super setAllowToMove:allowToMove];
     
+    if (self.allowToMove) {
+        [self.undoButton setHidden:YES];
+        [self.redoButton setHidden:YES];
+        [self.colorTabView setHidden:YES];
+        [self.colorPickerView setHidden:YES];
+        [self.doneButton setHidden:YES];
+        [self.drawingView setUserInteractionEnabled:NO];
+        
+    } else {
+        [self.undoButton setHidden:NO];
+        [self.redoButton setHidden:NO];
+        [self.colorTabView setHidden:NO];
+        [self.colorPickerView setHidden:NO];
+        [self.doneButton setHidden:NO];
+        [self.drawingView setUserInteractionEnabled:YES];
+    }
+}
+
+- (void)setAllowToEdit:(BOOL)allowToEdit {
+    [super setAllowToEdit:allowToEdit];
+    if (self.allowToEdit) {
+        // For the Canvas View, it should always be full screen
+        if ([self superview]) {
+            self.frame = CGRectMake(0, 0, [self superview].frame.size.width, [self superview].frame.size.height);
+        }
+    }
 }
 
 - (void)selectColorTabAtIndex:(int)index {

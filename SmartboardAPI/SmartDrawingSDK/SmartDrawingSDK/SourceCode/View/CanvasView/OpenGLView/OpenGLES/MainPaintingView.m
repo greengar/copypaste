@@ -92,8 +92,8 @@
 }
 
 - (void)initialDrawing {
-    glColor4f(1.0, 1.0, 1.0, 1.0);
-    [self setCurrentColorComponentWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+//    glColor4f(1.0, 1.0, 1.0, 1.0);
+    [self setCurrentColorComponentWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
     [self renderLineFromPoint:CGPointMake(-1, -1) toPoint:CGPointMake(-1, -1) toURBackBuffer:NO isErasing:NO];
     [self erase];
 }

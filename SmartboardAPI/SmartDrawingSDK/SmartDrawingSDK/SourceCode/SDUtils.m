@@ -11,7 +11,8 @@
 @implementation SDUtils
 
 + (int)getBuildVersion {
-    return 1;
+    /* return 1; 1 is for the OpenGL-only build */
+    return 2;
 }
 
 + (NSString *)generateUniqueId {

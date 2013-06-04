@@ -42,7 +42,8 @@ static unsigned int NextPot(unsigned int n) {
     if (self) {
         CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
         
-        eaglLayer.opaque = TRUE;
+        eaglLayer.opaque = NO;
+        eaglLayer.backgroundColor = [[UIColor clearColor] CGColor];
         eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                         [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
                                         kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat,
@@ -259,7 +260,15 @@ static GLfloat const textureScale = 1 /* 0.8 */;
         
         unsigned char * data = (unsigned char *)malloc( kTextureSizeWidth * kTextureSizeHeight * 4 ); 
         
-        memset(data, 0xff, kTextureSizeWidth * kTextureSizeHeight * 4);
+        memset(data, 0x00, kTextureSizeWidth * kTextureSizeHeight * 4);
+        
+        // each layer must have opacity = 0
+        // in order not to overlap layers
+        int ii; // red, green, blue, alpha are 4 elements
+        for ( ii = 3; ii < kTextureSizeWidth*kTextureSizeHeight*4; ii+=4) {
+            // set layer opacity to zero so that multiple layers can be rendered to final render buffer
+            data[ii] = 0x0;
+        }
         
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);        
         
@@ -301,7 +310,7 @@ static GLfloat const textureScale = 1 /* 0.8 */;
         data[ii] = 0x0;
     }
     
-    layerInfo.offscreenLayerOpacity = 1.0f;
+    layerInfo.offscreenLayerOpacity = 0.0f;
     layerInfo.offscreenLayerVisible = YES;
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, kTextureSizeWidth, kTextureSizeHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);

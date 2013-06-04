@@ -205,7 +205,11 @@
 
 #pragma mark - Tool Bar Buttons
 - (void)newCanvas {
-    CanvasView *canvasView = [[CanvasView alloc] initWithFrame:self.frame image:nil];
+    CanvasView *canvasView = [[CanvasView alloc] initWithFrame:CGRectMake(0,
+                                                                          0,
+                                                                          self.frame.size.width,
+                                                                          self.frame.size.height)
+                                                         image:nil];
     [canvasView setDelegate:self];
     [self addSubview:canvasView];
     [self.elementViews addObject:canvasView];
@@ -260,7 +264,9 @@
 #pragma mark - Elements Delegate
 - (void)deselectAll {
     for (SDBaseView *existedElement in self.elementViews) {
-        [existedElement deselect];
+        if (existedElement != self.selectedElementView) {
+            [existedElement deselect];
+        }
     }
 }
 
@@ -271,7 +277,7 @@
     
     if ([element isKindOfClass:[TextView class]]) {
         [self showTextToolBar];
-    } else {
+    } else if (![element isKindOfClass:[CanvasView class]]) {
         [self showToolBar];
     }
 }

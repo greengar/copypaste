@@ -126,7 +126,8 @@
 		glDisable(GL_DITHER);
 		glMatrixMode(GL_MODELVIEW);
         
-        glClearColor(1.0, 1.0, 1.0, 1.0);
+//        glClearColor(1.0, 1.0, 1.0, 1.0);
+        glClearColor(1.0, 1.0, 1.0, 0.0);
         
         [[PaintingManager sharedManager] registerCallback:self];
     }
@@ -770,7 +771,8 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     glLoadIdentity();
     glPushMatrix();
     
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    // glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     glTranslatef(internal_transforms.x * 2/screenSize_.width, - internal_transforms.y * 2/screenSize_.height, 0);
@@ -804,7 +806,8 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     glLoadIdentity();
     glPushMatrix();
 
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+//    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     glTranslatef(internal_transforms.x * 2/screenSize_.width, - internal_transforms.y * 2/screenSize_.height, 0);
