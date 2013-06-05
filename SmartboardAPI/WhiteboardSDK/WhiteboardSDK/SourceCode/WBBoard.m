@@ -12,30 +12,64 @@
 
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
-@property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, strong) UIImage *backgroundImage;
 - (void)selectPage:(WBPage *)page;
 @end
 
 @implementation WBBoard
 @synthesize uid = _uid;
 @synthesize name = _name;
+@synthesize previewImage = _previewImage;
 @synthesize tags = _tags;
 @synthesize pages = _pages;
+@synthesize backgroundImage = _backgroundImage;
 @synthesize delegate = _delegate;
+
+- (id)initWithDict:(NSDictionary *)dictionary {
+    self = [super init];
+    if (self) {
+        self.view.frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
+        self.view.backgroundColor = [UIColor clearColor];
+        self.uid = [dictionary objectForKey:@"board_uid"];
+        self.name = [dictionary objectForKey:@"board_name"];
+        self.pages = [NSMutableArray new];
+        
+        NSMutableArray *pages = [dictionary objectForKey:@"board_pages"];
+        for (NSDictionary *pageDict in pages) {
+            WBPage *page = [WBPage loadFromDict:pageDict];
+            [page setDelegate:self];
+            [self selectPage:page];
+            [self.pages addObject:page];
+        }
+        
+        // There's always at least 1 page
+        if ([self.pages count]) {
+            [self selectPage:[self.pages objectAtIndex:0]]; // Select first page
+        } else {
+            [self addNewPage];
+        }
+    }
+    return self;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        self.view.backgroundColor = [UIColor whiteColor];
-        self.uid = [WBUtils generateUniqueId];
-        self.pages = [[NSMutableArray alloc] init];
-        
+        self.view.backgroundColor = [UIColor clearColor];
+        self.uid = [WBUtils generateUniqueIdWithPrefix:@"B_"];
+        self.name = [NSString stringWithFormat:@"Whiteboard %@", [WBUtils getCurrentTime]];
+        self.pages = [NSMutableArray new];
+    }
+    return self;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (![self.pages count]) {
         // There's always at least 1 page
         [self addNewPage];
     }
-    return self;
 }
 
 - (void)setBackgroundImage:(UIImage *)image {
@@ -45,24 +79,16 @@
     switch ([WBUtils getBuildVersion]) {
         case 1: {
             CanvasElement *canvasView = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
-                                                                                  0,
-                                                                                  self.view.frame.size.width,
-                                                                                  self.view.frame.size.height)
-                                                                 image:image];
+                                                                                        0,
+                                                                                        self.view.frame.size.width,
+                                                                                        self.view.frame.size.height)
+                                                                       image:image];
             [canvasView setDelegate:self];
             [self.view addSubview:canvasView];
         }   break;
             
         default: {
-            self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
-                                                                                     0,
-                                                                                     self.view.frame.size.width,
-                                                                                     self.view.frame.size.height)];
-            [self.backgroundImageView setImage:image];
-            [self.view addSubview:self.backgroundImageView];
-            [self.view sendSubviewToBack:self.backgroundImageView];
-            
-            [[self.pages objectAtIndex:0] setBackgroundImage:image];
+            _backgroundImage = image;
         }   break;
     }
 }
@@ -73,7 +99,11 @@
 
 #pragma mark - Pages Handler
 - (void)addNewPage {
-    WBPage *page = [[WBPage alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    WBPage *page = [[WBPage alloc] initWithFrame:CGRectMake(0,
+                                                            0,
+                                                            self.view.frame.size.width,
+                                                            self.view.frame.size.height)];
+    [page setBackgroundImage:self.backgroundImage];
     [page setDelegate:self];
     [self selectPage:page];
     [self.pages addObject:page];
@@ -127,21 +157,21 @@
 #pragma mark - Export output data
 - (void)doneEditingPage:(WBPage *)page {
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
+        DLog(@"%d", [BoardManager writeBoardToFile:self]);
         [self.delegate doneEditingBoardWithResult:[self exportBoardToUIImage]];
     }
 }
 
 - (UIImage *)exportBoardToUIImage {
-    if (self.backgroundImageView) {
-        return [self.backgroundImageView image];
-    }
-    return nil;
+    return self.backgroundImage;
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
+- (NSMutableDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"board_uid"];
+    [dict setObject:self.name forKey:@"board_name"];
+    [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
     
     NSMutableArray *pageArray = [NSMutableArray new];
     for (WBPage *page in self.pages) {
@@ -150,20 +180,12 @@
     }
     
     [dict setObject:pageArray forKey:@"board_pages"];
-    return dict;
+    
+    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 + (WBBoard *)loadFromDict:(NSDictionary *)dict {
-    WBBoard *board = [[WBBoard alloc] init];
-    
-    [board setUid:[dict objectForKey:@"board_uid"]];
-    
-    NSMutableArray *pages = [dict objectForKey:@"board_pages"];
-    for (NSDictionary *pageDict in pages) {
-        WBPage *page = [WBPage loadFromDict:pageDict];
-        [[board pages] addObject:page];
-    }
-    
+    WBBoard *board = [[WBBoard alloc] initWithDict:dict];
     return board;
 }
 

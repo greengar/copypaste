@@ -29,7 +29,7 @@
 - (void)resetTransform;
 - (void)elementTap:(UITapGestureRecognizer *)tapGesture;
 
-- (NSDictionary *)saveToDict;
+- (NSMutableDictionary *)saveToDict;
 + (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary;
 
 @property (nonatomic, strong) NSString *uid;

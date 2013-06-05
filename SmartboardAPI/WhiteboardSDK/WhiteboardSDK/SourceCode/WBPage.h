@@ -22,6 +22,7 @@
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
 
+- (id)initWithDict:(NSDictionary *)dictionary;
 - (void)setBackgroundImage:(UIImage *)image;
 - (void)select;
 - (NSDictionary *)saveToDict;

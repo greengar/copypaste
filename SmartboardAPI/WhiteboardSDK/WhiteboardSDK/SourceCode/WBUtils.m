@@ -16,7 +16,11 @@
 }
 
 + (NSString *)generateUniqueId {
-    return [NSString stringWithFormat:@"SD%f", [[NSDate date] timeIntervalSince1970]];
+    return [NSString stringWithFormat:@"WB%f", [[NSDate date] timeIntervalSince1970]];
+}
+
++ (NSString *)generateUniqueIdWithPrefix:(NSString *)prefix {
+    return [NSString stringWithFormat:@"%@%f", prefix, [[NSDate date] timeIntervalSince1970]];
 }
 
 + (NSString *)getCurrentTime {

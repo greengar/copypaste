@@ -7,6 +7,7 @@
 //
 
 #import "ImageElement.h"
+#import "NSData+WBBase64.h"
 
 @interface ImageElement()
 @property (nonatomic, strong) UIImageView *imageView;
@@ -19,7 +20,15 @@
     self = [super initWithDict:dictionary];
     if (self) {
         self.userInteractionEnabled = YES;
-        [self initImageViewWithFrame:self.defaultFrame image:[dictionary objectForKey:@"element_image"]];
+        
+        UIImage *image = nil;
+        NSString *imageString = [dictionary objectForKey:@"element_background"];
+        if (imageString) {
+            NSData *imageData = [NSData wbDataFromBase64String:imageString];
+            image = [UIImage imageWithData:imageData];
+        }
+        [self initImageViewWithFrame:self.defaultFrame
+                               image:image];
     }
     return self;
 }
@@ -48,11 +57,12 @@
     return self.imageView;
 }
 
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = (NSMutableDictionary *) [super saveToDict];
+- (NSMutableDictionary *)saveToDict {
+    NSMutableDictionary *dict = [super saveToDict];
     [dict setObject:@"ImageElement" forKey:@"element_type"];
     if (self.imageView && self.imageView.image) {
-        [dict setObject:self.imageView.image forKey:@"element_image"];
+        NSData *data = UIImagePNGRepresentation(self.imageView.image);
+        [dict setObject:[data wbBase64EncodedString] forKey:@"element_image"];
     }
     return dict;
 }

@@ -132,6 +132,7 @@ typedef enum {
 
 + (int)getBuildVersion;
 + (NSString*)generateUniqueId;
++ (NSString *)generateUniqueIdWithPrefix:(NSString *)prefix;
 + (NSString*)getCurrentTime;
 + (NSDate*)dateFromString:(NSString *)dateString;
 + (NSString*)stringFromDate:(NSDate *)date;

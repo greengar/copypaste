@@ -13,6 +13,9 @@
 static BoardManager *shareManager = nil;
 
 @implementation BoardManager
+@synthesize boardKeys = _boardKeys;
+@synthesize boardContents = _boardContents;
+@synthesize currentBoardUid = _currentBoardUid;
 
 + (BoardManager *)sharedManager {
     static BoardManager *sharedManager;
@@ -22,18 +25,55 @@ static BoardManager *shareManager = nil;
 }
 
 + (NSString *)getBaseDocumentFolder {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *baseDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask,
+                                                             YES) objectAtIndex:0];
+    return [baseDir stringByAppendingPathComponent:@"Whiteboard/"];
 }
 
 + (BOOL)writeBoardToFile:(WBBoard *)board {
-    NSString * filePath = [[BoardManager getBaseDocumentFolder] stringByAppendingPathComponent:board.uid];
-	return [[board saveToDict] writeToFile:filePath atomically:NO];
+    NSString *folderPath = [BoardManager getBaseDocumentFolder];
+    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", board.uid]];
+    NSDictionary *boardDict = [board saveToDict];
+    DLog(@"boardDict: %@", boardDict);
+	return [boardDict writeToFile:filePath atomically:NO];
+}
+
++ (WBBoard *)readBoardFromFileWithUid:(NSString *)uid {
+    NSString *folderPath = [BoardManager getBaseDocumentFolder];
+    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", uid]];
+    NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    DLog(@"boardDict: %@", boardDict);
+    return [WBBoard loadFromDict:boardDict];
+}
+
++ (WBBoard *)loadBoardWithUid:(NSString *)uid {
+    return [[[BoardManager sharedManager] boardContents] objectForKey:uid];
+}
+
++ (WBBoard *)loadBoardWithName:(NSString *)name {
+    for (NSString *uid in [[BoardManager sharedManager] boardKeys]) {
+        WBBoard *board = [[[BoardManager sharedManager] boardContents] objectForKey:uid];
+        if ([[board name] isEqualToString:name]) {
+            return board;
+        }
+    }
+    return nil;
+}
+
+- (void)createANewBoard:(WBBoard *)board {
+    if (![self.boardContents objectForKey:board.uid]) {
+        [self.boardKeys addObject:board.uid];
+        [self.boardContents setObject:board forKey:board.uid];
+    }
+    self.currentBoardUid = board.uid;
 }
 
 - (id) init {
     self = [super init];
     if (self) {
-        
+        self.boardKeys = [NSMutableArray new];
+        self.boardContents = [NSMutableDictionary new];
     }
     return self;
 }

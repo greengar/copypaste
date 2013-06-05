@@ -51,44 +51,75 @@
 @synthesize fontColorPickerView = _fontColorPickerView;
 @synthesize delegate = _delegate;
 
+- (id)initWithDict:(NSDictionary *)dictionary {
+    CGRect frame = CGRectFromString([dictionary objectForKey:@"page_frame"]);
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.uid = [dictionary objectForKey:@"page_uid"];
+        
+        self.toolBarButtons = [NSMutableArray arrayWithCapacity:5];
+        self.textToolBarButtons = [NSMutableArray arrayWithCapacity:2];
+        self.elements = [NSMutableArray new];
+        
+        NSMutableArray *elements = [dictionary objectForKey:@"page_elements"];
+        for (NSDictionary *elementDict in elements) {
+            WBBaseElement *element = [WBBaseElement loadFromDict:elementDict];
+            [element setDelegate:self];
+            [element deselect];
+            [self addSubview:element];
+            [self.elements addObject:element];
+        }
+        
+        [self initControlWithFrame:frame];
+    }
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        self.uid = [WBUtils generateUniqueId];
+        self.uid = [WBUtils generateUniqueIdWithPrefix:@"P_"];
         
-        self.toolBarButtons = [[NSMutableArray alloc] initWithCapacity:5];
-        self.textToolBarButtons = [[NSMutableArray alloc] initWithCapacity:2];
-        self.elements = [[NSMutableArray alloc] init];
+        self.toolBarButtons = [NSMutableArray arrayWithCapacity:5];
+        self.textToolBarButtons = [NSMutableArray arrayWithCapacity:2];
+        self.elements = [NSMutableArray new];
         
-        self.backgroundColor = [UIColor clearColor];
-        
-        self.toolBarView = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                                    frame.size.height-kToolBarItemHeight,
-                                                                    frame.size.width,
-                                                                    kToolBarItemHeight)];
-        [self addSubview:self.toolBarView];
-        
-        [self initToolBarButtonsWithFrame:frame];
-        [self initTextToolBarButtonsWithFrame:frame];
-        
-        // Default: show tool bar
-        [self showToolBar];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWasShown:)
-                                                     name:UIKeyboardWillShowNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillBeHidden:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
+        [self initControlWithFrame:frame];
     }
     return self;
 }
 
 #pragma mark - Tool Bar Buttons
+- (void)initControlWithFrame:(CGRect)frame {
+    self.backgroundColor = [UIColor clearColor];
+    
+    [self initToolBarViewWithFrame:frame];
+    
+    // Default: show tool bar
+    [self showToolBar];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)initToolBarViewWithFrame:(CGRect)frame {
+    self.toolBarView = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                                frame.size.height-kToolBarItemHeight,
+                                                                frame.size.width,
+                                                                kToolBarItemHeight)];
+    [self addSubview:self.toolBarView];
+    
+    [self initToolBarButtonsWithFrame:frame];
+    [self initTextToolBarButtonsWithFrame:frame];
+}
+
 - (void)initToolBarButtonsWithFrame:(CGRect)frame {
     GSButton *canvasButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:BlueButtonStyle];
     [canvasButton setTitle:@"Canvas" forState:UIControlStateNormal];
@@ -144,16 +175,16 @@
     [self.textToolBarButtons addObject:[self.toolBarButtons objectAtIndex:kTextButtonIndex]];
     
     self.fontPickerView = [[FontPickerView alloc] initWithFrame:CGRectMake(0,
-                                                                           self.frame.size.height-kFontPickerHeight,
-                                                                           self.frame.size.width,
+                                                                           frame.size.height-kFontPickerHeight,
+                                                                           frame.size.width,
                                                                            kFontPickerHeight)];
     
     [self.fontPickerView setHidden:YES];
     [self addSubview:self.fontPickerView];
     
     self.fontColorPickerView = [[FontColorPickerView alloc] initWithFrame:CGRectMake(0,
-                                                                                     self.frame.size.height-kFontColorPickerHeight,
-                                                                                     self.frame.size.width, kFontColorPickerHeight)];
+                                                                                     frame.size.height-kFontColorPickerHeight,
+                                                                                     frame.size.width, kFontColorPickerHeight)];
     [self.fontColorPickerView setHidden:YES];
     [self addSubview:self.fontColorPickerView];
 }
@@ -188,7 +219,7 @@
 #pragma mark - Background image
 - (void)setBackgroundImage:(UIImage *)image {
     if (!image) {
-        image = [UIImage imageNamed:@"Default.png"];
+        image = [UIImage imageNamed:@"Whiteboard.bundle/DefaultBackground.png"];
     }
     
     self.backgroundImageView = [[BackgroundElement alloc] initWithFrame:CGRectMake(0,
@@ -333,6 +364,7 @@
 - (NSDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"page_uid"];
+    [dict setObject:NSStringFromCGRect(self.frame) forKey:@"page_frame"];
     
     NSMutableArray *elementArray = [NSMutableArray new];
     for (WBBaseElement *element in self.elements) {
@@ -341,20 +373,11 @@
     }
     
     [dict setObject:elementArray forKey:@"page_elements"];
-    return dict;
+    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 + (WBPage *)loadFromDict:(NSDictionary *)dict {
-    WBPage *page = [[WBPage alloc] init];
-    
-    [page setUid:[dict objectForKey:@"page_uid"]];
-    
-    NSMutableArray *elements = [dict objectForKey:@"page_elements"];
-    for (NSDictionary *elementDict in elements) {
-        WBBaseElement *element = [WBBaseElement loadFromDict:elementDict];
-        [[page elements] addObject:element];
-    }
-    
+    WBPage *page = [[WBPage alloc] initWithDict:dict];
     return page;
 }
 

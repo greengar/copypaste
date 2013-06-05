@@ -31,7 +31,7 @@
     CGRect frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
     self = [super initWithFrame:frame];
     if (self) {
-        self.uid = [dictionary objectForKey:@"uid"];
+        self.uid = [dictionary objectForKey:@"element_uid"];
         self.defaultTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_default_transform"]);
         self.currentTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_current_transform"]);
         self.defaultFrame = frame;
@@ -39,6 +39,7 @@
         self.allowToEdit = YES;
         self.allowToSelect = YES;
         
+        self.transform = self.currentTransform;
         self.layer.borderWidth = 2;
         self.layer.borderColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"Whiteboard.bundle/DottedImage.png"]] CGColor];
     }
@@ -49,7 +50,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.uid = [WBUtils generateUniqueId];
+        self.uid = [WBUtils generateUniqueIdWithPrefix:@"E_"];
         self.defaultTransform = self.transform;
         self.currentTransform = self.transform;
         self.defaultFrame = frame;
@@ -188,7 +189,7 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
+- (NSMutableDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"element_uid"];
     [dict setObject:NSStringFromCGAffineTransform(self.defaultTransform) forKey:@"element_default_transform"];

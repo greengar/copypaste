@@ -8,6 +8,7 @@
 
 #import "BackgroundElement.h"
 #import <QuartzCore/QuartzCore.h>
+#import "NSData+WBBase64.h"
 
 @interface BackgroundElement()
 @property (nonatomic, strong) UIImageView *backgroundView;
@@ -25,8 +26,14 @@
         self.allowToEdit = NO;
         self.layer.borderWidth = 0;
         
+        UIImage *image = nil;
+        NSString *imageString = [dictionary objectForKey:@"element_background"];
+        if (imageString) {
+            NSData *imageData = [NSData wbDataFromBase64String:imageString];
+            image = [UIImage imageWithData:imageData];
+        }
         [self initBackgroundViewWithFrame:self.defaultFrame
-                                    image:[dictionary objectForKey:@"element_background"]];
+                                    image:image];
     }
     return self;
 }
@@ -70,11 +77,12 @@
     // I'm background, I do nothing
 }
 
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = (NSMutableDictionary *) [super saveToDict];
-    [dict setObject:@"ImageElement" forKey:@"element_type"];
+- (NSMutableDictionary *)saveToDict {
+    NSMutableDictionary *dict = [super saveToDict];
+    [dict setObject:@"BackgroundElement" forKey:@"element_type"];
     if (self.backgroundView && self.backgroundView.image) {
-        [dict setObject:self.backgroundView.image forKey:@"element_background"];
+        NSData *data = UIImagePNGRepresentation(self.backgroundView.image);
+        [dict setObject:[data wbBase64EncodedString] forKey:@"element_background"];
     }
     return dict;
 }

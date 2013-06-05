@@ -13,14 +13,16 @@
 
 @interface WBBoard : UIViewController <SDPageDelegate, WBBaseViewDelegate>
 
+- (id)initWithDict:(NSDictionary *)dictionary;
 - (void)setBackgroundImage:(UIImage *)image;
 - (int)numOfPages;
 
-- (NSDictionary *)saveToDict;
+- (NSMutableDictionary *)saveToDict;
 + (WBBoard *)loadFromDict:(NSDictionary *)dict;
 
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) UIImage *previewImage;
 @property (nonatomic, strong) NSMutableArray *tags;
 @property (nonatomic, assign) id<WBBoardDelegate> delegate;
 

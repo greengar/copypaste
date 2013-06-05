@@ -72,11 +72,13 @@
     [super select];
     [self.placeHolderTextView updateFrame];
     [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
+    [self.placeHolderTextView textChanged];
 }
 
 - (void)deselect {
     [super deselect];
     [self.placeHolderTextView setPlaceHolderText:@""];
+    [self.placeHolderTextView textChanged];
 }
 
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
@@ -95,8 +97,8 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = (NSMutableDictionary *) [super saveToDict];
+- (NSMutableDictionary *)saveToDict {
+    NSMutableDictionary *dict = [super saveToDict];
     [dict setObject:@"TextElement" forKey:@"element_type"];
     [dict setObject:self.placeHolderTextView.text forKey:@"element_text"];
     [dict setObject:self.myFontName forKey:@"element_font_name"];

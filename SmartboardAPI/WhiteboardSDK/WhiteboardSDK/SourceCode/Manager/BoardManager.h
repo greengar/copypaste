@@ -12,9 +12,18 @@
 
 @interface BoardManager : NSObject
 
-+ (BoardManager *) sharedManager;
++ (BoardManager *)sharedManager;
 + (NSString *)getBaseDocumentFolder;
+
 + (BOOL)writeBoardToFile:(WBBoard *)board;
++ (WBBoard *)readBoardFromFileWithUid:(NSString *)uid;
+
 + (WBBoard *)loadBoardWithUid:(NSString *)uid;
++ (WBBoard *)loadBoardWithName:(NSString *)name;
+- (void)createANewBoard:(WBBoard *)board;
+
+@property (nonatomic, strong) NSMutableArray *boardKeys;
+@property (nonatomic, strong) NSMutableDictionary *boardContents;
+@property (nonatomic, strong) NSString *currentBoardUid;
 
 @end
