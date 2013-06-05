@@ -11,8 +11,8 @@
 #import <QuartzCore/CoreAnimation.h>
 #import "GSColorCircle.h"
 #import "SettingManager.h"
-#import "SDBaseView.h"
-#import "TextView.h"
+#import "SDBaseElement.h"
+#import "TextElement.h"
 
 @implementation ColorPickerImageView
 @synthesize holderView = _holderView;
@@ -31,8 +31,8 @@
     if (point.y >= 0 && point.x >= 0 && point.y < self.frame.size.height && point.x < self.frame.size.width) {
         UIColor * lastColor = [self getPixelColorAtLocation:point];
         
-        if (self.holderView && [self.holderView isKindOfClass:[TextView class]]) {
-            [((TextView *) self.holderView) updateWithColor:lastColor x:point.x y:point.y];
+        if (self.holderView && [self.holderView isKindOfClass:[TextElement class]]) {
+            [((TextElement *) self.holderView) updateWithColor:lastColor x:point.x y:point.y];
             [[SettingManager sharedManager] setCurrentFontColor:lastColor];
             
         } else {
@@ -76,7 +76,7 @@
 
 - (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
     [self touchesEvent:touches];
-    if (self.holderView && [self.holderView isKindOfClass:[TextView class]]) {
+    if (self.holderView && [self.holderView isKindOfClass:[TextElement class]]) {
         [[SettingManager sharedManager] persistTextSetting];
     } else {
         [[SettingManager sharedManager] persistColorTabSettingAtCurrentIndex];

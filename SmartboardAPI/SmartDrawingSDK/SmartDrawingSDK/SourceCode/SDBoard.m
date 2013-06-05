@@ -7,7 +7,8 @@
 //
 
 #import "SDBoard.h"
-#import "CanvasView.h"
+#import "CanvasElement.h"
+#import "BoardManager.h"
 
 @interface SDBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
@@ -17,6 +18,8 @@
 
 @implementation SDBoard
 @synthesize uid = _uid;
+@synthesize name = _name;
+@synthesize tags = _tags;
 @synthesize pages = _pages;
 @synthesize delegate = _delegate;
 
@@ -41,7 +44,7 @@
     }
     switch ([SDUtils getBuildVersion]) {
         case 1: {
-            CanvasView *canvasView = [[CanvasView alloc] initWithFrame:CGRectMake(0,
+            CanvasElement *canvasView = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
                                                                                   0,
                                                                                   self.view.frame.size.width,
                                                                                   self.view.frame.size.height)
@@ -62,6 +65,10 @@
             [[self.pages objectAtIndex:0] setBackgroundImage:image];
         }   break;
     }
+}
+
+- (int)numOfPages {
+    return [self.pages count];
 }
 
 #pragma mark - Pages Handler
@@ -131,16 +138,38 @@
     return nil;
 }
 
-#pragma mark - Life cycle
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - Backup/Restore Save/Load
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:self.uid forKey:@"board_uid"];
+    
+    NSMutableArray *pageArray = [NSMutableArray new];
+    for (SDPage *page in self.pages) {
+        NSDictionary *pageDict = [page saveToDict];
+        [pageArray addObject:pageDict];
+    }
+    
+    [dict setObject:pageArray forKey:@"board_pages"];
+    return dict;
+}
+
++ (SDBoard *)loadFromDict:(NSDictionary *)dict {
+    SDBoard *board = [[SDBoard alloc] init];
+    
+    [board setUid:[dict objectForKey:@"board_uid"]];
+    
+    NSMutableArray *pages = [dict objectForKey:@"board_pages"];
+    for (NSDictionary *pageDict in pages) {
+        SDPage *page = [SDPage loadFromDict:pageDict];
+        [[board pages] addObject:page];
+    }
+    
+    return board;
 }
 
 #pragma mark - Build version 1.0: just OpenGL View:
-- (void)elementDeselected:(SDBaseView *)element {
-    CanvasView *canvasView = (CanvasView *) element;
+- (void)elementDeselected:(SDBaseElement *)element {
+    CanvasElement *canvasView = (CanvasElement *) element;
     MainPaintingView *drawingView = (MainPaintingView *) [canvasView contentView];
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
         [self.delegate doneEditingBoardWithResult:[drawingView glToUIImage]];

@@ -1,37 +1,61 @@
 //
-//  SDBaseView.m
+//  SDBaseElement.m
 //  SmartDrawingSDK
 //
 //  Created by Hector Zhao on 5/29/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "SDBaseView.h"
+#import "SDBaseElement.h"
+#import "TextElement.h"
+#import "CanvasElement.h"
+#import "ImageElement.h"
+#import "BackgroundElement.h"
 #import "SDUtils.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SDBaseView()
+@interface SDBaseElement()
 @end
 
-@implementation SDBaseView
+@implementation SDBaseElement
 @synthesize uid = _uid;
 @synthesize delegate = _delegate;
 @synthesize allowToMove = _allowToMove;
 @synthesize allowToEdit = _allowToEdit;
 @synthesize allowToSelect = _allowToSelect;
+@synthesize defaultFrame = _defaultFrame;
 @synthesize defaultTransform = _defaultTransform;
 @synthesize currentTransform = _currentTransform;
+
+- (id)initWithDict:(NSDictionary *)dictionary {
+    CGRect frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.uid = [dictionary objectForKey:@"uid"];
+        self.defaultTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_default_transform"]);
+        self.currentTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_current_transform"]);
+        self.defaultFrame = frame;
+        self.allowToMove = YES;
+        self.allowToEdit = YES;
+        self.allowToSelect = YES;
+        
+        self.layer.borderWidth = 2;
+        self.layer.borderColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"SmartDrawing.bundle/DottedImage.png"]] CGColor];
+    }
+    return self;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.uid = [SDUtils generateUniqueId];
+        self.defaultTransform = self.transform;
+        self.currentTransform = self.transform;
+        self.defaultFrame = frame;
         self.allowToMove = YES;
         self.allowToEdit = YES;
         self.allowToSelect = YES;
-        self.defaultTransform = self.transform;
-        self.currentTransform = self.transform;
         
         self.layer.borderWidth = 2;
         self.layer.borderColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"SmartDrawing.bundle/DottedImage.png"]] CGColor];
@@ -161,6 +185,33 @@
         [self scaleTo:scale];
         [pinchGesture setScale:1.0f];
     }
+}
+
+#pragma mark - Backup/Restore Save/Load
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:self.uid forKey:@"element_uid"];
+    [dict setObject:NSStringFromCGAffineTransform(self.defaultTransform) forKey:@"element_default_transform"];
+    [dict setObject:NSStringFromCGAffineTransform(self.currentTransform) forKey:@"element_current_transform"];
+    [dict setObject:NSStringFromCGRect(self.defaultFrame) forKey:@"element_default_frame"];
+    return dict;
+}
+
++ (SDBaseElement *)loadFromDict:(NSDictionary *)dictionary {
+    SDBaseElement *element = nil;
+    
+    NSString *elementType = [dictionary objectForKey:@"element_type"];
+    if ([elementType isEqualToString:@"TextElement"]) {
+        element = [TextElement loadFromDict:dictionary];
+    } else if ([elementType isEqualToString:@"CanvasElement"]) {
+        element = [CanvasElement loadFromDict:dictionary];
+    } else if ([elementType isEqualToString:@"ImageElement"]) {
+        element = [ImageElement loadFromDict:dictionary];
+    } else if ([elementType isEqualToString:@"BackgroundElement"]) {
+        element = [BackgroundElement loadFromDict:dictionary];
+    }
+    
+    return element;
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-//  SDBaseView.h
+//  SDBaseElement.h
 //  SmartDrawingSDK
 //
 //  Created by Hector Zhao on 5/29/13.
@@ -9,16 +9,17 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@class SDBaseView;
+@class SDBaseElement;
 
 @protocol SDBaseViewDelegate
 @optional
-- (void)elementSelected:(SDBaseView *)element;
-- (void)elementDeselected:(SDBaseView *)element;
+- (void)elementSelected:(SDBaseElement *)element;
+- (void)elementDeselected:(SDBaseElement *)element;
 @end
 
-@interface SDBaseView : UIView <UIGestureRecognizerDelegate>
+@interface SDBaseElement : UIView <UIGestureRecognizerDelegate>
 
+- (id)initWithDict:(NSDictionary *)dictionary;
 - (UIView *)contentView;
 - (void)moveTo:(CGPoint)dest;
 - (void)rotateTo:(float)rotation;
@@ -28,11 +29,15 @@
 - (void)resetTransform;
 - (void)elementTap:(UITapGestureRecognizer *)tapGesture;
 
+- (NSDictionary *)saveToDict;
++ (SDBaseElement *)loadFromDict:(NSDictionary *)dictionary;
+
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic) BOOL allowToMove;
 @property (nonatomic) BOOL allowToEdit;
 @property (nonatomic) BOOL allowToSelect;
 @property (nonatomic, assign) id<SDBaseViewDelegate> delegate;
+@property (nonatomic) CGRect defaultFrame;
 @property (nonatomic) CGAffineTransform defaultTransform;
 @property (nonatomic) CGAffineTransform currentTransform;
 

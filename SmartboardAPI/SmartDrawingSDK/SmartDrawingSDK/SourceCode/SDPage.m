@@ -7,10 +7,10 @@
 //
 
 #import "SDPage.h"
-#import "CanvasView.h"
-#import "TextView.h"
-#import "StickersView.h"
-#import "BackgroundView.h"
+#import "CanvasElement.h"
+#import "TextElement.h"
+#import "ImageElement.h"
+#import "BackgroundElement.h"
 #import "SDUtils.h"
 #import "GSButton.h"
 
@@ -38,14 +38,14 @@
 @property (nonatomic, strong) NSMutableArray *textToolBarButtons;
 @property (nonatomic, strong) FontPickerView *fontPickerView;
 @property (nonatomic, strong) FontColorPickerView *fontColorPickerView;
-@property (nonatomic, strong) BackgroundView *backgroundImageView;
+@property (nonatomic, strong) BackgroundElement *backgroundImageView;
 @end
 
 @implementation SDPage
 @synthesize uid = _uid;
 @synthesize toolBarButtons = _toolBarButtons;
 @synthesize backgroundImageView = _backgroundImageView;
-@synthesize elementViews = _elementViews;
+@synthesize elements = _elementViews;
 @synthesize selectedElementView = _selectedElementView;
 @synthesize fontPickerView = _fontPickerView;
 @synthesize fontColorPickerView = _fontColorPickerView;
@@ -60,7 +60,7 @@
         
         self.toolBarButtons = [[NSMutableArray alloc] initWithCapacity:5];
         self.textToolBarButtons = [[NSMutableArray alloc] initWithCapacity:2];
-        self.elementViews = [[NSMutableArray alloc] init];
+        self.elements = [[NSMutableArray alloc] init];
         
         self.backgroundColor = [UIColor clearColor];
         
@@ -191,40 +191,40 @@
         image = [UIImage imageNamed:@"Default.png"];
     }
     
-    self.backgroundImageView = [[BackgroundView alloc] initWithFrame:CGRectMake(0,
+    self.backgroundImageView = [[BackgroundElement alloc] initWithFrame:CGRectMake(0,
                                                                                 0,
                                                                                 self.frame.size.width,
                                                                                 self.frame.size.height)
                                                                image:image];
     [self.backgroundImageView setDelegate:self];
     [self addSubview:self.backgroundImageView];
-    [self.elementViews insertObject:self.backgroundImageView atIndex:0];
+    [self.elements insertObject:self.backgroundImageView atIndex:0];
     
     [self sendSubviewToBack:self.backgroundImageView];
 }
 
 #pragma mark - Tool Bar Buttons
 - (void)newCanvas {
-    CanvasView *canvasView = [[CanvasView alloc] initWithFrame:CGRectMake(0,
+    CanvasElement *canvasView = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
                                                                           0,
                                                                           self.frame.size.width,
                                                                           self.frame.size.height)
                                                          image:nil];
     [canvasView setDelegate:self];
     [self addSubview:canvasView];
-    [self.elementViews addObject:canvasView];
+    [self.elements addObject:canvasView];
     
     [self elementSelected:canvasView];
 }
 
 - (void)newText {
-    TextView *textView = [[TextView alloc] initWithFrame:CGRectMake((self.frame.size.width-kDefaultTextBoxWidth)/2,
+    TextElement *textView = [[TextElement alloc] initWithFrame:CGRectMake((self.frame.size.width-kDefaultTextBoxWidth)/2,
                                                                     self.frame.size.height/4,
                                                                     kDefaultTextBoxWidth,
                                                                     kDefaultTextBoxHeight)];
     [textView setDelegate:self];
     [self addSubview:textView];
-    [self.elementViews addObject:textView];
+    [self.elements addObject:textView];
     
     [self elementSelected:textView];
 }
@@ -245,55 +245,52 @@
 }
 
 - (void)selectFont {
-    if ([self.selectedElementView isKindOfClass:[TextView class]]) {
+    if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
         [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
-        [self.fontPickerView setCurrentTextView:((TextView *)self.selectedElementView)];
+        [self.fontPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
         [self.fontPickerView setHidden:NO];
         [self bringSubviewToFront:self.fontPickerView];
     }
 }
 
 - (void)selectColor {
-    if ([self.selectedElementView isKindOfClass:[TextView class]]) {
+    if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
         [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
-        [self.fontColorPickerView setCurrentTextView:((TextView *)self.selectedElementView)];
+        [self.fontColorPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
         [self.fontColorPickerView setHidden:NO];
         [self bringSubviewToFront:self.fontColorPickerView];
     }
 }
 #pragma mark - Elements Delegate
 - (void)deselectAll {
-    for (SDBaseView *existedElement in self.elementViews) {
+    for (SDBaseElement *existedElement in self.elements) {
         if (existedElement != self.selectedElementView) {
             [existedElement deselect];
         }
     }
 }
 
-- (void)elementSelected:(SDBaseView *)element {
+- (void)elementSelected:(SDBaseElement *)element {
     self.selectedElementView = element;
     [self deselectAll];
     [element select];
     
-    if ([element isKindOfClass:[TextView class]]) {
+    if ([element isKindOfClass:[TextElement class]]) {
         [self showTextToolBar];
-    } else if (![element isKindOfClass:[CanvasView class]]) {
+    } else if (![element isKindOfClass:[CanvasElement class]]) {
         [self showToolBar];
     }
 }
 
-- (void)elementDeselected:(SDBaseView *)element {
-    if ([element isKindOfClass:[TextView class]]) {
+- (void)elementDeselected:(SDBaseElement *)element {
+    if ([element isKindOfClass:[TextElement class]]) {
         [self.fontPickerView setHidden:YES];
         [self.fontColorPickerView setHidden:YES];
-    } else if ([element isKindOfClass:[CanvasView class]]) {
+    } else if ([element isKindOfClass:[CanvasElement class]]) {
         [self showToolBar];
     }
 }
 
-- (void)canvas:(CanvasView *)canvas ignoreTapGesture:(UIPanGestureRecognizer *)gesture {
-    
-}
 #pragma mark - UI for Text View
 - (void)showControlForTextView {
     
@@ -304,7 +301,7 @@
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    if ([self.selectedElementView isKindOfClass:[TextView class]]) {
+    if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
         // Show Text Control
         [self showTextToolBar];
     }
@@ -320,7 +317,7 @@
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    if (![self.selectedElementView isKindOfClass:[TextView class]]) {
+    if (![self.selectedElementView isKindOfClass:[TextElement class]]) {
         // Show Text Control
         [self showToolBar];
     }
@@ -332,5 +329,33 @@
     }];
 }
 
+#pragma mark - Backup/Restore Save/Load
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:self.uid forKey:@"page_uid"];
+    
+    NSMutableArray *elementArray = [NSMutableArray new];
+    for (SDBaseElement *element in self.elements) {
+        NSDictionary *elementDict = [element saveToDict];
+        [elementArray addObject:elementDict];
+    }
+    
+    [dict setObject:elementArray forKey:@"page_elements"];
+    return dict;
+}
+
++ (SDPage *)loadFromDict:(NSDictionary *)dict {
+    SDPage *page = [[SDPage alloc] init];
+    
+    [page setUid:[dict objectForKey:@"page_uid"]];
+    
+    NSMutableArray *elements = [dict objectForKey:@"page_elements"];
+    for (NSDictionary *elementDict in elements) {
+        SDBaseElement *element = [SDBaseElement loadFromDict:elementDict];
+        [[page elements] addObject:element];
+    }
+    
+    return page;
+}
 
 @end

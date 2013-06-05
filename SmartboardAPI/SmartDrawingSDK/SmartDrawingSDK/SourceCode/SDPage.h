@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SDBaseView.h"
-#import "CanvasView.h"
+#import "SDBaseElement.h"
+#import "CanvasElement.h"
 #import "FontPickerView.h"
 #import "FontColorPickerView.h"
 
@@ -20,14 +20,16 @@
 - (void)doneEditingPage:(SDPage *)page;
 @end
 
-@interface SDPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, SDBaseViewDelegate, CanvasViewDelegate>
+@interface SDPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, SDBaseViewDelegate>
 
 - (void)setBackgroundImage:(UIImage *)image;
 - (void)select;
+- (NSDictionary *)saveToDict;
++ (SDPage *)loadFromDict:(NSDictionary *)dict;
 
 @property (nonatomic, strong) NSString *uid;
-@property (nonatomic, strong) NSMutableArray *elementViews;
-@property (nonatomic, strong) SDBaseView *selectedElementView;
+@property (nonatomic, strong) NSMutableArray *elements;
+@property (nonatomic, strong) SDBaseElement *selectedElementView;
 @property (nonatomic, assign) id<SDPageDelegate> delegate;
 
 @end

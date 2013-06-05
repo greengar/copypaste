@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TextView.h"
+#import "TextElement.h"
 
 @interface FontPickerView : UIView <UIPickerViewDelegate>
 
-@property (nonatomic, assign) TextView *currentTextView;
+@property (nonatomic, assign) TextElement *currentTextView;
 
 @end

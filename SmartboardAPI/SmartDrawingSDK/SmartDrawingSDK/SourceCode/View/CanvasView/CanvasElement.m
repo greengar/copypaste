@@ -1,18 +1,18 @@
 //
-//  CanvasView.m
+//  CanvasElement.m
 //  SmartDrawingSDK
 //
 //  Created by Hector Zhao on 5/28/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
 //
 
-#import "CanvasView.h"
+#import "CanvasElement.h"
 #import "SettingManager.h"
 #import "GSButton.h"
 
 #define kUndoPickerWidth 69
 #define kURButtonWidthHeight 64
-@interface CanvasView()
+@interface CanvasElement()
 @property (nonatomic, strong) UIButton *undoButton;
 @property (nonatomic, strong) UIButton *redoButton;
 @property (nonatomic, strong) MainPaintingView *drawingView;
@@ -22,7 +22,7 @@
 @property (nonatomic) UIView *previewAreaView;
 @end
 
-@implementation CanvasView
+@implementation CanvasElement
 @synthesize undoButton = _undoButton;
 @synthesize redoButton = _redoButton;
 @synthesize drawingView = _drawingView;
@@ -30,7 +30,6 @@
 @synthesize colorPickerView = _colorPickerView;
 @synthesize doneButton = _doneButton;
 @synthesize previewAreaView = _previewAreaView;
-@synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
@@ -181,10 +180,6 @@
     CGPoint location = [tapGesture locationInView:self];
     if (CGRectContainsPoint(self.previewAreaView.frame, location)) {
         [super elementTap:(UITapGestureRecognizer *)tapGesture];
-    } else {
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(canvas:ignoreTapGesture:)]) {
-            [self.delegate canvas:self ignoreTapGesture:tapGesture];
-        }
     }
 }
 

@@ -51,7 +51,7 @@
     return self;
 }
 
-- (void)setCurrentTextView:(TextView *)currentTextView {
+- (void)setCurrentTextView:(TextElement *)currentTextView {
     _currentTextView = currentTextView;
     [self.colorPickerImageView setHolderView:_currentTextView];
 }

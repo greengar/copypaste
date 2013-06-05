@@ -8,7 +8,7 @@
 
 #import "SDSession.h"
 #import "MainPaintingView.h"
-#import "CanvasView.h"
+#import "CanvasElement.h"
 #import "MainPaintingView.h"
 #import "SettingManager.h"
 #import "SDBoard.h"
@@ -17,7 +17,7 @@ static SDSession *activeSession = nil;
 
 @interface SDSession()
 @property (nonatomic, assign) UIViewController *rootController;
-@property (nonatomic, strong) CanvasView *rootView;
+@property (nonatomic, strong) CanvasElement *rootView;
 @end
 
 @implementation SDSession

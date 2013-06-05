@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TextView.h"
+#import "TextElement.h"
 #import "ColorPickerImageView.h"
 
 @interface FontColorPickerView : UIView <ColorPickerImageViewDelegate>
 
-@property (nonatomic, assign) TextView *currentTextView;
+@property (nonatomic, assign) TextElement *currentTextView;
 
 @end
