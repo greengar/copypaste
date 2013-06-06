@@ -40,6 +40,7 @@ static BoardManager *shareManager = nil;
 }
 
 + (WBBoard *)readBoardFromFileWithUid:(NSString *)uid {
+    THROW_EXCEPTION_TYPE(UnimplementedException);
     NSString *folderPath = [BoardManager getBaseDocumentFolder];
     NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", uid]];
     NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];

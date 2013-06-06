@@ -44,6 +44,8 @@ typedef enum {
     kUndoShakeActionType
 } ShakeActionType;
 
+#define UnimplementedException @"UnimplementedException"
+
 #define kPushAboutToSettingNotification @"PushAboutToSettingNotification"
 
 #define kStartToConnectNotification @"kStartToConnectNotification"
@@ -119,6 +121,8 @@ typedef enum {
 
 #define kDefaultFontName @"Arial"
 #define kDefaultFontSize 18
+
+#define THROW_EXCEPTION_TYPE(type) [NSException raise:type format:@"%s Line %d", __PRETTY_FUNCTION__, __LINE__];
 
 @protocol WBSessionDelegate
 - (void)doneEditingPhotoWithResult:(UIImage *)image;

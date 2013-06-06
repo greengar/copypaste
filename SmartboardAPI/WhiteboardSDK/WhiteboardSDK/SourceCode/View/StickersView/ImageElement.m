@@ -57,14 +57,14 @@
     return self.imageView;
 }
 
-- (NSMutableDictionary *)saveToDict {
-    NSMutableDictionary *dict = [super saveToDict];
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
     [dict setObject:@"ImageElement" forKey:@"element_type"];
     if (self.imageView && self.imageView.image) {
         NSData *data = UIImagePNGRepresentation(self.imageView.image);
         [dict setObject:[data wbBase64EncodedString] forKey:@"element_image"];
     }
-    return dict;
+    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 + (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {

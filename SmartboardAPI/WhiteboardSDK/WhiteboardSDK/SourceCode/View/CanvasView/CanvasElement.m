@@ -33,11 +33,40 @@
 @synthesize previewAreaView = _previewAreaView;
 @synthesize screenshotImageView = _screenshotImageView;
 
+- (id)initWithDict:(NSDictionary *)dictionary {
+    self = [super initWithDict:dictionary];
+    if (self) {
+        self.allowToEdit = NO;
+        self.allowToMove = YES;
+        self.allowToSelect = YES;
+        
+        self.backgroundColor = [UIColor clearColor];
+        
+        // OpenGL Dict
+        NSDictionary *drawingDict = [dictionary objectForKey:@"element_drawing"];
+        
+        // OpenGL View
+        self.drawingView = [MainPaintingView loadFromDict:drawingDict];
+        [self.drawingView setDelegate:self];
+        [self addSubview:self.drawingView];
+        UIImage *image = nil;
+        [self.drawingView initialDrawing];
+        if (image) {
+            [self.drawingView loadFromSavedPhotoAlbum:image];
+            [self.drawingView addCurrentImageToUndoRedoSpace];
+        }
+        [self.drawingView reloadView];
+        
+        [self initControlWithFrame:self.defaultFrame];
+    }
+    return self;
+}
+
+
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
         self.allowToEdit = YES;
         self.allowToMove = NO;
         self.allowToSelect = NO;
@@ -48,53 +77,52 @@
         self.drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.drawingView setDelegate:self];
         [self addSubview:self.drawingView];
+        [self.drawingView initialDrawing];
+        if (image) {
+            [self.drawingView loadFromSavedPhotoAlbum:image];
+            [self.drawingView addCurrentImageToUndoRedoSpace];
+        }
         
-        double delayInSeconds = 0.3;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.drawingView initialDrawing];
-            if (image) {
-                [self.drawingView loadFromSavedPhotoAlbum:image];
-                [self.drawingView addCurrentImageToUndoRedoSpace];
-            }
-        });
-        
-        self.previewAreaView = [[UIView alloc] initWithFrame:CGRectZero];
-        [self.drawingView setTopLeftBounding:CGPointZero];
-        [self.drawingView setBottomRightBounding:CGPointZero];
-        [self addSubview:self.previewAreaView];
-        [self.previewAreaView setBackgroundColor:[UIColor clearColor]];
-        [self.previewAreaView setUserInteractionEnabled:NO];
-        [self.previewAreaView.layer setBorderWidth:1];
-        [self.previewAreaView.layer setBorderColor:[[UIColor colorWithPatternImage:[UIImage imageNamed:@"Whiteboard.bundle/DottedImage.png"]] CGColor]];
-        
-        // Bottom color tabs
-        self.colorTabView = [[ColorTabView alloc] initWithFrame:CGRectMake(0,
-                                                                           frame.size.height-kLauncherHeight,
-                                                                           frame.size.width,
-                                                                           kLauncherHeight)];
-        [self.colorTabView setDelegate:self];
-        [self addSubview:self.colorTabView];
-        
-        // Color Picker
-        self.colorPickerView = [[ColorPickerView alloc] initWithFrame:CGRectMake(0,
-                                                                                 frame.size.height-kLauncherHeight-kColorPickerViewHeight,
-                                                                                 frame.size.width,
-                                                                                 kColorPickerViewHeight)];
-        [self.colorPickerView setDelegate:self];
-        [self addSubview:self.colorPickerView];
-        
-        // Undo and Redo
-        [self initializeUndoRedoButtonsWithFrame:frame];
-        
-        self.doneButton = [GSButton buttonWithType:UIButtonTypeRoundedRect themeStyle:GreenButtonStyle];
-        [self.doneButton setFrame:CGRectMake(0, frame.size.height-44, frame.size.width/5, 44)];
-        [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
-        [self.doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.doneButton];
+        [self initControlWithFrame:frame];
         
     }
     return self;
+}
+
+- (void)initControlWithFrame:(CGRect)frame {
+    self.previewAreaView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.drawingView setTopLeftBounding:CGPointZero];
+    [self.drawingView setBottomRightBounding:CGPointZero];
+    [self addSubview:self.previewAreaView];
+    [self.previewAreaView setBackgroundColor:[UIColor clearColor]];
+    [self.previewAreaView setUserInteractionEnabled:NO];
+    [self.previewAreaView.layer setBorderWidth:1];
+    [self.previewAreaView.layer setBorderColor:[[UIColor colorWithPatternImage:[UIImage imageNamed:@"Whiteboard.bundle/DottedImage.png"]] CGColor]];
+    
+    // Bottom color tabs
+    self.colorTabView = [[ColorTabView alloc] initWithFrame:CGRectMake(0,
+                                                                       frame.size.height-kLauncherHeight,
+                                                                       frame.size.width,
+                                                                       kLauncherHeight)];
+    [self.colorTabView setDelegate:self];
+    [self addSubview:self.colorTabView];
+    
+    // Color Picker
+    self.colorPickerView = [[ColorPickerView alloc] initWithFrame:CGRectMake(0,
+                                                                             frame.size.height-kLauncherHeight-kColorPickerViewHeight,
+                                                                             frame.size.width,
+                                                                             kColorPickerViewHeight)];
+    [self.colorPickerView setDelegate:self];
+    [self addSubview:self.colorPickerView];
+    
+    // Undo and Redo
+    [self initializeUndoRedoButtonsWithFrame:frame];
+    
+    self.doneButton = [GSButton buttonWithType:UIButtonTypeRoundedRect themeStyle:GreenButtonStyle];
+    [self.doneButton setFrame:CGRectMake(0, frame.size.height-44, frame.size.width/5, 44)];
+    [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [self.doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.doneButton];
 }
 
 - (UIView *)contentView {
@@ -232,11 +260,26 @@
     self.screenshotImageView = [[UIImageView alloc] initWithFrame:self.drawingView.frame];
     self.screenshotImageView.image = [self.drawingView takeScreenshot];
     [self addSubview:self.screenshotImageView];
+    [self sendSubviewToBack:self.screenshotImageView];
 }
 
 - (void)removeScreenshot {
     [self.screenshotImageView removeFromSuperview];
 }
+
+#pragma mark - Backup/Restore Save/Load
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
+    [dict setObject:@"CanvasElement" forKey:@"element_type"];
+    [dict setObject:[self.drawingView saveToDict] forKey:@"element_drawing"];
+    return [NSDictionary dictionaryWithDictionary:dict];
+}
+
++ (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {
+    CanvasElement *canvasElement = [[CanvasElement alloc] initWithDict:dictionary];
+    return canvasElement;
+}
+
 
 #pragma mark - Undo and Redo buttons
 - (void)initializeUndoRedoButtonsWithFrame:(CGRect)frame {

@@ -43,13 +43,8 @@ static WBSession *activeSession = nil;
     self.delegate = delegate;
     self.rootController = controller;
     
-    WBBoard *rootBoard = nil;
-    if ([[BoardManager sharedManager] currentBoardUid]) {
-        rootBoard = [BoardManager readBoardFromFileWithUid:[[BoardManager sharedManager] currentBoardUid]];
-    } else {
-        rootBoard = [[WBBoard alloc] init];
-        [rootBoard setBackgroundImage:image];
-    }
+    WBBoard *rootBoard = [[WBBoard alloc] init];
+    [rootBoard setBackgroundImage:image];
     [rootBoard setDelegate:self];
     [controller presentViewController:rootBoard animated:YES completion:NULL];
     

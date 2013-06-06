@@ -90,6 +90,7 @@ static const CGFloat kZoomMinScale = 0.8;
 @property (nonatomic) CGPoint                         topLeftBounding;
 @property (nonatomic) CGPoint                         bottomRightBounding;
 
+- (id)initWithDict:(NSDictionary *)dict;
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView;
 - (void)initialDrawing;
 - (void)reset;
@@ -133,5 +134,9 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)clearLayer:(int)layerIndex;
 - (void)moveLayerAtIndex:(NSInteger)index1 toIndex:(NSInteger)index2;
 
+- (NSDictionary *)saveToDict;
++ (MainPaintingView *)loadFromDict:(NSDictionary *)dict;
+
+- (void)reloadView;
 @end
 

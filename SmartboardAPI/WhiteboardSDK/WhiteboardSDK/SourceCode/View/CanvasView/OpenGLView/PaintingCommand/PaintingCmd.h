@@ -18,6 +18,9 @@
 @property (nonatomic)         int                   layerIndex;
 @property (nonatomic, assign) MainPaintingView      *drawingView;
 
+- (id)initWithDict:(NSDictionary *)dict;
 - (void)doPaintingAction;
+- (NSDictionary *)saveToDict;
++ (PaintingCmd *)loadFromDict:(NSDictionary *)dict;
 
 @end

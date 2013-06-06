@@ -179,13 +179,13 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSMutableDictionary *)saveToDict {
+- (NSDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"board_uid"];
     [dict setObject:self.name forKey:@"board_name"];
     [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
     
-    NSMutableArray *pageArray = [NSMutableArray new];
+    NSMutableArray *pageArray = [NSMutableArray arrayWithCapacity:[self.pages count]];
     for (WBPage *page in self.pages) {
         NSDictionary *pageDict = [page saveToDict];
         [pageArray addObject:pageDict];

@@ -77,14 +77,14 @@
     // I'm background, I do nothing
 }
 
-- (NSMutableDictionary *)saveToDict {
-    NSMutableDictionary *dict = [super saveToDict];
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
     [dict setObject:@"BackgroundElement" forKey:@"element_type"];
     if (self.backgroundView && self.backgroundView.image) {
         NSData *data = UIImagePNGRepresentation(self.backgroundView.image);
         [dict setObject:[data wbBase64EncodedString] forKey:@"element_background"];
     }
-    return dict;
+    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 + (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {

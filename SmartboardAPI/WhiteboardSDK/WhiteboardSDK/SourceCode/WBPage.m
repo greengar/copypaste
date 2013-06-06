@@ -366,7 +366,7 @@
     [dict setObject:self.uid forKey:@"page_uid"];
     [dict setObject:NSStringFromCGRect(self.frame) forKey:@"page_frame"];
     
-    NSMutableArray *elementArray = [NSMutableArray new];
+    NSMutableArray *elementArray = [NSMutableArray arrayWithCapacity:[self.elements count]];
     for (WBBaseElement *element in self.elements) {
         NSDictionary *elementDict = [element saveToDict];
         [elementArray addObject:elementDict];

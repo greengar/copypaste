@@ -390,17 +390,17 @@
 		7B82E6B2175F9E2E00B063D7 /* SourceCode */ = {
 			isa = PBXGroup;
 			children = (
-				7B82E6B3175F9E2E00B063D7 /* Manager */,
-				7B82E6B8175F9E2E00B063D7 /* WBBoard.h */,
-				7B82E6B9175F9E2E00B063D7 /* WBBoard.m */,
-				7B82E6BA175F9E2E00B063D7 /* WBPage.h */,
-				7B82E6BB175F9E2E00B063D7 /* WBPage.m */,
 				7B82E6BC175F9E2E00B063D7 /* WBSession.h */,
 				7B82E6BD175F9E2E00B063D7 /* WBSession.m */,
 				7B82E6BE175F9E2E00B063D7 /* WBUtils.h */,
 				7B82E6BF175F9E2E00B063D7 /* WBUtils.m */,
-				7B82E6C0175F9E2E00B063D7 /* Support */,
+				7B82E6B8175F9E2E00B063D7 /* WBBoard.h */,
+				7B82E6B9175F9E2E00B063D7 /* WBBoard.m */,
+				7B82E6BA175F9E2E00B063D7 /* WBPage.h */,
+				7B82E6BB175F9E2E00B063D7 /* WBPage.m */,
+				7B82E6B3175F9E2E00B063D7 /* Manager */,
 				7B82E6C9175F9E2E00B063D7 /* View */,
+				7B82E6C0175F9E2E00B063D7 /* Support */,
 			);
 			path = SourceCode;
 			sourceTree = "<group>";
@@ -436,13 +436,13 @@
 		7B82E6C9175F9E2E00B063D7 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7B82E6CA175F9E2E00B063D7 /* CanvasView */,
-				7B82E6FF175F9E2F00B063D7 /* GreengarThemeView */,
 				7B82E702175F9E2F00B063D7 /* WBBaseElement.h */,
 				7B82E703175F9E2F00B063D7 /* WBBaseElement.m */,
+				7B82E6CA175F9E2E00B063D7 /* CanvasView */,
 				7B82E704175F9E2F00B063D7 /* StickersView */,
 				7B82E709175F9E2F00B063D7 /* TextView */,
 				7B82E713175F9E2F00B063D7 /* WebView */,
+				7B82E6FF175F9E2F00B063D7 /* GreengarThemeView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -450,9 +450,9 @@
 		7B82E6CA175F9E2E00B063D7 /* CanvasView */ = {
 			isa = PBXGroup;
 			children = (
-				7B82E6CB175F9E2E00B063D7 /* CanvasControlVIew */,
 				7B82E6DA175F9E2E00B063D7 /* CanvasElement.h */,
 				7B82E6DB175F9E2E00B063D7 /* CanvasElement.m */,
+				7B82E6CB175F9E2E00B063D7 /* CanvasControlVIew */,
 				7B82E6DC175F9E2E00B063D7 /* OpenGLView */,
 			);
 			path = CanvasView;
@@ -534,14 +534,14 @@
 		7B82E6F4175F9E2E00B063D7 /* PaintingCommand */ = {
 			isa = PBXGroup;
 			children = (
+				7B82E6FB175F9E2E00B063D7 /* PaintingCmd.h */,
+				7B82E6FC175F9E2E00B063D7 /* PaintingCmd.m */,
 				7B82E6F5175F9E2E00B063D7 /* ClearPaintingCmd.h */,
 				7B82E6F6175F9E2E00B063D7 /* ClearPaintingCmd.m */,
 				7B82E6F7175F9E2E00B063D7 /* ImagePaintingCmd.h */,
 				7B82E6F8175F9E2E00B063D7 /* ImagePaintingCmd.m */,
 				7B82E6F9175F9E2E00B063D7 /* MultiStrokePaintingCmd.h */,
 				7B82E6FA175F9E2E00B063D7 /* MultiStrokePaintingCmd.m */,
-				7B82E6FB175F9E2E00B063D7 /* PaintingCmd.h */,
-				7B82E6FC175F9E2E00B063D7 /* PaintingCmd.m */,
 				7B82E6FD175F9E2F00B063D7 /* StrokePaintingCmd.h */,
 				7B82E6FE175F9E2F00B063D7 /* StrokePaintingCmd.m */,
 			);
@@ -571,9 +571,9 @@
 		7B82E709175F9E2F00B063D7 /* TextView */ = {
 			isa = PBXGroup;
 			children = (
-				7B82E70A175F9E2F00B063D7 /* TextControlView */,
 				7B82E711175F9E2F00B063D7 /* TextElement.h */,
 				7B82E712175F9E2F00B063D7 /* TextElement.m */,
+				7B82E70A175F9E2F00B063D7 /* TextControlView */,
 			);
 			path = TextView;
 			sourceTree = "<group>";

@@ -97,8 +97,8 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSMutableDictionary *)saveToDict {
-    NSMutableDictionary *dict = [super saveToDict];
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
     [dict setObject:@"TextElement" forKey:@"element_type"];
     [dict setObject:self.placeHolderTextView.text forKey:@"element_text"];
     [dict setObject:self.myFontName forKey:@"element_font_name"];
@@ -106,7 +106,7 @@
     [dict setObject:[self.myColor gsString] forKey:@"element_font_color"];
     [dict setObject:[NSNumber numberWithFloat:self.myColorLocX] forKey:@"element_font_color_x"];
     [dict setObject:[NSNumber numberWithFloat:self.myColorLocY] forKey:@"element_font_color_y"];
-    return dict;
+    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 + (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {
@@ -126,4 +126,5 @@
     
     return textElement;
 }
+
 @end

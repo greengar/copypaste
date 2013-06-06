@@ -189,13 +189,13 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSMutableDictionary *)saveToDict {
+- (NSDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"element_uid"];
     [dict setObject:NSStringFromCGAffineTransform(self.defaultTransform) forKey:@"element_default_transform"];
     [dict setObject:NSStringFromCGAffineTransform(self.currentTransform) forKey:@"element_current_transform"];
     [dict setObject:NSStringFromCGRect(self.defaultFrame) forKey:@"element_default_frame"];
-    return dict;
+    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 + (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {

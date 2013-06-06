@@ -19,7 +19,7 @@
 - (WBPage *)currentPage;
 - (WBPage *)pageAtIndex:(int)index;
 
-- (NSMutableDictionary *)saveToDict;
+- (NSDictionary *)saveToDict;
 + (WBBoard *)loadFromDict:(NSDictionary *)dict;
 
 @property (nonatomic, strong) NSString *uid;

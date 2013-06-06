@@ -46,6 +46,29 @@
 @synthesize bottomRightBounding;
 
 #pragma mark - Initialize
+- (id)initWithDict:(NSDictionary *)dict {
+    CGRect frame = CGRectFromString([dict objectForKey:@"opengl_frame"]);
+    if (self = [super initWithFrame:frame]) {
+        self.multipleTouchEnabled = YES;
+        
+        touchDictionary = [[GSMutableDictionary alloc] initWithCapacity:3];
+		
+		gestureStartX = kInvalidCoord;
+		gestureStartY = kInvalidCoord;
+		
+		isReceivingStroke = NO;
+		isDrawingStroke = NO;
+		undoSequenceArray = [[NSMutableArray alloc] init];
+		redoSequenceArray = [[NSMutableArray alloc] init];
+        
+        extRotation = 90;
+        
+        if (IS_IPAD) {
+            _zoomOffsetFromTop = kOffsetForZoomLabelWhenIPadPickerIsShown;
+        }
+    }
+    return self;
+}
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView {
     if ((self = [super initWithFrame:frame sharegroupView:glView])) {
         // You might think this is necessary for showing the tools, but it's not.
@@ -56,8 +79,8 @@
 		gestureStartX = kInvalidCoord;
 		gestureStartY = kInvalidCoord;
 		
-		isReceivingStroke = FALSE;
-		isDrawingStroke = FALSE;
+		isReceivingStroke = NO;
+		isDrawingStroke = NO;
 		undoSequenceArray = [[NSMutableArray alloc] init];
 		redoSequenceArray = [[NSMutableArray alloc] init];
     }
@@ -69,15 +92,13 @@
 		// You might think this is necessary for showing the tools, but it's not.
 		self.multipleTouchEnabled = YES;
 		
-        //[self resetTransforms];
-		touchDictionary = [[GSMutableDictionary alloc] initWithCapacity:/*5*/3];
-        //		touchDictionary.delegate = self;
+		touchDictionary = [[GSMutableDictionary alloc] initWithCapacity:3];
 		
 		gestureStartX = kInvalidCoord;
 		gestureStartY = kInvalidCoord;
 		
-		isReceivingStroke = FALSE;
-		isDrawingStroke = FALSE;
+		isReceivingStroke = NO;
+		isDrawingStroke = NO;
 		undoSequenceArray = [[NSMutableArray alloc] init];
 		redoSequenceArray = [[NSMutableArray alloc] init];
         
@@ -86,9 +107,6 @@
         if (IS_IPAD) {
             _zoomOffsetFromTop = kOffsetForZoomLabelWhenIPadPickerIsShown;
         }
-        
-        //        [self performSelector:@selector(testZoom) withObject:nil afterDelay:3.0];
-
 	}
 	return self;
 }
@@ -1582,6 +1600,78 @@ void CGAffineToGL2(const CGAffineTransform *t, GLfloat *m)
     m[10] = m[15] = 1.0f;
     m[0] = t->a; m[4] = t->c; m[12] = t->tx;
     m[1] = t->b; m[5] = t->d; m[13] = t->ty;
+}
+
+#pragma mark - Backup/Restore Save/Load
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:NSStringFromCGRect(self.frame) forKey:@"opengl_frame"];
+    if ([undoSequenceArray count]) {
+        NSMutableArray *cmdDicts = [NSMutableArray arrayWithCapacity:[undoSequenceArray count]];
+        for (int i = 0; i < [undoSequenceArray count]; i++) {
+            PaintingCmd *cmd = [undoSequenceArray objectAtIndex:i];
+            NSDictionary *cmdDict = [cmd saveToDict];
+            [cmdDicts addObject:cmdDict];
+        }
+        [dict setObject:cmdDicts forKey:@"opengl_undo_array"];
+    }
+    return [NSDictionary dictionaryWithDictionary:dict];
+}
+
++ (MainPaintingView *)loadFromDict:(NSDictionary *)dict {
+    MainPaintingView *drawingView = [[MainPaintingView alloc] initWithDict:dict];
+    NSArray *cmdDicts = [dict objectForKey:@"opengl_undo_array"];
+    for (int i = 0; i < [cmdDicts count]; i++) {
+        NSDictionary *cmdDict = [cmdDicts objectAtIndex:i];
+        PaintingCmd *cmd = [PaintingCmd loadFromDict:cmdDict];
+        [drawingView pushCommandToUndoStack:cmd];
+        drawingView.currentPaintingId = cmd.uid;
+    }
+    return drawingView;
+}
+
+- (void)reloadView {	
+    [EAGLContext setCurrentContext:self.context];
+    
+    int tempCurrentLayerIndex = currentLayerIndex;
+    
+    glLoadIdentity();
+    glViewport(0, 0, kTextureOriginalSize, kTextureOriginalSize);
+    glOrthof(0, kTextureOriginalSize, 0, kTextureOriginalSize, -1, 1); // the cocos2d way
+    
+    // Clear the current offscreen buffer
+    for (int i = 0; i < self.numOfLayers; i++) {
+        currentLayerIndex = i;
+        
+        DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
+        glBindFramebufferOES(GL_FRAMEBUFFER_OES, layerInfo.offscreenLayerFrameBuffer);
+        
+        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        // Then load the backing undo redo buffer
+        [self renderBackingUndoRedoTexture];
+    }
+    
+    // Check the undo sequence array, load all painting command
+    for (int i = 0; i < [undoSequenceArray count]; i++) {
+        PaintingCmd * cmd = [undoSequenceArray objectAtIndex:i];
+        currentLayerIndex = cmd.layerIndex;
+        
+        DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
+        glBindFramebufferOES(GL_FRAMEBUFFER_OES, layerInfo.offscreenLayerFrameBuffer);
+        
+        [cmd doPaintingAction];
+    }
+    
+    currentLayerIndex = tempCurrentLayerIndex;
+    
+    [self setFramebuffer];
+    [self drawView];
+    
+    [self transferToPaintingView:self.extDrawingView];
+	
+    [self applyLocalDrawingCmd];
 }
 
 @end
