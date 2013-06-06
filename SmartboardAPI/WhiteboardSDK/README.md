@@ -7,19 +7,20 @@
 6. Drag `Whiteboard.bundle` to your project
 7. Add `OpenGLES.framework` and `QuartzCore.framework` to your project
 8. Go to your project Build Settings, add an Other Linker Flags: `-lstdc++`
-9. Import the framework:
+9. Use the framework:
 
+** Import the framework
 ```Objective-C
 #import <Whiteboard/Whiteboard.h>
 ```
 
-10. Use the protocol
+** Use the protocol
 
 ```Objective-C
 YourViewController <WBSessionDelegate>
 ```
 
-11. Call the endpoint to show the view controller
+** Call the endpoint to show the view controller
 
 ```Objective-C
 [[WBSession activeSession] presentSmartboardControllerFromController:/* your view controller */
@@ -27,7 +28,7 @@ YourViewController <WBSessionDelegate>
                                                             delegate:/* callback */];
 ```
 
-12. Implement the protocol callback to get the output
+** Implement the protocol callback to get the output
 
 ```Objective-C
 - (void)doneEditingPhotoWithResult:(UIImage *)image {
