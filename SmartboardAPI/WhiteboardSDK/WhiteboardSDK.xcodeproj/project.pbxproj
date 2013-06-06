@@ -21,6 +21,14 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		7B4AF56D176059700049D77D /* WBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4AF56B176059700049D77D /* WBViewController.m */; };
+		7B4AF56E176059700049D77D /* WBViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4AF56C176059700049D77D /* WBViewController~iphone.xib */; };
+		7B4AF570176059860049D77D /* WBViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4AF56F176059860049D77D /* WBViewController~ipad.xib */; };
+		7B4AF57217605AAD0049D77D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4AF57117605AAD0049D77D /* QuartzCore.framework */; };
+		7B4AF57417605AB50049D77D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4AF57317605AB50049D77D /* OpenGLES.framework */; };
+		7B4AF57717605BD30049D77D /* NSData+WBBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B4AF57517605BD30049D77D /* NSData+WBBase64.h */; };
+		7B4AF57817605BD30049D77D /* NSData+WBBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4AF57617605BD30049D77D /* NSData+WBBase64.m */; };
+		7B4AF57917605BD30049D77D /* NSData+WBBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4AF57617605BD30049D77D /* NSData+WBBase64.m */; };
 		7B82E5D2175F9D0C00B063D7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5D1175F9D0C00B063D7 /* UIKit.framework */; };
 		7B82E5D4175F9D0C00B063D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5D3175F9D0C00B063D7 /* Foundation.framework */; };
 		7B82E5D6175F9D0C00B063D7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5D5175F9D0C00B063D7 /* CoreGraphics.framework */; };
@@ -160,6 +168,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B4AF56A176059700049D77D /* WBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBViewController.h; sourceTree = "<group>"; };
+		7B4AF56B176059700049D77D /* WBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBViewController.m; sourceTree = "<group>"; };
+		7B4AF56C176059700049D77D /* WBViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WBViewController~iphone.xib"; sourceTree = "<group>"; };
+		7B4AF56F176059860049D77D /* WBViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WBViewController~ipad.xib"; sourceTree = "<group>"; };
+		7B4AF57117605AAD0049D77D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		7B4AF57317605AB50049D77D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		7B4AF57517605BD30049D77D /* NSData+WBBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+WBBase64.h"; sourceTree = "<group>"; };
+		7B4AF57617605BD30049D77D /* NSData+WBBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+WBBase64.m"; sourceTree = "<group>"; };
 		7B82E5CE175F9D0C00B063D7 /* WhiteboardSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhiteboardSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B82E5D1175F9D0C00B063D7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7B82E5D3175F9D0C00B063D7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -270,6 +286,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B4AF57417605AB50049D77D /* OpenGLES.framework in Frameworks */,
+				7B4AF57217605AAD0049D77D /* QuartzCore.framework in Frameworks */,
 				7B82E5D2175F9D0C00B063D7 /* UIKit.framework in Frameworks */,
 				7B82E5D4175F9D0C00B063D7 /* Foundation.framework in Frameworks */,
 				7B82E5D6175F9D0C00B063D7 /* CoreGraphics.framework in Frameworks */,
@@ -310,6 +328,8 @@
 		7B82E5D0175F9D0C00B063D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7B4AF57317605AB50049D77D /* OpenGLES.framework */,
+				7B4AF57117605AAD0049D77D /* QuartzCore.framework */,
 				7B82E5D1175F9D0C00B063D7 /* UIKit.framework */,
 				7B82E5D3175F9D0C00B063D7 /* Foundation.framework */,
 				7B82E5D5175F9D0C00B063D7 /* CoreGraphics.framework */,
@@ -323,6 +343,10 @@
 			children = (
 				7B82E5E0175F9D0C00B063D7 /* WAppDelegate.h */,
 				7B82E5E1175F9D0C00B063D7 /* WAppDelegate.m */,
+				7B4AF56A176059700049D77D /* WBViewController.h */,
+				7B4AF56B176059700049D77D /* WBViewController.m */,
+				7B4AF56C176059700049D77D /* WBViewController~iphone.xib */,
+				7B4AF56F176059860049D77D /* WBViewController~ipad.xib */,
 				7B82E78F175F9E4C00B063D7 /* Whiteboard.h */,
 				7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */,
 				7B82E6B2175F9E2E00B063D7 /* SourceCode */,
@@ -399,6 +423,8 @@
 				7B82E6C2175F9E2E00B063D7 /* CGPointExtension.h */,
 				7B82E6C3175F9E2E00B063D7 /* CGPointExtension.m */,
 				7B82E6C4175F9E2E00B063D7 /* ImageManipulation.h */,
+				7B4AF57517605BD30049D77D /* NSData+WBBase64.h */,
+				7B4AF57617605BD30049D77D /* NSData+WBBase64.m */,
 				7B82E6C5175F9E2E00B063D7 /* UIColor+GSString.h */,
 				7B82E6C6175F9E2E00B063D7 /* UIColor+GSString.m */,
 				7B82E6C7175F9E2E00B063D7 /* UIDevice+Hardware.h */,
@@ -622,6 +648,7 @@
 				7B82E785175F9E2F00B063D7 /* FontPickerView.h in Headers */,
 				7B82E788175F9E2F00B063D7 /* PlaceHolderTextView.h in Headers */,
 				7B82E78B175F9E2F00B063D7 /* TextElement.h in Headers */,
+				7B4AF57717605BD30049D77D /* NSData+WBBase64.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -702,6 +729,8 @@
 				7B82E5E6175F9D0C00B063D7 /* Default@2x.png in Resources */,
 				7B82E5E8175F9D0C00B063D7 /* Default-568h@2x.png in Resources */,
 				7B82E790175F9E4C00B063D7 /* Whiteboard.bundle in Resources */,
+				7B4AF56E176059700049D77D /* WBViewController~iphone.xib in Resources */,
+				7B4AF570176059860049D77D /* WBViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -779,6 +808,8 @@
 				7B82E786175F9E2F00B063D7 /* FontPickerView.m in Sources */,
 				7B82E789175F9E2F00B063D7 /* PlaceHolderTextView.m in Sources */,
 				7B82E78C175F9E2F00B063D7 /* TextElement.m in Sources */,
+				7B4AF56D176059700049D77D /* WBViewController.m in Sources */,
+				7B4AF57817605BD30049D77D /* NSData+WBBase64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -826,6 +857,7 @@
 				7B82E787175F9E2F00B063D7 /* FontPickerView.m in Sources */,
 				7B82E78A175F9E2F00B063D7 /* PlaceHolderTextView.m in Sources */,
 				7B82E78D175F9E2F00B063D7 /* TextElement.m in Sources */,
+				7B4AF57917605BD30049D77D /* NSData+WBBase64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1011,6 +1043,7 @@
 				7B82E5ED175F9D0C00B063D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7B82E5FC175F9D3200B063D7 /* Build configuration list for PBXNativeTarget "Whiteboard" */ = {
 			isa = XCConfigurationList;
@@ -1019,6 +1052,7 @@
 				7B82E5FE175F9D3200B063D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7B82E794175F9EC800B063D7 /* Build configuration list for PBXAggregateTarget "BuildWhiteboardSDK" */ = {
 			isa = XCConfigurationList;
@@ -1027,6 +1061,7 @@
 				7B82E796175F9EC800B063D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

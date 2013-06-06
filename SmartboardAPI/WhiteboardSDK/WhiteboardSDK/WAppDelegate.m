@@ -7,13 +7,15 @@
 //
 
 #import "WAppDelegate.h"
+#import "WBViewController.h"
 
 @implementation WAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    self.viewController = [[WBViewController alloc] initWithNibName:@"WBViewController" bundle:nil];
+    self.window.rootViewController = self.viewController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

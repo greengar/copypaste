@@ -1,5 +1,5 @@
 HOW TO BUILD AND USE WHITEBOARD SDK
-=================================================
+===================================
 
 1. Select BuildWhiteboardSDK Scheme
 2. Press "Command+B" to build the project
@@ -9,3 +9,11 @@ HOW TO BUILD AND USE WHITEBOARD SDK
 6. Drag Whiteboard.bundle to your project
 7. Add OpenGLES.framework and QuartzCore.framework to your project
 8. Go to your project Build Settings, add an Other Linker Flags: -lstdc++
+
+-----------------------------
+
+HOW TO RUN WHITEBOARD SDK FROM SOURCE CODE
+==========================================
+
+1. Select WhiteboardSDK Scheme
+2. Press "Command+R" to run the project

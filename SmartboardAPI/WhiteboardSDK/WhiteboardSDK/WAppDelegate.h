@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class WBViewController;
+
 @interface WAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) WBViewController *viewController;
 
 @end
