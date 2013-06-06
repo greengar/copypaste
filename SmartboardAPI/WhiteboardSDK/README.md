@@ -9,23 +9,31 @@
 8. Go to your project Build Settings, add an Other Linker Flags: `-lstdc++`
 9. Import the framework:
 
-`#import <Whiteboard/Whiteboard.h>`
+```Objective-C
+#import <Whiteboard/Whiteboard.h>
+```
 
 10. Use the protocol
 
-`YourViewController <WBSessionDelegate>`
+```Objective-C
+YourViewController <WBSessionDelegate>
+```
 
 11. Call the endpoint to show the view controller
 
-`[[WBSession activeSession] presentSmartboardControllerFromController:/* your view controller */
-                                                            withImage:/* your image to edit */
-                                                             delegate:/* callback */];`
+```Objective-C
+[[WBSession activeSession] presentSmartboardControllerFromController:/* your view controller */
+                                                           withImage:/* your image to edit */
+                                                            delegate:/* callback */];
+```
 
 12. Implement the protocol callback to get the output
 
-`- (void)doneEditingPhotoWithResult:(UIImage *)image {
+```Objective-C
+- (void)doneEditingPhotoWithResult:(UIImage *)image {
     // You have the UIImage here 
-}`
+}
+```
 
 #HOW TO RUN AND DEVELOP WHITEBOARD CODE
 
