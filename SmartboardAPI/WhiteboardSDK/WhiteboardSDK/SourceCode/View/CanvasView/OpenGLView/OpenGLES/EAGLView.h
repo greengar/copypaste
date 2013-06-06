@@ -35,4 +35,6 @@
 - (void)setFramebuffer;
 - (BOOL)presentFramebuffer;
 
+- (UIImage *)takeScreenshot;
+
 @end

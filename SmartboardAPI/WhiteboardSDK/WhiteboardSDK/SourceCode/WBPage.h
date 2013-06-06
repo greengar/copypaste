@@ -25,6 +25,7 @@
 - (id)initWithDict:(NSDictionary *)dictionary;
 - (void)setBackgroundImage:(UIImage *)image;
 - (void)select;
+- (UIImage *)exportPageToImage;
 - (NSDictionary *)saveToDict;
 + (WBPage *)loadFromDict:(NSDictionary *)dict;
 

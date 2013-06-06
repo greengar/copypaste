@@ -17,5 +17,7 @@
 @interface CanvasElement : WBBaseElement <ColorTabViewDelegate, ColorPickerViewDelegate, MainPaintViewDelegate>
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
+- (void)takeScreenshot;
+- (void)removeScreenshot;
 
 @end

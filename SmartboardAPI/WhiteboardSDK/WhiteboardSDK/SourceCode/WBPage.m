@@ -381,4 +381,20 @@
     return page;
 }
 
+#pragma mark - Export
+- (UIImage *)exportPageToImage {
+    [self.toolBarView setHidden:YES];
+    
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+        UIGraphicsBeginImageContextWithOptions(self.window.bounds.size, NO, [UIScreen mainScreen].scale);
+    else
+        UIGraphicsBeginImageContext(self.window.bounds.size);
+    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *exportedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [self.toolBarView setHidden:NO];
+    return exportedImage;
+}
+
 @end

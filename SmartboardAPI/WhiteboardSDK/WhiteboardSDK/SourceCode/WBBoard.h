@@ -16,6 +16,8 @@
 - (id)initWithDict:(NSDictionary *)dictionary;
 - (void)setBackgroundImage:(UIImage *)image;
 - (int)numOfPages;
+- (WBPage *)currentPage;
+- (WBPage *)pageAtIndex:(int)index;
 
 - (NSMutableDictionary *)saveToDict;
 + (WBBoard *)loadFromDict:(NSDictionary *)dict;

@@ -12,6 +12,7 @@
 
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
+@property (nonatomic) int currentPageIndex;
 @property (nonatomic, strong) UIImage *backgroundImage;
 - (void)selectPage:(WBPage *)page;
 @end
@@ -22,6 +23,7 @@
 @synthesize previewImage = _previewImage;
 @synthesize tags = _tags;
 @synthesize pages = _pages;
+@synthesize currentPageIndex = _currentPageIndex;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize delegate = _delegate;
 
@@ -44,10 +46,11 @@
         
         // There's always at least 1 page
         if ([self.pages count]) {
-            [self selectPage:[self.pages objectAtIndex:0]]; // Select first page
+            [self selectPage:[self.pages objectAtIndex:self.currentPageIndex]]; // Select first page
         } else {
             [self addNewPage];
         }
+        
     }
     return self;
 }
@@ -107,6 +110,7 @@
     [page setDelegate:self];
     [self selectPage:page];
     [self.pages addObject:page];
+    self.currentPageIndex = [self.pages count]-1;
 }
 
 - (void)removePageWithId:(NSString *)uid {
@@ -154,6 +158,14 @@
     // Nothing to do right now
 }
 
+- (WBPage *)currentPage {
+    return [self pageAtIndex:self.currentPageIndex];
+}
+
+- (WBPage *)pageAtIndex:(int)index {
+    return [self.pages objectAtIndex:index];
+}
+
 #pragma mark - Export output data
 - (void)doneEditingPage:(WBPage *)page {
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
@@ -163,7 +175,7 @@
 }
 
 - (UIImage *)exportBoardToUIImage {
-    return self.backgroundImage;
+    return [[self currentPage] exportPageToImage];
 }
 
 #pragma mark - Backup/Restore Save/Load

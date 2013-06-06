@@ -20,6 +20,7 @@
 @property (nonatomic, strong) ColorPickerView *colorPickerView;
 @property (nonatomic, strong) GSButton *doneButton;
 @property (nonatomic) UIView *previewAreaView;
+@property (nonatomic, strong) UIImageView *screenshotImageView;
 @end
 
 @implementation CanvasElement
@@ -30,6 +31,7 @@
 @synthesize colorPickerView = _colorPickerView;
 @synthesize doneButton = _doneButton;
 @synthesize previewAreaView = _previewAreaView;
+@synthesize screenshotImageView = _screenshotImageView;
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
@@ -109,6 +111,7 @@
     [self setAllowToMove:NO];
     [self setAllowToSelect:NO];
     [self.previewAreaView.layer setBorderWidth:2];
+    [self removeScreenshot];
 }
 
 - (void)deselect {
@@ -118,6 +121,7 @@
     [self setAllowToSelect:YES];
     [self.previewAreaView.layer setBorderWidth:0];
     [self setTransform:self.currentTransform];
+    [self takeScreenshot];
 }
 
 - (void)setAllowToSelect:(BOOL)allowToSelect {
@@ -221,6 +225,17 @@
 
 - (void)updateSelectedColor {
     [self.colorTabView updateColorTab];
+}
+
+#pragma marl - Screenshot
+- (void)takeScreenshot {
+    self.screenshotImageView = [[UIImageView alloc] initWithFrame:self.drawingView.frame];
+    self.screenshotImageView.image = [self.drawingView takeScreenshot];
+    [self addSubview:self.screenshotImageView];
+}
+
+- (void)removeScreenshot {
+    [self.screenshotImageView removeFromSuperview];
 }
 
 #pragma mark - Undo and Redo buttons
