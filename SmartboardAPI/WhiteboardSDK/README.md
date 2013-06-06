@@ -15,13 +15,11 @@
 ```
 
 2. Use the protocol
-
 ```Objective-C
 YourViewController <WBSessionDelegate>
 ```
 
 3. Call the endpoint to show the view controller
-
 ```Objective-C
 [[WBSession activeSession] presentSmartboardControllerFromController:/* your view controller */
                                                            withImage:/* your image to edit */
@@ -29,15 +27,13 @@ YourViewController <WBSessionDelegate>
 ```
 
 4. Implement the protocol callback to get the output
-
 ```Objective-C
 - (void)doneEditingPhotoWithResult:(UIImage *)image {
     // You have the UIImage here 
 }
 ```
 
-#HOW TO RUN AND DEVELOP WHITEBOARD CODE
-
+#HOW TO RUN AND DEVELOP WHITEBOARD SDK
 1. Select `WhiteboardSDK` Scheme
 2. Press `Command` + `R` to run the project
 
