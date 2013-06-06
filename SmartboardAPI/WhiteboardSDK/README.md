@@ -22,8 +22,8 @@ YourViewController <WBSessionDelegate>
 3. Call the endpoint to show the view controller
 ```Objective-C
 [[WBSession activeSession] presentSmartboardControllerFromController:/* your view controller */
-                                                           withImage:/* your image to edit */
-                                                            delegate:/* callback */];
+                                                               withImage:/* your image to edit */
+                                                                delegate:/* callback */];
 ```
 
 4. Implement the protocol callback to get the output
@@ -33,7 +33,7 @@ YourViewController <WBSessionDelegate>
 }
 ```
 
-#HOW TO RUN AND DEVELOP WHITEBOARD SDK
+#HOW TO RUN WHITEBOARD SDK CODE
 1. Select `WhiteboardSDK` Scheme
 2. Press `Command` + `R` to run the project
 
