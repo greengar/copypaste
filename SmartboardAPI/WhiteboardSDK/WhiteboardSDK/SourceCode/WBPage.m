@@ -20,13 +20,14 @@
 #define kToolBarZIndex              1
 #define kTextToolBarZIndex          2
 #define kPageCurlZIndex             3
-#define kCanvasPickerZIndex         4
-#define kCanvasTabZIndex            5
-#define kCanvasUndoZIndex           6
-#define kCanvasRedoZIndex           7
-#define kTextFontPickerZIndex       8
-#define kTextColorPickerZIndex      9
-#define kHistoryBarZIndex           10
+#define kPageUnCurlZIndex           4
+#define kCanvasPickerZIndex         5
+#define kCanvasTabZIndex            6
+#define kCanvasUndoZIndex           7
+#define kCanvasRedoZIndex           8
+#define kTextFontPickerZIndex       9
+#define kTextColorPickerZIndex      10
+#define kHistoryBarZIndex           11
 
 #define kToolBarItemWidth   (IS_IPAD ? 110 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 110 : 64)
@@ -84,6 +85,7 @@
 @synthesize redoButton = _redoButton;
 @synthesize historyView = _historyView;
 
+#pragma mark - Init Views
 - (id)initWithDict:(NSDictionary *)dictionary {
     CGRect frame = CGRectFromString([dictionary objectForKey:@"page_frame"]);
     self = [super initWithFrame:frame];
@@ -155,7 +157,6 @@
     [self initCanvasControlWithFrame:frame];
 }
 
-#pragma mark - Init Tool Bar Buttons
 - (void)initControlWithFrame:(CGRect)frame {
     self.backgroundColor = [UIColor clearColor];
     
@@ -273,6 +274,7 @@
     [self initUndoRedoButtonsWithFrame:frame];
 }
 
+#pragma mark - Show Hide Views
 - (void)showToolBar {
     [self.toolLayer setHidden:NO];
     [self.textToolLayer setHidden:YES];
@@ -285,6 +287,38 @@
     [self.textToolLayer setHidden:NO];
     [((GSButton *)[self.toolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:YES];
     [((GSButton *)[self.textToolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:YES];
+}
+
+- (void)showHistoryView {
+    [self.historyView setHidden:NO];
+}
+
+- (void)hideHistoryView {
+    [self.historyView setHidden:YES];
+}
+
+- (void)showFontPickerView {
+    if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
+        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
+        [self.fontPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
+        [self.fontPickerView setHidden:NO];
+    }
+}
+
+- (void)hideFontPickerView {
+    [self.fontPickerView setHidden:YES];
+}
+
+- (void)showFontColorPickerView {
+    if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
+        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
+        [self.fontColorPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
+        [self.fontColorPickerView setHidden:NO];
+    }
+}
+
+- (void)hideFontColorPickerView {
+    [self.fontColorPickerView setHidden:YES];
 }
 
 #pragma mark - Delegates back to super
@@ -345,11 +379,7 @@
 }
 
 - (void)showHistory {
-    if ([self.historyView isHidden]) {
-        [self showHistoryView];
-    } else {
-        [self hideHistoryView];
-    }
+    [self showHistoryView];
 }
 
 - (void)lockPage {
@@ -364,21 +394,11 @@
 }
 
 - (void)selectFont {
-    if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
-        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
-        [self.fontPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
-        [self.fontPickerView setHidden:NO];
-//        [self bringSubviewToFront:self.fontPickerView];
-    }
+    [self showFontPickerView];
 }
 
 - (void)selectColor {
-    if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
-        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
-        [self.fontColorPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
-        [self.fontColorPickerView setHidden:NO];
-//        [self bringSubviewToFront:self.fontColorPickerView];
-    }
+    [self showFontColorPickerView];
 }
 
 #pragma mark - Elements Handler
@@ -453,27 +473,14 @@
     }
 }
 
-#pragma mark - UI for Text View
-- (void)showControlForTextView {
-    
-}
-
-#pragma mark - Animation {
-- (void)showHistoryView {
-    [self.historyView setHidden:NO];
-//    [self bringSubviewToFront:self.historyView];
-}
-
-- (void)hideHistoryView {
-    [self.historyView setHidden:YES];
-}
-
-
 #pragma mark - Keyboard Delegate
 - (void)keyboardWasShown:(NSNotification*)aNotification {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     [self showTextToolBar];
+    [self hideFontPickerView];
+    [self hideFontColorPickerView];
+    [self hideHistoryView];
     
     [UIView animateWithDuration:0.2f animations:^{
         CGRect frame = self.textToolLayer.frame;

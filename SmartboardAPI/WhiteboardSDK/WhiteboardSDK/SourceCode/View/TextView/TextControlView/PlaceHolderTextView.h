@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PlaceHolderTextViewDelegate
+- (void)contentViewBecomeFirstResponder;
+@end
+
 @interface PlaceHolderTextView : UITextView <UITextInput>
 
 - (void)setPlaceHolderText:(NSString *)placeHolderText;
 - (void)textChanged;
 - (void)updateFrame;
+
+@property (nonatomic, assign) id<PlaceHolderTextViewDelegate> holderDelegate;
 
 @end

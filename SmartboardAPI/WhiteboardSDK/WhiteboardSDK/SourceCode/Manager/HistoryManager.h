@@ -39,7 +39,7 @@
                          withOriginColor:(UIColor *)color1 x:(float)x1 y:(float)y1
                         withChangedColor:(UIColor *)color2 x:(float)x2 y:(float)y2;
 
-- (void)clearHistoryPoolWithBlock:(GSResultBlock)block;
+- (void)clearHistoryPool;
 
 @property (nonatomic, strong) NSMutableArray *historyPool;
 @property (nonatomic, strong) HistoryAction *currentAction;

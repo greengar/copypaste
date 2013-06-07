@@ -9,6 +9,7 @@
 #import "WBBoard.h"
 #import "CanvasElement.h"
 #import "BoardManager.h"
+#import "HistoryManager.h"
 
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
@@ -169,7 +170,8 @@
 #pragma mark - Export output data
 - (void)doneEditingPage:(WBPage *)page {
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-        DLog(@"%d", [BoardManager writeBoardToFile:self]);
+        [BoardManager writeBoardToFile:self];
+        [[HistoryManager sharedManager] clearHistoryPool];
         [self.delegate doneEditingBoardWithResult:[self exportBoardToUIImage]];
     }
 }

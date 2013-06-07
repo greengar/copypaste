@@ -80,7 +80,7 @@ static HistoryManager *shareManager = nil;
     }
 }
 
-- (void)clearHistoryPoolWithBlock:(GSResultBlock)block {
+- (void)clearHistoryPool {
     [self.historyPool removeAllObjects];
 }
 

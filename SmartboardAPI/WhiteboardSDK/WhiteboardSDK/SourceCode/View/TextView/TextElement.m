@@ -72,6 +72,7 @@
     [self.placeHolderTextView setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.placeHolderTextView setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
     [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
+    [self.placeHolderTextView setHolderDelegate:self];
     [self addSubview:self.placeHolderTextView];
 }
 
@@ -174,6 +175,13 @@
     self.oldColorY = self.myColorLocY;
     
     self.oldText = [((UITextView *)[self contentView]) text];
+}
+
+#pragma mark - Place Holder Text View Delegate
+- (void)contentViewBecomeFirstResponder {
+    if ([[self contentView] isFirstResponder]) {
+        [self select];
+    }
 }
 
 #pragma mark - Backup/Restore Save/Load

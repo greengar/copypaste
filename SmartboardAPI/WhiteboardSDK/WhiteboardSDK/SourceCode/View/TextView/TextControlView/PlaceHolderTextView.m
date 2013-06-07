@@ -14,6 +14,7 @@
 @end
 @implementation PlaceHolderTextView
 @synthesize placeHolderLabel = _placeHolderLabel;
+@synthesize holderDelegate = _holderDelegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -33,8 +34,18 @@
                                                  selector:@selector(textChanged)
                                                      name:UITextViewTextDidChangeNotification
                                                    object:self];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textBeginEditing)
+                                                     name:UITextViewTextDidBeginEditingNotification
+                                                   object:self];
     }
     return self;
+}
+
+- (void)textBeginEditing {
+    if (self.holderDelegate && [((id) self.holderDelegate) respondsToSelector:@selector(contentViewBecomeFirstResponder)]) {
+        [self.holderDelegate contentViewBecomeFirstResponder];
+    }
 }
 
 - (void)textChanged {

@@ -7,8 +7,9 @@
 //
 
 #import "WBBaseElement.h"
+#import "PlaceHolderTextView.h"
 
-@interface TextElement : WBBaseElement <UITextViewDelegate>
+@interface TextElement : WBBaseElement <UITextViewDelegate, PlaceHolderTextViewDelegate>
 
 @property (nonatomic, strong) NSString  *myFontName;
 @property (nonatomic)         int        myFontSize;
