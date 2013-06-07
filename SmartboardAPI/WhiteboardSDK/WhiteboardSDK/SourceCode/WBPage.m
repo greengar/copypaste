@@ -15,7 +15,6 @@
 #import "GSButton.h"
 #import "HistoryView.h"
 #import "HistoryManager.h"
-#import "HistoryElementCreated.h"
 
 #define kToolBarItemWidth   (frame.size.width/5)
 #define kToolBarItemHeight  44

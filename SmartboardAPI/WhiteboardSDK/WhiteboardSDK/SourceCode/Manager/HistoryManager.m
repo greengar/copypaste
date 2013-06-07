@@ -9,6 +9,7 @@
 #import "HistoryManager.h"
 #import "HistoryElementCreated.h"
 #import "HistoryElementDeleted.h"
+#import "HistoryElementTextChanged.h"
 #import "HistoryElementTextFontChanged.h"
 #import "HistoryElementTextColorChanged.h"
 
@@ -109,6 +110,18 @@ static HistoryManager *shareManager = nil;
     [self activateAction:action];
 }
 
+- (void)addActionTextContentChangedElement:(TextElement *)element
+                            withOriginText:(NSString *)text1
+                           withChangedText:(NSString *)text2 {
+    if (![text1 isEqualToString:text2]) {
+        HistoryElementTextChanged *action = [[HistoryElementTextChanged alloc] init];
+        [action setElement:element];
+        [action setOriginalText:text1];
+        [action setChangedText:text2];
+        [self addAction:action];
+    }
+}
+
 - (void)addActionTextFontChangedElement:(TextElement *)element
                      withOriginFontName:(NSString *)name1 fontSize:(int)size1
                     withChangedFontName:(NSString *)name2 fontSize:(int)size2 {
@@ -120,6 +133,9 @@ static HistoryManager *shareManager = nil;
         [action setChangedFontName:name2];
         [action setChangedFontSize:size2];
         [self addAction:action];
+        
+        name1 = name2;
+        size1 = size2;
     }
 }
 

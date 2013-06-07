@@ -16,16 +16,20 @@
 @interface TextElement()
 @property (nonatomic, strong) PlaceHolderTextView *placeHolderTextView;
 
-// For History
-@property (nonatomic) BOOL fontChanged;
+// For History Created
+@property (nonatomic) BOOL elementCreated;
+
+// For History Font
 @property (nonatomic, strong) NSString *oldFontName;
 @property (nonatomic) int oldFontSize;
 
-// For History
-@property (nonatomic) BOOL colorChanged;
+// For History Color
 @property (nonatomic, strong) UIColor *oldColor;
 @property (nonatomic) float oldColorX;
 @property (nonatomic) float oldColorY;
+
+// For History Content
+@property (nonatomic, strong) NSString *oldText;
 
 @end
 
@@ -34,13 +38,13 @@
 @synthesize myFontName = _myFontName;
 @synthesize myFontSize = _myFontSize;
 @synthesize myColor = _myColor;
-@synthesize fontChanged = _fontChanged;
 @synthesize oldFontName = _oldFontName;
 @synthesize oldFontSize = _oldFontSize;
-@synthesize colorChanged = _colorChanged;
 @synthesize oldColor = _oldColor;
 @synthesize oldColorX = _oldColorX;
 @synthesize oldColorY = _oldColorY;
+@synthesize oldText = _oldText;
+@synthesize elementCreated = _elementCreated;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     self = [super initWithDict:dictionary];
@@ -59,6 +63,8 @@
         [self updateWithFontName:[[SettingManager sharedManager] currentFontName]
                             size:[[SettingManager sharedManager] currentFontSize]];
         [self updateWithColor:[[SettingManager sharedManager] currentFontColor] x:-50 y:-50];
+        
+        self.elementCreated = YES;
     }
     return self;
 }
@@ -95,14 +101,7 @@
     [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
     [self.placeHolderTextView textChanged];
     
-    self.fontChanged = NO;
-    self.oldFontName = self.myFontName;
-    self.oldFontSize = self.myFontSize;
-    
-    self.colorChanged = NO;
-    self.oldColor = self.myColor;
-    self.oldColorX = self.myColorLocX;
-    self.oldColorY = self.myColorLocY;
+    [self checkHistory];
 }
 
 - (void)deselect {
@@ -110,16 +109,13 @@
     [self.placeHolderTextView setPlaceHolderText:@""];
     [self.placeHolderTextView textChanged];
     
-    if (self.fontChanged) {
+    if (!self.elementCreated) {
         [[HistoryManager sharedManager] addActionTextFontChangedElement:self
                                                      withOriginFontName:self.oldFontName
                                                                fontSize:self.oldFontSize
                                                     withChangedFontName:self.myFontName
                                                                fontSize:self.myFontSize];
-        self.fontChanged = NO;
-    }
-    
-    if (self.colorChanged) {
+        
         [[HistoryManager sharedManager] addActionTextColorChangedElement:self
                                                          withOriginColor:self.oldColor
                                                                        x:self.oldColorX
@@ -127,12 +123,16 @@
                                                         withChangedColor:self.myColor
                                                                        x:self.myColorLocX
                                                                        y:self.myColorLocY];
-        self.colorChanged = NO;
+
+        [[HistoryManager sharedManager] addActionTextContentChangedElement:self
+                                                            withOriginText:self.oldText
+                                                           withChangedText:((UITextView *)[self contentView]).text];
     }
+    [self checkHistory];
+    self.elementCreated = NO;
 }
 
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
-    self.fontChanged = YES;
     self.myFontName = fontName;
     self.myFontSize = fontSize;
     [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:fontSize]];
@@ -140,7 +140,6 @@
 }
 
 - (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y {
-    self.colorChanged = YES;
     self.myColor = color;
     self.myColorLocX = x;
     self.myColorLocY = y;
@@ -166,6 +165,16 @@
                  menuItems:menuItems];
 }
 
+- (void)checkHistory {
+    self.oldFontName = self.myFontName;
+    self.oldFontSize = self.myFontSize;
+    
+    self.oldColor = self.myColor;
+    self.oldColorX = self.myColorLocX;
+    self.oldColorY = self.myColorLocY;
+    
+    self.oldText = [((UITextView *)[self contentView]) text];
+}
 
 #pragma mark - Backup/Restore Save/Load
 - (NSDictionary *)saveToDict {
