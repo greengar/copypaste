@@ -32,6 +32,9 @@
 - (void)addActionTextFontChangedElement:(TextElement *)element
                      withOriginFontName:(NSString *)name1 fontSize:(int)size1
                     withChangedFontName:(NSString *)name2 fontSize:(int)size2;
+- (void)addActionTextColorChangedElement:(TextElement *)element
+                         withOriginColor:(UIColor *)color1 x:(float)x1 y:(float)y1
+                        withChangedColor:(UIColor *)color2 x:(float)x2 y:(float)y2;
 
 - (void)clearHistoryPoolWithBlock:(GSResultBlock)block;
 

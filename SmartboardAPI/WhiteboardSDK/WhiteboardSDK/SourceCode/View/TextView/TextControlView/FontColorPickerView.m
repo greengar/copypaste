@@ -10,6 +10,7 @@
 #import "SettingManager.h"
 #import "WBUtils.h"
 #import "GSButton.h"
+#import "HistoryManager.h"
 
 @interface FontColorPickerView()
 @property (nonatomic, strong) ColorPickerImageView *colorPickerImageView;

@@ -21,11 +21,6 @@
 @property (nonatomic, strong) UILabel *fontPreviewLabel;
 @property (nonatomic, strong) NSArray *fontNames;
 @property (nonatomic, strong) NSArray *fontSizes;
-
-// For History
-@property (nonatomic) BOOL fontChanged;
-@property (nonatomic, strong) NSString *oldFontName;
-@property (nonatomic) int oldFontSize;
 @end
 
 @implementation FontPickerView
@@ -33,9 +28,6 @@
 @synthesize fontPickerView = _fontPickerView;
 @synthesize fontNames = _fontNames;
 @synthesize fontSizes = _fontSizes;
-@synthesize fontChanged = _fontChanged;
-@synthesize oldFontName = _oldFontName;
-@synthesize oldFontSize = _oldFontSize;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -81,20 +73,9 @@
     [super setHidden:hidden];
     if (hidden) {
         [[SettingManager sharedManager] persistTextSetting];
-        if (self.fontChanged) {
-            [[HistoryManager sharedManager] addActionTextFontChangedElement:self.currentTextView
-                                                         withOriginFontName:self.oldFontName
-                                                                   fontSize:self.oldFontSize
-                                                        withChangedFontName:[SettingManager sharedManager].currentFontName
-                                                                   fontSize:[SettingManager sharedManager].currentFontSize];
-        }
+        
     } else {
-        self.fontChanged = NO;
-        self.oldFontName = [[SettingManager sharedManager] currentFontName];
-        self.oldFontSize = [[SettingManager sharedManager] currentFontSize];
         if (self.currentTextView) {
-            self.oldFontName = self.currentTextView.myFontName;
-            self.oldFontSize = self.currentTextView.myFontSize;
             [self.fontPickerView selectRow:[self selectedName:[self.currentTextView myFontName]]
                                inComponent:kFontNameIndex animated:YES];
             [self.fontPickerView selectRow:[self selectedSize:[self.currentTextView myFontSize]]
@@ -134,7 +115,6 @@
 	}
     [self updateCurrentTextView];
     [self updatePreview];
-    self.fontChanged = YES;
 }
 
 - (void)updateCurrentTextView {

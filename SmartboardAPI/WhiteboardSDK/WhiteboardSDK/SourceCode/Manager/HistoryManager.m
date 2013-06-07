@@ -10,6 +10,7 @@
 #import "HistoryElementCreated.h"
 #import "HistoryElementDeleted.h"
 #import "HistoryElementTextFontChanged.h"
+#import "HistoryElementTextColorChanged.h"
 
 #define kHistoryMaxBuffer 10
 
@@ -118,6 +119,22 @@ static HistoryManager *shareManager = nil;
         [action setOriginalFontSize:size1];
         [action setChangedFontName:name2];
         [action setChangedFontSize:size2];
+        [self addAction:action];
+    }
+}
+
+- (void)addActionTextColorChangedElement:(TextElement *)element
+                         withOriginColor:(UIColor *)color1 x:(float)x1 y:(float)y1
+                        withChangedColor:(UIColor *)color2 x:(float)x2 y:(float)y2 {
+    if (x1 != x2 || y1 != y2) {
+        HistoryElementTextColorChanged *action = [[HistoryElementTextColorChanged alloc] init];
+        [action setElement:element];
+        [action setOriginalColor:color1];
+        [action setOriginalColorX:x1];
+        [action setOriginalColorY:y1];
+        [action setChangedColor:color2];
+        [action setChangedColorX:x2];
+        [action setChangedColorY:y2];
         [self addAction:action];
     }
 }

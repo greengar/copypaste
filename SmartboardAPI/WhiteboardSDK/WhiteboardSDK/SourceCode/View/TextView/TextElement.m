@@ -11,9 +11,22 @@
 #import "SettingManager.h"
 #import "UIColor+GSString.h"
 #import "KxMenu.h"
+#import "HistoryManager.h"
 
 @interface TextElement()
 @property (nonatomic, strong) PlaceHolderTextView *placeHolderTextView;
+
+// For History
+@property (nonatomic) BOOL fontChanged;
+@property (nonatomic, strong) NSString *oldFontName;
+@property (nonatomic) int oldFontSize;
+
+// For History
+@property (nonatomic) BOOL colorChanged;
+@property (nonatomic, strong) UIColor *oldColor;
+@property (nonatomic) float oldColorX;
+@property (nonatomic) float oldColorY;
+
 @end
 
 @implementation TextElement
@@ -21,6 +34,13 @@
 @synthesize myFontName = _myFontName;
 @synthesize myFontSize = _myFontSize;
 @synthesize myColor = _myColor;
+@synthesize fontChanged = _fontChanged;
+@synthesize oldFontName = _oldFontName;
+@synthesize oldFontSize = _oldFontSize;
+@synthesize colorChanged = _colorChanged;
+@synthesize oldColor = _oldColor;
+@synthesize oldColorX = _oldColorX;
+@synthesize oldColorY = _oldColorY;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     self = [super initWithDict:dictionary];
@@ -74,15 +94,45 @@
     [self.placeHolderTextView updateFrame];
     [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
     [self.placeHolderTextView textChanged];
+    
+    self.fontChanged = NO;
+    self.oldFontName = self.myFontName;
+    self.oldFontSize = self.myFontSize;
+    
+    self.colorChanged = NO;
+    self.oldColor = self.myColor;
+    self.oldColorX = self.myColorLocX;
+    self.oldColorY = self.myColorLocY;
 }
 
 - (void)deselect {
     [super deselect];
     [self.placeHolderTextView setPlaceHolderText:@""];
     [self.placeHolderTextView textChanged];
+    
+    if (self.fontChanged) {
+        [[HistoryManager sharedManager] addActionTextFontChangedElement:self
+                                                     withOriginFontName:self.oldFontName
+                                                               fontSize:self.oldFontSize
+                                                    withChangedFontName:self.myFontName
+                                                               fontSize:self.myFontSize];
+        self.fontChanged = NO;
+    }
+    
+    if (self.colorChanged) {
+        [[HistoryManager sharedManager] addActionTextColorChangedElement:self
+                                                         withOriginColor:self.oldColor
+                                                                       x:self.oldColorX
+                                                                       y:self.oldColorY
+                                                        withChangedColor:self.myColor
+                                                                       x:self.myColorLocX
+                                                                       y:self.myColorLocY];
+        self.colorChanged = NO;
+    }
 }
 
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
+    self.fontChanged = YES;
     self.myFontName = fontName;
     self.myFontSize = fontSize;
     [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:fontSize]];
@@ -90,6 +140,7 @@
 }
 
 - (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y {
+    self.colorChanged = YES;
     self.myColor = color;
     self.myColorLocX = x;
     self.myColorLocY = y;
