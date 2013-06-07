@@ -13,6 +13,8 @@
 #import "BackgroundElement.h"
 #import "WBUtils.h"
 #import "GSButton.h"
+#import "HistoryView.h"
+#import "HistoryManager.h"
 
 #define kToolBarItemWidth   (frame.size.width/5)
 #define kToolBarItemHeight  44
@@ -39,6 +41,7 @@
 @property (nonatomic, strong) FontPickerView *fontPickerView;
 @property (nonatomic, strong) FontColorPickerView *fontColorPickerView;
 @property (nonatomic, strong) BackgroundElement *backgroundImageView;
+@property (nonatomic, strong) HistoryView    *historyView;
 @end
 
 @implementation WBPage
@@ -50,6 +53,7 @@
 @synthesize fontPickerView = _fontPickerView;
 @synthesize fontColorPickerView = _fontColorPickerView;
 @synthesize delegate = _delegate;
+@synthesize historyView = _historyView;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     CGRect frame = CGRectFromString([dictionary objectForKey:@"page_frame"]);
@@ -90,7 +94,7 @@
     return self;
 }
 
-#pragma mark - Tool Bar Buttons
+#pragma mark - Init Tool Bar Buttons
 - (void)initControlWithFrame:(CGRect)frame {
     self.backgroundColor = [UIColor clearColor];
     
@@ -98,6 +102,9 @@
     
     // Default: show tool bar
     [self showToolBar];
+    
+    // Init History view
+    [self initHistoryViewWithFrame:frame];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
@@ -107,6 +114,15 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+}
+
+- (void)initHistoryViewWithFrame:(CGRect)frame {
+    self.historyView = [[HistoryView alloc] initWithFrame:CGRectMake(0,
+                                                                     frame.size.height-kToolBarItemHeight*4,
+                                                                     frame.size.width,
+                                                                     kToolBarItemHeight*4)];
+    [self.historyView setHidden:YES];
+    [self addSubview:self.historyView];
 }
 
 - (void)initToolBarViewWithFrame:(CGRect)frame {
@@ -261,7 +277,11 @@
 }
 
 - (void)showHistory {
-    
+    if ([self.historyView isHidden]) {
+        [self showHistoryView];
+    } else {
+        [self hideHistoryView];
+    }
 }
 
 - (void)lockPage {
@@ -326,6 +346,17 @@
 - (void)showControlForTextView {
     
 }
+
+#pragma mark - Animation {
+- (void)showHistoryView {
+    [self.historyView setHidden:NO];
+    [self bringSubviewToFront:self.historyView];
+}
+
+- (void)hideHistoryView {
+    [self.historyView setHidden:YES];
+}
+
 
 #pragma mark - Keyboard Delegate
 - (void)keyboardWasShown:(NSNotification*)aNotification {

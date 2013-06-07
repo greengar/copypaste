@@ -13,6 +13,8 @@
 #import "BackgroundElement.h"
 #import "WBUtils.h"
 #import <QuartzCore/QuartzCore.h>
+#import "HistoryManager.h"
+#import "HistoryElementTransform.h"
 
 @interface WBBaseElement()
 @end
@@ -169,6 +171,16 @@
         CGPoint translation = [panGesture translationInView:self];
         [self moveTo:translation];
         [panGesture setTranslation:CGPointZero inView:self];
+    }
+    if ([panGesture state] == UIGestureRecognizerStateBegan) {
+        HistoryElementTransform *action = [[HistoryElementTransform alloc] init];
+        [[HistoryManager sharedManager] addAction:action];
+        [action setElement:self];
+        [action setOriginalTransform:self.transform];
+        
+    } else if ([panGesture state] == UIGestureRecognizerStateEnded) {
+        [((HistoryElementTransform *) [[HistoryManager sharedManager] currentAction]) setChangedTransform:self.transform];
+        [[HistoryManager sharedManager] finishAction];
     }
 }
 
