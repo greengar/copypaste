@@ -10,26 +10,14 @@
 #import "SettingManager.h"
 #import "GSButton.h"
 
-#define kUndoPickerWidth 69
-#define kURButtonWidthHeight 64
 @interface CanvasElement()
-@property (nonatomic, strong) UIButton *undoButton;
-@property (nonatomic, strong) UIButton *redoButton;
 @property (nonatomic, strong) MainPaintingView *drawingView;
-@property (nonatomic, strong) ColorTabView *colorTabView;
-@property (nonatomic, strong) ColorPickerView *colorPickerView;
-@property (nonatomic, strong) UIButton *doneButton;
 @property (nonatomic) UIView *previewAreaView;
 @property (nonatomic, strong) UIImageView *screenshotImageView;
 @end
 
 @implementation CanvasElement
-@synthesize undoButton = _undoButton;
-@synthesize redoButton = _redoButton;
 @synthesize drawingView = _drawingView;
-@synthesize colorTabView = _colorTabView;
-@synthesize colorPickerView = _colorPickerView;
-@synthesize doneButton = _doneButton;
 @synthesize previewAreaView = _previewAreaView;
 @synthesize screenshotImageView = _screenshotImageView;
 
@@ -47,7 +35,6 @@
         
         // OpenGL View
         self.drawingView = [MainPaintingView loadFromDict:drawingDict];
-        [self.drawingView setDelegate:self];
         [self addSubview:self.drawingView];
         UIImage *image = nil;
         [self.drawingView initialDrawing];
@@ -74,8 +61,10 @@
         self.backgroundColor = [UIColor clearColor];
         
         // OpenGL View
-        self.drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self.drawingView setDelegate:self];
+        self.drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0,
+                                                                              0,
+                                                                              frame.size.width,
+                                                                              frame.size.height)];
         [self addSubview:self.drawingView];
         [self.drawingView initialDrawing];
         if (image) {
@@ -98,35 +87,6 @@
     [self.previewAreaView setUserInteractionEnabled:NO];
     [self.previewAreaView.layer setBorderWidth:1];
     [self.previewAreaView.layer setBorderColor:[[UIColor colorWithPatternImage:[UIImage imageNamed:@"Whiteboard.bundle/DottedImage.png"]] CGColor]];
-    
-    // Bottom color tabs
-    self.colorTabView = [[ColorTabView alloc] initWithFrame:CGRectMake(0,
-                                                                       frame.size.height-kLauncherHeight,
-                                                                       frame.size.width,
-                                                                       kLauncherHeight)];
-    [self.colorTabView setDelegate:self];
-    [self addSubview:self.colorTabView];
-    
-    // Color Picker
-    self.colorPickerView = [[ColorPickerView alloc] initWithFrame:CGRectMake(0,
-                                                                             frame.size.height-kLauncherHeight-kColorPickerViewHeight,
-                                                                             frame.size.width,
-                                                                             kColorPickerViewHeight)];
-    [self.colorPickerView setDelegate:self];
-    [self addSubview:self.colorPickerView];
-    
-    // Undo and Redo
-    [self initializeUndoRedoButtonsWithFrame:frame];
-    
-    self.doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.doneButton setFrame:CGRectMake(0,
-                                         frame.size.height-kLauncherHeight,
-                                         kLauncherHeight,
-                                         kLauncherHeight)];
-    [self.doneButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PencilButton.fw.png"]
-                               forState:UIControlStateNormal];
-    [self.doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.doneButton];
 }
 
 - (UIView *)contentView {
@@ -158,9 +118,14 @@
     if (successful) {
         [self takeScreenshot];
     }
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementCreated:successful:)]) {
-        [self.delegate elementCreated:self successful:successful];
+    if (self.elementCreated == NO) {
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementCreated:successful:)]) {
+            [self.delegate elementCreated:self successful:successful];
+        }
+    } else {
+        
     }
+    self.elementCreated = YES;
 }
 
 - (void)setAllowToSelect:(BOOL)allowToSelect {
@@ -171,19 +136,9 @@
     [super setAllowToMove:allowToMove];
     
     if (self.allowToMove) {
-        [self.undoButton setHidden:YES];
-        [self.redoButton setHidden:YES];
-        [self.colorTabView setHidden:YES];
-        [self.colorPickerView setHidden:YES];
-        [self.doneButton setHidden:YES];
         [self.drawingView setUserInteractionEnabled:NO];
         
     } else {
-        [self.undoButton setHidden:NO];
-        [self.redoButton setHidden:NO];
-        [self.colorTabView setHidden:NO];
-        [self.colorPickerView setHidden:NO];
-        [self.doneButton setHidden:NO];
         [self.drawingView setUserInteractionEnabled:YES];
     }
 }
@@ -234,42 +189,6 @@
     return self.previewAreaView.frame;
 }
 
-#pragma mark - Picker
-- (void)selectColorTabAtIndex:(int)index {
-    [self.colorPickerView selectColorTabAtIndex:index];
-}
-
-- (void)showHidePicker {
-    if ([self.colorPickerView alpha] == 0.0f) {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.3];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [UIView setAnimationDelegate:self];
-        self.colorPickerView.alpha = 1.0f;
-        self.colorPickerView.frame = CGRectMake(0,
-                                                self.frame.size.height-kLauncherHeight-kColorPickerViewHeight,
-                                                self.colorTabView.frame.size.width,
-                                                self.colorPickerView.frame.size.height);
-        [UIView commitAnimations];
-        
-    } else {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.3];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [UIView setAnimationDelegate:self];
-        self.colorPickerView.alpha = 0.0f;
-        self.colorPickerView.frame = CGRectMake(0,
-                                                self.frame.size.height-kLauncherHeight,
-                                                self.colorTabView.frame.size.width,
-                                                self.colorPickerView.frame.size.height);
-        [UIView commitAnimations];
-    }
-}
-
-- (void)updateSelectedColor {
-    [self.colorTabView updateColorTab];
-}
-
 #pragma marl - Screenshot
 - (void)takeScreenshot {
     self.screenshotImageView = [[UIImageView alloc] initWithFrame:self.drawingView.frame];
@@ -295,112 +214,13 @@
     return canvasElement;
 }
 
-
-#pragma mark - Undo and Redo buttons
-- (void)initializeUndoRedoButtonsWithFrame:(CGRect)frame {
-    self.undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.undoButton.frame = CGRectMake(0, 0, kURButtonWidthHeight, kURButtonWidthHeight);
-    self.undoButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [self.undoButton addTarget:self action:@selector(undoButtonTapped)
-              forControlEvents:UIControlEventTouchUpInside];
-    [self.undoButton addTarget:self action:@selector(undoButtonTouchDown)
-              forControlEvents:UIControlEventTouchDown];
-    [self.undoButton addTarget:self action:@selector(undoButtonDragExit)
-              forControlEvents:UIControlEventTouchDragExit];
-    [self.undoButton addTarget:self action:@selector(undoButtonDragEnter)
-              forControlEvents:UIControlEventTouchDragEnter];
-    [self.undoButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/URUndoButton.png"]
-                     forState:UIControlStateNormal];
-    [self addSubview:self.undoButton];
-    [self.undoButton setTitle:@"0" forState:UIControlStateNormal];
-    
-    self.redoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.redoButton.frame = CGRectMake(frame.size.width-kURButtonWidthHeight,
-                                       0,
-                                       kURButtonWidthHeight,
-                                       kURButtonWidthHeight);
-    self.redoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    [self.redoButton addTarget:self action:@selector(redoButtonTapped)
-              forControlEvents:UIControlEventTouchUpInside];
-    [self.redoButton addTarget:self action:@selector(redoButtonTouchDown)
-              forControlEvents:UIControlEventTouchDown];
-    [self.redoButton addTarget:self action:@selector(redoButtonDragExit)
-              forControlEvents:UIControlEventTouchDragExit];
-    [self.redoButton addTarget:self action:@selector(redoButtonDragEnter)
-              forControlEvents:UIControlEventTouchDragEnter];
-    [self.redoButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/URRedoButton.png"]
-                     forState:UIControlStateNormal];
-    [self addSubview:self.redoButton];
-    
-    [self updateBar];
-}
-
-- (void) undoButtonTapped {
-    [self.drawingView undoStroke];
-    [self updateBar];
-}
-
-- (void) undoButtonTouchDown {
-    if ([self.drawingView checkUndo]) {
-        self.undoButton.alpha = 0.5;
-    }
-}
-
-- (void) undoButtonDragExit {
-    if ([self.drawingView checkUndo]) {
-        self.undoButton.alpha = 1.0;
-    }
-}
-
-- (void) undoButtonDragEnter {
-    if ([self.drawingView checkUndo]) {
-        self.undoButton.alpha = 0.5;
-    }
-}
-
-- (void) redoButtonTapped {
-    [self.drawingView redoStroke];
-    [self updateBar];
-}
-
-- (void) redoButtonTouchDown {
-    if ([self.drawingView checkRedo]) {
-        self.redoButton.alpha = 0.5;
-    }
-}
-
-- (void) redoButtonDragExit {
-    if ([self.drawingView checkRedo]) {
-        self.redoButton.alpha = 1.0;
-    }
-}
-
-- (void) redoButtonDragEnter {
-    if ([self.drawingView checkRedo]) {
-        self.redoButton.alpha = 0.5;
-    }
-}
-
-- (void) updateBar {
-    if (![self.drawingView checkUndo]) {
-        self.undoButton.alpha = 0.2;
-    } else {
-        self.undoButton.alpha = 1.0;
-    }
-    
-    if (![self.drawingView checkRedo]) {
-        self.redoButton.alpha = 0.2;
-    } else {
-        self.redoButton.alpha = 1.0;
-    }
-}
-
+#pragma mark - Undo/Redo
 - (void)checkUndo:(int)undoCount {
-    [self updateBar];
+    
 }
 
 - (void)checkRedo:(int)redoCount {
-    [self updateBar];
+    
 }
 
 - (BOOL)canBecomeFirstResponder {

@@ -9,6 +9,7 @@
 #import "GSButton.h"
 
 @implementation GSButton
+@synthesize isSelected = _isSelected;
 
 + (id)buttonWithType:(UIButtonType)buttonType themeStyle:(GSButtonStyle)style {
     UIButton *button = [super buttonWithType:buttonType];
@@ -60,4 +61,14 @@
     }
     return button;
 }
+
+- (void)setIsSelected:(BOOL)isSelected {
+    _isSelected = isSelected;
+    if (isSelected) {
+        [self setBackgroundColor:[UIColor darkGrayColor]];
+    } else {
+        [self setBackgroundColor:[UIColor clearColor]];
+    }
+}
+
 @end

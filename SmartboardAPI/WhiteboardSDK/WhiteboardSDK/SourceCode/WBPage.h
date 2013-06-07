@@ -11,6 +11,8 @@
 #import "CanvasElement.h"
 #import "FontPickerView.h"
 #import "FontColorPickerView.h"
+#import "ColorTabView.h"
+#import "ColorPickerView.h"
 
 @class WBPage;
 
@@ -20,7 +22,7 @@
 - (void)doneEditingPage:(WBPage *)page;
 @end
 
-@interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
+@interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate, ColorTabViewDelegate, ColorPickerViewDelegate, MainPaintViewDelegate>
 
 - (id)initWithDict:(NSDictionary *)dictionary;
 - (void)setBackgroundImage:(UIImage *)image;

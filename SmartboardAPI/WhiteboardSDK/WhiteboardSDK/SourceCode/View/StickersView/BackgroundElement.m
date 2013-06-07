@@ -69,14 +69,6 @@
     return self.backgroundView;
 }
 
-- (void)select {
-    // I'm background, I do nothing
-}
-
-- (void)deselect {
-    // I'm background, I do nothing
-}
-
 - (NSDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
     [dict setObject:@"BackgroundElement" forKey:@"element_type"];

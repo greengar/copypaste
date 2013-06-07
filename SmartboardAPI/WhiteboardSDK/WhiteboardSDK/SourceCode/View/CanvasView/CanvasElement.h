@@ -9,14 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "WBBaseElement.h"
 #import "MainPaintingView.h"
-#import "ColorTabView.h"
-#import "ColorPickerView.h"
 
 @class CanvasElement;
 
-@interface CanvasElement : WBBaseElement <ColorTabViewDelegate, ColorPickerViewDelegate, MainPaintViewDelegate>
+@interface CanvasElement : WBBaseElement
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
+- (void)updateBoundingRect:(CGRect)boundingRect;
 - (void)takeScreenshot;
 - (void)removeScreenshot;
 

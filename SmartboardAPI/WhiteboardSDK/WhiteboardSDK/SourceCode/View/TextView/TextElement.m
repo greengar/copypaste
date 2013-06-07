@@ -16,9 +16,6 @@
 @interface TextElement()
 @property (nonatomic, strong) PlaceHolderTextView *placeHolderTextView;
 
-// For History Created
-@property (nonatomic) BOOL elementCreated;
-
 // For History Font
 @property (nonatomic, strong) NSString *oldFontName;
 @property (nonatomic) int oldFontSize;
@@ -44,7 +41,6 @@
 @synthesize oldColorX = _oldColorX;
 @synthesize oldColorY = _oldColorY;
 @synthesize oldText = _oldText;
-@synthesize elementCreated = _elementCreated;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     self = [super initWithDict:dictionary];
@@ -63,8 +59,6 @@
         [self updateWithFontName:[[SettingManager sharedManager] currentFontName]
                             size:[[SettingManager sharedManager] currentFontSize]];
         [self updateWithColor:[[SettingManager sharedManager] currentFontColor] x:-50 y:-50];
-        
-        self.elementCreated = YES;
     }
     return self;
 }
@@ -109,7 +103,13 @@
     [self.placeHolderTextView setPlaceHolderText:@""];
     [self.placeHolderTextView textChanged];
     
-    if (!self.elementCreated) {
+    if (self.elementCreated == NO) {
+        BOOL successful = ([((UITextView *)[self contentView]).text length] > 0);
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementCreated:successful:)]) {
+            [self.delegate elementCreated:self successful:successful];
+        }
+        
+    } else {
         [[HistoryManager sharedManager] addActionTextFontChangedElement:self
                                                      withOriginFontName:self.oldFontName
                                                                fontSize:self.oldFontSize
@@ -127,14 +127,9 @@
         [[HistoryManager sharedManager] addActionTextContentChangedElement:self
                                                             withOriginText:self.oldText
                                                            withChangedText:((UITextView *)[self contentView]).text];
-    } else {
-        BOOL successful = ([((UITextView *)[self contentView]).text length] > 0);
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementCreated:successful:)]) {
-            [self.delegate elementCreated:self successful:successful];
-        }
     }
     [self checkHistory];
-    self.elementCreated = NO;
+    self.elementCreated = YES;
 }
 
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {

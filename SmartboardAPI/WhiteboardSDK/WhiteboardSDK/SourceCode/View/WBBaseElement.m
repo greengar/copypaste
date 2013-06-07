@@ -29,6 +29,7 @@
 @synthesize defaultFrame = _defaultFrame;
 @synthesize defaultTransform = _defaultTransform;
 @synthesize currentTransform = _currentTransform;
+@synthesize elementCreated = _elementCreated;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     CGRect frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
@@ -150,9 +151,11 @@
     if ([self contentView]) {
         [[self contentView] becomeFirstResponder];
         self.layer.borderWidth = 1;
-        [[self superview] bringSubviewToFront:self];
     };
-}
+    
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementSelected:)]) {
+        [self.delegate elementSelected:self];
+    }}
 
 - (void)deselect {
     if ([self contentView]) {
@@ -176,9 +179,7 @@
 }
 
 - (void)elementTap:(UITapGestureRecognizer *)tapGesture {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementSelected:)]) {
-        [self.delegate elementSelected:self];
-    }
+    [self select];
 }
 
 - (void)elementPan:(UIPanGestureRecognizer *)panGesture {

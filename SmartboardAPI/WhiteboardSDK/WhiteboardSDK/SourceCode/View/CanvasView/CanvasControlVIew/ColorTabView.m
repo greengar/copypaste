@@ -64,14 +64,14 @@
     
     for (int i = 0; i < [self.tabArray count]; i++) {
         TabWrapperView *tab = [self.tabArray objectAtIndex:i];
-        tab.displayView.frame = CGRectMake(((i+1) * kTabWidth) + kColorTabOriginX, kColorTabOriginY, kColorTabWidth, kColorTabHeight);
+        tab.displayView.frame = CGRectMake((i * kTabWidth) + kColorTabOriginX, kColorTabOriginY, kColorTabWidth, kColorTabHeight);
         tab.displayView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
         
         tab.displayView.circleColor = [[SettingManager sharedManager] getColorTabAtIndex:i].tabColor;
         tab.displayView.circleOpacity = [[SettingManager sharedManager] getColorTabAtIndex:i].opacity;
         tab.displayView.circlePointSize = [[SettingManager sharedManager] getColorTabAtIndex:i].pointSize;
         
-        tab.eventView.frame = CGRectMake(((i+1) * kTabWidth), 0, kTabWidth, kLauncherHeight);
+        tab.eventView.frame = CGRectMake((i * kTabWidth), 0, kTabWidth, kLauncherHeight);
         [tab.eventView addTarget:self action:@selector(setSelectedTab:) forControlEvents:UIControlEventTouchUpInside];
         
         // Hector: do not show color tab under Arrow Button
@@ -85,7 +85,7 @@
     
     UIImageView *eraserButton = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Whiteboard.bundle/Eraser.png"]
                                                   highlightedImage:[UIImage imageNamed:@"Whiteboard.bundle/Eraser.png"]];
-    eraserButton.frame = CGRectMake(((kEraserTabIndex+1) * kTabWidth) + 19, 23, 27, 21);
+    eraserButton.frame = CGRectMake((kEraserTabIndex * kTabWidth) + 19, 23, 27, 21);
     [self addSubview:eraserButton];
     
     [self setSelectedTab:((TabWrapperView *)[self.tabArray objectAtIndex:0]).eventView];
@@ -95,7 +95,7 @@
     for (TabWrapperView *tab in self.tabArray) {
         [tab setSelected:NO];
     }
-    int index = ((UIButton *)sender).frame.origin.x/kTabWidth-1;
+    int index = ((UIButton *)sender).frame.origin.x/kTabWidth;
     [(TabWrapperView *)[self.tabArray objectAtIndex:index] setSelected:YES];
     if ([[SettingManager sharedManager] getCurrentColorTabIndex] == index) {
         [self showHidePicker];

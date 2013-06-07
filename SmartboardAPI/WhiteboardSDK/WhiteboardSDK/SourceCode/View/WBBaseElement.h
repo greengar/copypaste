@@ -45,4 +45,7 @@
 @property (nonatomic) CGAffineTransform defaultTransform;
 @property (nonatomic) CGAffineTransform currentTransform;
 
+// For History Created
+@property (nonatomic) BOOL elementCreated;
+
 @end

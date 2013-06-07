@@ -16,8 +16,25 @@
 #import "HistoryView.h"
 #import "HistoryManager.h"
 
+#define kElementZIndex              0
+#define kToolBarZIndex              1
+#define kTextToolBarZIndex          2
+#define kPageCurlZIndex             3
+#define kCanvasPickerZIndex         4
+#define kCanvasTabZIndex            5
+#define kCanvasUndoZIndex           6
+#define kCanvasRedoZIndex           7
+#define kTextFontPickerZIndex       8
+#define kTextColorPickerZIndex      9
+#define kHistoryBarZIndex           10
+
 #define kToolBarItemWidth   (IS_IPAD ? 110 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 110 : 64)
+#define kPageCurlWidth      (IS_IPAD ? 89 : 64)
+#define kPageCurlHeight     (IS_IPAD ? 137 : 99)
+
+#define kUndoPickerWidth 69
+#define kURButtonWidthHeight 64
 
 #define kCanvasButtonIndex  0
 #define kTextButtonIndex    (kCanvasButtonIndex+1)
@@ -35,17 +52,25 @@
 #define kFontColorPickerHeight 288
 
 @interface WBPage()
-@property (nonatomic, strong) UIView         *toolBarView;
+@property (nonatomic, strong) UIView         *elementLayer;
+@property (nonatomic, strong) UIView         *toolLayer;
+@property (nonatomic, strong) UIView         *textToolLayer;
 @property (nonatomic, strong) NSMutableArray *toolBarButtons;
 @property (nonatomic, strong) NSMutableArray *textToolBarButtons;
 @property (nonatomic, strong) FontPickerView *fontPickerView;
 @property (nonatomic, strong) FontColorPickerView *fontColorPickerView;
+@property (nonatomic, strong) UIButton *undoButton;
+@property (nonatomic, strong) UIButton *redoButton;
+@property (nonatomic, strong) ColorTabView *colorTabView;
+@property (nonatomic, strong) ColorPickerView *colorPickerView;
 @property (nonatomic, strong) BackgroundElement *backgroundImageView;
 @property (nonatomic, strong) HistoryView    *historyView;
 @end
 
 @implementation WBPage
 @synthesize uid = _uid;
+@synthesize elementLayer = _elementLayer;
+@synthesize toolLayer = _toolLayer;
 @synthesize toolBarButtons = _toolBarButtons;
 @synthesize backgroundImageView = _backgroundImageView;
 @synthesize elements = _elementViews;
@@ -53,6 +78,10 @@
 @synthesize fontPickerView = _fontPickerView;
 @synthesize fontColorPickerView = _fontColorPickerView;
 @synthesize delegate = _delegate;
+@synthesize colorTabView = _colorTabView;
+@synthesize colorPickerView = _colorPickerView;
+@synthesize undoButton = _undoButton;
+@synthesize redoButton = _redoButton;
 @synthesize historyView = _historyView;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
@@ -65,12 +94,14 @@
         self.textToolBarButtons = [NSMutableArray arrayWithCapacity:2];
         self.elements = [NSMutableArray new];
         
+        [self initLayersWithFrame:frame];
+        
         NSMutableArray *elements = [dictionary objectForKey:@"page_elements"];
         for (NSDictionary *elementDict in elements) {
             WBBaseElement *element = [WBBaseElement loadFromDict:elementDict];
             [element setDelegate:self];
             [element deselect];
-            [self addSubview:element];
+            [self insertSubview:element atIndex:kElementZIndex];
             [self.elements addObject:element];
         }
         
@@ -89,16 +120,44 @@
         self.textToolBarButtons = [NSMutableArray arrayWithCapacity:2];
         self.elements = [NSMutableArray new];
         
+        [self initLayersWithFrame:frame];
+        
         [self initControlWithFrame:frame];
     }
     return self;
 }
 
+- (void)initLayersWithFrame:(CGRect)frame {
+    // Elements
+    self.elementLayer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    [self.elementLayer setBackgroundColor:[UIColor clearColor]];
+    [self insertSubview:self.elementLayer atIndex:kElementZIndex];
+    
+    // Canvas/Text/History/Lock
+    self.toolLayer = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                              frame.size.height-kToolBarItemHeight,
+                                                              kToolBarItemWidth*4,
+                                                              kToolBarItemHeight)];
+    [self.toolLayer setBackgroundColor:[UIColor clearColor]];
+    [self insertSubview:self.toolLayer atIndex:kToolBarZIndex];
+    [self initToolBarButtonsWithFrame:frame];
+    
+    // Font/Text/Color
+    self.textToolLayer = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                                  frame.size.height-kToolBarItemHeight,
+                                                                  kToolBarItemWidth*3,
+                                                                  kToolBarItemHeight)];
+    [self.textToolLayer setBackgroundColor:[UIColor clearColor]];
+    [self insertSubview:self.textToolLayer atIndex:kTextToolBarZIndex];
+    [self initTextToolBarButtonsWithFrame:frame];
+    
+    // Canvas
+    [self initCanvasControlWithFrame:frame];
+}
+
 #pragma mark - Init Tool Bar Buttons
 - (void)initControlWithFrame:(CGRect)frame {
     self.backgroundColor = [UIColor clearColor];
-    
-    [self initToolBarViewWithFrame:frame];
     
     // Default: show tool bar
     [self showToolBar];
@@ -122,59 +181,51 @@
                                                                      frame.size.width,
                                                                      kToolBarItemHeight*4)];
     [self.historyView setHidden:YES];
-    [self addSubview:self.historyView];
-}
-
-- (void)initToolBarViewWithFrame:(CGRect)frame {
-    self.toolBarView = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                                frame.size.height-kToolBarItemHeight,
-                                                                frame.size.width,
-                                                                kToolBarItemHeight)];
-    [self addSubview:self.toolBarView];
-    
-    [self initToolBarButtonsWithFrame:frame];
-    [self initTextToolBarButtonsWithFrame:frame];
+    [self insertSubview:self.historyView atIndex:kHistoryBarZIndex];
 }
 
 - (void)initToolBarButtonsWithFrame:(CGRect)frame {
-    UIButton *canvasButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    GSButton *canvasButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PencilButton.fw.png"]
                             forState:UIControlStateNormal];
     [canvasButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [canvasButton addTarget:self action:@selector(newCanvas) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolBarView addSubview:canvasButton];
+    [canvasButton addTarget:self action:@selector(newCanvas:) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolLayer addSubview:canvasButton];
     [self.toolBarButtons addObject:canvasButton];
     
-    UIButton *textButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    GSButton *textButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButton.fw.png"]
                           forState:UIControlStateNormal];
     [textButton setFrame:CGRectMake(kToolBarItemWidth, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [textButton addTarget:self action:@selector(newText) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolBarView addSubview:textButton];
+    [textButton addTarget:self action:@selector(newText:) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolLayer addSubview:textButton];
     [self.toolBarButtons addObject:textButton];
     
-    UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    GSButton *historyButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [historyButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/HistoryButton.fw.png"]
                              forState:UIControlStateNormal];
     [historyButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [historyButton addTarget:self action:@selector(showHistory) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolBarView addSubview:historyButton];
+    [self.toolLayer addSubview:historyButton];
     [self.toolBarButtons addObject:historyButton];
     
-    UIButton *lockButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButton.fw.png"]
                           forState:UIControlStateNormal];
     [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [lockButton addTarget:self action:@selector(lockPage) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolBarView addSubview:lockButton];
+    [self.toolLayer addSubview:lockButton];
     [self.toolBarButtons addObject:lockButton];
     
-    GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
-    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-    [doneButton setFrame:CGRectMake(kToolBarItemWidth*4, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [doneButton addTarget:self action:@selector(doneEditing) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolBarView addSubview:doneButton];
-    [self.toolBarButtons addObject:doneButton];
+    GSButton *pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [pageCurlButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
+                          forState:UIControlStateNormal];
+    [pageCurlButton setFrame:CGRectMake(frame.size.width-kPageCurlWidth,
+                                        frame.size.height-kPageCurlHeight,
+                                        kPageCurlWidth,
+                                        kPageCurlHeight)];
+    [pageCurlButton addTarget:self action:@selector(doneEditing) forControlEvents:UIControlEventTouchUpInside];
+    [self insertSubview:pageCurlButton atIndex:kPageCurlZIndex];
 }
 
 - (void)initTextToolBarButtonsWithFrame:(CGRect)frame {
@@ -182,14 +233,22 @@
     [fontButton setTitle:@"Font" forState:UIControlStateNormal];
     [fontButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [fontButton addTarget:self action:@selector(selectFont) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolBarView addSubview:fontButton];
+    [self.textToolLayer addSubview:fontButton];
     [self.textToolBarButtons addObject:fontButton];
+    
+    GSButton *textButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButton.fw.png"]
+                          forState:UIControlStateNormal];
+    [textButton setFrame:CGRectMake(kToolBarItemWidth, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [textButton addTarget:self action:@selector(newText:) forControlEvents:UIControlEventTouchUpInside];
+    [self.textToolLayer addSubview:textButton];
+    [self.textToolBarButtons addObject:textButton];
     
     GSButton *colorButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
     [colorButton setTitle:@"Color" forState:UIControlStateNormal];
     [colorButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [colorButton addTarget:self action:@selector(selectColor) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolBarView addSubview:colorButton];
+    [self.textToolLayer addSubview:colorButton];
     [self.textToolBarButtons addObject:colorButton];
     
     [self.textToolBarButtons addObject:[self.toolBarButtons objectAtIndex:kTextButtonIndex]];
@@ -200,33 +259,32 @@
                                                                            kFontPickerHeight)];
     
     [self.fontPickerView setHidden:YES];
-    [self addSubview:self.fontPickerView];
+    [self insertSubview:self.fontPickerView atIndex:kTextFontPickerZIndex];
     
     self.fontColorPickerView = [[FontColorPickerView alloc] initWithFrame:CGRectMake(0,
                                                                                      frame.size.height-kFontColorPickerHeight,
                                                                                      frame.size.width, kFontColorPickerHeight)];
     [self.fontColorPickerView setHidden:YES];
-    [self addSubview:self.fontColorPickerView];
+    [self insertSubview:self.fontColorPickerView atIndex:kTextColorPickerZIndex];
+}
+
+- (void)initCanvasControlWithFrame:(CGRect)frame {
+    [self initColorPickerWithFrame:frame];
+    [self initUndoRedoButtonsWithFrame:frame];
 }
 
 - (void)showToolBar {
-    for (GSButton *button in self.textToolBarButtons) {
-        [button setHidden:YES];
-    }
-    for (GSButton *button in self.toolBarButtons) {
-        [button setHidden:NO];
-    }
-    [self bringSubviewToFront:self.toolBarView];
+    [self.toolLayer setHidden:NO];
+    [self.textToolLayer setHidden:YES];
+    [((GSButton *)[self.toolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:NO];
+    [((GSButton *)[self.textToolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:NO];
 }
 
 - (void)showTextToolBar {
-    for (GSButton *button in self.toolBarButtons) {
-        [button setHidden:YES];
-    }
-    for (GSButton *button in self.textToolBarButtons) {
-        [button setHidden:NO];
-    }
-    [self bringSubviewToFront:self.toolBarView];
+    [self.toolLayer setHidden:YES];
+    [self.textToolLayer setHidden:NO];
+    [((GSButton *)[self.toolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:YES];
+    [((GSButton *)[self.textToolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:YES];
 }
 
 #pragma mark - Delegates back to super
@@ -248,36 +306,42 @@
                                                                                 self.frame.size.height)
                                                                image:image];
     [self.backgroundImageView setDelegate:self];
-    [self addSubview:self.backgroundImageView];
+    [self.elementLayer insertSubview:self.backgroundImageView atIndex:0];
     [self.elements insertObject:self.backgroundImageView atIndex:0];
-    
-    [self sendSubviewToBack:self.backgroundImageView];
 }
 
 #pragma mark - Tool Bar Buttons
-- (void)newCanvas {
-    CanvasElement *canvasElement = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
-                                                                          0,
-                                                                          self.frame.size.width,
-                                                                          self.frame.size.height)
-                                                         image:nil];
-    [canvasElement setDelegate:self];
-    [self addSubview:canvasElement];
-    [self.elements addObject:canvasElement];
-    
-    [self elementSelected:canvasElement];
+- (void)newCanvas:(GSButton *)canvasButton {
+    if ([canvasButton isSelected]) {
+        [self.selectedElementView deselect];
+        [canvasButton setIsSelected:NO];
+    } else {
+        CanvasElement *canvasElement = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
+                                                                                       0,
+                                                                                       self.frame.size.width,
+                                                                                       self.frame.size.height)
+                                                                      image:nil];
+        [canvasElement setDelegate:self];
+        [((MainPaintingView *)[canvasElement contentView]) setDelegate:self];
+        [self addElement:canvasElement];
+        [canvasElement select];
+        [canvasButton setIsSelected:YES];
+    }
 }
 
-- (void)newText {
-    TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake((self.frame.size.width-kDefaultTextBoxWidth)/2,
-                                                                    self.frame.size.height/4,
-                                                                    kDefaultTextBoxWidth,
-                                                                    kDefaultTextBoxHeight)];
-    [textElement setDelegate:self];
-    [self addSubview:textElement];
-    [self.elements addObject:textElement];
-    
-    [self elementSelected:textElement];
+- (void)newText:(GSButton *)textButton {
+    if ([textButton isSelected]) {
+        [self.selectedElementView deselect];
+        [((GSButton *)[self.toolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:NO];
+        [((GSButton *)[self.textToolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:NO];
+    } else {
+        TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake((self.frame.size.width-kDefaultTextBoxWidth)/2, self.frame.size.height/4, kDefaultTextBoxWidth, kDefaultTextBoxHeight)];
+        [textElement setDelegate:self];
+        [self addElement:textElement];
+        [textElement select];
+        [((GSButton *)[self.toolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:YES];
+        [((GSButton *)[self.textToolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:YES];
+    }
 }
 
 - (void)showHistory {
@@ -304,7 +368,7 @@
         [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
         [self.fontPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
         [self.fontPickerView setHidden:NO];
-        [self bringSubviewToFront:self.fontPickerView];
+//        [self bringSubviewToFront:self.fontPickerView];
     }
 }
 
@@ -313,13 +377,13 @@
         [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
         [self.fontColorPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
         [self.fontColorPickerView setHidden:NO];
-        [self bringSubviewToFront:self.fontColorPickerView];
+//        [self bringSubviewToFront:self.fontColorPickerView];
     }
 }
 
 #pragma mark - Elements Handler
 - (void)addElement:(WBBaseElement *)element {
-    [self addSubview:element];
+    [self.elementLayer addSubview:element];
     [self.elements addObject:element];
 }
 
@@ -346,19 +410,21 @@
             [existedElement deselect];
         }
     }
+    [self hideCanvasControl];
+    [self hideHistoryView];
 }
 
 - (void)elementSelected:(WBBaseElement *)element {
     self.selectedElementView = element;
     [self deselectAll];
-    [element select];
     
     if ([element isKindOfClass:[TextElement class]]) {
         [self showTextToolBar];
-    } else if (![element isKindOfClass:[CanvasElement class]]) {
-        [self showToolBar];
+        [((GSButton *)[self.toolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:YES];
+    } else if ([element isKindOfClass:[CanvasElement class]]) {
+        [self showCanvasControl];
+        [((GSButton *)[self.toolBarButtons objectAtIndex:kCanvasButtonIndex]) setIsSelected:YES];
     }
-    [self hideHistoryView];
 }
 
 - (void)elementDeselected:(WBBaseElement *)element {
@@ -366,8 +432,9 @@
         [self.fontPickerView setHidden:YES];
         [self.fontColorPickerView setHidden:YES];
     } else if ([element isKindOfClass:[CanvasElement class]]) {
-        [self showToolBar];
+        [self hideCanvasControl];
     }
+    [self showToolBar];
 }
 
 - (void)elementCreated:(WBBaseElement *)element successful:(BOOL)successful {
@@ -394,7 +461,7 @@
 #pragma mark - Animation {
 - (void)showHistoryView {
     [self.historyView setHidden:NO];
-    [self bringSubviewToFront:self.historyView];
+//    [self bringSubviewToFront:self.historyView];
 }
 
 - (void)hideHistoryView {
@@ -406,32 +473,24 @@
 - (void)keyboardWasShown:(NSNotification*)aNotification {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
-        // Show Text Control
-        [self showTextToolBar];
-    }
+    [self showTextToolBar];
     
     [UIView animateWithDuration:0.2f animations:^{
-        CGRect frame = self.toolBarView.frame;
+        CGRect frame = self.textToolLayer.frame;
         frame.origin.y -= kbSize.height;
-        self.toolBarView.frame = frame;
+        self.textToolLayer.frame = frame;
     }];
 }
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    if (![self.selectedElementView isKindOfClass:[TextElement class]]) {
-        // Show Text Control
-        [self showToolBar];
-    }
+    [self showToolBar];
     
     [UIView animateWithDuration:0.2f animations:^{        
-        CGRect frame = self.toolBarView.frame;
+        CGRect frame = self.textToolLayer.frame;
         frame.origin.y += kbSize.height;
-        self.toolBarView.frame = frame;
+        self.textToolLayer.frame = frame;
     }];
 }
 
@@ -458,18 +517,199 @@
 
 #pragma mark - Export
 - (UIImage *)exportPageToImage {
-    [self.toolBarView setHidden:YES];
-    
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
         UIGraphicsBeginImageContextWithOptions(self.window.bounds.size, NO, [UIScreen mainScreen].scale);
     else
         UIGraphicsBeginImageContext(self.window.bounds.size);
-    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+    [self.elementLayer.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *exportedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-    [self.toolBarView setHidden:NO];
     return exportedImage;
+}
+
+#pragma mark - Canvas View: Color Picker View + Color Tab View
+- (void)showCanvasControl {
+    [self.colorPickerView setHidden:NO];
+    [self.colorTabView setHidden:NO];
+    [self.undoButton setHidden:NO];
+    [self.redoButton setHidden:NO];
+}
+
+- (void)hideCanvasControl {
+    [self.colorPickerView setHidden:YES];
+    [self.colorTabView setHidden:YES];
+    [self.undoButton setHidden:YES];
+    [self.redoButton setHidden:YES];
+}
+
+- (void)initColorPickerWithFrame:(CGRect)frame {
+    // Bottom Color Tabs
+    self.colorTabView = [[ColorTabView alloc] initWithFrame:CGRectMake(kToolBarItemWidth,
+                                                                       frame.size.height-kLauncherHeight,
+                                                                       frame.size.width-kToolBarItemWidth,
+                                                                       kLauncherHeight)];
+    [self.colorTabView setDelegate:self];
+    [self insertSubview:self.colorTabView atIndex:kCanvasTabZIndex];
+    [self.colorTabView setHidden:YES];
+    
+    // Color Picker
+    self.colorPickerView = [[ColorPickerView alloc] initWithFrame:CGRectMake(0,
+                                                                             frame.size.height-kLauncherHeight-kColorPickerViewHeight,
+                                                                             frame.size.width,
+                                                                             kColorPickerViewHeight)];
+    [self.colorPickerView setDelegate:self];
+    [self insertSubview:self.colorPickerView atIndex:kCanvasPickerZIndex];
+    [self.colorPickerView setHidden:YES];
+}
+
+- (void)selectColorTabAtIndex:(int)index {
+    [self.colorPickerView selectColorTabAtIndex:index];
+}
+
+- (void)showHidePicker {
+    if ([self.colorPickerView alpha] == 0.0f) {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView setAnimationDelegate:self];
+        self.colorPickerView.alpha = 1.0f;
+        self.colorPickerView.frame = CGRectMake(0,
+                                                self.frame.size.height-kLauncherHeight-kColorPickerViewHeight,
+                                                self.colorTabView.frame.size.width,
+                                                self.colorPickerView.frame.size.height);
+        [UIView commitAnimations];
+        
+    } else {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView setAnimationDelegate:self];
+        self.colorPickerView.alpha = 0.0f;
+        self.colorPickerView.frame = CGRectMake(0,
+                                                self.frame.size.height-kLauncherHeight,
+                                                self.colorTabView.frame.size.width,
+                                                self.colorPickerView.frame.size.height);
+        [UIView commitAnimations];
+    }
+}
+
+- (void)updateSelectedColor {
+    [self.colorTabView updateColorTab];
+}
+
+#pragma mark - Canvas View: Undo/Redo Button
+- (void)initUndoRedoButtonsWithFrame:(CGRect)frame {
+    self.undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.undoButton.frame = CGRectMake(0, 0, kURButtonWidthHeight, kURButtonWidthHeight);
+    self.undoButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [self.undoButton addTarget:self action:@selector(undoButtonTapped)
+              forControlEvents:UIControlEventTouchUpInside];
+    [self.undoButton addTarget:self action:@selector(undoButtonTouchDown)
+              forControlEvents:UIControlEventTouchDown];
+    [self.undoButton addTarget:self action:@selector(undoButtonDragExit)
+              forControlEvents:UIControlEventTouchDragExit];
+    [self.undoButton addTarget:self action:@selector(undoButtonDragEnter)
+              forControlEvents:UIControlEventTouchDragEnter];
+    [self.undoButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/URUndoButton.png"]
+                     forState:UIControlStateNormal];
+    [self insertSubview:self.undoButton atIndex:kCanvasUndoZIndex];
+    [self.undoButton setHidden:YES];
+    
+    self.redoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.redoButton.frame = CGRectMake(frame.size.width-kURButtonWidthHeight,
+                                       0,
+                                       kURButtonWidthHeight,
+                                       kURButtonWidthHeight);
+    self.redoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    [self.redoButton addTarget:self action:@selector(redoButtonTapped)
+              forControlEvents:UIControlEventTouchUpInside];
+    [self.redoButton addTarget:self action:@selector(redoButtonTouchDown)
+              forControlEvents:UIControlEventTouchDown];
+    [self.redoButton addTarget:self action:@selector(redoButtonDragExit)
+              forControlEvents:UIControlEventTouchDragExit];
+    [self.redoButton addTarget:self action:@selector(redoButtonDragEnter)
+              forControlEvents:UIControlEventTouchDragEnter];
+    [self.redoButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/URRedoButton.png"]
+                     forState:UIControlStateNormal];
+    [self insertSubview:self.redoButton atIndex:kCanvasRedoZIndex];
+    [self.redoButton setHidden:YES];
+    
+    [self updateBar];
+}
+
+- (void) undoButtonTapped {
+    [((MainPaintingView *)[self.selectedElementView contentView]) undoStroke];
+    [self updateBar];
+}
+
+- (void) undoButtonTouchDown {
+    if ([((MainPaintingView *)[self.selectedElementView contentView]) checkUndo]) {
+        self.undoButton.alpha = 0.5;
+    }
+}
+
+- (void) undoButtonDragExit {
+    if ([((MainPaintingView *)[self.selectedElementView contentView]) checkUndo]) {
+        self.undoButton.alpha = 1.0;
+    }
+}
+
+- (void) undoButtonDragEnter {
+    if ([((MainPaintingView *)[self.selectedElementView contentView]) checkUndo]) {
+        self.undoButton.alpha = 0.5;
+    }
+}
+
+- (void) redoButtonTapped {
+    [((MainPaintingView *)[self.selectedElementView contentView]) redoStroke];
+    [self updateBar];
+}
+
+- (void) redoButtonTouchDown {
+    if ([((MainPaintingView *)[self.selectedElementView contentView]) checkRedo]) {
+        self.redoButton.alpha = 0.5;
+    }
+}
+
+- (void) redoButtonDragExit {
+    if ([((MainPaintingView *)[self.selectedElementView contentView]) checkRedo]) {
+        self.redoButton.alpha = 1.0;
+    }
+}
+
+- (void) redoButtonDragEnter {
+    if ([((MainPaintingView *)[self.selectedElementView contentView]) checkRedo]) {
+        self.redoButton.alpha = 0.5;
+    }
+}
+
+- (void) updateBar {
+    if (![((MainPaintingView *)[self.selectedElementView contentView]) checkUndo]) {
+        self.undoButton.alpha = 0.2;
+    } else {
+        self.undoButton.alpha = 1.0;
+    }
+    
+    if (![((MainPaintingView *)[self.selectedElementView contentView]) checkRedo]) {
+        self.redoButton.alpha = 0.2;
+    } else {
+        self.redoButton.alpha = 1.0;
+    }
+}
+
+- (void)checkUndo:(int)undoCount {
+    [self updateBar];
+}
+
+- (void)checkRedo:(int)redoCount {
+    [self updateBar];
+}
+
+- (void)updateBoundingRect:(CGRect)boundingRect {
+    if ([self.selectedElementView isKindOfClass:[CanvasElement class]]) {
+        CanvasElement *element = (CanvasElement *) self.selectedElementView;
+        [element updateBoundingRect:boundingRect];
+    }
 }
 
 @end
