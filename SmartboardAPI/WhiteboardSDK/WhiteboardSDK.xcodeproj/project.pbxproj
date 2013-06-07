@@ -165,6 +165,9 @@
 		7B82E790175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E791175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E792175F9E4C00B063D7 /* Whiteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B82E78F175F9E4C00B063D7 /* Whiteboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B9CCD901761A0E900DC3520 /* KxMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9CCD8E1761A0E800DC3520 /* KxMenu.h */; };
+		7B9CCD911761A0E900DC3520 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9CCD8F1761A0E800DC3520 /* KxMenu.m */; };
+		7B9CCD921761A0E900DC3520 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9CCD8F1761A0E800DC3520 /* KxMenu.m */; };
 		7BFEA48D17612AED009DEE2E /* HistoryManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BFEA48B17612AEC009DEE2E /* HistoryManager.h */; };
 		7BFEA48E17612AED009DEE2E /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA48C17612AEC009DEE2E /* HistoryManager.m */; };
 		7BFEA48F17612AED009DEE2E /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA48C17612AEC009DEE2E /* HistoryManager.m */; };
@@ -183,6 +186,12 @@
 		7BFEA4C117613C20009DEE2E /* HistoryView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BFEA4BF17613C20009DEE2E /* HistoryView.h */; };
 		7BFEA4C217613C20009DEE2E /* HistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA4C017613C20009DEE2E /* HistoryView.m */; };
 		7BFEA4C317613C20009DEE2E /* HistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA4C017613C20009DEE2E /* HistoryView.m */; };
+		7BFEA4C617616B89009DEE2E /* HistoryElementCreated.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BFEA4C417616B88009DEE2E /* HistoryElementCreated.h */; };
+		7BFEA4C717616B89009DEE2E /* HistoryElementCreated.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA4C517616B88009DEE2E /* HistoryElementCreated.m */; };
+		7BFEA4C817616B89009DEE2E /* HistoryElementCreated.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA4C517616B88009DEE2E /* HistoryElementCreated.m */; };
+		7BFEA4CB176175BA009DEE2E /* HistoryElementDeleted.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BFEA4C9176175B9009DEE2E /* HistoryElementDeleted.h */; };
+		7BFEA4CC176175BA009DEE2E /* HistoryElementDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA4CA176175BA009DEE2E /* HistoryElementDeleted.m */; };
+		7BFEA4CD176175BA009DEE2E /* HistoryElementDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA4CA176175BA009DEE2E /* HistoryElementDeleted.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -297,6 +306,8 @@
 		7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Whiteboard.bundle; sourceTree = "<group>"; };
 		7B82E78F175F9E4C00B063D7 /* Whiteboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Whiteboard.h; sourceTree = "<group>"; };
 		7B82E8EA175FBA0700B063D7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7B9CCD8E1761A0E800DC3520 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
+		7B9CCD8F1761A0E800DC3520 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		7BFEA48B17612AEC009DEE2E /* HistoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryManager.h; sourceTree = "<group>"; };
 		7BFEA48C17612AEC009DEE2E /* HistoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryManager.m; sourceTree = "<group>"; };
 		7BFEA49717612DAB009DEE2E /* HistoryAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryAction.h; sourceTree = "<group>"; };
@@ -309,6 +320,10 @@
 		7BFEA4B417613BCF009DEE2E /* HistoryElementTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementTransform.m; sourceTree = "<group>"; };
 		7BFEA4BF17613C20009DEE2E /* HistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryView.h; sourceTree = "<group>"; };
 		7BFEA4C017613C20009DEE2E /* HistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryView.m; sourceTree = "<group>"; };
+		7BFEA4C417616B88009DEE2E /* HistoryElementCreated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElementCreated.h; sourceTree = "<group>"; };
+		7BFEA4C517616B88009DEE2E /* HistoryElementCreated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementCreated.m; sourceTree = "<group>"; };
+		7BFEA4C9176175B9009DEE2E /* HistoryElementDeleted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElementDeleted.h; sourceTree = "<group>"; };
+		7BFEA4CA176175BA009DEE2E /* HistoryElementDeleted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementDeleted.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -456,6 +471,8 @@
 				7B82E6C2175F9E2E00B063D7 /* CGPointExtension.h */,
 				7B82E6C3175F9E2E00B063D7 /* CGPointExtension.m */,
 				7B82E6C4175F9E2E00B063D7 /* ImageManipulation.h */,
+				7B9CCD8E1761A0E800DC3520 /* KxMenu.h */,
+				7B9CCD8F1761A0E800DC3520 /* KxMenu.m */,
 				7B4AF57517605BD30049D77D /* NSData+WBBase64.h */,
 				7B4AF57617605BD30049D77D /* NSData+WBBase64.m */,
 				7B82E6C5175F9E2E00B063D7 /* UIColor+GSString.h */,
@@ -657,6 +674,10 @@
 			children = (
 				7BFEA4AF17613BCF009DEE2E /* HistoryElement.h */,
 				7BFEA4B017613BCF009DEE2E /* HistoryElement.m */,
+				7BFEA4C417616B88009DEE2E /* HistoryElementCreated.h */,
+				7BFEA4C517616B88009DEE2E /* HistoryElementCreated.m */,
+				7BFEA4C9176175B9009DEE2E /* HistoryElementDeleted.h */,
+				7BFEA4CA176175BA009DEE2E /* HistoryElementDeleted.m */,
 				7BFEA4B117613BCF009DEE2E /* HistoryElementTextChanged.h */,
 				7BFEA4B217613BCF009DEE2E /* HistoryElementTextChanged.m */,
 				7BFEA4B317613BCF009DEE2E /* HistoryElementTransform.h */,
@@ -729,6 +750,9 @@
 				7BFEA4B917613BD0009DEE2E /* HistoryElementTextChanged.h in Headers */,
 				7BFEA4BC17613BD0009DEE2E /* HistoryElementTransform.h in Headers */,
 				7BFEA4C117613C20009DEE2E /* HistoryView.h in Headers */,
+				7BFEA4C617616B89009DEE2E /* HistoryElementCreated.h in Headers */,
+				7BFEA4CB176175BA009DEE2E /* HistoryElementDeleted.h in Headers */,
+				7B9CCD901761A0E900DC3520 /* KxMenu.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,6 +920,9 @@
 				7BFEA4BA17613BD0009DEE2E /* HistoryElementTextChanged.m in Sources */,
 				7BFEA4BD17613BD0009DEE2E /* HistoryElementTransform.m in Sources */,
 				7BFEA4C217613C20009DEE2E /* HistoryView.m in Sources */,
+				7BFEA4C717616B89009DEE2E /* HistoryElementCreated.m in Sources */,
+				7BFEA4CC176175BA009DEE2E /* HistoryElementDeleted.m in Sources */,
+				7B9CCD911761A0E900DC3520 /* KxMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -950,6 +977,9 @@
 				7BFEA4BB17613BD0009DEE2E /* HistoryElementTextChanged.m in Sources */,
 				7BFEA4BE17613BD0009DEE2E /* HistoryElementTransform.m in Sources */,
 				7BFEA4C317613C20009DEE2E /* HistoryView.m in Sources */,
+				7BFEA4C817616B89009DEE2E /* HistoryElementCreated.m in Sources */,
+				7BFEA4CD176175BA009DEE2E /* HistoryElementDeleted.m in Sources */,
+				7B9CCD921761A0E900DC3520 /* KxMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

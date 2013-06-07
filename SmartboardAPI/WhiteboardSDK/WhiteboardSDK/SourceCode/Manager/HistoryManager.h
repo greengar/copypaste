@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "HistoryAction.h"
 
+@class WBBaseElement;
+@class WBPage;
+
 @protocol HistoryManagerDelegate
 - (void)updateHistoryView;
 @end
@@ -21,6 +24,10 @@
 - (void)activateAction:(HistoryAction *)action;
 - (void)deactivateAction:(HistoryAction *)action;
 - (void)finishAction;
+
+// Helper
+- (void)addActionCreateElement:(WBBaseElement *)element forPage:(WBPage *)page;
+- (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page;
 
 - (void)clearHistoryPoolWithBlock:(GSResultBlock)block;
 

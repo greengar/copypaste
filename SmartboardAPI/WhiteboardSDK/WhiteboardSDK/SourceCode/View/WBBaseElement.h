@@ -15,6 +15,7 @@
 @optional
 - (void)elementSelected:(WBBaseElement *)element;
 - (void)elementDeselected:(WBBaseElement *)element;
+- (void)elementDeleted:(WBBaseElement *)element;
 @end
 
 @interface WBBaseElement : UIView <UIGestureRecognizerDelegate>
@@ -28,7 +29,8 @@
 - (void)deselect;
 - (void)resetTransform;
 - (void)elementTap:(UITapGestureRecognizer *)tapGesture;
-
+- (void)showMenu;
+- (CGRect)focusFrame;
 - (NSDictionary *)saveToDict;
 + (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary;
 

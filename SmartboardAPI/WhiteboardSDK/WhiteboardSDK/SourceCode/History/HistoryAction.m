@@ -16,6 +16,7 @@
 - (id)init {
     if (self = [super init]) {
         self.active = YES;
+        self.name = @"View";
         self.date = [NSDate date];
     }
     return self;

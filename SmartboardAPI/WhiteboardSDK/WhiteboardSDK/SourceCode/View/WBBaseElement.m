@@ -15,6 +15,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HistoryManager.h"
 #import "HistoryElementTransform.h"
+#import "KxMenu.h"
 
 @interface WBBaseElement()
 @end
@@ -83,9 +84,13 @@
                                                                                            action:@selector(elementScale:)];
         pinchGesture.delegate = self;
         
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                                       action:@selector(elementLongPress:)];
+        
         [self addGestureRecognizer:panGesture];
         [self addGestureRecognizer:rotationGesture];
         [self addGestureRecognizer:pinchGesture];
+        [self addGestureRecognizer:longPressGesture];
         
     } else {
         for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
@@ -144,8 +149,8 @@
 - (void)select {
     if ([self contentView]) {
         [[self contentView] becomeFirstResponder];
-        [[self superview] bringSubviewToFront:self];
         self.layer.borderWidth = 1;
+        [[self superview] bringSubviewToFront:self];
     };
 }
 
@@ -157,6 +162,16 @@
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementDeselected:)]) {
         [self.delegate elementDeselected:self];
+    }
+}
+
+- (void)bringFront {
+    [[self superview] bringSubviewToFront:self];
+}
+
+- (void)delete {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementDeleted:)]) {
+        [self.delegate elementDeleted:self];
     }
 }
 
@@ -224,6 +239,36 @@
         [((HistoryElementTransform *) [[HistoryManager sharedManager] currentAction]) setChangedTransform:self.transform];
         [[HistoryManager sharedManager] finishAction];
     }
+}
+
+- (void)elementLongPress:(UILongPressGestureRecognizer *)longPressGesture {
+    if ([longPressGesture state] == UIGestureRecognizerStateEnded) {
+        [self showMenu];
+    }
+}
+
+- (void)showMenu {
+    NSArray *menuItems = @[[KxMenuItem menuItem:@"Edit"
+                                          image:nil
+                                         target:self
+                                         action:@selector(select)],
+                           [KxMenuItem menuItem:@"Bring to front"
+                                          image:nil
+                                         target:self
+                                         action:@selector(bringFront)],
+                           [KxMenuItem menuItem:@"Delete"
+                                          image:nil
+                                         target:self
+                                         action:@selector(delete)], ];
+    UIView *focusView = [[UIView alloc] initWithFrame:[self focusFrame]];
+    focusView.transform = self.transform;
+    [KxMenu showMenuInView:[self superview]
+                  fromRect:focusView.frame
+                 menuItems:menuItems];
+}
+
+- (CGRect)focusFrame {
+    return [[self contentView] frame];
 }
 
 #pragma mark - Backup/Restore Save/Load

@@ -219,6 +219,10 @@
     self.previewAreaView.frame = boundingRect;
 }
 
+- (CGRect)focusFrame {
+    return self.previewAreaView.frame;
+}
+
 #pragma mark - Picker
 - (void)selectColorTabAtIndex:(int)index {
     [self.colorPickerView selectColorTabAtIndex:index];
@@ -386,6 +390,10 @@
 
 - (void)checkRedo:(int)redoCount {
     [self updateBar];
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
 }
 
 @end

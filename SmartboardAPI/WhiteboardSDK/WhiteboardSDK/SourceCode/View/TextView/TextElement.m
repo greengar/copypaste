@@ -10,6 +10,7 @@
 #import "PlaceHolderTextView.h"
 #import "SettingManager.h"
 #import "UIColor+GSString.h"
+#import "KxMenu.h"
 
 @interface TextElement()
 @property (nonatomic, strong) PlaceHolderTextView *placeHolderTextView;
@@ -95,6 +96,25 @@
     [self.placeHolderTextView setTextColor:color];
     [self.placeHolderTextView updateFrame];
 }
+
+- (void)showMenu {
+    NSArray *menuItems = @[[KxMenuItem menuItem:@"Edit"
+                                          image:nil
+                                         target:self
+                                         action:@selector(select)],
+                           [KxMenuItem menuItem:@"Bring to front"
+                                          image:nil
+                                         target:self
+                                         action:@selector(bringFront)],
+                           [KxMenuItem menuItem:@"Delete"
+                                          image:nil
+                                         target:self
+                                         action:@selector(delete)], ];
+    [KxMenu showMenuInView:[self superview]
+                  fromRect:self.frame
+                 menuItems:menuItems];
+}
+
 
 #pragma mark - Backup/Restore Save/Load
 - (NSDictionary *)saveToDict {

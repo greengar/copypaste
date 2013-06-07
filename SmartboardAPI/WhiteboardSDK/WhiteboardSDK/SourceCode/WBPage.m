@@ -15,6 +15,7 @@
 #import "GSButton.h"
 #import "HistoryView.h"
 #import "HistoryManager.h"
+#import "HistoryElementCreated.h"
 
 #define kToolBarItemWidth   (frame.size.width/5)
 #define kToolBarItemHeight  44
@@ -252,28 +253,34 @@
 
 #pragma mark - Tool Bar Buttons
 - (void)newCanvas {
-    CanvasElement *canvasView = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
+    CanvasElement *canvasElement = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
                                                                           0,
                                                                           self.frame.size.width,
                                                                           self.frame.size.height)
                                                          image:nil];
-    [canvasView setDelegate:self];
-    [self addSubview:canvasView];
-    [self.elements addObject:canvasView];
+    [canvasElement setDelegate:self];
+    [self addSubview:canvasElement];
+    [self.elements addObject:canvasElement];
     
-    [self elementSelected:canvasView];
+    [self elementSelected:canvasElement];
+    
+    // For History
+    [[HistoryManager sharedManager] addActionCreateElement:canvasElement forPage:self];
 }
 
 - (void)newText {
-    TextElement *textView = [[TextElement alloc] initWithFrame:CGRectMake((self.frame.size.width-kDefaultTextBoxWidth)/2,
+    TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake((self.frame.size.width-kDefaultTextBoxWidth)/2,
                                                                     self.frame.size.height/4,
                                                                     kDefaultTextBoxWidth,
                                                                     kDefaultTextBoxHeight)];
-    [textView setDelegate:self];
-    [self addSubview:textView];
-    [self.elements addObject:textView];
+    [textElement setDelegate:self];
+    [self addSubview:textElement];
+    [self.elements addObject:textElement];
     
-    [self elementSelected:textView];
+    [self elementSelected:textElement];
+    
+    // For History
+    [[HistoryManager sharedManager] addActionCreateElement:textElement forPage:self];
 }
 
 - (void)showHistory {
@@ -312,6 +319,29 @@
         [self bringSubviewToFront:self.fontColorPickerView];
     }
 }
+
+#pragma mark - Elements Handler
+- (void)addElement:(WBBaseElement *)element {
+    [self addSubview:element];
+    [self.elements addObject:element];
+}
+
+- (void)removeElement:(WBBaseElement *)element {
+    BOOL isExisted = NO;
+    for (WBBaseElement *existedElement in self.elements) {
+        if ([element.uid isEqualToString:existedElement.uid]) {
+            isExisted = YES;
+        }
+    }
+    
+    if (isExisted) {
+        [self.elements removeObject:element];
+        if ([element superview]) {
+            [element removeFromSuperview];
+        }
+    }
+}
+
 #pragma mark - Elements Delegate
 - (void)deselectAll {
     for (WBBaseElement *existedElement in self.elements) {
@@ -331,6 +361,7 @@
     } else if (![element isKindOfClass:[CanvasElement class]]) {
         [self showToolBar];
     }
+    [self hideHistoryView];
 }
 
 - (void)elementDeselected:(WBBaseElement *)element {
@@ -338,6 +369,13 @@
         [self.fontPickerView setHidden:YES];
         [self.fontColorPickerView setHidden:YES];
     } else if ([element isKindOfClass:[CanvasElement class]]) {
+        [self showToolBar];
+    }
+}
+
+- (void)elementDeleted:(WBBaseElement *)element {
+    [[HistoryManager sharedManager] addActionDeleteElement:element forPage:self];
+    if ([element isKindOfClass:[TextElement class]]) {
         [self showToolBar];
     }
 }

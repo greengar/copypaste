@@ -53,7 +53,6 @@
 }
 
 #pragma mark - UITableView Datasource
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -82,7 +81,6 @@
 }
 
 #pragma mark - UITableView Delegate methods
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     HistoryAction *action = [[[HistoryManager sharedManager] historyPool] objectAtIndex:[indexPath row]];
@@ -91,6 +89,7 @@
     } else {
         [[HistoryManager sharedManager] activateAction:action];
     }
+    [[self superview] bringSubviewToFront:self];
 }
 
 - (void)updateHistoryView {

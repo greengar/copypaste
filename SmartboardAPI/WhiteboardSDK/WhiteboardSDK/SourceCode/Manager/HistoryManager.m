@@ -7,6 +7,8 @@
 //
 
 #import "HistoryManager.h"
+#import "HistoryElementCreated.h"
+#import "HistoryElementDeleted.h"
 
 #define kHistoryMaxBuffer 10
 
@@ -87,6 +89,22 @@ static HistoryManager *shareManager = nil;
         }
     }
     [self.historyPool removeObjectsInArray:toRemovePool];
+}
+
+#pragma mark - Helpers
+- (void)addActionCreateElement:(WBBaseElement *)element forPage:(WBPage *)page {
+    HistoryElementCreated *action = [[HistoryElementCreated alloc] init];
+    [action setPage:page];
+    [action setElement:element];
+    [[HistoryManager sharedManager] addAction:action];
+}
+
+- (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page {
+    HistoryElementDeleted *action = [[HistoryElementDeleted alloc] init];
+    [action setPage:page];
+    [action setElement:element];
+    [[HistoryManager sharedManager] addAction:action];
+    [[HistoryManager sharedManager] activateAction:action];
 }
 
 - (id) init {

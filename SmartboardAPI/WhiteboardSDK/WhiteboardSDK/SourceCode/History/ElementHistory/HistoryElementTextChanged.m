@@ -15,7 +15,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.name = @"Text Changed";
+        self.name = @"Changed";
     }
     return self;
 }

@@ -7,6 +7,7 @@
 //
 
 #import "PlaceHolderTextView.h"
+#import "TextElement.h"
 
 @interface PlaceHolderTextView()
 @property (nonatomic, strong) UITextView *placeHolderLabel;
@@ -57,6 +58,13 @@
                                             self.frame.size.width,
                                             self.frame.size.height);
     }
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    [UIMenuController sharedMenuController].menuVisible = NO;  //do not display the menu
+    [((TextElement *) [self superview]) showMenu];
+    [self resignFirstResponder];
+    return NO;
 }
 
 - (void)setFont:(UIFont *)font {

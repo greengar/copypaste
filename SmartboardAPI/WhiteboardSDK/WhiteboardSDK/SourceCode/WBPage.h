@@ -29,6 +29,9 @@
 - (NSDictionary *)saveToDict;
 + (WBPage *)loadFromDict:(NSDictionary *)dict;
 
+- (void)addElement:(WBBaseElement *)element;
+- (void)removeElement:(WBBaseElement *)element;
+
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSMutableArray *elements;
 @property (nonatomic, strong) WBBaseElement *selectedElementView;

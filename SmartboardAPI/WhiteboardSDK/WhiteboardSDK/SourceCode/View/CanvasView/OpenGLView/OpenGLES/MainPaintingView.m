@@ -69,6 +69,7 @@
     }
     return self;
 }
+
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView {
     if ((self = [super initWithFrame:frame sharegroupView:glView])) {
         // You might think this is necessary for showing the tools, but it's not.
