@@ -23,9 +23,9 @@
 - (void)setActive:(BOOL)active {
     [super setActive:active];
     if (active) {
-        [((TextElement *) self.element) setText:self.originalText];
-    } else {
         [((TextElement *) self.element) setText:self.changedText];
+    } else {
+        [((TextElement *) self.element) setText:self.originalText];
     }
 }
 

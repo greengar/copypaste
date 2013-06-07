@@ -9,6 +9,7 @@
 #import "HistoryManager.h"
 #import "HistoryElementCreated.h"
 #import "HistoryElementDeleted.h"
+#import "HistoryElementTextFontChanged.h"
 
 #define kHistoryMaxBuffer 10
 
@@ -96,15 +97,29 @@ static HistoryManager *shareManager = nil;
     HistoryElementCreated *action = [[HistoryElementCreated alloc] init];
     [action setPage:page];
     [action setElement:element];
-    [[HistoryManager sharedManager] addAction:action];
+    [self addAction:action];
 }
 
 - (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page {
     HistoryElementDeleted *action = [[HistoryElementDeleted alloc] init];
     [action setPage:page];
     [action setElement:element];
-    [[HistoryManager sharedManager] addAction:action];
-    [[HistoryManager sharedManager] activateAction:action];
+    [self addAction:action];
+    [self activateAction:action];
+}
+
+- (void)addActionTextFontChangedElement:(TextElement *)element
+                     withOriginFontName:(NSString *)name1 fontSize:(int)size1
+                    withChangedFontName:(NSString *)name2 fontSize:(int)size2 {
+    if (![name1 isEqualToString:name2] || size1 != size2) {
+        HistoryElementTextFontChanged *action = [[HistoryElementTextFontChanged alloc] init];
+        [action setElement:element];
+        [action setOriginalFontName:name1];
+        [action setOriginalFontSize:size1];
+        [action setChangedFontName:name2];
+        [action setChangedFontSize:size2];
+        [self addAction:action];
+    }
 }
 
 - (id) init {

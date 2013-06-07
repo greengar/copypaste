@@ -10,6 +10,7 @@
 #import "HistoryAction.h"
 
 @class WBBaseElement;
+@class TextElement;
 @class WBPage;
 
 @protocol HistoryManagerDelegate
@@ -28,6 +29,9 @@
 // Helper
 - (void)addActionCreateElement:(WBBaseElement *)element forPage:(WBPage *)page;
 - (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page;
+- (void)addActionTextFontChangedElement:(TextElement *)element
+                     withOriginFontName:(NSString *)name1 fontSize:(int)size1
+                    withChangedFontName:(NSString *)name2 fontSize:(int)size2;
 
 - (void)clearHistoryPoolWithBlock:(GSResultBlock)block;
 

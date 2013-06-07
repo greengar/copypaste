@@ -168,6 +168,9 @@
 		7B9CCD901761A0E900DC3520 /* KxMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9CCD8E1761A0E800DC3520 /* KxMenu.h */; };
 		7B9CCD911761A0E900DC3520 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9CCD8F1761A0E800DC3520 /* KxMenu.m */; };
 		7B9CCD921761A0E900DC3520 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9CCD8F1761A0E800DC3520 /* KxMenu.m */; };
+		7BE4AB50176241870019C7AB /* HistoryElementTextFontChanged.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BE4AB4E176241870019C7AB /* HistoryElementTextFontChanged.h */; };
+		7BE4AB51176241870019C7AB /* HistoryElementTextFontChanged.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4AB4F176241870019C7AB /* HistoryElementTextFontChanged.m */; };
+		7BE4AB52176241870019C7AB /* HistoryElementTextFontChanged.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4AB4F176241870019C7AB /* HistoryElementTextFontChanged.m */; };
 		7BFEA48D17612AED009DEE2E /* HistoryManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BFEA48B17612AEC009DEE2E /* HistoryManager.h */; };
 		7BFEA48E17612AED009DEE2E /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA48C17612AEC009DEE2E /* HistoryManager.m */; };
 		7BFEA48F17612AED009DEE2E /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEA48C17612AEC009DEE2E /* HistoryManager.m */; };
@@ -308,6 +311,8 @@
 		7B82E8EA175FBA0700B063D7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		7B9CCD8E1761A0E800DC3520 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		7B9CCD8F1761A0E800DC3520 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
+		7BE4AB4E176241870019C7AB /* HistoryElementTextFontChanged.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElementTextFontChanged.h; sourceTree = "<group>"; };
+		7BE4AB4F176241870019C7AB /* HistoryElementTextFontChanged.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementTextFontChanged.m; sourceTree = "<group>"; };
 		7BFEA48B17612AEC009DEE2E /* HistoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryManager.h; sourceTree = "<group>"; };
 		7BFEA48C17612AEC009DEE2E /* HistoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryManager.m; sourceTree = "<group>"; };
 		7BFEA49717612DAB009DEE2E /* HistoryAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryAction.h; sourceTree = "<group>"; };
@@ -680,6 +685,8 @@
 				7BFEA4CA176175BA009DEE2E /* HistoryElementDeleted.m */,
 				7BFEA4B117613BCF009DEE2E /* HistoryElementTextChanged.h */,
 				7BFEA4B217613BCF009DEE2E /* HistoryElementTextChanged.m */,
+				7BE4AB4E176241870019C7AB /* HistoryElementTextFontChanged.h */,
+				7BE4AB4F176241870019C7AB /* HistoryElementTextFontChanged.m */,
 				7BFEA4B317613BCF009DEE2E /* HistoryElementTransform.h */,
 				7BFEA4B417613BCF009DEE2E /* HistoryElementTransform.m */,
 			);
@@ -753,6 +760,7 @@
 				7BFEA4C617616B89009DEE2E /* HistoryElementCreated.h in Headers */,
 				7BFEA4CB176175BA009DEE2E /* HistoryElementDeleted.h in Headers */,
 				7B9CCD901761A0E900DC3520 /* KxMenu.h in Headers */,
+				7BE4AB50176241870019C7AB /* HistoryElementTextFontChanged.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -923,6 +931,7 @@
 				7BFEA4C717616B89009DEE2E /* HistoryElementCreated.m in Sources */,
 				7BFEA4CC176175BA009DEE2E /* HistoryElementDeleted.m in Sources */,
 				7B9CCD911761A0E900DC3520 /* KxMenu.m in Sources */,
+				7BE4AB51176241870019C7AB /* HistoryElementTextFontChanged.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -980,6 +989,7 @@
 				7BFEA4C817616B89009DEE2E /* HistoryElementCreated.m in Sources */,
 				7BFEA4CD176175BA009DEE2E /* HistoryElementDeleted.m in Sources */,
 				7B9CCD921761A0E900DC3520 /* KxMenu.m in Sources */,
+				7BE4AB52176241870019C7AB /* HistoryElementTextFontChanged.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
