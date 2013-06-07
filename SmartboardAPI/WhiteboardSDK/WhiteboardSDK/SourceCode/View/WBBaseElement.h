@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
+@class WBPage;
 @class WBBaseElement;
 
 @protocol WBBaseViewDelegate
 @optional
+- (void)elementCreated:(WBBaseElement *)element successful:(BOOL)successful;
 - (void)elementSelected:(WBBaseElement *)element;
 - (void)elementDeselected:(WBBaseElement *)element;
 - (void)elementDeleted:(WBBaseElement *)element;

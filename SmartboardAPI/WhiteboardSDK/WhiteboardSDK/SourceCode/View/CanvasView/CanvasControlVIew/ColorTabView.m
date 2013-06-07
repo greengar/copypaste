@@ -85,7 +85,7 @@
     
     UIImageView *eraserButton = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Whiteboard.bundle/Eraser.png"]
                                                   highlightedImage:[UIImage imageNamed:@"Whiteboard.bundle/Eraser.png"]];
-    eraserButton.frame = CGRectMake(((kEraserTabIndex+1) * kTabWidth) + 19, 13, 27, 21);
+    eraserButton.frame = CGRectMake(((kEraserTabIndex+1) * kTabWidth) + 19, 23, 27, 21);
     [self addSubview:eraserButton];
     
     [self setSelectedTab:((TabWrapperView *)[self.tabArray objectAtIndex:0]).eventView];

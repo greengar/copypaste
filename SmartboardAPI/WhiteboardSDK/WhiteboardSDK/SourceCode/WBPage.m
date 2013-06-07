@@ -16,8 +16,8 @@
 #import "HistoryView.h"
 #import "HistoryManager.h"
 
-#define kToolBarItemWidth   (frame.size.width/5)
-#define kToolBarItemHeight  44
+#define kToolBarItemWidth   (IS_IPAD ? 110 : 64)
+#define kToolBarItemHeight  (IS_IPAD ? 110 : 64)
 
 #define kCanvasButtonIndex  0
 #define kTextButtonIndex    (kCanvasButtonIndex+1)
@@ -137,29 +137,33 @@
 }
 
 - (void)initToolBarButtonsWithFrame:(CGRect)frame {
-    GSButton *canvasButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:BlueButtonStyle];
-    [canvasButton setTitle:@"Canvas" forState:UIControlStateNormal];
+    UIButton *canvasButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PencilButton.fw.png"]
+                            forState:UIControlStateNormal];
     [canvasButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [canvasButton addTarget:self action:@selector(newCanvas) forControlEvents:UIControlEventTouchUpInside];
     [self.toolBarView addSubview:canvasButton];
     [self.toolBarButtons addObject:canvasButton];
     
-    GSButton *textButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:TanButtonStyle];
-    [textButton setTitle:@"Text" forState:UIControlStateNormal];
+    UIButton *textButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButton.fw.png"]
+                          forState:UIControlStateNormal];
     [textButton setFrame:CGRectMake(kToolBarItemWidth, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [textButton addTarget:self action:@selector(newText) forControlEvents:UIControlEventTouchUpInside];
     [self.toolBarView addSubview:textButton];
     [self.toolBarButtons addObject:textButton];
     
-    GSButton *historyButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:OrangeButtonStyle];
-    [historyButton setTitle:@"History" forState:UIControlStateNormal];
+    UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [historyButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/HistoryButton.fw.png"]
+                             forState:UIControlStateNormal];
     [historyButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [historyButton addTarget:self action:@selector(showHistory) forControlEvents:UIControlEventTouchUpInside];
     [self.toolBarView addSubview:historyButton];
     [self.toolBarButtons addObject:historyButton];
     
-    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:WhiteButtonStyle];
-    [lockButton setTitle:@"Lock" forState:UIControlStateNormal];
+    UIButton *lockButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButton.fw.png"]
+                          forState:UIControlStateNormal];
     [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [lockButton addTarget:self action:@selector(lockPage) forControlEvents:UIControlEventTouchUpInside];
     [self.toolBarView addSubview:lockButton];
@@ -262,9 +266,6 @@
     [self.elements addObject:canvasElement];
     
     [self elementSelected:canvasElement];
-    
-    // For History
-    [[HistoryManager sharedManager] addActionCreateElement:canvasElement forPage:self];
 }
 
 - (void)newText {
@@ -277,9 +278,6 @@
     [self.elements addObject:textElement];
     
     [self elementSelected:textElement];
-    
-    // For History
-    [[HistoryManager sharedManager] addActionCreateElement:textElement forPage:self];
 }
 
 - (void)showHistory {
@@ -369,6 +367,15 @@
         [self.fontColorPickerView setHidden:YES];
     } else if ([element isKindOfClass:[CanvasElement class]]) {
         [self showToolBar];
+    }
+}
+
+- (void)elementCreated:(WBBaseElement *)element successful:(BOOL)successful {
+    if (successful) {
+        [[HistoryManager sharedManager] addActionCreateElement:element forPage:self];
+    } else {
+        [element removeFromSuperview];
+        [self.elements removeObject:element];
     }
 }
 

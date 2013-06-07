@@ -32,7 +32,7 @@
                          forState:UIControlStateNormal];
             break;
         case GrayButtonStyle:
-            [button setBackgroundImage:[[UIImage imageNamed:@"Whiteboard.bundle/GrayButton.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10]
+            [button setBackgroundImage:[[UIImage imageNamed:@"Whiteboard.bundle/GreyButton.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10]
                               forState:UIControlStateNormal];
             [button setTitleColor:[UIColor blackColor]
                          forState:UIControlStateNormal];

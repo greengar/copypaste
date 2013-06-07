@@ -86,9 +86,9 @@ typedef enum {
 #define kLauncherAnimationOffsetPortrait 963
 #define kLauncherAnimationOffsetLandscape 707
 
-// Color Tab in Bottom of Screen (21, 11, 22, 23)
+// Color Tab in Bottom of Screen (21, 21, 22, 23)
 #define kColorTabOriginX 20
-#define kColorTabOriginY 11
+#define kColorTabOriginY 21
 #define kColorTabWidth 24
 #define kColorTabHeight 23
 

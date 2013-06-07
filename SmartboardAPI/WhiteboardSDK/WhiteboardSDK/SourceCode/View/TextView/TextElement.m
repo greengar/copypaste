@@ -127,6 +127,11 @@
         [[HistoryManager sharedManager] addActionTextContentChangedElement:self
                                                             withOriginText:self.oldText
                                                            withChangedText:((UITextView *)[self contentView]).text];
+    } else {
+        BOOL successful = ([((UITextView *)[self contentView]).text length] > 0);
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementCreated:successful:)]) {
+            [self.delegate elementCreated:self successful:successful];
+        }
     }
     [self checkHistory];
     self.elementCreated = NO;

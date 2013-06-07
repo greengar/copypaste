@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define kLauncherHeight 44
+#define kLauncherHeight (IS_IPAD ? 110 : 64)
 
 @protocol ColorTabViewDelegate
 - (void)selectColorTabAtIndex:(int)index;

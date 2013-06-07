@@ -18,7 +18,7 @@
 @property (nonatomic, strong) MainPaintingView *drawingView;
 @property (nonatomic, strong) ColorTabView *colorTabView;
 @property (nonatomic, strong) ColorPickerView *colorPickerView;
-@property (nonatomic, strong) GSButton *doneButton;
+@property (nonatomic, strong) UIButton *doneButton;
 @property (nonatomic) UIView *previewAreaView;
 @property (nonatomic, strong) UIImageView *screenshotImageView;
 @end
@@ -118,9 +118,13 @@
     // Undo and Redo
     [self initializeUndoRedoButtonsWithFrame:frame];
     
-    self.doneButton = [GSButton buttonWithType:UIButtonTypeRoundedRect themeStyle:GreenButtonStyle];
-    [self.doneButton setFrame:CGRectMake(0, frame.size.height-44, frame.size.width/5, 44)];
-    [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    self.doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.doneButton setFrame:CGRectMake(0,
+                                         frame.size.height-kLauncherHeight,
+                                         kLauncherHeight,
+                                         kLauncherHeight)];
+    [self.doneButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PencilButton.fw.png"]
+                               forState:UIControlStateNormal];
     [self.doneButton addTarget:self action:@selector(finishCanvasView) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.doneButton];
 }
@@ -149,7 +153,14 @@
     [self setAllowToSelect:YES];
     [self.previewAreaView.layer setBorderWidth:0];
     [self setTransform:self.currentTransform];
-    [self takeScreenshot];
+    
+    BOOL successful = !CGRectEqualToRect(self.previewAreaView.frame, CGRectZero);
+    if (successful) {
+        [self takeScreenshot];
+    }
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementCreated:successful:)]) {
+        [self.delegate elementCreated:self successful:successful];
+    }
 }
 
 - (void)setAllowToSelect:(BOOL)allowToSelect {

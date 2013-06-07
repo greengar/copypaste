@@ -8,6 +8,7 @@
 
 #import "HistoryView.h"
 #import "WBUtils.h"
+#import "GSButton.h"
 
 @interface HistoryView()
 @property (nonatomic, strong) UITableView *historyTableView;
@@ -30,7 +31,7 @@
         [historyLabel setFont:[UIFont systemFontOfSize:20.0f]];
         [self addSubview:historyLabel];
         
-        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        GSButton *closeButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
         [closeButton setFrame:CGRectMake(frame.size.width-44, 0, 44, 44)];
         [closeButton setTitle:@"X" forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(closeMe) forControlEvents:UIControlEventTouchUpInside];
