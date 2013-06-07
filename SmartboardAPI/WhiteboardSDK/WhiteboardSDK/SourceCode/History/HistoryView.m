@@ -7,6 +7,7 @@
 //
 
 #import "HistoryView.h"
+#import "WBUtils.h"
 
 @interface HistoryView()
 @property (nonatomic, strong) UITableView *historyTableView;
@@ -38,6 +39,8 @@
         self.historyTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, frame.size.width, frame.size.height-44)];
         [self.historyTableView setDelegate:self];
         [self.historyTableView setDataSource:self];
+        [self.historyTableView setShowsVerticalScrollIndicator:YES];
+        [self.historyTableView setShowsHorizontalScrollIndicator:YES];
         [self addSubview:self.historyTableView];
         
         [[HistoryManager sharedManager] setDelegate:self];
@@ -66,11 +69,14 @@
     
     if(cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     
     HistoryAction *action = [[[HistoryManager sharedManager] historyPool] objectAtIndex:[indexPath row]];
     cell.textLabel.text = action.name;
-    cell.detailTextLabel.text = (action.active ? @"Active" : @"Deactive");
+    cell.detailTextLabel.text = [WBUtils stringFromDate:action.date];
+    cell.contentView.backgroundColor = (action.active ? [UIColor whiteColor] : [UIColor lightGrayColor]);
     
     return cell;
 }

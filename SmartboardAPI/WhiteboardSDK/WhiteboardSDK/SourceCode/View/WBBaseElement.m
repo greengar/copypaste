@@ -172,8 +172,10 @@
         [self moveTo:translation];
         [panGesture setTranslation:CGPointZero inView:self];
     }
+    
+    // Add to History
     if ([panGesture state] == UIGestureRecognizerStateBegan) {
-        HistoryElementTransform *action = [[HistoryElementTransform alloc] init];
+        HistoryElementTransform *action = [[HistoryElementTransform alloc] initWithName:@"Moved"];
         [[HistoryManager sharedManager] addAction:action];
         [action setElement:self];
         [action setOriginalTransform:self.transform];
@@ -190,6 +192,18 @@
         [self rotateTo:rotation];
         [rotationGesture setRotation:0];
     }
+    
+    // Add to History
+    if ([rotationGesture state] == UIGestureRecognizerStateBegan) {
+        HistoryElementTransform *action = [[HistoryElementTransform alloc] initWithName:@"Rotated"];
+        [[HistoryManager sharedManager] addAction:action];
+        [action setElement:self];
+        [action setOriginalTransform:self.transform];
+        
+    } else if ([rotationGesture state] == UIGestureRecognizerStateEnded) {
+        [((HistoryElementTransform *) [[HistoryManager sharedManager] currentAction]) setChangedTransform:self.transform];
+        [[HistoryManager sharedManager] finishAction];
+    }
 }
 
 - (void)elementScale:(UIPinchGestureRecognizer *)pinchGesture {
@@ -197,6 +211,18 @@
         float scale = pinchGesture.scale;
         [self scaleTo:scale];
         [pinchGesture setScale:1.0f];
+    }
+    
+    // Add to History
+    if ([pinchGesture state] == UIGestureRecognizerStateBegan) {
+        HistoryElementTransform *action = [[HistoryElementTransform alloc] initWithName:@"Scaled"];
+        [[HistoryManager sharedManager] addAction:action];
+        [action setElement:self];
+        [action setOriginalTransform:self.transform];
+        
+    } else if ([pinchGesture state] == UIGestureRecognizerStateEnded) {
+        [((HistoryElementTransform *) [[HistoryManager sharedManager] currentAction]) setChangedTransform:self.transform];
+        [[HistoryManager sharedManager] finishAction];
     }
 }
 

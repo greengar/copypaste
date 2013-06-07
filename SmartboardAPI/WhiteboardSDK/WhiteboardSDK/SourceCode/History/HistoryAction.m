@@ -16,6 +16,16 @@
 - (id)init {
     if (self = [super init]) {
         self.active = YES;
+        self.date = [NSDate date];
+    }
+    return self;
+}
+
+- (id)initWithName:(NSString *)name {
+    if (self = [super init]) {
+        self.active = YES;
+        self.name = name;
+        self.date = [NSDate date];
     }
     return self;
 }

@@ -18,13 +18,13 @@
 - (void)setElement:(WBBaseElement *)element {
     [super setElement:element];
     if ([element isKindOfClass:[TextElement class]]) {
-        self.name = @"Text Transformed";
+        self.name = [NSString stringWithFormat:@"Text %@", self.name];
     } else if ([element isKindOfClass:[CanvasElement class]]) {
-        self.name = @"Canvas Transformed";
+        self.name = [NSString stringWithFormat:@"Canvas %@", self.name];
     } else if ([element isKindOfClass:[ImageElement class]]) {
-        self.name = @"Image Transformed";
+        self.name = [NSString stringWithFormat:@"Image %@", self.name];
     } else {
-        self.name = @"View Transformed";
+        self.name = [NSString stringWithFormat:@"View %@", self.name];
     }
 }
 

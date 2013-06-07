@@ -13,6 +13,9 @@
 
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSDate *date;
 @property (nonatomic) BOOL active;
+
+- (id)initWithName:(NSString *)name;
 
 @end
