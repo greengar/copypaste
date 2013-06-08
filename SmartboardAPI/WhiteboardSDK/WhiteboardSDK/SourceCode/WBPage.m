@@ -30,8 +30,8 @@
 #define kTextColorPickerZIndex      10
 #define kHistoryBarZIndex           11
 
-#define kToolBarItemWidth   (IS_IPAD ? 110 : 64)
-#define kToolBarItemHeight  (IS_IPAD ? 110 : 64)
+#define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
+#define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
 #define kPageCurlWidth      (IS_IPAD ? 89 : 64)
 #define kPageCurlHeight     (IS_IPAD ? 137 : 99)
 

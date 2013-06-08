@@ -209,6 +209,10 @@
     
     [self.brushToolsView addSubview:widthLabel];
     [self.brushToolsView addSubview:self.widthSlider];
+    
+    [self invalidateWidthSlider];
+    [self invalidateOpacitySlider];
+    [self invalidateSpectrumArea];
 }
 
 - (void) pointSizeChanged {
