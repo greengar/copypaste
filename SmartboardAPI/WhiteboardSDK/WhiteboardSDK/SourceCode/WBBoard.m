@@ -10,11 +10,17 @@
 #import "CanvasElement.h"
 #import "BoardManager.h"
 #import "HistoryManager.h"
+#import "GSButton.h"
+
+#define kCurlUpAndDownAnimationID @"kCurlUpAndDownAnimationID"
 
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
 @property (nonatomic) int currentPageIndex;
 @property (nonatomic, strong) UIImage *backgroundImage;
+@property (nonatomic) BOOL isAnimating;
+@property (nonatomic, strong) NSTimer *animationTimer;
+@property (nonatomic) BOOL isTargetViewCurled;
 - (void)selectPage:(WBPage *)page;
 @end
 
@@ -27,6 +33,9 @@
 @synthesize currentPageIndex = _currentPageIndex;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize delegate = _delegate;
+@synthesize isAnimating = _isAnimating;
+@synthesize animationTimer = _animationTimer;
+@synthesize isTargetViewCurled = _isTargetViewCurled;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     self = [super init];
@@ -52,6 +61,8 @@
             [self addNewPage];
         }
         
+        [self initExportControl];
+        
     }
     return self;
 }
@@ -64,6 +75,8 @@
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"B_"];
         self.name = [NSString stringWithFormat:@"Whiteboard %@", [WBUtils getCurrentTime]];
         self.pages = [NSMutableArray new];
+        
+        [self initExportControl];
     }
     return self;
 }
@@ -103,6 +116,7 @@
 
 #pragma mark - Pages Handler
 - (void)addNewPage {
+    self.view.backgroundColor = OPAQUE_HEXCOLOR(0xa8a8a8);
     WBPage *page = [[WBPage alloc] initWithFrame:CGRectMake(0,
                                                             0,
                                                             self.view.frame.size.width,
@@ -168,6 +182,34 @@
 }
 
 #pragma mark - Export output data
+- (void)showExportControl:(WBPage *)page {
+    if (!self.isAnimating && !self.isTargetViewCurled) {
+        self.isAnimating = YES;
+        [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:page cache:YES];
+        [UIView setAnimationDuration:1.4f];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationRepeatAutoreverses:YES];
+        [UIView commitAnimations];
+    }
+}
+
+- (void)exportPage {
+    [self doneEditingPage:[self currentPage]];
+}
+
+- (void)initExportControl {
+    GSButton *exportButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
+    [exportButton setTitle:@"Export Page" forState:UIControlStateNormal];
+    [exportButton setFrame:CGRectMake(self.view.frame.size.width-64,
+                                      self.view.frame.size.height-64,
+                                      64,
+                                      64)];
+    [exportButton addTarget:self action:@selector(exportPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:exportButton];
+    [self.view sendSubviewToBack:exportButton];
+}
+
 - (void)doneEditingPage:(WBPage *)page {
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
         [BoardManager writeBoardToFile:self];
@@ -211,6 +253,36 @@
         [self.delegate doneEditingBoardWithResult:[drawingView glToUIImage]];
     }
 }
+
+#pragma mark - Page Curl
+- (void)animationWillStart:(NSString *)animationID context:(void *)context {	
+	self.isAnimating = YES;
+	self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:0.87
+														   target:self
+														 selector:@selector(stopCurl)
+														 userInfo:nil
+														  repeats:NO];
+	return;
+}
+
+- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+	self.isAnimating = NO;
+    self.isTargetViewCurled = NO;
+	self.isAnimating = NO;
+}
+
+- (void)stopCurl {
+	[self.animationTimer invalidate];
+	[self setAnimationTimer:nil];
+    
+    CFTimeInterval pausedTime = [[self currentPage].layer convertTime:CACurrentMediaTime() fromLayer:nil];
+    [self currentPage].layer.speed = 0.0;
+    [self currentPage].layer.timeOffset = pausedTime;
+	
+	self.isTargetViewCurled = YES;
+	self.isAnimating = NO;
+}
+
 
 #pragma mark - Orientation
 // pre-iOS 6 support

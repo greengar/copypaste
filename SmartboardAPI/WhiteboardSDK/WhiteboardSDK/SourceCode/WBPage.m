@@ -15,6 +15,7 @@
 #import "GSButton.h"
 #import "HistoryView.h"
 #import "HistoryManager.h"
+#import "FDCurlViewControl.h"
 
 #define kElementZIndex              0
 #define kToolBarZIndex              1
@@ -66,6 +67,7 @@
 @property (nonatomic, strong) ColorPickerView *colorPickerView;
 @property (nonatomic, strong) BackgroundElement *backgroundImageView;
 @property (nonatomic, strong) HistoryView    *historyView;
+@property (nonatomic, strong) GSButton *pageCurlButton;
 @end
 
 @implementation WBPage
@@ -84,6 +86,7 @@
 @synthesize undoButton = _undoButton;
 @synthesize redoButton = _redoButton;
 @synthesize historyView = _historyView;
+@synthesize pageCurlButton = _pageCurlButton;
 
 #pragma mark - Init Views
 - (id)initWithDict:(NSDictionary *)dictionary {
@@ -129,7 +132,7 @@
     return self;
 }
 
-- (void)initLayersWithFrame:(CGRect)frame {
+- (void)initLayersWithFrame:(CGRect)frame {    
     // Elements
     self.elementLayer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     [self.elementLayer setBackgroundColor:[UIColor clearColor]];
@@ -218,15 +221,16 @@
     [self.toolLayer addSubview:lockButton];
     [self.toolBarButtons addObject:lockButton];
     
-    GSButton *pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [pageCurlButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
-                          forState:UIControlStateNormal];
-    [pageCurlButton setFrame:CGRectMake(frame.size.width-kPageCurlWidth,
-                                        frame.size.height-kPageCurlHeight,
-                                        kPageCurlWidth,
-                                        kPageCurlHeight)];
-    [pageCurlButton addTarget:self action:@selector(doneEditing) forControlEvents:UIControlEventTouchUpInside];
-    [self insertSubview:pageCurlButton atIndex:kPageCurlZIndex];
+    self.pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [self.pageCurlButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
+                    forState:UIControlStateNormal];
+    [self.pageCurlButton setFrame:CGRectMake(frame.size.width-kPageCurlWidth,
+                                             frame.size.height-kPageCurlHeight,
+                                             kPageCurlWidth,
+                                             kPageCurlHeight)];
+    [self.pageCurlButton addTarget:self action:@selector(showExportControl:)
+             forControlEvents:UIControlEventTouchUpInside];
+    [self insertSubview:self.pageCurlButton atIndex:kPageCurlZIndex];
 }
 
 - (void)initTextToolBarButtonsWithFrame:(CGRect)frame {
@@ -384,6 +388,23 @@
 
 - (void)lockPage {
     
+}
+
+- (void)showExportControl:(GSButton *)button {
+    [self.pageCurlButton setHidden:YES];
+    [self.toolLayer setHidden:YES];
+    [self.textToolLayer setHidden:YES];
+    
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showExportControl:)]) {
+            [self.delegate showExportControl:self];
+        }
+    });
+}
+
+- (void)cancelExportControl {
 }
 
 - (void)doneEditing {

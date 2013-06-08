@@ -18,6 +18,7 @@
 
 @protocol SDPageDelegate
 @optional
+- (void)showExportControl:(WBPage *)page;
 - (void)pageSelected:(WBPage *)page;
 - (void)doneEditingPage:(WBPage *)page;
 @end
