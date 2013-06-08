@@ -282,8 +282,10 @@
 - (void)showToolBar {
     [self.toolLayer setHidden:NO];
     [self.textToolLayer setHidden:YES];
-    [((GSButton *)[self.toolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:NO];
-    [((GSButton *)[self.textToolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:NO];
+    if (![self.fontColorPickerView isHidden] || ![self.fontPickerView isHidden]) {
+        [((GSButton *)[self.toolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:NO];
+        [((GSButton *)[self.textToolBarButtons objectAtIndex:kTextButtonIndex]) setIsSelected:NO];
+    }
 }
 
 - (void)showTextToolBar {
