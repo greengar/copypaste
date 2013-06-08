@@ -234,8 +234,8 @@
 }
 
 - (void)initTextToolBarButtonsWithFrame:(CGRect)frame {
-    GSButton *fontButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:OrangeButtonStyle];
-    [fontButton setTitle:@"Font" forState:UIControlStateNormal];
+    GSButton *fontButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [fontButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/FontButton.fw.png"] forState:UIControlStateNormal];
     [fontButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [fontButton addTarget:self action:@selector(selectFont) forControlEvents:UIControlEventTouchUpInside];
     [self.textToolLayer addSubview:fontButton];
@@ -249,8 +249,8 @@
     [self.textToolLayer addSubview:textButton];
     [self.textToolBarButtons addObject:textButton];
     
-    GSButton *colorButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
-    [colorButton setTitle:@"Color" forState:UIControlStateNormal];
+    GSButton *colorButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [colorButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/ColorButton.fw.png"] forState:UIControlStateNormal];
     [colorButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [colorButton addTarget:self action:@selector(selectColor) forControlEvents:UIControlEventTouchUpInside];
     [self.textToolLayer addSubview:colorButton];
