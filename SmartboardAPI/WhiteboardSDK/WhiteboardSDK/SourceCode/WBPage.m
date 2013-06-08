@@ -141,7 +141,7 @@
     // Canvas/Text/History/Lock
     self.toolLayer = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                               frame.size.height-kToolBarItemHeight,
-                                                              kToolBarItemWidth*4,
+                                                              kToolBarItemWidth*3,
                                                               kToolBarItemHeight)];
     [self.toolLayer setBackgroundColor:[UIColor clearColor]];
     [self insertSubview:self.toolLayer atIndex:kToolBarZIndex];
@@ -213,13 +213,13 @@
     [self.toolLayer addSubview:historyButton];
     [self.toolBarButtons addObject:historyButton];
     
-    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButton.fw.png"]
-                          forState:UIControlStateNormal];
-    [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [lockButton addTarget:self action:@selector(lockPage) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolLayer addSubview:lockButton];
-    [self.toolBarButtons addObject:lockButton];
+//    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom];
+//    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButton.fw.png"]
+//                          forState:UIControlStateNormal];
+//    [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
+//    [lockButton addTarget:self action:@selector(lockPage) forControlEvents:UIControlEventTouchUpInside];
+//    [self.toolLayer addSubview:lockButton];
+//    [self.toolBarButtons addObject:lockButton];
     
     self.pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [self.pageCurlButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
@@ -228,7 +228,7 @@
                                              frame.size.height-kPageCurlHeight,
                                              kPageCurlWidth,
                                              kPageCurlHeight)];
-    [self.pageCurlButton addTarget:self action:@selector(showExportControl:)
+    [self.pageCurlButton addTarget:self action:@selector(doneEditing)
              forControlEvents:UIControlEventTouchUpInside];
     [self insertSubview:self.pageCurlButton atIndex:kPageCurlZIndex];
 }
@@ -390,6 +390,7 @@
     
 }
 
+#pragma mark - Show Previous/Export/Next for Multiple Pages
 - (void)showExportControl:(GSButton *)button {
     [self.pageCurlButton setHidden:YES];
     [self.toolLayer setHidden:YES];
@@ -404,10 +405,14 @@
     });
 }
 
-- (void)cancelExportControl {
+- (void)hideExportControl {
+    [self.pageCurlButton setHidden:NO];
+    [self deselectAll];
+    [self showToolBar];
 }
 
 - (void)doneEditing {
+    [self.pageCurlButton setHidden:YES];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(doneEditingPage:)]) {
         [self.delegate doneEditingPage:self];
         [[NSNotificationCenter defaultCenter] removeObserver:self];

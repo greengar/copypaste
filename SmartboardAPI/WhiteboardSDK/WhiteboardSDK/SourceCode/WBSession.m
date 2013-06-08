@@ -46,7 +46,14 @@ static WBSession *activeSession = nil;
     WBBoard *rootBoard = [[WBBoard alloc] init];
     [rootBoard setBackgroundImage:image];
     [rootBoard setDelegate:self];
-    [controller presentViewController:rootBoard animated:YES completion:NULL];
+    [controller presentViewController:rootBoard animated:NO completion:NULL];
+    
+    [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown
+                           forView:[UIApplication sharedApplication].keyWindow
+                             cache:YES];
+    [UIView setAnimationDuration:1.4f];
+    [UIView commitAnimations];
     
     [[BoardManager sharedManager] createANewBoard:rootBoard];
 }
@@ -55,6 +62,12 @@ static WBSession *activeSession = nil;
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(doneEditingPhotoWithResult:)]) {
         if (self.rootController) {
             [self.rootController dismissViewControllerAnimated:YES completion:NULL];
+            [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
+            [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+                                   forView:[UIApplication sharedApplication].keyWindow
+                                     cache:YES];
+            [UIView setAnimationDuration:1.4f];
+            [UIView commitAnimations];
         }
         [self.delegate doneEditingPhotoWithResult:image];
     }

@@ -12,8 +12,6 @@
 #import "HistoryManager.h"
 #import "GSButton.h"
 
-#define kCurlUpAndDownAnimationID @"kCurlUpAndDownAnimationID"
-
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
 @property (nonatomic) int currentPageIndex;
@@ -61,7 +59,7 @@
             [self addNewPage];
         }
         
-        [self initExportControl];
+        // [self initExportControl];
         
     }
     return self;
@@ -76,10 +74,23 @@
         self.name = [NSString stringWithFormat:@"Whiteboard %@", [WBUtils getCurrentTime]];
         self.pages = [NSMutableArray new];
         
-        [self initExportControl];
+        // [self initExportControl];
     }
     return self;
 }
+
+- (void)initExportControl {
+    GSButton *exportButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
+    [exportButton setTitle:@"Export Page" forState:UIControlStateNormal];
+    [exportButton setFrame:CGRectMake(self.view.frame.size.width-64,
+                                      self.view.frame.size.height-64,
+                                      64,
+                                      64)];
+    [exportButton addTarget:self action:@selector(exportPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:exportButton];
+    [self.view sendSubviewToBack:exportButton];
+}
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -198,18 +209,7 @@
     [self doneEditingPage:[self currentPage]];
 }
 
-- (void)initExportControl {
-    GSButton *exportButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
-    [exportButton setTitle:@"Export Page" forState:UIControlStateNormal];
-    [exportButton setFrame:CGRectMake(self.view.frame.size.width-64,
-                                      self.view.frame.size.height-64,
-                                      64,
-                                      64)];
-    [exportButton addTarget:self action:@selector(exportPage) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:exportButton];
-    [self.view sendSubviewToBack:exportButton];
-}
-
+#pragma mark - Export output data
 - (void)doneEditingPage:(WBPage *)page {
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
         [BoardManager writeBoardToFile:self];

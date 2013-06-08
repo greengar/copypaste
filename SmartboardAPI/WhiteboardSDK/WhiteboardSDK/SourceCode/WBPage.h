@@ -31,6 +31,7 @@
 - (UIImage *)exportPageToImage;
 - (NSDictionary *)saveToDict;
 + (WBPage *)loadFromDict:(NSDictionary *)dict;
+- (void)cancelExportControl;
 
 - (void)addElement:(WBBaseElement *)element;
 - (void)removeElement:(WBBaseElement *)element;
