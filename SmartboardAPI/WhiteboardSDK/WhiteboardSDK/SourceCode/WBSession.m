@@ -37,6 +37,8 @@ static WBSession *activeSession = nil;
     return self;
 }
 
+static const NSTimeInterval WBSessionAnimationDuration = 0.5;
+
 - (void)presentSmartboardControllerFromController:(UIViewController *)controller
                                         withImage:(UIImage *)image
                                          delegate:(id<WBSessionDelegate>)delegate {
@@ -52,7 +54,7 @@ static WBSession *activeSession = nil;
     [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown
                            forView:[UIApplication sharedApplication].keyWindow
                              cache:YES];
-    [UIView setAnimationDuration:1.4f];
+    [UIView setAnimationDuration:WBSessionAnimationDuration];
     [UIView commitAnimations];
     
     [[BoardManager sharedManager] createANewBoard:rootBoard];
@@ -61,12 +63,16 @@ static WBSession *activeSession = nil;
 - (void)doneEditingBoardWithResult:(UIImage *)image {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(doneEditingPhotoWithResult:)]) {
         if (self.rootController) {
-            [self.rootController dismissViewControllerAnimated:YES completion:NULL];
+            
+            // Use Animated:NO here; otherwise this creates a weird artifact
+            // with shorter animation durations < ~1.0
+            [self.rootController dismissViewControllerAnimated:NO completion:NULL];
+            
             [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
             [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
                                    forView:[UIApplication sharedApplication].keyWindow
                                      cache:YES];
-            [UIView setAnimationDuration:1.4f];
+            [UIView setAnimationDuration:WBSessionAnimationDuration];
             [UIView commitAnimations];
         }
         [self.delegate doneEditingPhotoWithResult:image];
