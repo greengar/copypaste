@@ -19,7 +19,7 @@ typedef enum {
 } GSButtonStyle;
 
 @interface GSButton : UIButton
-@property (nonatomic) BOOL isSelected;
+//@property (nonatomic) BOOL isSelected;
 
 + (id)buttonWithType:(UIButtonType)buttonType themeStyle:(GSButtonStyle)style;
 

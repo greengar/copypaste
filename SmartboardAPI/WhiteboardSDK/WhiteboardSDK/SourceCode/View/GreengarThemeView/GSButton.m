@@ -1,15 +1,15 @@
 //
 //  GSButton.m
-//  WhiteboardSDK
+//  Whiteboard SDK
 //
 //  Created by Hector Zhao on 5/30/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import "GSButton.h"
 
 @implementation GSButton
-@synthesize isSelected = _isSelected;
+//@synthesize isSelected = _isSelected;
 
 + (id)buttonWithType:(UIButtonType)buttonType themeStyle:(GSButtonStyle)style {
     UIButton *button = [super buttonWithType:buttonType];
@@ -62,13 +62,13 @@
     return button;
 }
 
-- (void)setIsSelected:(BOOL)isSelected {
-    _isSelected = isSelected;
-    if (isSelected) {
-        [self setBackgroundColor:[UIColor darkGrayColor]];
-    } else {
-        [self setBackgroundColor:[UIColor clearColor]];
-    }
-}
+//- (void)setIsSelected:(BOOL)isSelected {
+//    _isSelected = isSelected;
+//    if (isSelected) {
+//        [self setBackgroundColor:[UIColor darkGrayColor]];
+//    } else {
+//        [self setBackgroundColor:[UIColor clearColor]];
+//    }
+//}
 
 @end
