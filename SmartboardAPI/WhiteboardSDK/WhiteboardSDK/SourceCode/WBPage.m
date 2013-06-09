@@ -180,6 +180,7 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showHidePicker) name:@"closeButtonTapped" object:nil];
 }
 
 - (void)initHistoryViewWithFrame:(CGRect)frame {
@@ -420,6 +421,8 @@
     [self.pageCurlButton setHidden:YES];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(doneEditingPage:)]) {
         [self.delegate doneEditingPage:self];
+        
+        // TODO: shouldn't we do this in -dealloc instead?
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }

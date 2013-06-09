@@ -61,8 +61,37 @@
     if (self) {
         [self initializeBrushToolViewWithFrame:frame];
         [self initializeColorSpectrumWithFrame:frame];
+        
+        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        closeButton.frame = CGRectMake(self.frame.size.width-44, -22, 44, 44);
+        closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        [closeButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/CloseButton.fw.png"] forState:UIControlStateNormal];
+        [closeButton addTarget:self action:@selector(closeButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:closeButton];
     }
     return self;
+}
+
+- (void)closeButtonTapped {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"closeButtonTapped" object:self];
+}
+
+// via http://stackoverflow.com/questions/11770743/ios-capturing-touches-on-a-subview-outside-the-frame-of-its-superview-using-hit
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if (!self.clipsToBounds && !self.hidden && self.alpha > 0) {
+        for (UIView *subview in self.subviews.reverseObjectEnumerator) {
+            CGPoint subPoint = [subview convertPoint:point fromView:self];
+            UIView *result = [subview hitTest:subPoint withEvent:event];
+            if (result != nil) {
+                return result;
+                break;
+            }
+        }
+    }
+    
+    // use this to pass the 'touch' onward in case no subviews trigger the touch
+    return [super hitTest:point withEvent:event];
 }
 
 #pragma mark - Color Spectrum
