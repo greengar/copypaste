@@ -32,8 +32,8 @@
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
-#define kPageCurlWidth      (IS_IPAD ? 89 : 64)
-#define kPageCurlHeight     (IS_IPAD ? 137 : 99)
+#define kPageCurlWidth      (IS_IPAD ? 64 : 64)
+#define kPageCurlHeight     (IS_IPAD ? 99 : 99)
 
 #define kUndoPickerWidth 69
 #define kURButtonWidthHeight 64
@@ -50,8 +50,8 @@
 #define kDefaultTextBoxWidth 200
 #define kDefaultTextBoxHeight 60
 
-#define kFontPickerHeight 344
-#define kFontColorPickerHeight 288
+#define kFontPickerHeight (IS_IPAD ? 264 : 344)
+#define kFontColorPickerHeight (IS_IPAD ? 264 : 288)
 
 @interface WBPage ()
 {
@@ -195,7 +195,8 @@
     GSButton *canvasButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PencilButton.fw.png"]
                             forState:UIControlStateNormal];
-    [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/CanvasButtonActive.fw.png"] forState:UIControlStateSelected];
+    [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/CanvasButtonActive.fw.png"]
+                            forState:UIControlStateSelected];
     [canvasButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [canvasButton addTarget:self action:@selector(newCanvas:) forControlEvents:UIControlEventTouchUpInside];
     [self.toolLayer addSubview:canvasButton];
@@ -204,7 +205,8 @@
     textButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButton.fw.png"]
                           forState:UIControlStateNormal];
-    [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButtonActive.fw.png"] forState:UIControlStateSelected];
+    [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButtonActive.fw.png"]
+                          forState:UIControlStateSelected];
     [textButton setFrame:CGRectMake(kToolBarItemWidth, 0, kToolBarItemWidth, kToolBarItemHeight)];
     [textButton addTarget:self action:@selector(newText:) forControlEvents:UIControlEventTouchUpInside];
     [self.toolLayer addSubview:textButton];
@@ -240,18 +242,20 @@
 
 - (void)initTextToolBarButtonsWithFrame:(CGRect)frame {
     GSButton *fontButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [fontButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/FontButton.fw.png"] forState:UIControlStateNormal];
+    [fontButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/FontButton.fw.png"]
+                          forState:UIControlStateNormal];
     [fontButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [fontButton addTarget:self action:@selector(selectFont) forControlEvents:UIControlEventTouchUpInside];
+    [fontButton addTarget:self action:@selector(selectFont:) forControlEvents:UIControlEventTouchUpInside];
     [self.textToolLayer addSubview:fontButton];
     [self.textToolBarButtons addObject:fontButton];
     
     // textButton is already created in -initToolBarButtonsWithFrame:
     
     GSButton *colorButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [colorButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/ColorButton.fw.png"] forState:UIControlStateNormal];
+    [colorButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/ColorButton.fw.png"]
+                           forState:UIControlStateNormal];
     [colorButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [colorButton addTarget:self action:@selector(selectColor) forControlEvents:UIControlEventTouchUpInside];
+    [colorButton addTarget:self action:@selector(selectColor:) forControlEvents:UIControlEventTouchUpInside];
     [self.textToolLayer addSubview:colorButton];
     [self.textToolBarButtons addObject:colorButton];
     
@@ -310,26 +314,30 @@
 
 - (void)showFontPickerView {
     if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
-        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
         [self.fontPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
         [self.fontPickerView setHidden:NO];
+        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
     }
+    ((GSButton *) [self.textToolBarButtons objectAtIndex:kTextFontButtonIndex]).selected = YES;
 }
 
 - (void)hideFontPickerView {
     [self.fontPickerView setHidden:YES];
+    ((GSButton *) [self.textToolBarButtons objectAtIndex:kTextFontButtonIndex]).selected = NO;
 }
 
 - (void)showFontColorPickerView {
     if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
-        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
         [self.fontColorPickerView setCurrentTextView:((TextElement *)self.selectedElementView)];
         [self.fontColorPickerView setHidden:NO];
+        [((UITextView *)[self.selectedElementView contentView]) resignFirstResponder];
     }
+    ((GSButton *) [self.textToolBarButtons objectAtIndex:kTextColorButtonIndex]).selected = YES;
 }
 
 - (void)hideFontColorPickerView {
     [self.fontColorPickerView setHidden:YES];
+    ((GSButton *) [self.textToolBarButtons objectAtIndex:kTextColorButtonIndex]).selected = NO;
 }
 
 #pragma mark - Delegates back to super
@@ -360,6 +368,7 @@
     if (canvasButton.selected) {
         [self.selectedElementView deselect];
         canvasButton.selected = NO;
+        canvasButton.backgroundColor = [UIColor clearColor];
     } else {
         CanvasElement *canvasElement = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
                                                                                        0,
@@ -371,6 +380,7 @@
         [self addElement:canvasElement];
         [canvasElement select];
         canvasButton.selected = YES;
+        canvasButton.backgroundColor = [UIColor darkGrayColor];
     }
 }
 
@@ -424,12 +434,30 @@
     }
 }
 
-- (void)selectFont {
-    [self showFontPickerView];
+- (void)selectFont:(GSButton *)fontButton {
+    if (fontButton.selected) {
+        [self hideFontPickerView];
+        fontButton.selected = NO;
+        [self.selectedElementView select];
+        
+    } else {
+        [self hideFontColorPickerView];
+        [self showFontPickerView];
+        fontButton.selected = YES;
+    }
 }
 
-- (void)selectColor {
-    [self showFontColorPickerView];
+- (void)selectColor:(GSButton *)colorButton {
+    if (colorButton.selected) {
+        [self hideFontColorPickerView];
+        colorButton.selected = NO;
+        [self.selectedElementView select];
+        
+    } else {
+        [self hideFontPickerView];
+        [self showFontColorPickerView];
+        colorButton.selected = YES;
+    }
 }
 
 #pragma mark - Elements Handler
@@ -474,17 +502,25 @@
         textButton.selected = YES;
     } else if ([element isKindOfClass:[CanvasElement class]]) {
         [self showCanvasControl];
-        UIButton *button = [self.toolBarButtons objectAtIndex:kCanvasButtonIndex];
+        GSButton *button = [self.toolBarButtons objectAtIndex:kCanvasButtonIndex];
         button.selected = YES;
+        button.backgroundColor = [UIColor darkGrayColor];
     }
 }
 
 - (void)elementDeselected:(WBBaseElement *)element {
     if ([element isKindOfClass:[TextElement class]]) {
-        [self.fontPickerView setHidden:YES];
-        [self.fontColorPickerView setHidden:YES];
+        [self hideFontPickerView];
+        [self hideFontColorPickerView];
+        GSButton *button = [self.toolBarButtons objectAtIndex:kTextButtonIndex];
+        button.selected = NO;
+        button.backgroundColor = [UIColor clearColor];
+        
     } else if ([element isKindOfClass:[CanvasElement class]]) {
         [self hideCanvasControl];
+        GSButton *button = [self.toolBarButtons objectAtIndex:kCanvasButtonIndex];
+        button.selected = NO;
+        button.backgroundColor = [UIColor clearColor];
     }
     [self showToolBar];
 }
@@ -515,23 +551,29 @@
     [self hideHistoryView];
     
     [UIView animateWithDuration:0.2f animations:^{
-        CGRect frame = self.textToolLayer.frame;
+        CGRect frame = CGRectMake(self.textToolLayer.frame.origin.x,
+                                  self.frame.size.height-kToolBarItemHeight,
+                                  self.textToolLayer.frame.size.width,
+                                  self.textToolLayer.frame.size.height);
         frame.origin.y -= kbSize.height;
         self.textToolLayer.frame = frame;
     }];
 }
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
-    NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    [UIView animateWithDuration:0.2f animations:^{
-        CGRect frame = self.textToolLayer.frame;
-        frame.origin.y += kbSize.height;
-        self.textToolLayer.frame = frame;
-    } completion:^(BOOL finished) {
-        [self showToolBar];
-    }];
+    if ([self.fontPickerView isHidden] && [self.fontColorPickerView isHidden]) {
+        [UIView animateWithDuration:0.2f animations:^{
+            CGRect frame = CGRectMake(self.textToolLayer.frame.origin.x,
+                                      self.frame.size.height-kToolBarItemHeight,
+                                      self.textToolLayer.frame.size.width,
+                                      self.textToolLayer.frame.size.height);
+            self.textToolLayer.frame = frame;
+        } completion:^(BOOL finished) {
+            [self showToolBar];
+        }];
+    } else {
+        
+    }
 }
 
 #pragma mark - Backup/Restore Save/Load

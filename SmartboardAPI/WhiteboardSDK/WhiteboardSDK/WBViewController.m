@@ -7,6 +7,7 @@
 //
 
 #import "WBViewController.h"
+#import "GSButton.h"
 
 @interface WBViewController ()
 
@@ -28,7 +29,7 @@
     label.center = CGPointMake(self.view.center.x, self.view.center.y - 120);
     [self.view addSubview:label];
     
-	UIButton *useSDSDKButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	GSButton *useSDSDKButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
     [useSDSDKButton setTitle:@"Start Drawing" forState:UIControlStateNormal];
     useSDSDKButton.titleLabel.font = [UIFont systemFontOfSize:22];
     [useSDSDKButton setFrame:CGRectMake(0, 0, 300, 80)];

@@ -18,7 +18,6 @@
 
 @interface FontPickerView()
 @property (nonatomic, strong) UIPickerView *fontPickerView;
-@property (nonatomic, strong) UILabel *fontPreviewLabel;
 @property (nonatomic, strong) NSArray *fontNames;
 @property (nonatomic, strong) NSArray *fontSizes;
 @end
@@ -34,12 +33,15 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = OPAQUE_HEXCOLOR_FILL(0x0c0d14);
         
         self.fontNames = [NSArray arrayWithObjects:FONTS_AVAILABLE_ON_ALL_DEVICES];
         self.fontSizes = [NSArray arrayWithObjects:FONT_SIZES];
         
-        self.fontPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, kPickerDefaultHeight)];
+        self.fontPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0,
+                                                                             0,
+                                                                             frame.size.width,
+                                                                             kPickerDefaultHeight)];
         [self.fontPickerView setDelegate:self];
         [self.fontPickerView setShowsSelectionIndicator:YES];
         [self.fontPickerView selectRow:[self selectedName:[[SettingManager sharedManager] currentFontName]]
@@ -47,20 +49,6 @@
         [self.fontPickerView selectRow:[self selectedSize:[[SettingManager sharedManager] currentFontSize]]
                            inComponent:kFontSizeIndex animated:YES];
         [self addSubview:self.fontPickerView];
-        
-        self.fontPreviewLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, kPickerDefaultHeight, frame.size.width, frame.size.height-kPickerDefaultHeight-kButtonHeight)];
-        [self.fontPreviewLabel setBackgroundColor:[UIColor clearColor]];
-        [self.fontPreviewLabel setTextAlignment:NSTextAlignmentCenter];
-        [self.fontPreviewLabel setText:@"Font Preview"];
-        [self addSubview:self.fontPreviewLabel];
-        
-        [self updatePreview];
-        
-        GSButton *doneButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
-        [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-        [doneButton addTarget:self action:@selector(doneSelectFont) forControlEvents:UIControlEventTouchUpInside];
-        [doneButton setFrame:CGRectMake(0, frame.size.height-kButtonHeight, frame.size.width/5, kButtonHeight)];
-        [self addSubview:doneButton];
     }
     return self;
 }
@@ -81,7 +69,6 @@
             [self.fontPickerView selectRow:[self selectedSize:[self.currentTextView myFontSize]]
                                inComponent:kFontSizeIndex animated:YES];
         }
-        [self updatePreview];
     }
 }
 
@@ -114,25 +101,12 @@
 		[SettingManager sharedManager].currentFontSize = [[self.fontSizes objectAtIndex:row] intValue];
 	}
     [self updateCurrentTextView];
-    [self updatePreview];
 }
 
 - (void)updateCurrentTextView {
     if (self.currentTextView) {
         [self.currentTextView updateWithFontName:[[SettingManager sharedManager] currentFontName]
                                             size:[[SettingManager sharedManager] currentFontSize]];
-    }
-}
-
-- (void)updatePreview {
-    if (self.currentTextView) {
-        [self.fontPreviewLabel setFont:[UIFont fontWithName:self.currentTextView.myFontName
-                                                       size:self.currentTextView.myFontSize]];
-        [self.fontPreviewLabel setTextColor:self.currentTextView.myColor];
-    } else {
-        [self.fontPreviewLabel setFont:[UIFont fontWithName:[[SettingManager sharedManager] currentFontName]
-                                                       size:[[SettingManager sharedManager] currentFontSize]]];
-        [self.fontPreviewLabel setTextColor:[[SettingManager sharedManager] currentFontColor]];
     }
 }
 

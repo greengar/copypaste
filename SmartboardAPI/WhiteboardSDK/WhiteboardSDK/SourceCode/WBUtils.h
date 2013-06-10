@@ -24,6 +24,7 @@
 #define NSDEF [NSUserDefaults standardUserDefaults]
 
 #define OPAQUE_HEXCOLOR(c) [UIColor colorWithRed:((c>>16)&0xFF)/255.0 green:((c>>8)&0xFF)/255.0 blue:(c&0xFF)/255.0 alpha:0.9]
+#define OPAQUE_HEXCOLOR_FILL(c) [UIColor colorWithRed:((c>>16)&0xFF)/255.0 green:((c>>8)&0xFF)/255.0 blue:(c&0xFF)/255.0 alpha:1.0]
 
 #define kCPBackgroundColor OPAQUE_HEXCOLOR(0xE1CAA7)
 #define kCPPasteTextColor OPAQUE_HEXCOLOR(0xFA891F)

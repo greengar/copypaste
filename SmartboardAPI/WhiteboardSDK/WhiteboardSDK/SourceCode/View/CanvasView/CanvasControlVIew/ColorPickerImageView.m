@@ -87,13 +87,7 @@
     if (cgctx == NULL || data == NULL) {
         // Initialize cgctx and data
         
-        if (IS_IPAD) {
-            inImage = [UIImage imageNamed:@"Whiteboard.bundle/iPadColorSpectrumPrivate.png"].CGImage;
-            // Consider using CGImageRetain()
-        } else {
-            inImage = [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPrivate.png"].CGImage;
-            // Consider using CGImageRetain()
-        }
+        inImage = [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPrivate.png"].CGImage;
         
         // Create off-screen bitmap context to draw the image into. Format ARGB is 4 bytes for each pixel: Alpha, Red, Green, Blue
         cgctx = [self createARGBBitmapContextFromImage:inImage];
