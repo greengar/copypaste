@@ -40,6 +40,7 @@
 @property (nonatomic) BOOL allowToMove;
 @property (nonatomic) BOOL allowToEdit;
 @property (nonatomic) BOOL allowToSelect;
+@property (nonatomic) BOOL isLocked;
 @property (nonatomic, assign) id<WBBaseViewDelegate> delegate;
 @property (nonatomic) CGRect defaultFrame;
 @property (nonatomic) CGAffineTransform defaultTransform;

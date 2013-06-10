@@ -26,6 +26,7 @@
 @synthesize allowToMove = _allowToMove;
 @synthesize allowToEdit = _allowToEdit;
 @synthesize allowToSelect = _allowToSelect;
+@synthesize isLocked = _isLocked;
 @synthesize defaultFrame = _defaultFrame;
 @synthesize defaultTransform = _defaultTransform;
 @synthesize currentTransform = _currentTransform;
@@ -148,6 +149,11 @@
 }
 
 - (void)select {
+    // If element is locked, it won't become the first responder
+    if ([self isLocked]) {
+        return;
+    }
+    
     if ([self contentView]) {
         [[self contentView] becomeFirstResponder];
         self.layer.borderWidth = 1;
@@ -179,7 +185,9 @@
 }
 
 - (void)elementTap:(UITapGestureRecognizer *)tapGesture {
-    [self select];
+    if (![self isLocked]) {
+        [self select];
+    }
 }
 
 - (void)elementPan:(UIPanGestureRecognizer *)panGesture {

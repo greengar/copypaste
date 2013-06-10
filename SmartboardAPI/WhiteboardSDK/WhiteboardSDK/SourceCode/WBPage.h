@@ -38,6 +38,7 @@
 
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSMutableArray *elements;
+@property (nonatomic) BOOL isLocked;
 @property (nonatomic, strong) WBBaseElement *selectedElementView;
 @property (nonatomic, assign) id<SDPageDelegate> delegate;
 

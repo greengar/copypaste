@@ -90,6 +90,7 @@
 @synthesize redoButton = _redoButton;
 @synthesize historyView = _historyView;
 @synthesize pageCurlButton = _pageCurlButton;
+@synthesize isLocked = _isLocked;
 
 #pragma mark - Init Views
 - (id)initWithDict:(NSDictionary *)dictionary {
@@ -144,7 +145,7 @@
     // Canvas/Text/History/Lock
     self.toolLayer = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                               frame.size.height-kToolBarItemHeight,
-                                                              kToolBarItemWidth*3,
+                                                              kToolBarItemWidth*4,
                                                               kToolBarItemHeight)];
     [self.toolLayer setBackgroundColor:[UIColor clearColor]];
     [self insertSubview:self.toolLayer atIndex:kToolBarZIndex];
@@ -220,13 +221,13 @@
     [self.toolLayer addSubview:historyButton];
     [self.toolBarButtons addObject:historyButton];
     
-//    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom];
-//    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButton.fw.png"]
-//                          forState:UIControlStateNormal];
-//    [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
-//    [lockButton addTarget:self action:@selector(lockPage) forControlEvents:UIControlEventTouchUpInside];
-//    [self.toolLayer addSubview:lockButton];
-//    [self.toolBarButtons addObject:lockButton];
+    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButton.fw.png"]
+                          forState:UIControlStateNormal];
+    [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [lockButton addTarget:self action:@selector(lockPage:) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolLayer addSubview:lockButton];
+    [self.toolBarButtons addObject:lockButton];
     
     self.pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [self.pageCurlButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
@@ -401,8 +402,20 @@
     [self showHistoryView];
 }
 
-- (void)lockPage {
-    
+- (void)lockPage:(GSButton *)button {
+    if (button.selected) {
+        button.selected = NO;
+        self.isLocked = NO;
+        for (WBBaseElement *element in self.elements) {
+            element.isLocked = NO;
+        }
+    } else {
+        button.selected = YES;
+        self.isLocked = YES;
+        for (WBBaseElement *element in self.elements) {
+            element.isLocked = YES;
+        }
+    }
 }
 
 #pragma mark - Show Previous/Export/Next for Multiple Pages

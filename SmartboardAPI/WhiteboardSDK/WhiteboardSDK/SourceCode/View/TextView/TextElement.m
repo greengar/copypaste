@@ -86,6 +86,15 @@
     [((UITextView *)[self contentView]) setText:text];
 }
 
+- (void)setIsLocked:(BOOL)isLocked {
+    [super setIsLocked:isLocked];
+    if (isLocked) {
+        self.placeHolderTextView.userInteractionEnabled = NO;
+    } else {
+        self.placeHolderTextView.userInteractionEnabled = YES;
+    }
+}
+
 - (UIView *)contentView {
     return self.placeHolderTextView;
 }
