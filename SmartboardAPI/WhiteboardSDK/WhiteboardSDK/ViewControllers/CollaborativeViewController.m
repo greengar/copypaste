@@ -21,6 +21,7 @@
         [logInLabel setText:[[GSSession activeSession] currentUserName]];
         [createRoomButton setHidden:NO];
         [getPublicRoomButton setHidden:NO];
+        [getRoomShareWithMeButton setHidden:NO];
         [getRoomByIdButton setHidden:NO];
         [getUserByEmailButton setHidden:NO];
     } else {
@@ -28,6 +29,7 @@
         [logInLabel setText:@""];
         [createRoomButton setHidden:YES];
         [getPublicRoomButton setHidden:YES];
+        [getRoomShareWithMeButton setHidden:YES];
         [getRoomByIdButton setHidden:YES];
         [getUserByEmailButton setHidden:YES];
     }

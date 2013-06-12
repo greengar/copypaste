@@ -14,6 +14,7 @@
 
 - (id)initWithPFObject:(PFObject *)object;
 - (void)loadWithPFObject:(PFObject *)object;
+
 - (void)setObject:(id)object forKey:(NSString *)key;
 - (id)objectForKey:(NSString *)key;
 
@@ -23,7 +24,8 @@
 - (NSString *)classname;
 + (NSString *)classname;
 
-@property (nonatomic, strong) NSString *uid;
+- (NSString *)uid;
+
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, strong) NSDate *updatedAt;
 @property (nonatomic, strong) NSMutableArray *allKeys;

@@ -10,7 +10,12 @@
 #import "GSSession.h"
 #import <Parse/Parse.h>
 
+@interface GSRoom()
+@property (nonatomic, strong) NSString *firebaseUid;
+@end
+
 @implementation GSRoom
+@synthesize firebaseUid = _firebaseUid;
 @synthesize name = _name;
 @synthesize ownerId = _ownerId;
 @synthesize isPrivate = _isPrivate;
@@ -32,6 +37,7 @@
         self.isPrivate = [[object objectForKey:@"private"] boolValue];
         self.codeToEnter = [object objectForKey:@"code"];
         self.sharedEmails = [object objectForKey:@"shared_emails"];
+        self.firebaseUid = [object objectForKey:@"uid"];
     }
     return self;
 }
@@ -43,6 +49,7 @@
     self.isPrivate = [[object objectForKey:@"private"] boolValue];
     self.codeToEnter = [object objectForKey:@"code"];
     self.sharedEmails = [object objectForKey:@"shared_emails"];
+    self.firebaseUid = [object objectForKey:@"uid"];
 }
 
 - (id)initWithName:(NSString *)name
@@ -51,12 +58,19 @@
        codeToEnter:(NSString *)codeToEnter
       sharedEmails:(NSArray *)sharedEmails {
     if (self = [super init]) {
+        self.firebaseUid = [GSUtils generateUniqueIdWithPrefix:@"R_"];
         self.name = name ? name : @"Untitle Room";
         self.ownerId = ownerId ? ownerId : [[GSSession currentUser] uid];
         self.isPrivate = isPrivate;
         self.codeToEnter = codeToEnter;
-        self.sharedEmails = sharedEmails;
         
+        NSMutableArray *emails = [NSMutableArray arrayWithObjects:[[GSSession currentUser] email], nil];
+        if (sharedEmails) {
+            [emails addObjectsFromArray:sharedEmails];
+        }
+        self.sharedEmails = emails;
+        
+        [self setObject:self.firebaseUid forKey:@"uid"];
         [self setObject:self.name forKey:@"name"];
         [self setObject:self.ownerId forKey:@"owner_id"];
         [self setObject:[NSNumber numberWithBool:self.isPrivate] forKey:@"private"];
@@ -102,6 +116,10 @@
     } else {
         [super saveInBackgroundWithBlock:block];
     }
+}
+
+- (NSString *)uid {
+    return self.firebaseUid;
 }
 
 - (NSString *)classname {

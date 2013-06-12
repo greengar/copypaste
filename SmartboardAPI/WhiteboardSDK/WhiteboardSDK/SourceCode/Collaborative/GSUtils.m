@@ -10,6 +10,14 @@
 
 @implementation GSUtils
 
++ (NSString *)generateUniqueId {
+    return [NSString stringWithFormat:@"WB%f", [[NSDate date] timeIntervalSince1970]];
+}
+
++ (NSString *)generateUniqueIdWithPrefix:(NSString *)prefix {
+    return [NSString stringWithFormat:@"%@%f", prefix, [[NSDate date] timeIntervalSince1970]];
+}
+
 + (NSString *)getCurrentTime {
     return [self stringFromDate:[NSDate date]];
 }

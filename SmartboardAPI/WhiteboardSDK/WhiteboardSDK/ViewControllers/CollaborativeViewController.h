@@ -14,6 +14,7 @@
     IBOutlet UIButton *authenticationButton;
     IBOutlet UIButton *createRoomButton;
     IBOutlet UIButton *getPublicRoomButton;
+    IBOutlet UIButton *getRoomShareWithMeButton;
     IBOutlet UIButton *getRoomByIdButton;
     IBOutlet UIButton *getUserByEmailButton;
 }

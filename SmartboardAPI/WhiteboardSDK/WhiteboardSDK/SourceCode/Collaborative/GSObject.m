@@ -13,11 +13,12 @@
 @interface GSObject ()
 // This does not include createdAt, updatedAt, authData, or objectId.
 // It does include things like username and ACL.
+@property (nonatomic, strong) NSString *parseUid;
 @property (nonatomic, strong) NSMutableDictionary *innerDict;
 @end
 
 @implementation GSObject
-@synthesize uid = _uid;
+@synthesize parseUid = _parseUid;
 @synthesize createdAt = _createdAt;
 @synthesize updatedAt = _updatedAt;
 @synthesize innerDict = _innerDict;
@@ -33,7 +34,7 @@
 
 - (id)initWithPFObject:(PFObject *)object {
     if ((self = [super init])) {
-        self.uid = [object objectId];
+        self.parseUid = [object objectId];
         self.createdAt = [object createdAt];
         self.updatedAt = [object updatedAt];
         self.innerDict = [NSMutableDictionary new];
@@ -42,12 +43,13 @@
         for (NSString *key in [object allKeys]) {
             [self.innerDict setObject:[object objectForKey:key] forKey:key];
         }
+        
     }
     return self;
 }
 
 - (void)loadWithPFObject:(PFObject *)object {
-    self.uid = [object objectId];
+    self.parseUid = [object objectId];
     self.createdAt = [object createdAt];
     self.updatedAt = [object updatedAt];
     self.innerDict = [NSMutableDictionary new];
@@ -95,6 +97,10 @@
             block(succeeded, error);
         }
     }];
+}
+
+- (NSString *)uid {
+    return self.parseUid;
 }
 
 - (NSString *)classname {
