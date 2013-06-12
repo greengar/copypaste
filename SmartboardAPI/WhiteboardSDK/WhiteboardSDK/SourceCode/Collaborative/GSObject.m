@@ -25,7 +25,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        PFObject *object = [PFObject objectWithClassName:NSStringFromClass([self class])];
+        PFObject *object = [PFObject objectWithClassName:[self classname]];
         [self loadWithPFObject:object];
     }
     return self;
@@ -78,7 +78,7 @@
 }
 
 - (void)saveInBackground {
-    PFObject *object = [PFObject objectWithClassName:NSStringFromClass([self class])];
+    PFObject *object = [PFObject objectWithClassName:[self classname]];
     for (NSString *key in self.allKeys) {
         [object setObject:[self objectForKey:key] forKey:key];
     }
@@ -86,7 +86,7 @@
 }
 
 - (void)saveInBackgroundWithBlock:(GSResultBlock)block {
-    PFObject *object = [PFObject objectWithClassName:NSStringFromClass([self class])];
+    PFObject *object = [PFObject objectWithClassName:[self classname]];
     for (NSString *key in self.allKeys) {
         [object setObject:[self objectForKey:key] forKey:key];
     }
@@ -95,6 +95,14 @@
             block(succeeded, error);
         }
     }];
+}
+
+- (NSString *)classname {
+    return @"Object";
+}
+
++ (NSString *)classname {
+    return @"Object";
 }
 
 @end

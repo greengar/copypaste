@@ -46,7 +46,7 @@
 
 - (IBAction)createRoom {
     [[GSSession activeSession] createRoomWithName:@"Hector Room"
-                                        isPrivate:YES
+                                        isPrivate:NO
                                       codeToEnter:nil
                                         shareWith:nil
                                             block:^(id object, NSError *error) {
@@ -70,10 +70,34 @@
 }
 
 - (IBAction)getAllPublicRoom {
-    [[GSSession activeSession] getAllAvailableRoomWithBlock:^(NSArray *objects, NSError *error) {
+    [[GSSession activeSession] getAllPublicRoomWithBlock:^(NSArray *objects, NSError *error) {
         if (error || [objects count] == 0) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not found"
                                                                 message:@"No public room"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        } else {
+            NSMutableString *message = [NSMutableString stringWithString:@"Room: "];
+            for (GSRoom *room in objects) {
+                [message appendFormat:@" %@", [room name]];
+            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Room found"
+                                                                message:message
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+    }];
+}
+
+- (IBAction)getRoomShareWithMe {
+    [[GSSession activeSession] getRoomShareWithMeWithBlock:^(NSArray *objects, NSError *error) {
+        if (error || [objects count] == 0) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not found"
+                                                                message:@"No room share with me"
                                                                delegate:nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];

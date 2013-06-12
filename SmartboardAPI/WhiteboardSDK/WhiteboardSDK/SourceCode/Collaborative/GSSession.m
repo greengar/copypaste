@@ -374,8 +374,8 @@ static GSSession *activeSession = nil;
     // Save to Firebase
 }
 
-- (void)getAllAvailableRoomWithBlock:(GSArrayResultBlock)block {
-    PFQuery *query = [PFQuery queryWithClassName:NSStringFromClass([GSRoom class])];
+- (void)getAllPublicRoomWithBlock:(GSArrayResultBlock)block {
+    PFQuery *query = [PFQuery queryWithClassName:[GSRoom classname]];
     [query whereKey:@"private" equalTo:[NSNumber numberWithBool:NO]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if ([objects count]) {
@@ -391,8 +391,26 @@ static GSSession *activeSession = nil;
     }];
 }
 
+- (void)getRoomShareWithMeWithBlock:(GSArrayResultBlock)block {
+    PFQuery *query = [PFQuery queryWithClassName:[GSRoom classname]];
+    [query whereKey:@"shared_emails"
+           containsAllObjectsInArray:[NSArray arrayWithObjects:[[GSSession currentUser] email], nil]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if ([objects count]) {
+            NSMutableArray *rooms = [NSMutableArray new];
+            for (PFObject *pfObject in objects) {
+                GSRoom *gsRoom = [[GSRoom alloc] initWithPFObject:pfObject];
+                [rooms addObject:gsRoom];
+            }
+            if (block) { block(rooms, error); }
+        } else {
+            if (block) { block(objects, error); }
+        }
+    }];
+}
+
 - (void)getRoomWithCode:(NSString *)code block:(GSSingleResultBlock)block {
-    PFQuery *query = [PFQuery queryWithClassName:NSStringFromClass([GSRoom class])];
+    PFQuery *query = [PFQuery queryWithClassName:[GSRoom classname]];
     [query whereKey:@"code" equalTo:code];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if ([objects count]) {

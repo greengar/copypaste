@@ -104,10 +104,15 @@
                      block:(GSSingleResultBlock)block;
 
 /*
- Get all public rooms and private rooms which are shared with the current user
+ Get all public rooms
  @param block GSArrayResultBlock: return array (NSArray) of public available room (GSRoom)
  */
-- (void)getAllAvailableRoomWithBlock:(GSArrayResultBlock)block;
+- (void)getAllPublicRoomWithBlock:(GSArrayResultBlock)block;
+
+/*
+ Get all rooms that are shared with the current user
+ */
+- (void)getRoomShareWithMeWithBlock:(GSArrayResultBlock)block;
 
 /*
  Get the room who has the code

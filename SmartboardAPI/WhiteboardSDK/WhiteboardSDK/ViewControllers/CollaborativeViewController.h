@@ -21,6 +21,7 @@
 - (IBAction)authenticate;
 - (IBAction)createRoom;
 - (IBAction)getAllPublicRoom;
+- (IBAction)getRoomShareWithMe;
 - (IBAction)getRoomById;
 - (IBAction)getUserByEmail;
 

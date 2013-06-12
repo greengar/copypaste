@@ -20,6 +20,9 @@
 - (void)saveInBackground;
 - (void)saveInBackgroundWithBlock:(GSResultBlock)block;
 
+- (NSString *)classname;
++ (NSString *)classname;
+
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, strong) NSDate *updatedAt;

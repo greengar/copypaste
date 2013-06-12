@@ -68,7 +68,7 @@
 
 - (void)saveInBackground {
     if (self.codeToEnter) {
-        PFQuery *query = [PFQuery queryWithClassName:NSStringFromClass([self class])];
+        PFQuery *query = [PFQuery queryWithClassName:[self classname]];
         [query whereKey:@"code" equalTo:self.codeToEnter];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if ([objects count]) {
@@ -84,7 +84,7 @@
 
 - (void)saveInBackgroundWithBlock:(GSResultBlock)block {
     if (self.codeToEnter) {
-        PFQuery *query = [PFQuery queryWithClassName:NSStringFromClass([self class])];
+        PFQuery *query = [PFQuery queryWithClassName:[self classname]];
         [query whereKey:@"code" equalTo:self.codeToEnter];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if ([objects count]) {
@@ -102,6 +102,14 @@
     } else {
         [super saveInBackgroundWithBlock:block];
     }
+}
+
+- (NSString *)classname {
+    return @"Room";
+}
+
++ (NSString *)classname {
+    return @"Room";
 }
 
 @end
