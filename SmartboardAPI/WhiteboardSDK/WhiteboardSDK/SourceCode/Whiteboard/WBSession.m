@@ -1,5 +1,5 @@
 //
-//  SDSession.m
+//  WBSession.m
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 4/17/13.

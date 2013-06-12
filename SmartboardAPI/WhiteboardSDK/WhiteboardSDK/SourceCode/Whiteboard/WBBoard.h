@@ -1,5 +1,5 @@
 //
-//  SDBoard.h
+//  WBBoard.h
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 5/30/13.

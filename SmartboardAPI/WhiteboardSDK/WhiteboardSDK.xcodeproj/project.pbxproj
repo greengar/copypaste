@@ -32,6 +32,17 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		7B23544F1767A9B30055A319 /* CollaborativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B23544D1767A9B30055A319 /* CollaborativeViewController.m */; };
+		7B2354501767A9B30055A319 /* CollaborativeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */; };
+		7B2354561767AFBF0055A319 /* GSLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B2354521767AFBF0055A319 /* GSLogInViewController.h */; };
+		7B2354571767AFBF0055A319 /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2354531767AFBF0055A319 /* GSLogInViewController.m */; };
+		7B2354581767AFBF0055A319 /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2354531767AFBF0055A319 /* GSLogInViewController.m */; };
+		7B2354591767AFBF0055A319 /* GSSignUpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B2354541767AFBF0055A319 /* GSSignUpViewController.h */; };
+		7B23545A1767AFBF0055A319 /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2354551767AFBF0055A319 /* GSSignUpViewController.m */; };
+		7B23545B1767AFBF0055A319 /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2354551767AFBF0055A319 /* GSSignUpViewController.m */; };
+		7B23545E1767BECC0055A319 /* GSRoom.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B23545C1767BECB0055A319 /* GSRoom.h */; };
+		7B23545F1767BECC0055A319 /* GSRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B23545D1767BECB0055A319 /* GSRoom.m */; };
+		7B2354601767BECC0055A319 /* GSRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B23545D1767BECB0055A319 /* GSRoom.m */; };
 		7B4AF56D176059700049D77D /* WBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4AF56B176059700049D77D /* WBViewController.m */; };
 		7B4AF56E176059700049D77D /* WBViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4AF56C176059700049D77D /* WBViewController~iphone.xib */; };
 		7B4AF570176059860049D77D /* WBViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4AF56F176059860049D77D /* WBViewController~ipad.xib */; };
@@ -257,9 +268,6 @@
 		7BEA54B017668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA548117668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BEA54B117668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA548217668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.m */; };
 		7BEA54B217668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA548217668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.m */; };
-		7BEA54C117668A88001BC5FE /* GSLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA54B317668A88001BC5FE /* GSLogInViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7BEA54C217668A88001BC5FE /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54B417668A88001BC5FE /* GSLogInViewController.m */; };
-		7BEA54C317668A88001BC5FE /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54B417668A88001BC5FE /* GSLogInViewController.m */; };
 		7BEA54C417668A88001BC5FE /* GSObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA54B517668A88001BC5FE /* GSObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BEA54C517668A88001BC5FE /* GSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54B617668A88001BC5FE /* GSObject.m */; };
 		7BEA54C617668A88001BC5FE /* GSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54B617668A88001BC5FE /* GSObject.m */; };
@@ -269,9 +277,6 @@
 		7BEA54CA17668A88001BC5FE /* GSSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA54B917668A88001BC5FE /* GSSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BEA54CB17668A88001BC5FE /* GSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54BA17668A88001BC5FE /* GSSession.m */; };
 		7BEA54CC17668A88001BC5FE /* GSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54BA17668A88001BC5FE /* GSSession.m */; };
-		7BEA54CD17668A88001BC5FE /* GSSignUpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA54BB17668A88001BC5FE /* GSSignUpViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7BEA54CE17668A88001BC5FE /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54BC17668A88001BC5FE /* GSSignUpViewController.m */; };
-		7BEA54CF17668A88001BC5FE /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54BC17668A88001BC5FE /* GSSignUpViewController.m */; };
 		7BEA54D017668A88001BC5FE /* GSUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA54BD17668A88001BC5FE /* GSUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BEA54D117668A88001BC5FE /* GSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54BE17668A88001BC5FE /* GSUser.m */; };
 		7BEA54D217668A88001BC5FE /* GSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54BE17668A88001BC5FE /* GSUser.m */; };
@@ -298,6 +303,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B23544C1767A9B30055A319 /* CollaborativeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollaborativeViewController.h; sourceTree = "<group>"; };
+		7B23544D1767A9B30055A319 /* CollaborativeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollaborativeViewController.m; sourceTree = "<group>"; };
+		7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollaborativeViewController.xib; sourceTree = "<group>"; };
+		7B2354521767AFBF0055A319 /* GSLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSLogInViewController.h; sourceTree = "<group>"; };
+		7B2354531767AFBF0055A319 /* GSLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSLogInViewController.m; sourceTree = "<group>"; };
+		7B2354541767AFBF0055A319 /* GSSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSignUpViewController.h; sourceTree = "<group>"; };
+		7B2354551767AFBF0055A319 /* GSSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSignUpViewController.m; sourceTree = "<group>"; };
+		7B23545C1767BECB0055A319 /* GSRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSRoom.h; sourceTree = "<group>"; };
+		7B23545D1767BECB0055A319 /* GSRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSRoom.m; sourceTree = "<group>"; };
 		7B4AF56A176059700049D77D /* WBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBViewController.h; sourceTree = "<group>"; };
 		7B4AF56B176059700049D77D /* WBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBViewController.m; sourceTree = "<group>"; };
 		7B4AF56C176059700049D77D /* WBViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WBViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -467,16 +481,12 @@
 		7BEA548017668A47001BC5FE /* UIColor+GSExpanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GSExpanded.m"; sourceTree = "<group>"; };
 		7BEA548117668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+GSCustomPlaceholderTextColor.h"; sourceTree = "<group>"; };
 		7BEA548217668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+GSCustomPlaceholderTextColor.m"; sourceTree = "<group>"; };
-		7BEA54B317668A88001BC5FE /* GSLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSLogInViewController.h; sourceTree = "<group>"; };
-		7BEA54B417668A88001BC5FE /* GSLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSLogInViewController.m; sourceTree = "<group>"; };
 		7BEA54B517668A88001BC5FE /* GSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSObject.h; sourceTree = "<group>"; };
 		7BEA54B617668A88001BC5FE /* GSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSObject.m; sourceTree = "<group>"; };
 		7BEA54B717668A88001BC5FE /* GSParseQueryHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSParseQueryHelper.h; sourceTree = "<group>"; };
 		7BEA54B817668A88001BC5FE /* GSParseQueryHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSParseQueryHelper.m; sourceTree = "<group>"; };
 		7BEA54B917668A88001BC5FE /* GSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSession.h; sourceTree = "<group>"; };
 		7BEA54BA17668A88001BC5FE /* GSSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSession.m; sourceTree = "<group>"; };
-		7BEA54BB17668A88001BC5FE /* GSSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSignUpViewController.h; sourceTree = "<group>"; };
-		7BEA54BC17668A88001BC5FE /* GSSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSignUpViewController.m; sourceTree = "<group>"; };
 		7BEA54BD17668A88001BC5FE /* GSUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSUser.h; sourceTree = "<group>"; };
 		7BEA54BE17668A88001BC5FE /* GSUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSUser.m; sourceTree = "<group>"; };
 		7BEA54BF17668A88001BC5FE /* GSUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSUtils.h; sourceTree = "<group>"; };
@@ -549,6 +559,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B23544B1767A98C0055A319 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7B23544C1767A9B30055A319 /* CollaborativeViewController.h */,
+				7B23544D1767A9B30055A319 /* CollaborativeViewController.m */,
+				7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7B2354511767AFBF0055A319 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7B2354521767AFBF0055A319 /* GSLogInViewController.h */,
+				7B2354531767AFBF0055A319 /* GSLogInViewController.m */,
+				7B2354541767AFBF0055A319 /* GSSignUpViewController.h */,
+				7B2354551767AFBF0055A319 /* GSSignUpViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		7B82E5C5175F9D0C00B063D7 = {
 			isa = PBXGroup;
 			children = (
@@ -610,6 +641,7 @@
 				7B4AF56B176059700049D77D /* WBViewController.m */,
 				7B4AF56C176059700049D77D /* WBViewController~iphone.xib */,
 				7B4AF56F176059860049D77D /* WBViewController~ipad.xib */,
+				7B23544B1767A98C0055A319 /* ViewControllers */,
 				7B82E78F175F9E4C00B063D7 /* Whiteboard.h */,
 				7BEA540F17668936001BC5FE /* Collaborative.h */,
 				7BEA52E7176687F0001BC5FE /* SourceCode */,
@@ -687,14 +719,13 @@
 				7BEA54BE17668A88001BC5FE /* GSUser.m */,
 				7BEA54B517668A88001BC5FE /* GSObject.h */,
 				7BEA54B617668A88001BC5FE /* GSObject.m */,
+				7B23545C1767BECB0055A319 /* GSRoom.h */,
+				7B23545D1767BECB0055A319 /* GSRoom.m */,
 				7BEA54BF17668A88001BC5FE /* GSUtils.h */,
 				7BEA54C017668A88001BC5FE /* GSUtils.m */,
-				7BEA54B317668A88001BC5FE /* GSLogInViewController.h */,
-				7BEA54B417668A88001BC5FE /* GSLogInViewController.m */,
 				7BEA54B717668A88001BC5FE /* GSParseQueryHelper.h */,
 				7BEA54B817668A88001BC5FE /* GSParseQueryHelper.m */,
-				7BEA54BB17668A88001BC5FE /* GSSignUpViewController.h */,
-				7BEA54BC17668A88001BC5FE /* GSSignUpViewController.m */,
+				7B2354511767AFBF0055A319 /* ViewControllers */,
 				7BEA545B17668A47001BC5FE /* Support */,
 			);
 			path = Collaborative;
@@ -1150,13 +1181,14 @@
 				7BEA54AA17668A47001BC5FE /* NSData+GSBase64.h in Headers */,
 				7BEA54AD17668A47001BC5FE /* UIColor+GSExpanded.h in Headers */,
 				7BEA54B017668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.h in Headers */,
-				7BEA54C117668A88001BC5FE /* GSLogInViewController.h in Headers */,
 				7BEA54C417668A88001BC5FE /* GSObject.h in Headers */,
 				7BEA54C717668A88001BC5FE /* GSParseQueryHelper.h in Headers */,
 				7BEA54CA17668A88001BC5FE /* GSSession.h in Headers */,
-				7BEA54CD17668A88001BC5FE /* GSSignUpViewController.h in Headers */,
 				7BEA54D017668A88001BC5FE /* GSUser.h in Headers */,
 				7BEA54D317668A88001BC5FE /* GSUtils.h in Headers */,
+				7B2354561767AFBF0055A319 /* GSLogInViewController.h in Headers */,
+				7B2354591767AFBF0055A319 /* GSSignUpViewController.h in Headers */,
+				7B23545E1767BECC0055A319 /* GSRoom.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1262,6 +1294,7 @@
 				7BEA548617668A47001BC5FE /* LICENSE in Resources */,
 				7BEA54A017668A47001BC5FE /* README.md in Resources */,
 				7BEA54A517668A47001BC5FE /* SVProgressHUD.bundle in Resources */,
+				7B2354501767A9B30055A319 /* CollaborativeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1388,13 +1421,15 @@
 				7BEA54AB17668A47001BC5FE /* NSData+GSBase64.m in Sources */,
 				7BEA54AE17668A47001BC5FE /* UIColor+GSExpanded.m in Sources */,
 				7BEA54B117668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.m in Sources */,
-				7BEA54C217668A88001BC5FE /* GSLogInViewController.m in Sources */,
 				7BEA54C517668A88001BC5FE /* GSObject.m in Sources */,
 				7BEA54C817668A88001BC5FE /* GSParseQueryHelper.m in Sources */,
 				7BEA54CB17668A88001BC5FE /* GSSession.m in Sources */,
-				7BEA54CE17668A88001BC5FE /* GSSignUpViewController.m in Sources */,
 				7BEA54D117668A88001BC5FE /* GSUser.m in Sources */,
 				7BEA54D417668A88001BC5FE /* GSUtils.m in Sources */,
+				7B23544F1767A9B30055A319 /* CollaborativeViewController.m in Sources */,
+				7B2354571767AFBF0055A319 /* GSLogInViewController.m in Sources */,
+				7B23545A1767AFBF0055A319 /* GSSignUpViewController.m in Sources */,
+				7B23545F1767BECC0055A319 /* GSRoom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1475,13 +1510,14 @@
 				7BEA54AC17668A47001BC5FE /* NSData+GSBase64.m in Sources */,
 				7BEA54AF17668A47001BC5FE /* UIColor+GSExpanded.m in Sources */,
 				7BEA54B217668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.m in Sources */,
-				7BEA54C317668A88001BC5FE /* GSLogInViewController.m in Sources */,
 				7BEA54C617668A88001BC5FE /* GSObject.m in Sources */,
 				7BEA54C917668A88001BC5FE /* GSParseQueryHelper.m in Sources */,
 				7BEA54CC17668A88001BC5FE /* GSSession.m in Sources */,
-				7BEA54CF17668A88001BC5FE /* GSSignUpViewController.m in Sources */,
 				7BEA54D217668A88001BC5FE /* GSUser.m in Sources */,
 				7BEA54D517668A88001BC5FE /* GSUtils.m in Sources */,
+				7B2354581767AFBF0055A319 /* GSLogInViewController.m in Sources */,
+				7B23545B1767AFBF0055A319 /* GSSignUpViewController.m in Sources */,
+				7B2354601767BECC0055A319 /* GSRoom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1583,6 +1619,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WhiteboardSDK/WhiteboardSDK-Prefix.pch";
 				INFOPLIST_FILE = "WhiteboardSDK/WhiteboardSDK-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1598,6 +1635,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WhiteboardSDK/WhiteboardSDK-Prefix.pch";
 				INFOPLIST_FILE = "WhiteboardSDK/WhiteboardSDK-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1779,6 +1817,7 @@
 				7BEA52E51766873A001BC5FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7BEA540B17668844001BC5FE /* Build configuration list for PBXAggregateTarget "BuildCollaborativeSDK" */ = {
 			isa = XCConfigurationList;
@@ -1787,6 +1826,7 @@
 				7BEA540D17668844001BC5FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

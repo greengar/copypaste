@@ -1,6 +1,6 @@
 //
 //  UITextField+GSCustomPlaceholderTextColor.m
-//  copypaste
+//  CollaborativeSDK
 //
 //  Created by Elliot Lee on 4/27/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
@@ -31,7 +31,9 @@ static char const * const PlaceholderTextColorKey = "PlaceholderTextColor";
 - (void) drawPlaceholderInRect:(CGRect)rect {
     [self.placeholderTextColor setFill]; // light orange
     //FE8C0E
-    [self.placeholder drawInRect:rect withFont:self.font lineBreakMode:UILineBreakModeTailTruncation alignment:self.textAlignment];
+    [self.placeholder drawInRect:rect withFont:self.font
+                   lineBreakMode:NSLineBreakByTruncatingTail
+                       alignment:self.textAlignment];
 }
 
 #pragma clang diagnostic pop

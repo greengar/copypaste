@@ -1,6 +1,6 @@
 //
 //  GSSSession.m
-//  copypaste
+//  CollaborativeSDK
 //
 //  Created by Hector Zhao on 4/17/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
@@ -13,6 +13,8 @@
 #import "GSObject.h"
 #import <Parse/Parse.h>
 #import <Firebase/Firebase.h>
+#import "GSLogInViewController.h"
+#import "GSSignUpViewController.h"
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
 
@@ -28,7 +30,7 @@
 
 static GSSession *activeSession = nil;
 
-@interface GSSession()
+@interface GSSession() <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 - (void)linkFacebookDataBlock:(GSResultBlock)block;
 - (void)initEssentialDataBlock:(GSResultBlock)block;
 - (void)setUserInitialApp;
@@ -42,8 +44,11 @@ static GSSession *activeSession = nil;
 
 @implementation GSSession
 @synthesize firebase = _firebase;
-@synthesize delegate = _delegate;
 @synthesize currentUser = _currentUser;
+@synthesize delegate = _delegate;
+@synthesize msgDelegate = _msgDelegate;
+@synthesize roomDelegate = _roomDelegate;
+@synthesize authenticationController = _authenticationController;
 
 + (GSSession *)activeSession {
     static GSSession *activeSession;
@@ -54,6 +59,15 @@ static GSSession *activeSession = nil;
 
 + (GSUser *)currentUser {
     return [[GSSession activeSession] currentUser];
+}
+
+- (NSString *)currentUserName {
+    if ([GSSession isAuthenticated]) {
+        return [self.currentUser displayName];
+        
+    } else {
+        return @"";
+    }
 }
 
 - (id)init {
@@ -70,41 +84,60 @@ static GSSession *activeSession = nil;
     [Parse setApplicationId:appId clientKey:appSecret];
     [PFFacebookUtils initializeFacebook];
     NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-    [GSSession activeSession].firebase = [[Firebase alloc] initWithUrl:[NSString stringWithFormat:@"%@%@", kFireBaseBaseURL, appName]];
+    NSString *firebaseURL = [[NSString alloc] initWithFormat:@"%@%@", kFireBaseBaseURL, appName];
+    [GSSession activeSession].firebase = [[Firebase alloc] initWithUrl:firebaseURL];
 }
 
 + (BOOL)isAuthenticated {
     return ([[GSSession activeSession] currentUser] != nil);
 }
 
-- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController delegate:(id<GSSessionDelegate>)delegate {
+#pragma mark - Authentications
+- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController
+                                           delegate:(id<GSSessionDelegate>)delegate {
     self.delegate = delegate;
+    self.authenticationController = viewController;
     
-    GSLogInViewController *logInController = [[GSLogInViewController alloc] init]; // PFLogInViewController subclass
+    GSLogInViewController *logInController = [[GSLogInViewController alloc] init];\
     logInController.delegate = self;
     
     // Create the sign up view controller
-    PFSignUpViewController *signUpViewController = [[PFSignUpViewController alloc] init];
+    GSSignUpViewController *signUpViewController = [[GSSignUpViewController alloc] init];
     signUpViewController.delegate = self;
     
     [logInController setSignUpController:signUpViewController];
     
-    // We should check Facebook permissions for this
-    // friends_about_me
     [logInController setFacebookPermissions:@[@"user_about_me", @"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location"]];
-    [logInController setFields:PFLogInFieldsUsernameAndPassword
-//         | PFLogInFieldsTwitter
-         | PFLogInFieldsFacebook
-         | PFLogInFieldsSignUpButton];
-    // No PFLogInFieldsDismissButton - when would we want a user to dismiss?
-    
-    // Present the log in view controller
-    //[viewController presentModalViewController:logInController animated:YES];
+    [logInController setFields:PFLogInFieldsUsernameAndPassword|PFLogInFieldsFacebook|PFLogInFieldsSignUpButton];
+
     [viewController presentViewController:logInController animated:YES completion:NULL];
 }
 
-#pragma mark - Sign Up View Controller Delegate Methods
+- (void)updateUserInfoFromSmartboardAPIWithBlock:(GSResultBlock)block {
+    if ([PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
+        [self linkFacebookDataBlock:^(BOOL succeed, NSError *error) {
+            [self updateUserDataWithBlock:^(BOOL succeed, NSError *error) {
+                if (block) { block(YES, error); }
+             
+            }];
+        }];
+    } else {
+        [self updateUserDataWithBlock:^(BOOL succeed, NSError *error) {
+            if (block) { block(YES, error); }
+        }];
+    }
+}
 
+- (void)logOutWithBlock:(GSResultBlock)block {
+    [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        [PFUser logOut];
+        self.currentUser = nil;
+        if (block) { block(succeeded, error); }
+    }];
+}
+
+#pragma mark - Sign Up View Controller Delegate Methods
 // Sent to the delegate to determine whether the sign up request should be submitted to the server.
 - (BOOL)signUpViewController:(PFSignUpViewController *)signUpController shouldBeginSignUp:(NSDictionary *)info {
     BOOL informationComplete = YES;
@@ -132,12 +165,17 @@ static GSSession *activeSession = nil;
 
 // Sent to the delegate when a PFUser is signed up.
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didFinishAuthentication:)]) {
         [self initEssentialDataBlock:^(BOOL succeed, NSError *error) {
             [self goOnline:YES];
             [self setUserInitialApp];
             [self initOrUpdateGSUser];
-            [self.delegate didLoginSucceeded]; // Dismiss the PFSignUpViewController
+            [self.delegate didFinishAuthentication:error];
+            
+            if (!error) {
+                [self.authenticationController dismissViewControllerAnimated:YES
+                                                                  completion:NULL];
+            }
         }];
     }
 }
@@ -145,8 +183,8 @@ static GSSession *activeSession = nil;
 // Sent to the delegate when the sign up attempt fails.
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
     DLog(@"Failed to sign up... %@", error);
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
-        [self.delegate didLoginFailed:error];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didFinishAuthentication:)]) {
+        [self.delegate didFinishAuthentication:error];
     }
 }
 
@@ -156,7 +194,6 @@ static GSSession *activeSession = nil;
 }
 
 #pragma mark - Log In View Controller Delegate Methods
-
 // Sent to the delegate to determine whether the log in request should be submitted to the server.
 // Note that this method is NOT called when Twitter or Facebook login is used.
 - (BOOL)logInViewController:(PFLogInViewController *)logInController shouldBeginLogInWithUsername:(NSString *)username password:(NSString *)password {
@@ -173,22 +210,31 @@ static GSSession *activeSession = nil;
     return NO; // Interrupt login process
 }
 
-// TODO: You can use this method to perform additional on-boarding logic, such as downloading a profile picture
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginSucceeded)]) {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didFinishAuthentication:)]) {
         [self setUserInitialApp]; // set initial_app_name
         
         if ([PFFacebookUtils isLinkedWithUser:user]) {
             [self linkFacebookDataBlock:^(BOOL succeed, NSError *error) {
                 [self goOnline:YES];
-                [self initOrUpdateGSUser]; // create GSUser object
-                [self.delegate didLoginSucceeded]; // dismiss the log in view controller
+                [self initOrUpdateGSUser];
+                [self.delegate didFinishAuthentication:error];
+                
+                if (!error) {
+                    [self.authenticationController dismissViewControllerAnimated:YES
+                                                                      completion:NULL];
+                }
             }];
         } else {
             [self initEssentialDataBlock:^(BOOL succeed, NSError *error) {
                 [self goOnline:YES];
-                [self initOrUpdateGSUser]; // create GSUser object
-                [self.delegate didLoginSucceeded]; // dismiss the log in view controller
+                [self initOrUpdateGSUser];
+                [self.delegate didFinishAuthentication:error];
+                
+                if (!error) {
+                    [self.authenticationController dismissViewControllerAnimated:YES
+                                                                      completion:NULL];
+                }
             }];
         }
     }
@@ -196,42 +242,19 @@ static GSSession *activeSession = nil;
 
 // Sent to the delegate when the log in attempt fails.
 - (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didLoginFailed:)]) {
-        [self.delegate didLoginFailed:error];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(didFinishAuthentication:)]) {
+        [self.delegate didFinishAuthentication:error];
     }
 }
 
 // Sent to the delegate when the log in screen is dismissed.
 - (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
-    //[self.navigationController popViewControllerAnimated:YES];
-    DLog(@"log in screen dismissed");
+    DLog(@"User dismissed the logInViewController");
 }
 
-- (void)updateUserInfoFromSmartboardAPIWithBlock:(GSResultBlock)block {
-    if ([PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
-        [self linkFacebookDataBlock:^(BOOL succeed, NSError *error) {
-            [self updateUserDataWithBlock:^(BOOL succeed, NSError *error) {
-                block(YES, error);
-            }];
-        }];
-    } else {
-        [self updateUserDataWithBlock:^(BOOL succeed, NSError *error) {
-            block(YES, error);
-        }];
-    }
-}
-
-- (void)logOutWithBlock:(GSResultBlock)block {
-    [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
-    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        [PFUser logOut];
-        self.currentUser = nil;
-        block(succeeded, error);
-    }];
-}
-
-- (void)registerMessageReceiver:(id<GSSessionDelegate>)delegate {
-    self.delegate = delegate;
+#pragma mark - Peer-to-Peer Messages
+- (void)registerMessageReceiver:(id<GSMessageDelegate>)delegate {
+    self.msgDelegate = delegate;
     
     [[self getMyBaseFirebase] observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
         [self receiveData:snapshot];
@@ -251,16 +274,18 @@ static GSSession *activeSession = nil;
         }
         [messageDict setObject:childSnapshot.name forKey:@"uid"];
         
-        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(didReceiveMessage:)]) {
-            [self.delegate didReceiveMessage:messageDict];
+        if (self.msgDelegate && [((id)self.msgDelegate) respondsToSelector:@selector(didReceiveMessage:)]) {
+            [self.msgDelegate didReceiveMessage:messageDict];
         }
     }
 }
 
 - (void)sendData:(NSDictionary *)dictionary toUser:(GSUser *)user withBlock:(GSResultBlock)block {
-    [[self generateFirebaseFor:user atTime:[GSUtils getCurrentTime]] setValue:dictionary
-                                                          withCompletionBlock:^(NSError *error) {
-                                                              block(YES, error);
+    [[self generateFirebaseFor:user
+                        atTime:[GSUtils getCurrentTime]]
+                      setValue:dictionary
+           withCompletionBlock:^(NSError *error) {
+               if (block) { block(YES, error); }
     }];
 }
 
@@ -271,6 +296,15 @@ static GSSession *activeSession = nil;
     Firebase *timeFirebase = [senderFirebaseInMyFirebase childByAppendingPath:timeFirebaseName];
     DLog(@"Remove fire base: %@", [timeFirebase name]);
     [timeFirebase removeValue];
+}
+
+#pragma mark - Request Users
+- (void)getUsersByEmail:(NSString *)email block:(GSArrayResultBlock)block {
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"email" equalTo:email];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (block) { block(objects, error); }
+    }];
 }
 
 - (void)getNearbyUserWithBlock:(GSArrayResultBlock)block {
@@ -298,7 +332,7 @@ static GSSession *activeSession = nil;
                     }
                 }
                 DLog(@"Number of nearby users: %d", [nearByUserExceptMe count]);
-                block(nearByUserExceptMe, error);
+                if (block) { block(nearByUserExceptMe, error); }
             }
         }];
     } else {
@@ -308,15 +342,28 @@ static GSSession *activeSession = nil;
     }
 }
 
-- (NSString *)currentUserName {
-    if ([GSSession isAuthenticated]) {
-        return [self.currentUser displayName];
-        
-    } else {
-        return @"";
-    }
+#pragma mark - Request Rooms
+- (void)registerRoomReceiver:(id<GSRoomDelegate>)delegate forRoom:(GSRoom *)room {
+    self.roomDelegate = delegate;
 }
 
+- (void)createRoomWithName:(NSString *)roomName
+                   privacy:(BOOL)isPrivate
+                 shareWith:(NSArray *)sharedEmails
+                     block:(GSSingleResultBlock)block {
+    // Save to Firebase
+    // Save to Parse
+}
+
+- (void)getAllAvailableRoomWithBlock:(GSArrayResultBlock)block {
+    
+}
+
+- (void)getRoomWithCode:(NSString *)code block:(GSSingleResultBlock)block {
+    
+}
+
+#pragma mark - Access and Update Database
 - (void)queryClass:(NSString *)classname
              where:(NSArray *)queryCondition
              block:(GSArrayResultBlock)block {
@@ -335,7 +382,7 @@ static GSSession *activeSession = nil;
                 [result addObject:object];
             }
             
-            block(result, error);            
+            if (block) { block(result, error); }
     }];
 }
 
@@ -379,11 +426,11 @@ static GSSession *activeSession = nil;
             }
         }
         
-        block(YES, error);
+        if (block) { block(YES, error); }
     }];
 }
 
-#pragma mark - INTERFACE
+#pragma mark - Lifecycle
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [PFFacebookUtils handleOpenURL:url];
 }
@@ -440,6 +487,7 @@ static GSSession *activeSession = nil;
     [[PFInstallation currentInstallation] setBadge:0];
 }
 
+#pragma mark - Update User data
 - (void)linkFacebookDataBlock:(GSResultBlock)block {
     // Create request for user's Facebook data
     FBRequest *request = [FBRequest requestForMe];
@@ -461,7 +509,7 @@ static GSSession *activeSession = nil;
             [[PFUser currentUser] setObject:username forKey:@"facebook_screen_name"];
             [[PFUser currentUser] saveInBackground];
         }
-        block(YES, error);
+        if (block) { block(YES, error); }
     }];
 }
 
@@ -474,10 +522,10 @@ static GSSession *activeSession = nil;
     
     if (haveUpdate) {
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            block(succeeded, error);
+            if (block) { block(succeeded, error); }
         }];
     } else {
-        block(NO, nil);
+        if (block) { block(NO, nil); }
     }
 }
 
@@ -507,7 +555,7 @@ static GSSession *activeSession = nil;
 - (void)updateUserDataWithBlock:(GSResultBlock)block {
     [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
         if (error) {
-            block(NO, error);
+            if (block) { block(NO, error); }
         } else {
             [[PFUser currentUser] setObject:geoPoint forKey:@"location"];
             [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
@@ -517,12 +565,13 @@ static GSSession *activeSession = nil;
             [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 [self goOnline:YES];
                 [self initOrUpdateGSUser];
-                block(YES, error);
+                if (block) { block(YES, error); }
             }];
         }
     }];
 }
 
+#pragma mark - Firebase
 - (Firebase *)getMyBaseFirebase {
     return [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", self.currentUser.uid]];
 }
@@ -536,6 +585,7 @@ static GSSession *activeSession = nil;
     return timeFirebase;
 }
 
+#pragma mark - Push Notifications
 - (void)sendPushNotificationMessage:(NSString *)message toUser:(GSUser *)user {
     PFQuery *innerQuery = [PFUser query];
     [innerQuery whereKey:@"objectId" equalTo:user.uid];

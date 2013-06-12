@@ -1,6 +1,6 @@
 //
-//  GSSUser.h
-//  copypaste
+//  GSUser.h
+//  CollaborativeSDK
 //
 //  Created by Hector Zhao on 4/17/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.

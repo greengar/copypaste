@@ -1,6 +1,6 @@
 //
-//  SDSUtils.h
-//  copypaste
+//  WBUtils.h
+//  WhiteboardSDK
 //
 //  Created by Hector Zhao on 4/24/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
@@ -155,6 +155,3 @@ typedef enum {
 + (UIImage*) rotateImage:(UIImage *)image withOrientation:(UIImageOrientation)orient;
 
 @end
-
-typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);
-typedef void (^GSResultBlock)(BOOL succeed, NSError *error);

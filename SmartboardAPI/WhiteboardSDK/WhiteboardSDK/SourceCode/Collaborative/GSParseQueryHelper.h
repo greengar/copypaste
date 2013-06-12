@@ -1,6 +1,6 @@
 //
-//  GSSParseQueryHelper.h
-//  copypaste
+//  GSParseQueryHelper.h
+//  CollaborativeSDK
 //
 //  Created by Hector Zhao on 4/19/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.

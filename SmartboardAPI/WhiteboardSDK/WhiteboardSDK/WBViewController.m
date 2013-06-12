@@ -7,6 +7,7 @@
 //
 
 #import "WBViewController.h"
+#import "CollaborativeViewController.h"
 #import "GSButton.h"
 
 @interface WBViewController ()
@@ -29,20 +30,34 @@
     label.center = CGPointMake(self.view.center.x, self.view.center.y - 120);
     [self.view addSubview:label];
     
-	GSButton *useSDSDKButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
-    [useSDSDKButton setTitle:@"Start Drawing" forState:UIControlStateNormal];
-    useSDSDKButton.titleLabel.font = [UIFont systemFontOfSize:22];
-    [useSDSDKButton setFrame:CGRectMake(0, 0, 300, 80)];
-    [useSDSDKButton setCenter:self.view.center];
-    [useSDSDKButton addTarget:self action:@selector(useSDK) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:useSDSDKButton];
+	GSButton *useWhiteboardSDK = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
+    [useWhiteboardSDK setTitle:@"Start Drawing" forState:UIControlStateNormal];
+    useWhiteboardSDK.titleLabel.font = [UIFont systemFontOfSize:22];
+    [useWhiteboardSDK setFrame:CGRectMake(0, 0, 300, 80)];
+    [useWhiteboardSDK setCenter:self.view.center];
+    [useWhiteboardSDK addTarget:self action:@selector(useWhiteboardSDK)
+               forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:useWhiteboardSDK];
     
+    GSButton *useCollaborativeSDK = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
+    [useCollaborativeSDK setTitle:@"Use Collaborative SDK" forState:UIControlStateNormal];
+    useCollaborativeSDK.titleLabel.font = [UIFont systemFontOfSize:22];
+    [useCollaborativeSDK setFrame:CGRectMake(0, 0, 300, 80)];
+    [useCollaborativeSDK setCenter:CGPointMake(self.view.center.x, self.view.center.y + 100)];
+    [useCollaborativeSDK addTarget:self action:@selector(useCollaborativeSDK)
+                  forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:useCollaborativeSDK];
 }
 
-- (void)useSDK {
+- (void)useWhiteboardSDK {
     [[WBSession activeSession] presentSmartboardControllerFromController:self
                                                                withImage:nil
                                                                 delegate:self];
+}
+
+- (void)useCollaborativeSDK {
+    CollaborativeViewController *controller = [[CollaborativeViewController alloc] init];
+    [self presentViewController:controller animated:YES completion:NULL];
 }
 
 - (void)doneEditingPhotoWithResult:(UIImage *)image {

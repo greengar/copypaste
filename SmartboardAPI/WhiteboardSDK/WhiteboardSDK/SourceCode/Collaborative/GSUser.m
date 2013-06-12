@@ -1,6 +1,6 @@
 //
-//  GSSUser.m
-//  copypaste
+//  GSUser.m
+//  CollaborativeSDK
 //
 //  Created by Hector Zhao on 4/17/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
@@ -79,7 +79,7 @@
 }
 
 - (void)cacheAvatar {
-    dispatch_async(dispatch_get_current_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (self.avatarURLString) {
             NSData *avatarData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.avatarURLString]];
             self.avatarImage = [UIImage imageWithData:avatarData];

@@ -1,6 +1,6 @@
 //
-//  GSSSession.h
-//  copypaste
+//  GSSession.h
+//  CollaborativeSDK
 //
 //  Created by Hector Zhao on 4/17/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
@@ -8,76 +8,172 @@
 
 #import <Foundation/Foundation.h>
 #import "GSUser.h"
+#import "GSRoom.h"
 #import "GSUtils.h"
-#import "GSLogInViewController.h"
 
-@protocol PFLogInViewControllerDelegate;
-@protocol PFSignUpViewControllerDelegate;
+@interface GSSession : NSObject
 
-@interface GSSession : NSObject <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
-
-// Get the active session
+/* 
+ Get the active session
+ @result Return GSSesion: the active session
+ */
 + (GSSession *)activeSession;
 
-// Get the current user, it's NIL if not authenticated
+/*
+ Get the current user
+ @result Return GSUser: current user, nil if not authenticated
+ */
 + (GSUser *)currentUser;
 
-// Besure to set App Id and App Secret before calling any other methods
+/*
+ Get logged in user's username
+ @result Return NSString: username
+ */
+- (NSString *)currentUserName;
+
+/*
+ Be sure to set App Id and App Secret before calling any other methods
+ @param appId NSString: app id from your Dashboard
+ @param appSecret NSString: app secret from your Dashboard
+ */
 + (void)setAppId:(NSString *)appId appSecret:(NSString *)appSecret;
 
-// Check if user is authenticated to Smartboard API App
+#pragma mark - Authentications
+/*
+ Check if user is authenticated to Smartboard API App
+ @result Return BOOL: if user is authenticated
+ */
 + (BOOL)isAuthenticated;
 
-// Perform authentication process
-// viewController: your root view controller
-// delegate: callback holder for authentication process
+/* 
+ Perform authentication process
+ @param viewController UIViewController: your root view controller
+ @param delegate id: callback holder for authentication process
+ */
 - (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController
                                            delegate:(id<GSSessionDelegate>)delegate;
 
-// Call to update user info
+/* 
+ Call to update user info
+ @param block GSResultBlock: if update is successfully or failed with errors
+ */
 - (void)updateUserInfoFromSmartboardAPIWithBlock:(GSResultBlock)block;
 
-// Log out of Smartboard API, now the [[GSSession currentUser] is NIL
+/*
+ Log out of Smartboard API, now the [[GSSession currentUser] is NIL
+ @param block GSResultBlock: if log out is successfully or failed with errors
+ */
 - (void)logOutWithBlock:(GSResultBlock)block;
 
-// Get all near by users
+#pragma mark - Request Users
+/*
+ Get user by email
+ @param email NSString: email string for search
+ @param block GSArrayResultBlock: return array (NSArray) of GSUser match the email
+ */
+- (void)getUsersByEmail:(NSString *)email
+                  block:(GSArrayResultBlock)block;
+
+/*
+ Get all near by users
+ @param block GSArrayResultBlock: return array (NSArray) of GSUser nearby
+ */
 - (void)getNearbyUserWithBlock:(GSArrayResultBlock)block;
 
-// Get current logged in username
-- (NSString *)currentUserName;
+#pragma mark - Request Rooms
+/*
+ Register message receiver, from now [didReceiveMessage:(NSDictionary *)dictInfo]
+ will be called in order to catch new messages
+ @param delegate id<GSRoomDelegate>: callback holder to receive [didReceiveMessage:(NSDictionary *)dictInfo]
+ */
+- (void)registerRoomReceiver:(id<GSRoomDelegate>)delegate forRoom:(GSRoom *)room;
 
-// Register message receiver, from now [didReceiveMessageFrom:content:time:] will be called
-// in order to catch new messages
-- (void)registerMessageReceiver:(id<GSSessionDelegate>)delegate;
+/*  
+ Create a room
+ @param roomName NSString: name of your room
+ @param isPrivate BOOL: YES -> only you and list of sharedEmail can access
+                        NO  -> everybody can access, then pass nil to sharedEmails
+ @param sharedEmails NSArray: NSArray of emails (NSString) to be shared
+    return NSString roomId 
+ @param block GSSingleResultBlock: return the created GSRoom
+ */
+- (void)createRoomWithName:(NSString *)roomName
+                   privacy:(BOOL)isPrivate
+                 shareWith:(NSArray *)sharedEmails
+                     block:(GSSingleResultBlock)block;
 
-// Send message dictionary key-value to the destination user
-- (void)sendData:(NSDictionary *)dictionary toUser:(GSUser *)user withBlock:(GSResultBlock)block;
+/*
+ Get all public rooms and private rooms which are shared with the current user
+ @param block GSArrayResultBlock: return array (NSArray) of public available room (GSRoom)
+ */
+- (void)getAllAvailableRoomWithBlock:(GSArrayResultBlock)block;
 
-// Send push notification message to user
-- (void)sendPushNotificationMessage:(NSString *)message toUser:(GSUser *)user;
+/*
+ Get the room who has the code
+ @param code NSString: the secret code to enter the room
+ @param block GSSingleResultBlock: return the room (GSRoom) who matches the code
+ */
+- (void)getRoomWithCode:(NSString *)code block:(GSSingleResultBlock)block;
 
-// Remove the message from server, otherwise the message receiver may catch it again
-- (void)removeMessageFromSender:(GSUser *)user atTime:(NSString *)messageTime;
-
-// Perform query to the server to get data
-// queryCondition is an Array of key-value:
-// Syntax: @[@"username", @"Hector"] -> (username == Hector)
-// Result will be returned as an Array of GSObject
+#pragma mark - Access and Update Database
+/*
+ Perform query to the server to get data
+ @param classname NSString: classname in your Database
+ @param queryCondition NSArray: array of key-value:
+    syntax: @[@"username", @"Hector"] -> where (username == Hector)
+ @param block GSArrayResultBlock: return array (NSArray) of GSObject match the query
+ */
 - (void)queryClass:(NSString *)classname
              where:(NSArray *)queryCondition
              block:(GSArrayResultBlock)block;
 
-// Perform update to the server to get data
-// queryCondition is an Array of key-value:
-// Syntax: @[@"username", @"Hector"] -> (username == Hector)
-// valueToSet is an Array of key-value:
-// Syntax: @[@"lastname", @"Zhao"] -> (lastname = Zhao)
-// -> Update Hector's lastname to Zhao
+/* 
+ Perform update to the server to get data
+ @param classname NSString: classname in your Database
+ @param valueToSet NSArray: array of key-value:
+    syntax: @[@"firstname", @"Hector"] -> set firstname to Hector
+ @param queryCondition NSArray: array of key-value:
+    Syntax: @[@"username", @"Hector"] -> where (username == Hector)
+ @param block GSResultBlock: if update is successfully or failed with errors
+ */
 - (void)updateClass:(NSString *)classname
                with:(NSArray *)valueToSet
               where:(NSArray *)queryCondition
               block:(GSResultBlock)block;
 
+#pragma mark - Peer-to-Peer Messages
+/*
+ Register message receiver, from now [didReceiveMessage:(NSDictionary *)dictInfo]
+ will be called in order to catch new messages
+ @param delegate id<GSMessageDelegate>: callback holder to receive [didReceiveMessage:(NSDictionary *)dictInfo]
+ */
+- (void)registerMessageReceiver:(id<GSMessageDelegate>)delegate;
+
+/*
+ Send message dictionary key-value to the destination user
+ @param dictionary NSDictionary: dictionary of key-value to send
+    syntax: @{@"receiver" : @"Hector", @"content" : @"Hello"}
+ @param user GSUser: destination of the message
+ @param block GSResultBlock: if message is sent successfully or failed with errors
+ */
+- (void)sendData:(NSDictionary *)dictionary toUser:(GSUser *)user withBlock:(GSResultBlock)block;
+
+/* 
+ Remove the message from server, otherwise the message receiver may catch it again
+ @param user GSUser: remove message from this user
+ @param messageTime NSString: message time string
+ */
+- (void)removeMessageFromSender:(GSUser *)user atTime:(NSString *)messageTime;
+
+#pragma mark - Push Notifications
+/*
+ Send push notification message to user
+ @param message NSString: message content for Push Notification
+ @param user GSUser: destination of the Push Notification
+ */
+- (void)sendPushNotificationMessage:(NSString *)message toUser:(GSUser *)user;
+
+#pragma mark - Lifecycle
 // Call this in your app delegate's [application:openURL:sourceApplication:annotation:]
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
@@ -110,5 +206,8 @@
 @property (nonatomic, retain) GSUser *currentUser;
 
 // The GSSession's delegate
+@property (nonatomic, assign) UIViewController *authenticationController;
 @property (nonatomic, assign) id<GSSessionDelegate> delegate;
+@property (nonatomic, assign) id<GSMessageDelegate> msgDelegate;
+@property (nonatomic, assign) id<GSRoomDelegate> roomDelegate;
 @end

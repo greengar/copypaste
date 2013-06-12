@@ -1,6 +1,6 @@
 //
-//  GSSUtils.h
-//  copypaste
+//  GSUtils.h
+//  CollaborativeSDK
 //
 //  Created by Hector Zhao on 4/24/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
@@ -30,9 +30,16 @@
 #define kCPLightOrangeColor OPAQUE_HEXCOLOR(0xF7A058)
 
 @protocol GSSessionDelegate
-- (void)didLoginSucceeded;
-- (void)didLoginFailed:(NSError *)error;
+- (void)didFinishAuthentication:(NSError *)error;
+@end
+
+@protocol GSMessageDelegate
 - (void)didReceiveMessage:(NSDictionary *)dictInfo;
+@end
+
+@class GSRoom;
+@protocol GSRoomDelegate
+- (void)didUpdateRoomData:(NSDictionary *)dictInfo ofRoom:(GSRoom *)room;
 @end
 
 @interface GSUtils : NSObject
@@ -48,5 +55,6 @@
 + (int)maxValueSize;
 @end
 
+typedef void (^GSSingleResultBlock)(id object, NSError *error);
 typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);
 typedef void (^GSResultBlock)(BOOL succeed, NSError *error);

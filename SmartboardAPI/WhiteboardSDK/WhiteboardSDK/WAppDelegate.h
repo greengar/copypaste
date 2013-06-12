@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GSSession.h"
 
 @class WBViewController;
 

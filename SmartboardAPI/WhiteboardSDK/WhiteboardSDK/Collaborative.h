@@ -9,5 +9,5 @@
 #import <Collaborative/GSSession.h>
 #import <Collaborative/GSUser.h>
 #import <Collaborative/GSObject.h>
+#import <Collaborative/GSRoom.h>
 #import <Collaborative/GSUtils.h>
-#import <Collaborative/GSReachability.h>

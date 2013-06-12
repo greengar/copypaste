@@ -1,5 +1,5 @@
 //
-//  SDPage.h
+//  WBPage.h
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 5/30/13.

@@ -1,6 +1,6 @@
 //
 //  GSObject.m
-//  copypaste
+//  CollaborativeSDK
 //
 //  Created by Hector Zhao on 4/25/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
@@ -10,20 +10,19 @@
 #import <Parse/Parse.h>
 
 @interface GSObject ()
-
-// This does not include
-// createdAt, updatedAt, authData, or objectId. It does include things like username
-// and ACL.
+// This does not include createdAt, updatedAt, authData, or objectId.
+// It does include things like username and ACL.
 @property (nonatomic, strong) NSMutableDictionary *innerDict;
 
 @end
 
 @implementation GSObject
+@synthesize uid = _uid;
+@synthesize innerDict = _innerDict;
 
-- (id)initWithPFObject:(PFObject *)object
-{
-    if ((self = [super init]))
-    {
+- (id)initWithPFObject:(PFObject *)object {
+    if ((self = [super init])) {
+        self.uid = [object objectId];
         self.innerDict = [NSMutableDictionary new];
         
         for (NSString *key in [object allKeys]) {
