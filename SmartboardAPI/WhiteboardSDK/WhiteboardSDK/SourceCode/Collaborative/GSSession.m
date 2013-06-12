@@ -303,7 +303,16 @@ static GSSession *activeSession = nil;
     PFQuery *query = [PFUser query];
     [query whereKey:@"email" equalTo:email];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (block) { block(objects, error); }
+        if ([objects count]) {
+            NSMutableArray *users = [NSMutableArray new];
+            for (PFUser *pfUser in objects) {
+                GSUser *gsUser = [[GSUser alloc] initWithPFUser:pfUser];
+                [users addObject:gsUser];
+            }
+            if (block) { block(users, error); }
+        } else {
+            if (block) { block(objects, error); }
+        }
     }];
 }
 
@@ -348,19 +357,52 @@ static GSSession *activeSession = nil;
 }
 
 - (void)createRoomWithName:(NSString *)roomName
-                   privacy:(BOOL)isPrivate
+                 isPrivate:(BOOL)isPrivate
+               codeToEnter:(NSString *)codeToEnter
                  shareWith:(NSArray *)sharedEmails
                      block:(GSSingleResultBlock)block {
-    // Save to Firebase
     // Save to Parse
+    GSRoom *room = [[GSRoom alloc] initWithName:roomName
+                                        ownerId:[[GSSession currentUser] uid]
+                                      isPrivate:isPrivate
+                                    codeToEnter:codeToEnter
+                                   sharedEmails:sharedEmails];
+    [room saveInBackgroundWithBlock:^(BOOL succeed, NSError *error) {
+        if (block) { block(room, error); }
+    }];
+    
+    // Save to Firebase
 }
 
 - (void)getAllAvailableRoomWithBlock:(GSArrayResultBlock)block {
-    
+    PFQuery *query = [PFQuery queryWithClassName:NSStringFromClass([GSRoom class])];
+    [query whereKey:@"private" equalTo:[NSNumber numberWithBool:NO]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if ([objects count]) {
+            NSMutableArray *rooms = [NSMutableArray new];
+            for (PFObject *pfObject in objects) {
+                GSRoom *gsRoom = [[GSRoom alloc] initWithPFObject:pfObject];
+                [rooms addObject:gsRoom];
+            }
+            if (block) { block(rooms, error); }
+        } else {
+            if (block) { block(objects, error); }
+        }
+    }];
 }
 
 - (void)getRoomWithCode:(NSString *)code block:(GSSingleResultBlock)block {
-    
+    PFQuery *query = [PFQuery queryWithClassName:NSStringFromClass([GSRoom class])];
+    [query whereKey:@"code" equalTo:code];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if ([objects count]) {
+            PFObject *pfObject = [objects objectAtIndex:0];
+            GSRoom *gsRoom = [[GSRoom alloc] initWithPFObject:pfObject];
+            if (block) { block(gsRoom, error); }
+        } else {
+            if (block) { block(nil, error); }
+        }
+    }];
 }
 
 #pragma mark - Access and Update Database

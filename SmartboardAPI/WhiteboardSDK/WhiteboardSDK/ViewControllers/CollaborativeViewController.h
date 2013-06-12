@@ -19,5 +19,9 @@
 }
 
 - (IBAction)authenticate;
+- (IBAction)createRoom;
+- (IBAction)getAllPublicRoom;
+- (IBAction)getRoomById;
+- (IBAction)getUserByEmail;
 
 @end

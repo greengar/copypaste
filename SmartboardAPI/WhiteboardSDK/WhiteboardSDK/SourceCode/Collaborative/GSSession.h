@@ -98,7 +98,8 @@
  @param block GSSingleResultBlock: return the created GSRoom
  */
 - (void)createRoomWithName:(NSString *)roomName
-                   privacy:(BOOL)isPrivate
+                 isPrivate:(BOOL)isPrivate
+               codeToEnter:(NSString *)codeToEnter
                  shareWith:(NSArray *)sharedEmails
                      block:(GSSingleResultBlock)block;
 

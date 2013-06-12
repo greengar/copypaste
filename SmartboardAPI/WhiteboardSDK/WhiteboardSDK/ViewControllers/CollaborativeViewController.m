@@ -44,6 +44,103 @@
     }
 }
 
+- (IBAction)createRoom {
+    [[GSSession activeSession] createRoomWithName:@"Hector Room"
+                                        isPrivate:YES
+                                      codeToEnter:nil
+                                        shareWith:nil
+                                            block:^(id object, NSError *error) {
+        if (error || !object) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:[error description]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        } else {
+            GSRoom *room = (GSRoom *)object;
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Room created"
+                                                                message:[room name]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+    }];
+}
+
+- (IBAction)getAllPublicRoom {
+    [[GSSession activeSession] getAllAvailableRoomWithBlock:^(NSArray *objects, NSError *error) {
+        if (error || [objects count] == 0) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not found"
+                                                                message:@"No public room"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        } else {
+            NSMutableString *message = [NSMutableString stringWithString:@"Room: "];
+            for (GSRoom *room in objects) {
+                [message appendFormat:@" %@", [room name]];
+            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Room found"
+                                                                message:message
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+    }];
+}
+
+- (IBAction)getRoomById {
+    [[GSSession activeSession] getRoomWithCode:@"Hector" block:^(id object, NSError *error) {
+        if (error || !object) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not found"
+                                                                message:@"No room found for code 'Hector'"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        } else {
+            NSString *message = [NSString stringWithFormat:@"Room: %@", [((GSRoom *) object) name]];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Room found for code 'Hector'"
+                                                                message:message
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+    }];
+}
+
+- (IBAction)getUserByEmail {
+    NSString *email = @"long@greengar.com";
+    [[GSSession activeSession] getUsersByEmail:email block:^(NSArray *objects, NSError *error) {
+        if (error || [objects count] == 0) {
+            NSString *message = [NSString stringWithFormat:@"No user with email %@", email];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not found"
+                                                                message:message
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        } else {
+            NSString *title = [NSString stringWithFormat:@"User with email %@", email];
+            NSMutableString *message = [NSMutableString stringWithString:@"User: "];
+            for (GSUser *user in objects) {
+                [message appendFormat:@" %@", [user displayName]];
+            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                                message:message
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+    }];
+}
+
 - (void)didFinishAuthentication:(NSError *)error {
     if (error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Log In Failed"
