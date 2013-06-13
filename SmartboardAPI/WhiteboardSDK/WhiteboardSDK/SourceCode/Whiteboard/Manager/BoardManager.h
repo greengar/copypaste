@@ -15,7 +15,7 @@
 + (BoardManager *)sharedManager;
 + (NSString *)getBaseDocumentFolder;
 
-+ (BOOL)writeBoardToFile:(WBBoard *)board;
++ (NSDictionary *)writeBoardToFile:(WBBoard *)board;
 + (WBBoard *)readBoardFromFileWithUid:(NSString *)uid;
 
 + (WBBoard *)loadBoardWithUid:(NSString *)uid;

@@ -79,6 +79,12 @@ static const NSTimeInterval WBSessionAnimationDuration = 0.5;
     }
 }
 
+- (void)exportBoardData:(NSDictionary *)data {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(exportCurrentBoardData:)]) {
+        [self.delegate exportCurrentBoardData:data];
+    }
+}
+
 + (id)allocWithZone:(NSZone *)zone {
     @synchronized(self) {
         if (activeSession == nil) {

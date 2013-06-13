@@ -38,7 +38,8 @@ static GSSession *activeSession = nil;
 - (void)updateUserDataWithBlock:(GSResultBlock)block;
 - (void)goOnline:(BOOL)online;
 - (Firebase *)getMyBaseFirebase;
-- (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time;
+- (Firebase *)generateFirebaseForUser:(GSUser *)user atTime:(NSString *)time;
+- (Firebase *)generateFirebaseForRoom:(GSRoom *)room;
 @property (nonatomic, retain) Firebase *firebase;
 @end
 
@@ -281,11 +282,11 @@ static GSSession *activeSession = nil;
 }
 
 - (void)sendData:(NSDictionary *)dictionary toUser:(GSUser *)user withBlock:(GSResultBlock)block {
-    [[self generateFirebaseFor:user
-                        atTime:[GSUtils getCurrentTime]]
-                      setValue:dictionary
-           withCompletionBlock:^(NSError *error) {
-               if (block) { block(YES, error); }
+    [[self generateFirebaseForUser:user
+                            atTime:[GSUtils getCurrentTime]]
+                          setValue:dictionary
+               withCompletionBlock:^(NSError *error) {
+                   if (block) { block(YES, error); }
     }];
 }
 
@@ -352,8 +353,16 @@ static GSSession *activeSession = nil;
 }
 
 #pragma mark - Request Rooms
-- (void)registerRoomReceiver:(id<GSRoomDelegate>)delegate forRoom:(GSRoom *)room {
-    self.roomDelegate = delegate;
+- (void)registerRoomDataChanged:(GSRoom *)room withBlock:(GSEmptyBlock)block {
+    [[self generateFirebaseForRoom:room] observeEventType:FEventTypeValue
+                                                withBlock:^(FDataSnapshot *snapshot) {
+        [room setData:[snapshot value]];
+        if (block) { block(room); }
+    }];
+}
+
+- (void)unregisterRoomDataChanged:(GSRoom *)room {
+    [[self generateFirebaseForRoom:room] removeAllObservers];
 }
 
 - (void)createRoomWithName:(NSString *)roomName
@@ -421,6 +430,15 @@ static GSSession *activeSession = nil;
             if (block) { block(nil, error); }
         }
     }];
+}
+
+#pragma mark - Update Rooms
+- (void)sendRoomDataToServer:(GSRoom *)room {
+    [[self generateFirebaseForRoom:room] setValue:room.data];
+}
+
+- (void)sendDataToServer:(NSDictionary *)dict atURL:(NSString *)urlString {
+    [[self.firebase childByAppendingPath:urlString] setValue:dict];
 }
 
 #pragma mark - Access and Update Database
@@ -636,13 +654,17 @@ static GSSession *activeSession = nil;
     return [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", self.currentUser.uid]];
 }
 
-- (Firebase *)generateFirebaseFor:(GSUser *)user atTime:(NSString *)time {
+- (Firebase *)generateFirebaseForUser:(GSUser *)user atTime:(NSString *)time {
     Firebase *receiverBaseFirebase = [self.firebase childByAppendingPath:[NSString stringWithFormat:@"User_%@", user.uid]];
     Firebase *senderFirebaseInReceiverBaseFirebase = [receiverBaseFirebase childByAppendingPath:[NSString stringWithFormat:@"Sender_%@", self.currentUser.uid]];
     NSString *timeFirebaseName = [NSString stringWithFormat:@"%@_%@", self.currentUser.username, time];
     Firebase *timeFirebase = [senderFirebaseInReceiverBaseFirebase childByAppendingPath:timeFirebaseName];
     DLog(@"Create fire base: %@", [timeFirebase name]);
     return timeFirebase;
+}
+
+- (Firebase *)generateFirebaseForRoom:(GSRoom *)room {
+    return [self.firebase childByAppendingPath:[room uid]];
 }
 
 #pragma mark - Push Notifications

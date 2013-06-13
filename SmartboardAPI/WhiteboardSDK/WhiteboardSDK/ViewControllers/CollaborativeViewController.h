@@ -25,5 +25,6 @@
 - (IBAction)getRoomShareWithMe;
 - (IBAction)getRoomById;
 - (IBAction)getUserByEmail;
+- (IBAction)done;
 
 @end

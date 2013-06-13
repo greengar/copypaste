@@ -212,9 +212,12 @@
 #pragma mark - Export output data
 - (void)doneEditingPage:(WBPage *)page {
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-        [BoardManager writeBoardToFile:self];
         [[HistoryManager sharedManager] clearHistoryPool];
         [self.delegate doneEditingBoardWithResult:[self exportBoardToUIImage]];
+    }
+    
+    if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(exportBoardData:)]) {
+        [self.delegate exportBoardData:[BoardManager writeBoardToFile:self]];
     }
 }
 

@@ -300,6 +300,8 @@
 		7BEA54F317668C73001BC5FE /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F217668C73001BC5FE /* AdSupport.framework */; };
 		7BEA54F517668C84001BC5FE /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F417668C84001BC5FE /* libicucore.dylib */; };
 		7BEA54F717668CC1001BC5FE /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F617668CC1001BC5FE /* libsqlite3.dylib */; };
+		7BEE0CC81769256800BD8C27 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CC71769256800BD8C27 /* RoomListViewController.m */; };
+		7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -508,6 +510,10 @@
 		7BEA54F217668C73001BC5FE /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7BEA54F417668C84001BC5FE /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7BEA54F617668CC1001BC5FE /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		7BEE0CC61769256800BD8C27 /* RoomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomListViewController.h; sourceTree = "<group>"; };
+		7BEE0CC71769256800BD8C27 /* RoomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomListViewController.m; sourceTree = "<group>"; };
+		7BEE0CC9176927BF00BD8C27 /* RoomDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataViewController.h; sourceTree = "<group>"; };
+		7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -565,6 +571,10 @@
 				7B23544C1767A9B30055A319 /* CollaborativeViewController.h */,
 				7B23544D1767A9B30055A319 /* CollaborativeViewController.m */,
 				7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */,
+				7BEE0CC61769256800BD8C27 /* RoomListViewController.h */,
+				7BEE0CC71769256800BD8C27 /* RoomListViewController.m */,
+				7BEE0CC9176927BF00BD8C27 /* RoomDataViewController.h */,
+				7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1430,6 +1440,8 @@
 				7B2354571767AFBF0055A319 /* GSLogInViewController.m in Sources */,
 				7B23545A1767AFBF0055A319 /* GSSignUpViewController.m in Sources */,
 				7B23545F1767BECC0055A319 /* GSRoom.m in Sources */,
+				7BEE0CC81769256800BD8C27 /* RoomListViewController.m in Sources */,
+				7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

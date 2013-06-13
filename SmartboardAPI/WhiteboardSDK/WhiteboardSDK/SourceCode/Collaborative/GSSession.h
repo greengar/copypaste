@@ -82,11 +82,15 @@
 
 #pragma mark - Request Rooms
 /*
- Register message receiver, from now [didReceiveMessage:(NSDictionary *)dictInfo]
- will be called in order to catch new messages
- @param delegate id<GSRoomDelegate>: callback holder to receive [didReceiveMessage:(NSDictionary *)dictInfo]
+ Register room data changed, from now on every time data of a room is changed on server
+ the data inside this room in client will be changed
  */
-- (void)registerRoomReceiver:(id<GSRoomDelegate>)delegate forRoom:(GSRoom *)room;
+- (void)registerRoomDataChanged:(GSRoom *)room withBlock:(GSEmptyBlock)block;
+
+/*
+ Unregister room data changed, from now on data won't be pulled from server anymore
+ */
+- (void)unregisterRoomDataChanged:(GSRoom *)room;
 
 /*  
  Create a room
@@ -120,6 +124,24 @@
  @param block GSSingleResultBlock: return the room (GSRoom) who matches the code
  */
 - (void)getRoomWithCode:(NSString *)code block:(GSSingleResultBlock)block;
+
+/*
+ Send whole room data to the server
+ It contains everything about a room which may be too large and complicated
+ For better performance, should send only the new data within the suitable scope
+ See [sendDataToServer:] for more information
+ @param room GSRoom: the room that contain the data
+ */
+- (void)sendRoomDataToServer:(GSRoom *)room;
+
+/*
+ Send dictionary to server
+ Send data directly to the URL under the hierarchy
+ Make sure you specify the correct URL
+ @param dict NSDictionary: data dictionary
+ @param urlString NSString: URL string to store the data under the hierarchy
+ */
+- (void)sendDataToServer:(NSDictionary *)dict atURL:(NSString *)urlString;
 
 #pragma mark - Access and Update Database
 /*

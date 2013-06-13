@@ -31,12 +31,13 @@ static BoardManager *shareManager = nil;
     return [baseDir stringByAppendingPathComponent:@"Whiteboard/"];
 }
 
-+ (BOOL)writeBoardToFile:(WBBoard *)board {
++ (NSDictionary *)writeBoardToFile:(WBBoard *)board {
     NSString *folderPath = [BoardManager getBaseDocumentFolder];
     NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", board.uid]];
     NSDictionary *boardDict = [board saveToDict];
     DLog(@"boardDict: %@", boardDict);
-	return [boardDict writeToFile:filePath atomically:NO];
+	[boardDict writeToFile:filePath atomically:NO];
+    return boardDict;
 }
 
 + (WBBoard *)readBoardFromFileWithUid:(NSString *)uid {

@@ -7,6 +7,12 @@
 //
 
 #import "GSObject.h"
+#import "GSUtils.h"
+
+@class GSRoom;
+@protocol GSRoomDelegate
+- (void)dataDidChanged:(GSRoom *)room;
+@end
 
 @interface GSRoom : GSObject
 
@@ -15,11 +21,13 @@
 @property (nonatomic)         BOOL isPrivate;
 @property (nonatomic, strong) NSString *codeToEnter;
 @property (nonatomic, strong) NSArray *sharedEmails;
+@property (nonatomic, strong) NSMutableDictionary *data;
+@property (nonatomic, assign) id<GSRoomDelegate> delegate;
 
 - (id)initWithName:(NSString *)name
            ownerId:(NSString *)ownerId
          isPrivate:(BOOL)isPrivate
        codeToEnter:(NSString *)codeToEnter
       sharedEmails:(NSArray *)sharedEmails;
-    
+
 @end

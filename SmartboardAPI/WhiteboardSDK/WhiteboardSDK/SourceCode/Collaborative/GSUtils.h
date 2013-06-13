@@ -37,11 +37,6 @@
 - (void)didReceiveMessage:(NSDictionary *)dictInfo;
 @end
 
-@class GSRoom;
-@protocol GSRoomDelegate
-- (void)didUpdateRoomData:(NSDictionary *)dictInfo ofRoom:(GSRoom *)room;
-@end
-
 @interface GSUtils : NSObject
 
 + (NSString*)generateUniqueId;
@@ -60,3 +55,4 @@
 typedef void (^GSSingleResultBlock)(id object, NSError *error);
 typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);
 typedef void (^GSResultBlock)(BOOL succeed, NSError *error);
+typedef void (^GSEmptyBlock)(id object);

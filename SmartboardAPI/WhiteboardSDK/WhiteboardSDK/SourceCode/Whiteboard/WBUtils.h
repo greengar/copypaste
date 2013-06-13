@@ -129,10 +129,12 @@ typedef enum {
 
 @protocol WBSessionDelegate
 - (void)doneEditingPhotoWithResult:(UIImage *)image;
+- (void)exportCurrentBoardData:(NSDictionary *)data;
 @end
 
 @protocol WBBoardDelegate
 - (void)doneEditingBoardWithResult:(UIImage *)image;
+- (void)exportBoardData:(NSDictionary *)data;
 @end
 
 @interface WBUtils : NSObject

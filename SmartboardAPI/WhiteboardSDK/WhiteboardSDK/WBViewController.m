@@ -57,11 +57,34 @@
 
 - (void)useCollaborativeSDK {
     CollaborativeViewController *controller = [[CollaborativeViewController alloc] init];
-    [self presentViewController:controller animated:YES completion:NULL];
+    [controller setTitle:@"Collaborative SDK"];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:NULL];
 }
 
 - (void)doneEditingPhotoWithResult:(UIImage *)image {
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+}
+
+- (void)exportCurrentBoardData:(NSDictionary *)data {
+    [[GSSession activeSession] createRoomWithName:@"Board"
+                                        isPrivate:NO
+                                      codeToEnter:nil
+                                        shareWith:nil
+                                            block:^(id object, NSError *error) {
+        if (error || !object) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:[error description]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        } else {
+            GSRoom *room = (GSRoom *)object;
+            [room setData:[NSMutableDictionary dictionaryWithDictionary:data]];
+            [[GSSession activeSession] sendRoomDataToServer:room];
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning

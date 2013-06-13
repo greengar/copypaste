@@ -11,11 +11,13 @@
 @implementation GSUtils
 
 + (NSString *)generateUniqueId {
-    return [NSString stringWithFormat:@"WB%f", [[NSDate date] timeIntervalSince1970]];
+    NSMutableString *uniqueId = [NSMutableString stringWithFormat:@"GS%f", [[NSDate date] timeIntervalSince1970]];
+    return [uniqueId stringByReplacingOccurrencesOfString:@"." withString:@""];
 }
 
 + (NSString *)generateUniqueIdWithPrefix:(NSString *)prefix {
-    return [NSString stringWithFormat:@"%@%f", prefix, [[NSDate date] timeIntervalSince1970]];
+    NSMutableString *uniqueId = [NSString stringWithFormat:@"%@%f", prefix, [[NSDate date] timeIntervalSince1970]];
+    return [uniqueId stringByReplacingOccurrencesOfString:@"." withString:@""];
 }
 
 + (NSString *)getCurrentTime {

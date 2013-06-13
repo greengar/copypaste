@@ -9,6 +9,7 @@
 #import "GSRoom.h"
 #import "GSSession.h"
 #import <Parse/Parse.h>
+#import <Firebase/Firebase.h>
 
 @interface GSRoom()
 @property (nonatomic, strong) NSString *firebaseUid;
@@ -21,6 +22,8 @@
 @synthesize isPrivate = _isPrivate;
 @synthesize codeToEnter = _codeToEnter;
 @synthesize sharedEmails = _sharedEmails;
+@synthesize data = _data;
+@synthesize delegate = _delegate;
 
 - (id)init {
     return [self initWithName:@"Untitle Room"
@@ -38,6 +41,7 @@
         self.codeToEnter = [object objectForKey:@"code"];
         self.sharedEmails = [object objectForKey:@"shared_emails"];
         self.firebaseUid = [object objectForKey:@"uid"];
+        self.data = [NSMutableDictionary new];
     }
     return self;
 }
@@ -50,6 +54,7 @@
     self.codeToEnter = [object objectForKey:@"code"];
     self.sharedEmails = [object objectForKey:@"shared_emails"];
     self.firebaseUid = [object objectForKey:@"uid"];
+    self.data = [NSMutableDictionary new];
 }
 
 - (id)initWithName:(NSString *)name
@@ -63,6 +68,7 @@
         self.ownerId = ownerId ? ownerId : [[GSSession currentUser] uid];
         self.isPrivate = isPrivate;
         self.codeToEnter = codeToEnter;
+        self.data = [NSMutableDictionary new];
         
         NSMutableArray *emails = [NSMutableArray arrayWithObjects:[[GSSession currentUser] email], nil];
         if (sharedEmails) {
@@ -115,6 +121,14 @@
         }];
     } else {
         [super saveInBackgroundWithBlock:block];
+    }
+}
+
+- (void)setData:(NSMutableDictionary *)data {
+    _data = data;
+    
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(dataDidChanged:)]) {
+        [self.delegate dataDidChanged:self];
     }
 }
 

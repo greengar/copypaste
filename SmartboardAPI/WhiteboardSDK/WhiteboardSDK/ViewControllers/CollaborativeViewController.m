@@ -7,6 +7,7 @@
 //
 
 #import "CollaborativeViewController.h"
+#import "RoomListViewController.h"
 
 @interface CollaborativeViewController ()
 
@@ -81,16 +82,10 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         } else {
-            NSMutableString *message = [NSMutableString stringWithString:@"Room: "];
-            for (GSRoom *room in objects) {
-                [message appendFormat:@" %@", [room name]];
-            }
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Room found"
-                                                                message:message
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            RoomListViewController *controller = [[RoomListViewController alloc] init];
+            [controller setRooms:[NSMutableArray arrayWithArray:objects]];
+            [controller setTitle:@"All Public Rooms"];
+            [self.navigationController pushViewController:controller animated:YES];
         }
     }];
 }
@@ -105,16 +100,10 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         } else {
-            NSMutableString *message = [NSMutableString stringWithString:@"Room: "];
-            for (GSRoom *room in objects) {
-                [message appendFormat:@" %@", [room name]];
-            }
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Room found"
-                                                                message:message
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            RoomListViewController *controller = [[RoomListViewController alloc] init];
+            [controller setRooms:[NSMutableArray arrayWithArray:objects]];
+            [controller setTitle:@"Room shared with me"];
+            [self.navigationController pushViewController:controller animated:YES];
         }
     }];
 }
@@ -165,6 +154,10 @@
             [alertView show];
         }
     }];
+}
+
+- (IBAction)done {
+    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)didFinishAuthentication:(NSError *)error {
