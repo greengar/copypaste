@@ -138,9 +138,9 @@
 		7BEA53B3176687F1001BC5FE /* TabWrapperView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5325176687F0001BC5FE /* TabWrapperView.h */; };
 		7BEA53B4176687F1001BC5FE /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5326176687F0001BC5FE /* TabWrapperView.m */; };
 		7BEA53B5176687F1001BC5FE /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5326176687F0001BC5FE /* TabWrapperView.m */; };
-		7BEA53B6176687F1001BC5FE /* CanvasElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5327176687F0001BC5FE /* CanvasElement.h */; };
-		7BEA53B7176687F1001BC5FE /* CanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5328176687F0001BC5FE /* CanvasElement.m */; };
-		7BEA53B8176687F1001BC5FE /* CanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5328176687F0001BC5FE /* CanvasElement.m */; };
+		7BEA53B6176687F1001BC5FE /* GLCanvasElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5327176687F0001BC5FE /* GLCanvasElement.h */; };
+		7BEA53B7176687F1001BC5FE /* GLCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5328176687F0001BC5FE /* GLCanvasElement.m */; };
+		7BEA53B8176687F1001BC5FE /* GLCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5328176687F0001BC5FE /* GLCanvasElement.m */; };
 		7BEA53B9176687F1001BC5FE /* Painting.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA532B176687F0001BC5FE /* Painting.h */; };
 		7BEA53BA176687F1001BC5FE /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA532C176687F0001BC5FE /* Painting.m */; };
 		7BEA53BB176687F1001BC5FE /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA532C176687F0001BC5FE /* Painting.m */; };
@@ -216,9 +216,6 @@
 		7BEA5401176687F1001BC5FE /* WBPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5363176687F1001BC5FE /* WBPage.h */; };
 		7BEA5402176687F1001BC5FE /* WBPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5364176687F1001BC5FE /* WBPage.m */; };
 		7BEA5403176687F1001BC5FE /* WBPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5364176687F1001BC5FE /* WBPage.m */; };
-		7BEA5404176687F1001BC5FE /* WBSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5365176687F1001BC5FE /* WBSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7BEA5405176687F1001BC5FE /* WBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5366176687F1001BC5FE /* WBSession.m */; };
-		7BEA5406176687F1001BC5FE /* WBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5366176687F1001BC5FE /* WBSession.m */; };
 		7BEA5407176687F1001BC5FE /* WBUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5367176687F1001BC5FE /* WBUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BEA5408176687F1001BC5FE /* WBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5368176687F1001BC5FE /* WBUtils.m */; };
 		7BEA5409176687F1001BC5FE /* WBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5368176687F1001BC5FE /* WBUtils.m */; };
@@ -300,6 +297,12 @@
 		7BEA54F317668C73001BC5FE /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F217668C73001BC5FE /* AdSupport.framework */; };
 		7BEA54F517668C84001BC5FE /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F417668C84001BC5FE /* libicucore.dylib */; };
 		7BEA54F717668CC1001BC5FE /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F617668CC1001BC5FE /* libsqlite3.dylib */; };
+		7BEB7FE0176A386800F5FE5D /* CGPaintingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEB7FDE176A386800F5FE5D /* CGPaintingView.h */; };
+		7BEB7FE1176A386800F5FE5D /* CGPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FDF176A386800F5FE5D /* CGPaintingView.m */; };
+		7BEB7FE2176A386800F5FE5D /* CGPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FDF176A386800F5FE5D /* CGPaintingView.m */; };
+		7BEB7FE5176A39D800F5FE5D /* CGCanvasElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEB7FE3176A39D700F5FE5D /* CGCanvasElement.h */; };
+		7BEB7FE6176A39D800F5FE5D /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
+		7BEB7FE7176A39D800F5FE5D /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
 		7BEE0CC81769256800BD8C27 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CC71769256800BD8C27 /* RoomListViewController.m */; };
 		7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */; };
 /* End PBXBuildFile section */
@@ -395,8 +398,8 @@
 		7BEA5324176687F0001BC5FE /* PreviewArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewArea.m; sourceTree = "<group>"; };
 		7BEA5325176687F0001BC5FE /* TabWrapperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabWrapperView.h; sourceTree = "<group>"; };
 		7BEA5326176687F0001BC5FE /* TabWrapperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabWrapperView.m; sourceTree = "<group>"; };
-		7BEA5327176687F0001BC5FE /* CanvasElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasElement.h; sourceTree = "<group>"; };
-		7BEA5328176687F0001BC5FE /* CanvasElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasElement.m; sourceTree = "<group>"; };
+		7BEA5327176687F0001BC5FE /* GLCanvasElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCanvasElement.h; sourceTree = "<group>"; };
+		7BEA5328176687F0001BC5FE /* GLCanvasElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCanvasElement.m; sourceTree = "<group>"; };
 		7BEA532B176687F0001BC5FE /* Painting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painting.h; sourceTree = "<group>"; };
 		7BEA532C176687F0001BC5FE /* Painting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Painting.m; sourceTree = "<group>"; };
 		7BEA532D176687F0001BC5FE /* PaintingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingManager.h; sourceTree = "<group>"; };
@@ -447,8 +450,6 @@
 		7BEA5362176687F1001BC5FE /* WBBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBBoard.m; sourceTree = "<group>"; };
 		7BEA5363176687F1001BC5FE /* WBPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBPage.h; sourceTree = "<group>"; };
 		7BEA5364176687F1001BC5FE /* WBPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBPage.m; sourceTree = "<group>"; };
-		7BEA5365176687F1001BC5FE /* WBSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBSession.h; sourceTree = "<group>"; };
-		7BEA5366176687F1001BC5FE /* WBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBSession.m; sourceTree = "<group>"; };
 		7BEA5367176687F1001BC5FE /* WBUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUtils.h; sourceTree = "<group>"; };
 		7BEA5368176687F1001BC5FE /* WBUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUtils.m; sourceTree = "<group>"; };
 		7BEA540F17668936001BC5FE /* Collaborative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collaborative.h; sourceTree = "<group>"; };
@@ -510,6 +511,10 @@
 		7BEA54F217668C73001BC5FE /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7BEA54F417668C84001BC5FE /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		7BEA54F617668CC1001BC5FE /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		7BEB7FDE176A386800F5FE5D /* CGPaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPaintingView.h; sourceTree = "<group>"; };
+		7BEB7FDF176A386800F5FE5D /* CGPaintingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPaintingView.m; sourceTree = "<group>"; };
+		7BEB7FE3176A39D700F5FE5D /* CGCanvasElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGCanvasElement.h; sourceTree = "<group>"; };
+		7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGCanvasElement.m; sourceTree = "<group>"; };
 		7BEE0CC61769256800BD8C27 /* RoomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomListViewController.h; sourceTree = "<group>"; };
 		7BEE0CC71769256800BD8C27 /* RoomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomListViewController.m; sourceTree = "<group>"; };
 		7BEE0CC9176927BF00BD8C27 /* RoomDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataViewController.h; sourceTree = "<group>"; };
@@ -744,8 +749,6 @@
 		7BEA52E9176687F0001BC5FE /* Whiteboard */ = {
 			isa = PBXGroup;
 			children = (
-				7BEA5365176687F1001BC5FE /* WBSession.h */,
-				7BEA5366176687F1001BC5FE /* WBSession.m */,
 				7BEA5367176687F1001BC5FE /* WBUtils.h */,
 				7BEA5368176687F1001BC5FE /* WBUtils.m */,
 				7BEA5361176687F1001BC5FE /* WBBoard.h */,
@@ -858,8 +861,11 @@
 		7BEA5317176687F0001BC5FE /* CanvasView */ = {
 			isa = PBXGroup;
 			children = (
-				7BEA5327176687F0001BC5FE /* CanvasElement.h */,
-				7BEA5328176687F0001BC5FE /* CanvasElement.m */,
+				7BEB7FE3176A39D700F5FE5D /* CGCanvasElement.h */,
+				7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */,
+				7BEA5327176687F0001BC5FE /* GLCanvasElement.h */,
+				7BEA5328176687F0001BC5FE /* GLCanvasElement.m */,
+				7BEB7FDC176A384100F5FE5D /* CoreGraphicsView */,
 				7BEA5318176687F0001BC5FE /* CanvasControlVIew */,
 				7BEA5329176687F0001BC5FE /* OpenGLView */,
 			);
@@ -1108,6 +1114,23 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		7BEB7FDC176A384100F5FE5D /* CoreGraphicsView */ = {
+			isa = PBXGroup;
+			children = (
+				7BEB7FDD176A384200F5FE5D /* BezierPathView */,
+			);
+			path = CoreGraphicsView;
+			sourceTree = "<group>";
+		};
+		7BEB7FDD176A384200F5FE5D /* BezierPathView */ = {
+			isa = PBXGroup;
+			children = (
+				7BEB7FDE176A386800F5FE5D /* CGPaintingView.h */,
+				7BEB7FDF176A386800F5FE5D /* CGPaintingView.m */,
+			);
+			path = BezierPathView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1117,7 +1140,6 @@
 			files = (
 				7B82E792175F9E4C00B063D7 /* Whiteboard.h in Headers */,
 				7BEA53E6176687F1001BC5FE /* GSButton.h in Headers */,
-				7BEA5404176687F1001BC5FE /* WBSession.h in Headers */,
 				7BEA5407176687F1001BC5FE /* WBUtils.h in Headers */,
 				7BEA5369176687F1001BC5FE /* HistoryElement.h in Headers */,
 				7BEA536C176687F1001BC5FE /* HistoryElementCreated.h in Headers */,
@@ -1145,7 +1167,7 @@
 				7BEA53AD176687F1001BC5FE /* MySlider.h in Headers */,
 				7BEA53B0176687F1001BC5FE /* PreviewArea.h in Headers */,
 				7BEA53B3176687F1001BC5FE /* TabWrapperView.h in Headers */,
-				7BEA53B6176687F1001BC5FE /* CanvasElement.h in Headers */,
+				7BEA53B6176687F1001BC5FE /* GLCanvasElement.h in Headers */,
 				7BEA53B9176687F1001BC5FE /* Painting.h in Headers */,
 				7BEA53BC176687F1001BC5FE /* PaintingManager.h in Headers */,
 				7BEA53BF176687F1001BC5FE /* ColorTabElement.h in Headers */,
@@ -1170,6 +1192,8 @@
 				7BEA53FB176687F1001BC5FE /* WBBaseElement.h in Headers */,
 				7BEA53FE176687F1001BC5FE /* WBBoard.h in Headers */,
 				7BEA5401176687F1001BC5FE /* WBPage.h in Headers */,
+				7BEB7FE0176A386800F5FE5D /* CGPaintingView.h in Headers */,
+				7BEB7FE5176A39D800F5FE5D /* CGCanvasElement.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1389,7 +1413,7 @@
 				7BEA53AE176687F1001BC5FE /* MySlider.m in Sources */,
 				7BEA53B1176687F1001BC5FE /* PreviewArea.m in Sources */,
 				7BEA53B4176687F1001BC5FE /* TabWrapperView.m in Sources */,
-				7BEA53B7176687F1001BC5FE /* CanvasElement.m in Sources */,
+				7BEA53B7176687F1001BC5FE /* GLCanvasElement.m in Sources */,
 				7BEA53BA176687F1001BC5FE /* Painting.m in Sources */,
 				7BEA53BD176687F1001BC5FE /* PaintingManager.m in Sources */,
 				7BEA53C0176687F1001BC5FE /* ColorTabElement.m in Sources */,
@@ -1415,7 +1439,6 @@
 				7BEA53FC176687F1001BC5FE /* WBBaseElement.m in Sources */,
 				7BEA53FF176687F1001BC5FE /* WBBoard.m in Sources */,
 				7BEA5402176687F1001BC5FE /* WBPage.m in Sources */,
-				7BEA5405176687F1001BC5FE /* WBSession.m in Sources */,
 				7BEA5408176687F1001BC5FE /* WBUtils.m in Sources */,
 				7BEA548417668A47001BC5FE /* GSReachability.m in Sources */,
 				7BEA548917668A47001BC5FE /* CoreTextUtils.m in Sources */,
@@ -1442,6 +1465,8 @@
 				7B23545F1767BECC0055A319 /* GSRoom.m in Sources */,
 				7BEE0CC81769256800BD8C27 /* RoomListViewController.m in Sources */,
 				7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */,
+				7BEB7FE1176A386800F5FE5D /* CGPaintingView.m in Sources */,
+				7BEB7FE6176A39D800F5FE5D /* CGCanvasElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1473,7 +1498,7 @@
 				7BEA53AF176687F1001BC5FE /* MySlider.m in Sources */,
 				7BEA53B2176687F1001BC5FE /* PreviewArea.m in Sources */,
 				7BEA53B5176687F1001BC5FE /* TabWrapperView.m in Sources */,
-				7BEA53B8176687F1001BC5FE /* CanvasElement.m in Sources */,
+				7BEA53B8176687F1001BC5FE /* GLCanvasElement.m in Sources */,
 				7BEA53BB176687F1001BC5FE /* Painting.m in Sources */,
 				7BEA53BE176687F1001BC5FE /* PaintingManager.m in Sources */,
 				7BEA53C1176687F1001BC5FE /* ColorTabElement.m in Sources */,
@@ -1499,8 +1524,9 @@
 				7BEA53FD176687F1001BC5FE /* WBBaseElement.m in Sources */,
 				7BEA5400176687F1001BC5FE /* WBBoard.m in Sources */,
 				7BEA5403176687F1001BC5FE /* WBPage.m in Sources */,
-				7BEA5406176687F1001BC5FE /* WBSession.m in Sources */,
 				7BEA5409176687F1001BC5FE /* WBUtils.m in Sources */,
+				7BEB7FE2176A386800F5FE5D /* CGPaintingView.m in Sources */,
+				7BEB7FE7176A39D800F5FE5D /* CGCanvasElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

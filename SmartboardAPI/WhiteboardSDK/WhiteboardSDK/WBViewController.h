@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WBSession.h"
+#import "WBBoard.h"
 
-@interface WBViewController : UIViewController <WBSessionDelegate>
+@interface WBViewController : UIViewController <WBBoardDelegate>
 
 @end

@@ -24,22 +24,23 @@
 
 - (id)initWithDict:(NSDictionary *)dictionary;
 - (UIView *)contentView;
+
 - (void)moveTo:(CGPoint)dest;
 - (void)rotateTo:(float)rotation;
 - (void)scaleTo:(float)scale;
+
 - (void)select;
 - (void)deselect;
+
+- (BOOL) isTransformed;
+
 - (void)resetTransform;
-- (void)elementTap:(UITapGestureRecognizer *)tapGesture;
 - (void)showMenu;
 - (CGRect)focusFrame;
 - (NSDictionary *)saveToDict;
 + (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary;
 
 @property (nonatomic, strong) NSString *uid;
-@property (nonatomic) BOOL allowToMove;
-@property (nonatomic) BOOL allowToEdit;
-@property (nonatomic) BOOL allowToSelect;
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic, assign) id<WBBaseViewDelegate> delegate;
 @property (nonatomic) CGRect defaultFrame;

@@ -72,27 +72,11 @@
     [self.placeHolderTextView setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.placeHolderTextView setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
     [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
-    [self.placeHolderTextView setHolderDelegate:self];
     [self addSubview:self.placeHolderTextView];
-}
-
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementSelected:)]) {
-        [self.delegate elementSelected:self];
-    }
 }
 
 - (void)setText:(NSString *)text {
     [((UITextView *)[self contentView]) setText:text];
-}
-
-- (void)setIsLocked:(BOOL)isLocked {
-    [super setIsLocked:isLocked];
-    if (isLocked) {
-        self.placeHolderTextView.userInteractionEnabled = NO;
-    } else {
-        self.placeHolderTextView.userInteractionEnabled = YES;
-    }
 }
 
 - (UIView *)contentView {
@@ -101,7 +85,6 @@
 
 - (void)select {
     [super select];
-    [self.placeHolderTextView updateFrame];
     [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
     [self.placeHolderTextView textChanged];
     
@@ -114,11 +97,7 @@
     [self.placeHolderTextView textChanged];
     
     if (self.elementCreated == NO) {
-        BOOL successful = ([((UITextView *)[self contentView]).text length] > 0);
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementCreated:successful:)]) {
-            [self.delegate elementCreated:self successful:successful];
-        }
-        
+
     } else {
         [[HistoryManager sharedManager] addActionTextFontChangedElement:self
                                                      withOriginFontName:self.oldFontName
@@ -146,7 +125,6 @@
     self.myFontName = fontName;
     self.myFontSize = fontSize;
     [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:fontSize]];
-    [self.placeHolderTextView updateFrame];
 }
 
 - (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y {
@@ -154,25 +132,6 @@
     self.myColorLocX = x;
     self.myColorLocY = y;
     [self.placeHolderTextView setTextColor:color];
-    [self.placeHolderTextView updateFrame];
-}
-
-- (void)showMenu {
-    NSArray *menuItems = @[[KxMenuItem menuItem:@"Edit"
-                                          image:nil
-                                         target:self
-                                         action:@selector(select)],
-                           [KxMenuItem menuItem:@"Bring to front"
-                                          image:nil
-                                         target:self
-                                         action:@selector(bringFront)],
-                           [KxMenuItem menuItem:@"Delete"
-                                          image:nil
-                                         target:self
-                                         action:@selector(delete)], ];
-    [KxMenu showMenuInView:[self superview]
-                  fromRect:self.frame
-                 menuItems:menuItems];
 }
 
 - (void)checkHistory {

@@ -8,7 +8,7 @@
 
 #import "HistoryElementTransform.h"
 #import "TextElement.h"
-#import "CanvasElement.h"
+#import "GLCanvasElement.h"
 #import "ImageElement.h"
 
 @implementation HistoryElementTransform

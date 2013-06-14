@@ -123,16 +123,12 @@ typedef enum {
 #define		FONTS_AVAILABLE_ON_ALL_DEVICES		@"AmericanTypewriter",@"Apple Color Emoji",@"AppleGothic",@"Arial",@"Arial Hebrew",@"Arial Rounded MT Bold",@"Bangla Sangam MN",@"Baskerville",@"Chalkboard SE",@"Cochin",@"Courier",@"Courier New",@"DB LCD Temp",@"Devanagari Sangam MN",@"Futura",@"Geeza Pro",@"Georgia",@"Gujarati Sangam MN",@"Gurmukhi MN",@"Heiti J",@"Heiti K",@"Heiti SC",@"Heiti TC",@"Helvetica",@"Helvetica Neue",@"Hiragino Kaku Gothic ProN",@"Kailasa",@"Kannada Sangam MN",@"Marker Felt",@"Oriya Sangam MN",@"Palatino",@"Sinhala Sangam MN",@"Snell Roundhand",@"Tamil Sangam MN",@"Telugu Sangam MN",@"Times New Roman",@"Trebuchet MS",@"Verdana",@"Zapfino",nil
 
 #define kDefaultFontName @"Arial"
-#define kDefaultFontSize 18
+#define kDefaultFontSize (IS_IPAD ? 30 : 18)
 
 #define THROW_EXCEPTION_TYPE(type) [NSException raise:type format:@"%s Line %d", __PRETTY_FUNCTION__, __LINE__];
 
-@protocol WBSessionDelegate
-- (void)doneEditingPhotoWithResult:(UIImage *)image;
-- (void)exportCurrentBoardData:(NSDictionary *)data;
-@end
-
 @protocol WBBoardDelegate
+@optional
 - (void)doneEditingBoardWithResult:(UIImage *)image;
 - (void)exportBoardData:(NSDictionary *)data;
 @end

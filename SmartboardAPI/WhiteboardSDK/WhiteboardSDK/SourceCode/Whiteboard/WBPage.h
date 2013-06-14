@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "WBBaseElement.h"
-#import "CanvasElement.h"
+#import "GLCanvasElement.h"
+#import "CGCanvasElement.h"
 #import "FontPickerView.h"
 #import "FontColorPickerView.h"
 #import "ColorTabView.h"
@@ -16,22 +17,22 @@
 
 @class WBPage;
 
-@protocol SDPageDelegate
+@protocol WBPageDelegate
 @optional
 - (void)showExportControl:(WBPage *)page;
 - (void)pageSelected:(WBPage *)page;
 - (void)doneEditingPage:(WBPage *)page;
+- (void)elementSelected:(WBBaseElement *)element;
+- (void)elementDeselected:(WBBaseElement *)element;
 @end
 
-@interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate, ColorTabViewDelegate, ColorPickerViewDelegate, MainPaintViewDelegate>
+@interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
 
 - (id)initWithDict:(NSDictionary *)dictionary;
-- (void)setBackgroundImage:(UIImage *)image;
 - (void)select;
 - (UIImage *)exportPageToImage;
 - (NSDictionary *)saveToDict;
 + (WBPage *)loadFromDict:(NSDictionary *)dict;
-- (void)hideExportControl;
 
 - (void)addElement:(WBBaseElement *)element;
 - (void)removeElement:(WBBaseElement *)element;
@@ -40,6 +41,6 @@
 @property (nonatomic, strong) NSMutableArray *elements;
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic, strong) WBBaseElement *selectedElementView;
-@property (nonatomic, assign) id<SDPageDelegate> delegate;
+@property (nonatomic, assign) id<WBPageDelegate> pageDelegate;
 
 @end

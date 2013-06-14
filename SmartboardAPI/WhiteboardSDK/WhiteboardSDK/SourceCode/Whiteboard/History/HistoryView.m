@@ -96,4 +96,8 @@
 - (void)updateHistoryView {
     [self.historyTableView reloadData];
 }
+
+- (void)dealloc {
+    [[HistoryManager sharedManager] setDelegate:nil];
+}
 @end

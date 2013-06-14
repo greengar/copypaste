@@ -50,9 +50,9 @@
 }
 
 - (void)useWhiteboardSDK {
-    [[WBSession activeSession] presentSmartboardControllerFromController:self
-                                                               withImage:nil
-                                                                delegate:self];
+    WBBoard *board = [[WBBoard alloc] init];
+    [board setDelegate:self];
+    [board showMeWithAnimationFromController:self];
 }
 
 - (void)useCollaborativeSDK {
@@ -62,7 +62,7 @@
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
-- (void)doneEditingPhotoWithResult:(UIImage *)image {
+- (void)doneEditingBoardWithResult:(UIImage *)image {
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 }
 

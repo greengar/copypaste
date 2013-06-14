@@ -10,11 +10,10 @@
 #import "TextElement.h"
 
 @interface PlaceHolderTextView()
-@property (nonatomic, strong) UITextView *placeHolderLabel;
+@property (nonatomic, strong) UITextView *placeHolderTextView;
 @end
 @implementation PlaceHolderTextView
-@synthesize placeHolderLabel = _placeHolderLabel;
-@synthesize holderDelegate = _holderDelegate;
+@synthesize placeHolderTextView = _placeHolderLabel;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -23,69 +22,37 @@
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
         
-        self.placeHolderLabel = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self.placeHolderLabel setTextColor:[UIColor lightGrayColor]];
-        [self.placeHolderLabel setUserInteractionEnabled:NO];
-        [self.placeHolderLabel setBackgroundColor:[UIColor clearColor]];
-        [self addSubview:self.placeHolderLabel];
-        [self sendSubviewToBack:self.placeHolderLabel];
+        self.placeHolderTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [self.placeHolderTextView setTextColor:[UIColor lightGrayColor]];
+        [self.placeHolderTextView setUserInteractionEnabled:NO];
+        [self.placeHolderTextView setBackgroundColor:[UIColor clearColor]];
+        [self addSubview:self.placeHolderTextView];
+        [self sendSubviewToBack:self.placeHolderTextView];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(textChanged)
                                                      name:UITextViewTextDidChangeNotification
                                                    object:self];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(textBeginEditing)
-                                                     name:UITextViewTextDidBeginEditingNotification
-                                                   object:self];
     }
     return self;
 }
 
-- (void)textBeginEditing {
-    if (self.holderDelegate && [((id) self.holderDelegate) respondsToSelector:@selector(contentViewBecomeFirstResponder)]) {
-        [self.holderDelegate contentViewBecomeFirstResponder];
-    }
-}
-
 - (void)textChanged {
     if ([self.text length] == 0) {
-        [self.placeHolderLabel setHidden:NO];
+        [self.placeHolderTextView setHidden:NO];
     } else {
-        [self.placeHolderLabel setHidden:YES];
+        [self.placeHolderTextView setHidden:YES];
     }
-    
-    [self updateFrame];
-}
-
-- (void)updateFrame {
-    CGRect frame = self.frame;
-    frame.size.height = self.contentSize.height;
-    self.frame = frame;
-
-    if ([self superview]) {
-        [self superview].frame = CGRectMake([self superview].frame.origin.x,
-                                            [self superview].frame.origin.y,
-                                            self.frame.size.width,
-                                            self.frame.size.height);
-    }
-}
-
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-    [UIMenuController sharedMenuController].menuVisible = NO;  //do not display the menu
-    [((TextElement *) [self superview]) showMenu];
-    [self resignFirstResponder];
-    return NO;
 }
 
 - (void)setFont:(UIFont *)font {
     [super setFont:font];
-    [self.placeHolderLabel setFont:font];
+    [self.placeHolderTextView setFont:font];
 }
 
 - (void)setPlaceHolderText:(NSString *)placeHolderText {
-    [self.placeHolderLabel setFont:self.font];
-    [self.placeHolderLabel setText:placeHolderText];
+    [self.placeHolderTextView setFont:self.font];
+    [self.placeHolderTextView setText:placeHolderText];
 }
 
 @end

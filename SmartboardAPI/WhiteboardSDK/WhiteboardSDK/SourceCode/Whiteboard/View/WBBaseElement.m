@@ -8,7 +8,7 @@
 
 #import "WBBaseElement.h"
 #import "TextElement.h"
-#import "CanvasElement.h"
+#import "GLCanvasElement.h"
 #import "ImageElement.h"
 #import "BackgroundElement.h"
 #import "WBUtils.h"
@@ -23,9 +23,6 @@
 @implementation WBBaseElement
 @synthesize uid = _uid;
 @synthesize delegate = _delegate;
-@synthesize allowToMove = _allowToMove;
-@synthesize allowToEdit = _allowToEdit;
-@synthesize allowToSelect = _allowToSelect;
 @synthesize isLocked = _isLocked;
 @synthesize defaultFrame = _defaultFrame;
 @synthesize defaultTransform = _defaultTransform;
@@ -39,14 +36,10 @@
         self.uid = [dictionary objectForKey:@"element_uid"];
         self.defaultTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_default_transform"]);
         self.currentTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_current_transform"]);
-        self.defaultFrame = frame;
-        self.allowToMove = YES;
-        self.allowToEdit = YES;
-        self.allowToSelect = YES;
-        
+        self.defaultFrame = frame;        
         self.transform = self.currentTransform;
-        self.layer.borderWidth = 2;
-        self.layer.borderColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"Whiteboard.bundle/DottedImage.png"]] CGColor];
+
+        self.layer.borderColor = [[UIColor blackColor] CGColor];
     }
     return self;
 }
@@ -59,65 +52,52 @@
         self.defaultTransform = self.transform;
         self.currentTransform = self.transform;
         self.defaultFrame = frame;
-        self.allowToMove = YES;
-        self.allowToEdit = YES;
-        self.allowToSelect = YES;
         
-        self.layer.borderWidth = 2;
-        self.layer.borderColor = [[UIColor colorWithPatternImage:[UIImage imageNamed:@"Whiteboard.bundle/DottedImage.png"]] CGColor];
+        self.layer.borderColor = [[UIColor blackColor] CGColor];
         
     }
     return self;
 }
 
-- (void)setAllowToMove:(BOOL)allowToMove {
-    _allowToMove = allowToMove;
-    if (_allowToMove) {
-        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                                     action:@selector(elementPan:)];
-        panGesture.maximumNumberOfTouches = 1;
+- (void)setIsLocked:(BOOL)isLocked {
+    _isLocked = isLocked;
+    if (isLocked) {
+        UIPanGestureRecognizer *panGesture;
+        panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(elementPan:)];
+        panGesture.maximumNumberOfTouches = 2;
         panGesture.delegate = self;
         
-        UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
-                                                                                                    action:@selector(elementRotate:)];
-        rotationGesture.delegate = self;
+        UIRotationGestureRecognizer *rotateGesture;
+        rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(elementRotate:)];
+        rotateGesture.delegate = self;
         
-        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self
-                                                                                           action:@selector(elementScale:)];
+        UIPinchGestureRecognizer *pinchGesture;
+        pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(elementScale:)];
         pinchGesture.delegate = self;
         
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                                       action:@selector(elementLongPress:)];
+        UILongPressGestureRecognizer *pressGesture;
+        pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(elementPress:)];
+        pressGesture.delegate = self;
         
         [self addGestureRecognizer:panGesture];
-        [self addGestureRecognizer:rotationGesture];
+        [self addGestureRecognizer:rotateGesture];
         [self addGestureRecognizer:pinchGesture];
-        [self addGestureRecognizer:longPressGesture];
+        [self addGestureRecognizer:pressGesture];
+        
+        [[self contentView] setUserInteractionEnabled:NO];
+        [self setAlpha:0.7f];
+        [self setBackgroundColor:[UIColor whiteColor]];
+        [self.layer setBorderWidth:4];
         
     } else {
         for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
-            if (![gesture isKindOfClass:[UITapGestureRecognizer class]]) {
-                [self removeGestureRecognizer:gesture];
-            }
+            [self removeGestureRecognizer:gesture];
         }
-    }
-}
-
-- (void)setAllowToSelect:(BOOL)allowToSelect {
-    _allowToSelect = allowToSelect;
-    if (_allowToSelect) {
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                     action:@selector(elementTap:)];
-        tapGesture.delegate = self;
         
-        [self addGestureRecognizer:tapGesture];
-        
-    } else {
-        for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
-            if ([gesture isKindOfClass:[UITapGestureRecognizer class]]) {
-                [self removeGestureRecognizer:gesture];
-            }
-        }
+        [[self contentView] setUserInteractionEnabled:YES];
+        [self setAlpha:1.0f];
+        [self setBackgroundColor:[UIColor clearColor]];
+        [self.layer setBorderWidth:0];
     }
 }
 
@@ -125,6 +105,7 @@
     return nil; // This is a very base class, which does not have a content view inside
 }
 
+#pragma mark - Transform
 - (void)moveTo:(CGPoint)dest {
     [self setTransform:CGAffineTransformTranslate(self.transform, dest.x, dest.y)];
 }
@@ -148,25 +129,22 @@
     [super setTransform:transform];
 }
 
+#pragma mark - Actions on Content View
 - (void)select {
-    // If element is locked, it won't become the first responder
-    if ([self isLocked]) {
-        return;
-    }
-    
     if ([self contentView]) {
+        [[self contentView] setUserInteractionEnabled:YES];
         [[self contentView] becomeFirstResponder];
-        self.layer.borderWidth = 1;
     };
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementSelected:)]) {
         [self.delegate elementSelected:self];
-    }}
+    }
+}
 
 - (void)deselect {
     if ([self contentView]) {
+        [[self contentView] setUserInteractionEnabled:NO];
         [[self contentView] resignFirstResponder];
-        self.layer.borderWidth = 0;
     };
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementDeselected:)]) {
@@ -174,8 +152,40 @@
     }
 }
 
+- (BOOL)isTransformed {
+    return !CGAffineTransformEqualToTransform(self.currentTransform, self.defaultTransform);
+}
+
+- (void)showMenu {
+    NSArray *menuItems = @[[KxMenuItem menuItem:@"Edit"
+                                          image:nil
+                                         target:self
+                                         action:@selector(select)],
+                           [KxMenuItem menuItem:@"Send to back"
+                                          image:nil
+                                         target:self
+                                         action:@selector(sendBack)],
+                           [KxMenuItem menuItem:@"Bring to front"
+                                          image:nil
+                                         target:self
+                                         action:@selector(bringFront)],
+                           [KxMenuItem menuItem:@"Delete"
+                                          image:nil
+                                         target:self
+                                         action:@selector(delete)], ];
+    UIView *focusView = [[UIView alloc] initWithFrame:[self focusFrame]];
+    focusView.transform = self.transform;
+    [KxMenu showMenuInView:[self superview]
+                  fromRect:focusView.frame
+                 menuItems:menuItems];
+}
+
 - (void)bringFront {
     [[self superview] bringSubviewToFront:self];
+}
+
+- (void)sendBack {
+    [[self superview] sendSubviewToBack:self];
 }
 
 - (void)delete {
@@ -184,10 +194,9 @@
     }
 }
 
-- (void)elementTap:(UITapGestureRecognizer *)tapGesture {
-    if (![self isLocked]) {
-        [self select];
-    }
+#pragma mark - Gestures
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 
 - (void)elementPan:(UIPanGestureRecognizer *)panGesture {
@@ -250,30 +259,10 @@
     }
 }
 
-- (void)elementLongPress:(UILongPressGestureRecognizer *)longPressGesture {
-    if ([longPressGesture state] == UIGestureRecognizerStateEnded) {
+- (void)elementPress:(UILongPressGestureRecognizer *)pressGesture {
+    if ([pressGesture state] == UIGestureRecognizerStateBegan) {
         [self showMenu];
     }
-}
-
-- (void)showMenu {
-    NSArray *menuItems = @[[KxMenuItem menuItem:@"Edit"
-                                          image:nil
-                                         target:self
-                                         action:@selector(select)],
-                           [KxMenuItem menuItem:@"Bring to front"
-                                          image:nil
-                                         target:self
-                                         action:@selector(bringFront)],
-                           [KxMenuItem menuItem:@"Delete"
-                                          image:nil
-                                         target:self
-                                         action:@selector(delete)], ];
-    UIView *focusView = [[UIView alloc] initWithFrame:[self focusFrame]];
-    focusView.transform = self.transform;
-    [KxMenu showMenuInView:[self superview]
-                  fromRect:focusView.frame
-                 menuItems:menuItems];
 }
 
 - (CGRect)focusFrame {
@@ -297,7 +286,7 @@
     if ([elementType isEqualToString:@"TextElement"]) {
         element = [TextElement loadFromDict:dictionary];
     } else if ([elementType isEqualToString:@"CanvasElement"]) {
-        element = [CanvasElement loadFromDict:dictionary];
+        element = [GLCanvasElement loadFromDict:dictionary];
     } else if ([elementType isEqualToString:@"ImageElement"]) {
         element = [ImageElement loadFromDict:dictionary];
     } else if ([elementType isEqualToString:@"BackgroundElement"]) {

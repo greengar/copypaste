@@ -22,9 +22,6 @@
     self = [super initWithDict:dictionary];
     if (self) {
         self.userInteractionEnabled = YES;
-        self.allowToSelect = YES;
-        self.allowToMove = NO;
-        self.allowToEdit = NO;
         self.layer.borderWidth = 0;
         
         UIImage *image = nil;
@@ -55,9 +52,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.userInteractionEnabled = YES;
-        self.allowToSelect = YES;
-        self.allowToMove = NO;
-        self.allowToEdit = NO;
         self.layer.borderWidth = 0;
         
         [self initBackgroundViewWithFrame:frame

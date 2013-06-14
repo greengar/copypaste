@@ -7,19 +7,39 @@
 //
 
 #import "WBBoard.h"
-#import "CanvasElement.h"
+#import "WBPage.h"
+#import "GLCanvasElement.h"
 #import "BoardManager.h"
 #import "HistoryManager.h"
 #import "GSButton.h"
+#import "HistoryView.h"
+
+#define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
+#define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
+#define kPageCurlWidth      (IS_IPAD ? 64 : 64)
+#define kPageCurlHeight     (IS_IPAD ? 99 : 99)
+
+#define kHistoryViewTag     888
+#define kPageCurlButtonTag  kHistoryViewTag+1
+
+#define kCanvasButtonIndex  777
+#define kTextButtonIndex    (kCanvasButtonIndex+1)
+#define kHistoryButtonIndex (kCanvasButtonIndex+2)
+#define kLockButtonIndex    (kCanvasButtonIndex+3)
+#define kDoneButtonIndex    (kCanvasButtonIndex+4)
+
+#define kWBSessionAnimationDuration 0.5
 
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
 @property (nonatomic) int currentPageIndex;
-@property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic, strong) NSTimer *animationTimer;
 @property (nonatomic) BOOL isTargetViewCurled;
 - (void)selectPage:(WBPage *)page;
+
+// Control for board
+@property (nonatomic, strong) UIView         *toolLayer;
 @end
 
 @implementation WBBoard
@@ -29,11 +49,11 @@
 @synthesize tags = _tags;
 @synthesize pages = _pages;
 @synthesize currentPageIndex = _currentPageIndex;
-@synthesize backgroundImage = _backgroundImage;
 @synthesize delegate = _delegate;
 @synthesize isAnimating = _isAnimating;
 @synthesize animationTimer = _animationTimer;
 @synthesize isTargetViewCurled = _isTargetViewCurled;
+@synthesize toolLayer = _toolLayer;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     self = [super init];
@@ -47,7 +67,7 @@
         NSMutableArray *pages = [dictionary objectForKey:@"board_pages"];
         for (NSDictionary *pageDict in pages) {
             WBPage *page = [WBPage loadFromDict:pageDict];
-            [page setDelegate:self];
+            [page setPageDelegate:self];
             [self selectPage:page];
             [self.pages addObject:page];
         }
@@ -69,14 +89,28 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.view.backgroundColor = [UIColor clearColor];
+        self.view.backgroundColor = OPAQUE_HEXCOLOR(0xa8a8a8);
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"B_"];
         self.name = [NSString stringWithFormat:@"Whiteboard %@", [WBUtils getCurrentTime]];
         self.pages = [NSMutableArray new];
+        [self addNewPage];
         
-        // [self initExportControl];
+        [self initLayersWithFrame:self.view.frame];
     }
     return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)initExportControl {
@@ -91,52 +125,87 @@
     [self.view sendSubviewToBack:exportButton];
 }
 
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    if (![self.pages count]) {
-        // There's always at least 1 page
-        [self addNewPage];
-    }
-}
-
-- (void)setBackgroundImage:(UIImage *)image {
-    if (!image) {
-        image = [UIImage imageNamed:@"Whiteboard.bundle/DefaultBackground.png"];
-    }
-    switch ([WBUtils getBuildVersion]) {
-        case 1: {
-            CanvasElement *canvasView = [[CanvasElement alloc] initWithFrame:CGRectMake(0,
-                                                                                        0,
-                                                                                        self.view.frame.size.width,
-                                                                                        self.view.frame.size.height)
-                                                                       image:image];
-            [canvasView setDelegate:self];
-            [self.view addSubview:canvasView];
-        }   break;
-            
-        default: {
-            _backgroundImage = image;
-        }   break;
-    }
-}
-
 - (int)numOfPages {
     return [self.pages count];
 }
 
+#pragma mark - Tool/Control for Board
+- (void)initLayersWithFrame:(CGRect)frame {
+    // Canvas/Text/History/Lock
+    self.toolLayer = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                              frame.size.height-kToolBarItemHeight,
+                                                              kToolBarItemWidth*4,
+                                                              kToolBarItemHeight)];
+    [self.toolLayer setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:self.toolLayer];
+    [self initToolBarButtonsWithFrame:frame];
+}
+
+- (void)initToolBarButtonsWithFrame:(CGRect)frame {
+    GSButton *canvasButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PencilButton.fw.png"]
+                            forState:UIControlStateNormal];
+    [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/CanvasButtonActive.fw.png"]
+                            forState:UIControlStateSelected];
+    [canvasButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [canvasButton addTarget:self action:@selector(newCanvas:) forControlEvents:UIControlEventTouchUpInside];
+    [canvasButton setTag:kCanvasButtonIndex];
+    [canvasButton setSelected:YES]; // Default is canvas button
+    [self.toolLayer addSubview:canvasButton];
+    
+    GSButton *textButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButton.fw.png"]
+                          forState:UIControlStateNormal];
+    [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButtonActive.fw.png"]
+                          forState:UIControlStateSelected];
+    [textButton setFrame:CGRectMake(kToolBarItemWidth, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [textButton addTarget:self action:@selector(newText:) forControlEvents:UIControlEventTouchUpInside];
+    [textButton setTag:kTextButtonIndex];
+    [self.toolLayer addSubview:textButton];
+    
+    GSButton *historyButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [historyButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/HistoryButton.fw.png"]
+                             forState:UIControlStateNormal];
+    [historyButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [historyButton addTarget:self action:@selector(showHistoryView) forControlEvents:UIControlEventTouchUpInside];
+    [historyButton setTag:kHistoryButtonIndex];
+    [self.toolLayer addSubview:historyButton];
+    
+    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButton.fw.png"]
+                          forState:UIControlStateNormal];
+    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButtonActive.fw.png"]
+                          forState:UIControlStateSelected];
+    [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
+    [lockButton addTarget:self action:@selector(lockPage:) forControlEvents:UIControlEventTouchUpInside];
+    [lockButton setTag:kLockButtonIndex];
+    [self.toolLayer addSubview:lockButton];
+    
+    GSButton *pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [pageCurlButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
+                    forState:UIControlStateNormal];
+    [pageCurlButton setFrame:CGRectMake(frame.size.width-kPageCurlWidth,
+                                        frame.size.height-kPageCurlHeight,
+                                        kPageCurlWidth,
+                                        kPageCurlHeight)];
+    [pageCurlButton addTarget:self action:@selector(doneEditing)
+             forControlEvents:UIControlEventTouchUpInside];
+    [pageCurlButton setTag:kPageCurlButtonTag];
+    [self.view addSubview:pageCurlButton];
+}
+
 #pragma mark - Pages Handler
 - (void)addNewPage {
-    self.view.backgroundColor = OPAQUE_HEXCOLOR(0xa8a8a8);
     WBPage *page = [[WBPage alloc] initWithFrame:CGRectMake(0,
                                                             0,
                                                             self.view.frame.size.width,
                                                             self.view.frame.size.height)];
-    [page setBackgroundImage:self.backgroundImage];
-    [page setDelegate:self];
-    [self selectPage:page];
+    [page setPageDelegate:self];
+    [page select];
+    
+    [self.view addSubview:page];
     [self.pages addObject:page];
-    self.currentPageIndex = [self.pages count]-1;
+    [self setCurrentPageIndex:([self.pages count]-1)];
 }
 
 - (void)removePageWithId:(NSString *)uid {
@@ -192,6 +261,22 @@
     return [self.pages objectAtIndex:index];
 }
 
+- (void)elementSelected:(WBBaseElement *)element {
+    if ([element isKindOfClass:[CGCanvasElement class]]) {
+        [((GSButton *) [self.toolLayer viewWithTag:kCanvasButtonIndex]) setSelected:YES];
+    } else if ([element isKindOfClass:[TextElement class]]) {
+        [((GSButton *) [self.toolLayer viewWithTag:kTextButtonIndex]) setSelected:YES];
+    }
+}
+
+- (void)elementDeselected:(WBBaseElement *)element {
+    if ([element isKindOfClass:[CGCanvasElement class]]) {
+        [((GSButton *) [self.toolLayer viewWithTag:kCanvasButtonIndex]) setSelected:NO];
+    } else if ([element isKindOfClass:[TextElement class]]) {
+        [((GSButton *) [self.toolLayer viewWithTag:kTextButtonIndex]) setSelected:NO];
+    }
+}
+
 #pragma mark - Export output data
 - (void)showExportControl:(WBPage *)page {
     if (!self.isAnimating && !self.isTargetViewCurled) {
@@ -210,54 +295,65 @@
 }
 
 #pragma mark - Export output data
-- (void)doneEditingPage:(WBPage *)page {
-    if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-        [[HistoryManager sharedManager] clearHistoryPool];
-        [self.delegate doneEditingBoardWithResult:[self exportBoardToUIImage]];
-    }
-    
-    if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(exportBoardData:)]) {
-        [self.delegate exportBoardData:[BoardManager writeBoardToFile:self]];
-    }
-}
-
 - (UIImage *)exportBoardToUIImage {
     return [[self currentPage] exportPageToImage];
 }
 
-#pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary new];
-    [dict setObject:self.uid forKey:@"board_uid"];
-    [dict setObject:self.name forKey:@"board_name"];
-    [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
-    
-    NSMutableArray *pageArray = [NSMutableArray arrayWithCapacity:[self.pages count]];
-    for (WBPage *page in self.pages) {
-        NSDictionary *pageDict = [page saveToDict];
-        [pageArray addObject:pageDict];
+#pragma mark - Tool Bar Buttons
+- (void)newCanvas:(GSButton *)canvasButton {
+    if ([[[self currentPage] selectedElementView] isKindOfClass:[CGCanvasElement class]]
+        && ![[[self currentPage] selectedElementView] isTransformed]) {
+        [[[self currentPage] selectedElementView] select];
+    } else {
+        CGCanvasElement *canvasElement = [[CGCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        [[self currentPage] addElement:canvasElement];
+        [[HistoryManager sharedManager] addActionCreateElement:canvasElement forPage:[self currentPage]];
     }
-    
-    [dict setObject:pageArray forKey:@"board_pages"];
-    
-    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
-+ (WBBoard *)loadFromDict:(NSDictionary *)dict {
-    WBBoard *board = [[WBBoard alloc] initWithDict:dict];
-    return board;
+- (void)newText:(GSButton *)textButton {
+    if ([[[self currentPage] selectedElementView] isKindOfClass:[TextElement class]]
+        && ![[[self currentPage] selectedElementView] isTransformed]) {
+        [[[self currentPage] selectedElementView] select];
+    } else {
+        TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        [[self currentPage] addElement:textElement];
+        [[HistoryManager sharedManager] addActionCreateElement:textElement forPage:[self currentPage]];
+    }
 }
 
-#pragma mark - Build version 1.0: just OpenGL View:
-- (void)elementDeselected:(WBBaseElement *)element {
-    CanvasElement *canvasView = (CanvasElement *) element;
-    MainPaintingView *drawingView = (MainPaintingView *) [canvasView contentView];
+- (void)lockPage:(GSButton *)lockButton {
+    [lockButton setSelected:![lockButton isSelected]];
+    [[self currentPage] setIsLocked:![[self currentPage] isLocked]];
+}
+
+- (void)doneEditing {
+    [[HistoryManager sharedManager] clearHistoryPool];
     if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-        [self.delegate doneEditingBoardWithResult:[drawingView glToUIImage]];
+        [self.delegate doneEditingBoardWithResult:[self exportBoardToUIImage]];
     }
+    [self dismissViewControllerAnimated:NO completion:NULL];
+    
+    [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+                           forView:[UIApplication sharedApplication].keyWindow
+                             cache:YES];
+    [UIView setAnimationDuration:kWBSessionAnimationDuration];
+    [UIView commitAnimations];
 }
 
-#pragma mark - Page Curl
+#pragma mark - History View
+- (void)showHistoryView {
+    HistoryView *historyView = [[HistoryView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-kToolBarItemHeight*4, self.view.frame.size.width, kToolBarItemHeight*4)];
+    [historyView setTag:kHistoryViewTag];
+    [self.view addSubview:historyView];
+}
+
+- (void)hideHistoryView {
+    [[self.view viewWithTag:kHistoryViewTag] removeFromSuperview];
+}
+
+#pragma mark - Animation Page Curl
 - (void)animationWillStart:(NSString *)animationID context:(void *)context {	
 	self.isAnimating = YES;
 	self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:0.87
@@ -286,6 +382,63 @@
 	self.isAnimating = NO;
 }
 
+#pragma mark - Animation Show/Dismiss board
+- (void)showMeWithAnimationFromController:(UIViewController *)controller {
+    [controller presentViewController:self animated:NO completion:NULL];
+    
+    [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown
+                           forView:[UIApplication sharedApplication].keyWindow
+                             cache:YES];
+    [UIView setAnimationDuration:kWBSessionAnimationDuration];
+    [UIView commitAnimations];
+    
+    [[BoardManager sharedManager] createANewBoard:self];
+}
+
+#pragma mark - Keyboard Delegate
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    [self hideHistoryView];
+    //    NSDictionary* info = [aNotification userInfo];
+    //    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    //
+    //
+    //    [UIView animateWithDuration:0.2f animations:^{
+    //        CGRect frame = CGRectMake(self.textToolLayer.frame.origin.x,
+    //                                  self.frame.size.height-kToolBarItemHeight,
+    //                                  self.textToolLayer.frame.size.width,
+    //                                  self.textToolLayer.frame.size.height);
+    //        frame.origin.y -= kbSize.height;
+    //        self.textToolLayer.frame = frame;
+    //    }];
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    
+}
+
+#pragma mark - Backup/Restore Save/Load
+- (NSDictionary *)saveToDict {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:self.uid forKey:@"board_uid"];
+    [dict setObject:self.name forKey:@"board_name"];
+    [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
+    
+    NSMutableArray *pageArray = [NSMutableArray arrayWithCapacity:[self.pages count]];
+    for (WBPage *page in self.pages) {
+        NSDictionary *pageDict = [page saveToDict];
+        [pageArray addObject:pageDict];
+    }
+    
+    [dict setObject:pageArray forKey:@"board_pages"];
+    
+    return [NSDictionary dictionaryWithDictionary:dict];
+}
+
++ (WBBoard *)loadFromDict:(NSDictionary *)dict {
+    WBBoard *board = [[WBBoard alloc] initWithDict:dict];
+    return board;
+}
 
 #pragma mark - Orientation
 // pre-iOS 6 support

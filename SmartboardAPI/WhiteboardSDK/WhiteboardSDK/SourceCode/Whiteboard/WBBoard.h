@@ -9,13 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "WBUtils.h"
 #import "WBPage.h"
-#import "WBBaseElement.h"
 
-@interface WBBoard : UIViewController <SDPageDelegate, WBBaseViewDelegate>
+@interface WBBoard : UIViewController <WBPageDelegate>
 
 - (id)initWithDict:(NSDictionary *)dictionary;
-- (void)setBackgroundImage:(UIImage *)image;
+
+- (void)showMeWithAnimationFromController:(UIViewController *)controller;
+
 - (int)numOfPages;
+
 - (WBPage *)currentPage;
 - (WBPage *)pageAtIndex:(int)index;
 

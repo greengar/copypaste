@@ -8,7 +8,8 @@
 
 #import "HistoryElement.h"
 #import "TextElement.h"
-#import "CanvasElement.h"
+#import "GLCanvasElement.h"
+#import "CGCanvasElement.h"
 #import "ImageElement.h"
 
 @implementation HistoryElement
@@ -18,7 +19,8 @@
     _element = element;
     if ([element isKindOfClass:[TextElement class]]) {
         self.name = [NSString stringWithFormat:@"Text %@", self.name];
-    } else if ([element isKindOfClass:[CanvasElement class]]) {
+    } else if ([element isKindOfClass:[GLCanvasElement class]]
+               || [element isKindOfClass:[CGCanvasElement class]]) {
         self.name = [NSString stringWithFormat:@"Canvas %@", self.name];
     } else if ([element isKindOfClass:[ImageElement class]]) {
         self.name = [NSString stringWithFormat:@"Image %@", self.name];

@@ -1,5 +1,5 @@
 //
-//  CanvasElement.h
+//  GLCanvasElement.h
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 5/28/13.
@@ -10,9 +10,9 @@
 #import "WBBaseElement.h"
 #import "MainPaintingView.h"
 
-@class CanvasElement;
+@class GLCanvasElement;
 
-@interface CanvasElement : WBBaseElement
+@interface GLCanvasElement : WBBaseElement
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
 - (void)updateBoundingRect:(CGRect)boundingRect;
