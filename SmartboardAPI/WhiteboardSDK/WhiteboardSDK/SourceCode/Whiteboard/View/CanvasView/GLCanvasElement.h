@@ -14,7 +14,6 @@
 
 @interface GLCanvasElement : WBBaseElement
 
-- (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
 - (void)updateBoundingRect:(CGRect)boundingRect;
 - (void)takeScreenshot;
 - (void)removeScreenshot;

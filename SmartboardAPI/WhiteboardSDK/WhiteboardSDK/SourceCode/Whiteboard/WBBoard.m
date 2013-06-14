@@ -11,6 +11,7 @@
 #import "GLCanvasElement.h"
 #import "BoardManager.h"
 #import "HistoryManager.h"
+#import "SettingManager.h"
 #import "GSButton.h"
 #import "HistoryView.h"
 
@@ -96,6 +97,8 @@
         [self addNewPage];
         
         [self initLayersWithFrame:self.view.frame];
+        
+        [[SettingManager sharedManager] setCurrentColorTab:0];
     }
     return self;
 }
@@ -262,7 +265,8 @@
 }
 
 - (void)elementSelected:(WBBaseElement *)element {
-    if ([element isKindOfClass:[CGCanvasElement class]]) {
+    if ([element isKindOfClass:[CGCanvasElement class]]
+        || [element isKindOfClass:[GLCanvasElement class]]) {
         [((GSButton *) [self.toolLayer viewWithTag:kCanvasButtonIndex]) setSelected:YES];
     } else if ([element isKindOfClass:[TextElement class]]) {
         [((GSButton *) [self.toolLayer viewWithTag:kTextButtonIndex]) setSelected:YES];
@@ -270,7 +274,8 @@
 }
 
 - (void)elementDeselected:(WBBaseElement *)element {
-    if ([element isKindOfClass:[CGCanvasElement class]]) {
+    if ([element isKindOfClass:[CGCanvasElement class]]
+        || [element isKindOfClass:[GLCanvasElement class]]) {
         [((GSButton *) [self.toolLayer viewWithTag:kCanvasButtonIndex]) setSelected:NO];
     } else if ([element isKindOfClass:[TextElement class]]) {
         [((GSButton *) [self.toolLayer viewWithTag:kTextButtonIndex]) setSelected:NO];
@@ -305,7 +310,7 @@
         && ![[[self currentPage] selectedElementView] isTransformed]) {
         [[[self currentPage] selectedElementView] select];
     } else {
-        CGCanvasElement *canvasElement = [[CGCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
         [[self currentPage] addElement:canvasElement];
         [[HistoryManager sharedManager] addActionCreateElement:canvasElement forPage:[self currentPage]];
     }
@@ -399,6 +404,7 @@
 #pragma mark - Keyboard Delegate
 - (void)keyboardWasShown:(NSNotification*)aNotification {
     [self hideHistoryView];
+    [((GSButton *) [self.toolLayer viewWithTag:kTextButtonIndex]) setSelected:YES];
     //    NSDictionary* info = [aNotification userInfo];
     //    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     //

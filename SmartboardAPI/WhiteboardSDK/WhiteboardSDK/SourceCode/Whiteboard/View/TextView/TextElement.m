@@ -119,6 +119,10 @@
     }
     [self checkHistory];
     self.elementCreated = YES;
+    self.transform = self.defaultTransform;
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                            self.contentView.frame.size.width, self.contentView.frame.size.height);
+    self.transform = self.currentTransform;
 }
 
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
@@ -149,6 +153,12 @@
 - (void)contentViewBecomeFirstResponder {
     if ([[self contentView] isFirstResponder]) {
         [self select];
+    }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isLocked) {
+        [[self contentView] becomeFirstResponder];
     }
 }
 

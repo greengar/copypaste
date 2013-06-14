@@ -25,6 +25,7 @@
 @interface MainPaintingView () {
     Transforms viewTransform;
 }
+@property (nonatomic) BOOL shouldCreateNewElement;
 @property (nonatomic, strong) NSString *currentPaintingId;
 @property (nonatomic, strong) NSTimer *lastEventInterval;
 - (void)showZoomingLabel;
@@ -34,6 +35,7 @@
 @end
 
 @implementation MainPaintingView
+@synthesize shouldCreateNewElement = _shouldCreateNewElement;
 @synthesize delegate = _delegate;
 @synthesize extDrawingView;
 @synthesize extRotation;
@@ -110,6 +112,10 @@
         }
 	}
 	return self;
+}
+
+- (BOOL)shouldCreateElement {
+    return self.shouldCreateNewElement;
 }
 
 - (void)initialDrawing {
@@ -489,6 +495,7 @@
 
 #pragma mark - Touch Handlers
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    self.shouldCreateNewElement = YES;
     
     if (IS_IPAD) {
         DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];

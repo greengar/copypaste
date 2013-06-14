@@ -21,6 +21,9 @@
     if (self) {
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
+        self.contentOffset = CGPointZero;
+        self.contentInset = UIEdgeInsetsZero;
+        self.scrollEnabled = NO;
         
         self.placeHolderTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.placeHolderTextView setTextColor:[UIColor lightGrayColor]];
@@ -43,6 +46,17 @@
     } else {
         [self.placeHolderTextView setHidden:YES];
     }
+    self.contentOffset = CGPointZero;
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                            self.contentSize.width, self.contentSize.height);
+}
+
+- (CGPoint)contentOffset {
+    return CGPointZero;
+}
+
+- (UIEdgeInsets)contentInset {
+    return UIEdgeInsetsZero;
 }
 
 - (void)setFont:(UIFont *)font {

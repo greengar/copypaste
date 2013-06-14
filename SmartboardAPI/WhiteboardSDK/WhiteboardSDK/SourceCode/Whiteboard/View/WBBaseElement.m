@@ -99,6 +99,7 @@
         [self setBackgroundColor:[UIColor clearColor]];
         [self.layer setBorderWidth:0];
     }
+    [self deselect];
 }
 
 - (UIView *)contentView {

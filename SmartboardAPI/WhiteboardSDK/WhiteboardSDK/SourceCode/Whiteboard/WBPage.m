@@ -74,7 +74,7 @@
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"P_"];
         self.elements = [NSMutableArray new];
         
-        CGCanvasElement *canvasElement = [[CGCanvasElement alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self addElement:canvasElement];
     }
     return self;

@@ -46,8 +46,7 @@
 }
 
 
-- (id)initWithFrame:(CGRect)frame image:(UIImage *)image
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
@@ -59,14 +58,6 @@
                                                                               frame.size.height)];
         [self addSubview:self.drawingView];
         [self.drawingView initialDrawing];
-        
-        
-        
-        if (image) {
-            [self.drawingView loadFromSavedPhotoAlbum:image];
-            [self.drawingView addCurrentImageToUndoRedoSpace];
-        }
-        
         [self initControlWithFrame:frame];
         
     }
@@ -74,14 +65,15 @@
 }
 
 - (void)initControlWithFrame:(CGRect)frame {
-    self.previewAreaView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.drawingView setTopLeftBounding:CGPointZero];
-    [self.drawingView setBottomRightBounding:CGPointZero];
-    [self addSubview:self.previewAreaView];
-    [self.previewAreaView setBackgroundColor:[UIColor clearColor]];
-    [self.previewAreaView setUserInteractionEnabled:NO];
-    [self.previewAreaView.layer setBorderWidth:1];
-    [self.previewAreaView.layer setBorderColor:[[UIColor colorWithPatternImage:[UIImage imageNamed:@"Whiteboard.bundle/DottedImage.png"]] CGColor]];
+//    self.previewAreaView = [[UIView alloc] initWithFrame:CGRectZero];
+//    [self.drawingView setTopLeftBounding:CGPointZero];
+//    [self.drawingView setBottomRightBounding:CGPointZero];
+//    [self addSubview:self.previewAreaView];
+//    
+//    [self.previewAreaView setBackgroundColor:[UIColor clearColor]];
+//    [self.previewAreaView setUserInteractionEnabled:NO];
+//    [self.previewAreaView.layer setBorderWidth:1];
+//    [self.previewAreaView.layer setBorderColor:[[UIColor blackColor] CGColor]];
 }
 
 - (UIView *)contentView {
@@ -92,57 +84,25 @@
     [self deselect];
 }
 
-- (void)select {
-    [super select];
-    [self.previewAreaView.layer setBorderWidth:2];
-    [self removeScreenshot];
-}
-
-- (void)deselect {
-    [super deselect];
-    [self.previewAreaView.layer setBorderWidth:0];
-    [self setTransform:self.currentTransform];
-    
-    BOOL successful = !CGRectEqualToRect(self.previewAreaView.frame, CGRectZero);
-    if (successful) {
-        [self takeScreenshot];
-    }
-    if (self.elementCreated == NO) {
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementCreated:successful:)]) {
-            [self.delegate elementCreated:self successful:successful];
-        }
-    } else {
-        
-    }
-    self.elementCreated = YES;
-}
-
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-    UIView *hitView = [super hitTest:point withEvent:event];
-    if (hitView == self && CGRectContainsPoint(self.previewAreaView.frame, point)) {
-        return hitView;
-    }
-    return nil;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    CGPoint location = [touch locationInView:self];
-    if (CGRectContainsPoint(self.previewAreaView.frame, location)) {
-        return YES;
-    }
-    return NO;
-}
-
-//- (void)elementTap:(UITapGestureRecognizer *)tapGesture {
-//    CGPoint location = [tapGesture locationInView:self];
-//    if (CGRectContainsPoint(self.previewAreaView.frame, location)) {
-//        [super elementTap:(UITapGestureRecognizer *)tapGesture];
+//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+//    UIView *hitView = [super hitTest:point withEvent:event];
+//    if (hitView == self && CGRectContainsPoint(self.previewAreaView.frame, point)) {
+//        return hitView;
 //    }
+//    return nil;
 //}
 
-- (void)updateBoundingRect:(CGRect)boundingRect {
-    self.previewAreaView.frame = boundingRect;
-}
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+//    CGPoint location = [touch locationInView:self];
+//    if (CGRectContainsPoint(self.previewAreaView.frame, location)) {
+//        return YES;
+//    }
+//    return NO;
+//}
+
+//- (void)updateBoundingRect:(CGRect)boundingRect {
+//    self.previewAreaView.frame = boundingRect;
+//}
 
 - (CGRect)focusFrame {
     return self.previewAreaView.frame;

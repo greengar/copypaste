@@ -119,6 +119,8 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)showZoomingLabel;
 - (int)roundUpPercent:(CGFloat)number;
 
+- (BOOL)shouldCreateElement;
+
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 - (void)addPointToUndoRedoSpaceFromPoint:(CGPoint)start toPoint:(CGPoint)end
                                 colorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
