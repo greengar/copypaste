@@ -17,8 +17,11 @@
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
-#define kPageCurlWidth      (IS_IPAD ? 64 : 64)
-#define kPageCurlHeight     (IS_IPAD ? 99 : 99)
+#define kPageCurlWidth      (IS_IPAD ? 99 : 99)
+#define kPageCurlHeight     (IS_IPAD ? 64 : 64)
+
+#define kExportButtonWidth  80
+#define kExportButtonHeight 44
 
 #define kHistoryViewTag     888
 #define kPageCurlButtonTag  kHistoryViewTag+1
@@ -31,11 +34,16 @@
 
 #define kWBSessionAnimationDuration 0.5
 
+#define kCurlUpAndDownAnimationID @"kCurlUpAndDownAnimationID"
+#define kCurlAnimationDuration 1.4f
+#define kCurlAnimationShouldStopAfter 0.6f
+
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
 @property (nonatomic) int currentPageIndex;
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic, strong) NSTimer *animationTimer;
+@property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic) BOOL isTargetViewCurled;
 - (void)selectPage:(WBPage *)page;
 
@@ -53,6 +61,7 @@
 @synthesize delegate = _delegate;
 @synthesize isAnimating = _isAnimating;
 @synthesize animationTimer = _animationTimer;
+@synthesize timer = _timer;
 @synthesize isTargetViewCurled = _isTargetViewCurled;
 @synthesize toolLayer = _toolLayer;
 
@@ -79,9 +88,6 @@
         } else {
             [self addNewPage];
         }
-        
-        // [self initExportControl];
-        
     }
     return self;
 }
@@ -90,7 +96,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.view.backgroundColor = OPAQUE_HEXCOLOR(0xa8a8a8);
+        self.view.backgroundColor = OPAQUE_HEXCOLOR(0x383838);
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"B_"];
         self.name = [NSString stringWithFormat:@"Whiteboard %@", [WBUtils getCurrentTime]];
         self.pages = [NSMutableArray new];
@@ -99,6 +105,8 @@
         [self initLayersWithFrame:self.view.frame];
         
         [[SettingManager sharedManager] setCurrentColorTab:0];
+        
+        [self initExportControl];
     }
     return self;
 }
@@ -114,18 +122,6 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-}
-
-- (void)initExportControl {
-    GSButton *exportButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
-    [exportButton setTitle:@"Export Page" forState:UIControlStateNormal];
-    [exportButton setFrame:CGRectMake(self.view.frame.size.width-64,
-                                      self.view.frame.size.height-64,
-                                      64,
-                                      64)];
-    [exportButton addTarget:self action:@selector(exportPage) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:exportButton];
-    [self.view sendSubviewToBack:exportButton];
 }
 
 - (int)numOfPages {
@@ -191,7 +187,7 @@
                                         frame.size.height-kPageCurlHeight,
                                         kPageCurlWidth,
                                         kPageCurlHeight)];
-    [pageCurlButton addTarget:self action:@selector(doneEditing)
+    [pageCurlButton addTarget:self action:@selector(showExportControl:)
              forControlEvents:UIControlEventTouchUpInside];
     [pageCurlButton setTag:kPageCurlButtonTag];
     [self.view addSubview:pageCurlButton];
@@ -283,20 +279,107 @@
 }
 
 #pragma mark - Export output data
-- (void)showExportControl:(WBPage *)page {
+- (void)initExportControl {
+    GSButton *exportButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:BlueButtonStyle];
+    [exportButton setTitle:@"Export" forState:UIControlStateNormal];
+    [exportButton setFrame:CGRectMake(self.view.frame.size.width-kExportButtonWidth*2,
+                                      self.view.frame.size.height-kExportButtonHeight*2,
+                                      kExportButtonWidth,
+                                      kExportButtonHeight)];
+    [exportButton addTarget:self action:@selector(exportPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:exportButton];
+    [self.view sendSubviewToBack:exportButton];
+    
+    GSButton *nextButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
+    [nextButton setTitle:@"Next" forState:UIControlStateNormal];
+    [nextButton setFrame:CGRectMake(self.view.frame.size.width-kExportButtonWidth*3.5,
+                                    self.view.frame.size.height-kExportButtonHeight*2,
+                                    kExportButtonWidth,
+                                    kExportButtonHeight)];
+    [nextButton addTarget:self action:@selector(nextPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:nextButton];
+    [self.view sendSubviewToBack:nextButton];
+    
+    GSButton *previousButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:OrangeButtonStyle];
+    [previousButton setTitle:@"Previous" forState:UIControlStateNormal];
+    [previousButton setFrame:CGRectMake(self.view.frame.size.width-kExportButtonWidth*5,
+                                        self.view.frame.size.height-kExportButtonHeight*2,
+                                        kExportButtonWidth,
+                                        kExportButtonHeight)];
+    [previousButton addTarget:self action:@selector(previousPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:previousButton];
+    [self.view sendSubviewToBack:previousButton];
+    
+    GSButton *cancelButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton setFrame:CGRectMake(self.view.frame.size.width-kExportButtonWidth*6.5,
+                                        self.view.frame.size.height-kExportButtonHeight*2,
+                                        kExportButtonWidth,
+                                        kExportButtonHeight)];
+    [cancelButton addTarget:self action:@selector(hideExportControl) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:cancelButton];
+    [self.view sendSubviewToBack:cancelButton];
+}
+
+- (void)showExportControl:(GSButton *)button {
     if (!self.isAnimating && !self.isTargetViewCurled) {
+        [button setHidden:YES];
+        [[self toolLayer] setHidden:YES];
+        [[self currentPage] setHidden:YES];
         self.isAnimating = YES;
         [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:page cache:YES];
-        [UIView setAnimationDuration:1.4f];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+                               forView:[self currentPage]
+                                 cache:YES];
+        [UIView setAnimationDuration:kCurlAnimationDuration];
         [UIView setAnimationDelegate:self];
         [UIView setAnimationRepeatAutoreverses:YES];
         [UIView commitAnimations];
+        [self.toolLayer setHidden:YES];
     }
 }
 
+- (void)hideExportControl {
+    if (!self.isAnimating && self.isTargetViewCurled) {
+		self.isAnimating = YES;
+        
+		CFTimeInterval pausedTime = [[self currentPage].layer timeOffset];
+		[self currentPage].layer.speed = 1.0;
+		[self currentPage].layer.timeOffset = 0.0;
+		[self currentPage].layer.beginTime = 0.0;
+		CFTimeInterval timeSincePause = [[self currentPage].layer convertTime:CACurrentMediaTime()
+                                                                    fromLayer:nil]-pausedTime;
+		[self currentPage].layer.beginTime = timeSincePause-2*(kCurlAnimationDuration-kCurlAnimationShouldStopAfter);
+		
+        // Necessary to avoid a flick during the removal of layer and setting the target view visible again
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.25f
+                                                      target:self
+                                                    selector:@selector(showCurrentPage)
+                                                    userInfo:nil
+                                                     repeats:NO];
+	}
+}
+
+- (void)showCurrentPage {
+	[self.timer invalidate];
+	[self setTimer:nil];
+	
+	[[self currentPage] setHidden:NO];
+    [self.toolLayer setHidden:NO];
+    [((GSButton *) [self.view viewWithTag:kPageCurlButtonTag]) setHidden:NO];
+}
+
+
+- (void)previousPage {
+    
+}
+
+- (void)nextPage {
+    
+}
+
 - (void)exportPage {
-    [self doneEditingPage:[self currentPage]];
+    [self doneEditing];
 }
 
 #pragma mark - Export output data
@@ -366,7 +449,7 @@
 #pragma mark - Animation Page Curl
 - (void)animationWillStart:(NSString *)animationID context:(void *)context {	
 	self.isAnimating = YES;
-	self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:0.87
+	self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:kCurlAnimationShouldStopAfter
 														   target:self
 														 selector:@selector(stopCurl)
 														 userInfo:nil

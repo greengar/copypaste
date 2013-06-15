@@ -14,7 +14,6 @@
 
 @interface GLCanvasElement : WBBaseElement
 
-- (void)updateBoundingRect:(CGRect)boundingRect;
 - (void)takeScreenshot;
 - (void)removeScreenshot;
 

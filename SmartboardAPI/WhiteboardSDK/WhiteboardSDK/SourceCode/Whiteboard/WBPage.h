@@ -19,9 +19,7 @@
 
 @protocol WBPageDelegate
 @optional
-- (void)showExportControl:(WBPage *)page;
 - (void)pageSelected:(WBPage *)page;
-- (void)doneEditingPage:(WBPage *)page;
 - (void)elementSelected:(WBBaseElement *)element;
 - (void)elementDeselected:(WBBaseElement *)element;
 @end
