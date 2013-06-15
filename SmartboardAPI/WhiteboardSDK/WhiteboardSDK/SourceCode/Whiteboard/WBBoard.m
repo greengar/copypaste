@@ -17,14 +17,16 @@
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
-#define kPageCurlWidth      (IS_IPAD ? 99 : 99)
-#define kPageCurlHeight     (IS_IPAD ? 64 : 64)
+#define kPageCurlWidth      (IS_IPAD ? 50 : 50)
+#define kPageCurlHeight     (IS_IPAD ? 74 : 74)
 
-#define kExportButtonWidth  80
+#define kExportButtonWidth  (IS_IPAD ? 80 : 74)
 #define kExportButtonHeight 44
+#define kExportButtonMargin (IS_IPAD ? 20 : 5)
 
 #define kHistoryViewTag     888
 #define kPageCurlButtonTag  kHistoryViewTag+1
+#define kPageLabelTag       kHistoryViewTag+2
 
 #define kCanvasButtonIndex  777
 #define kTextButtonIndex    (kCanvasButtonIndex+1)
@@ -36,7 +38,7 @@
 
 #define kCurlUpAndDownAnimationID @"kCurlUpAndDownAnimationID"
 #define kCurlAnimationDuration 1.4f
-#define kCurlAnimationShouldStopAfter 0.6f
+#define kCurlAnimationShouldStopAfter (IS_IPAD ? 0.6f : 0.7f)
 
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
@@ -282,7 +284,7 @@
 - (void)initExportControl {
     GSButton *exportButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:BlueButtonStyle];
     [exportButton setTitle:@"Export" forState:UIControlStateNormal];
-    [exportButton setFrame:CGRectMake(self.view.frame.size.width-kExportButtonWidth*2,
+    [exportButton setFrame:CGRectMake(self.view.frame.size.width-(kExportButtonWidth+kExportButtonMargin),
                                       self.view.frame.size.height-kExportButtonHeight*2,
                                       kExportButtonWidth,
                                       kExportButtonHeight)];
@@ -292,7 +294,7 @@
     
     GSButton *nextButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
     [nextButton setTitle:@"Next" forState:UIControlStateNormal];
-    [nextButton setFrame:CGRectMake(self.view.frame.size.width-kExportButtonWidth*3.5,
+    [nextButton setFrame:CGRectMake(self.view.frame.size.width-(kExportButtonWidth+kExportButtonMargin)*2,
                                     self.view.frame.size.height-kExportButtonHeight*2,
                                     kExportButtonWidth,
                                     kExportButtonHeight)];
@@ -302,7 +304,7 @@
     
     GSButton *previousButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:OrangeButtonStyle];
     [previousButton setTitle:@"Previous" forState:UIControlStateNormal];
-    [previousButton setFrame:CGRectMake(self.view.frame.size.width-kExportButtonWidth*5,
+    [previousButton setFrame:CGRectMake(self.view.frame.size.width-(kExportButtonWidth+kExportButtonMargin)*3,
                                         self.view.frame.size.height-kExportButtonHeight*2,
                                         kExportButtonWidth,
                                         kExportButtonHeight)];
@@ -312,20 +314,35 @@
     
     GSButton *cancelButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setFrame:CGRectMake(self.view.frame.size.width-kExportButtonWidth*6.5,
+    [cancelButton setFrame:CGRectMake(self.view.frame.size.width-(kExportButtonWidth+kExportButtonMargin)*4,
                                         self.view.frame.size.height-kExportButtonHeight*2,
                                         kExportButtonWidth,
                                         kExportButtonHeight)];
     [cancelButton addTarget:self action:@selector(hideExportControl) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
     [self.view sendSubviewToBack:cancelButton];
+    
+    UILabel *pageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-kExportButtonHeight*3, self.view.frame.size.width, kExportButtonHeight)];
+    [pageLabel setTag:kPageLabelTag];
+    [pageLabel setBackgroundColor:[UIColor clearColor]];
+    [pageLabel setTextColor:[UIColor whiteColor]];
+    [pageLabel setTextAlignment:NSTextAlignmentRight];
+    [pageLabel setText:[NSString stringWithFormat:@"Page: %d/%d", self.currentPageIndex+1, [self.pages count]]];
+    [self.view addSubview:pageLabel];
+    [self.view sendSubviewToBack:pageLabel];
 }
 
 - (void)showExportControl:(GSButton *)button {
     if (!self.isAnimating && !self.isTargetViewCurled) {
-        [button setHidden:YES];
+        double delayInSeconds = 0.25;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [button setHidden:YES];
+        });
         [[self toolLayer] setHidden:YES];
         [[self currentPage] setHidden:YES];
+        UILabel *pageLabel = (UILabel *) [self.view viewWithTag:kPageLabelTag];
+        [pageLabel setText:[NSString stringWithFormat:@"Page: %d/%d", self.currentPageIndex+1, [self.pages count]]];
         self.isAnimating = YES;
         [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
