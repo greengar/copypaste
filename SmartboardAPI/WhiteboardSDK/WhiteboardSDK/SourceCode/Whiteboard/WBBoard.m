@@ -306,7 +306,7 @@
 
 #pragma mark - Tool Bar Buttons
 - (void)newCanvas:(GSButton *)canvasButton {
-    if ([[[self currentPage] selectedElementView] isKindOfClass:[CGCanvasElement class]]
+    if ([[[self currentPage] selectedElementView] isKindOfClass:[GLCanvasElement class]]
         && ![[[self currentPage] selectedElementView] isTransformed]) {
         [[[self currentPage] selectedElementView] select];
     } else {

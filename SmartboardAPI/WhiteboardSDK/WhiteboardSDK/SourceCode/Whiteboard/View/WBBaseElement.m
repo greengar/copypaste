@@ -18,6 +18,7 @@
 #import "KxMenu.h"
 
 @interface WBBaseElement()
+@property (nonatomic, strong) CAShapeLayer *border;
 @end
 
 @implementation WBBaseElement
@@ -28,6 +29,7 @@
 @synthesize defaultTransform = _defaultTransform;
 @synthesize currentTransform = _currentTransform;
 @synthesize elementCreated = _elementCreated;
+@synthesize border = _border;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     CGRect frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
@@ -38,8 +40,6 @@
         self.currentTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_current_transform"]);
         self.defaultFrame = frame;        
         self.transform = self.currentTransform;
-
-        self.layer.borderColor = [[UIColor blackColor] CGColor];
     }
     return self;
 }
@@ -53,10 +53,19 @@
         self.currentTransform = self.transform;
         self.defaultFrame = frame;
         
-        self.layer.borderColor = [[UIColor blackColor] CGColor];
-        
+        self.border = [CAShapeLayer layer];
+        self.border.strokeColor = [UIColor orangeColor].CGColor;
+        self.border.fillColor = nil;
+        self.border.lineDashPattern = @[@4, @2];
+        [self.layer addSublayer:self.border];
+        [self.border setHidden:YES];
     }
     return self;
+}
+
+- (void)layoutSubviews {
+    self.border.path = [UIBezierPath bezierPathWithRect:self.bounds].CGPath;
+    self.border.frame = self.bounds;
 }
 
 - (void)setIsLocked:(BOOL)isLocked {
@@ -87,7 +96,7 @@
         [[self contentView] setUserInteractionEnabled:NO];
         [self setAlpha:0.7f];
         [self setBackgroundColor:[UIColor whiteColor]];
-        [self.layer setBorderWidth:4];
+        [self.border setHidden:NO];
         
     } else {
         for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
@@ -97,7 +106,7 @@
         [[self contentView] setUserInteractionEnabled:YES];
         [self setAlpha:1.0f];
         [self setBackgroundColor:[UIColor clearColor]];
-        [self.layer setBorderWidth:0];
+        [self.border setHidden:YES];
     }
     [self deselect];
 }

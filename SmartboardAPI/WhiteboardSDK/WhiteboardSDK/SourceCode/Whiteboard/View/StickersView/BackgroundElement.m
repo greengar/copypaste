@@ -22,7 +22,6 @@
     self = [super initWithDict:dictionary];
     if (self) {
         self.userInteractionEnabled = YES;
-        self.layer.borderWidth = 0;
         
         UIImage *image = nil;
         NSObject *imageContent = [dictionary objectForKey:@"element_background"];
@@ -52,7 +51,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.userInteractionEnabled = YES;
-        self.layer.borderWidth = 0;
         
         [self initBackgroundViewWithFrame:frame
                                     image:image];
