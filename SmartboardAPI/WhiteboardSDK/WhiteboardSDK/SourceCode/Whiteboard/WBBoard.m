@@ -306,7 +306,8 @@
 
 #pragma mark - Tool Bar Buttons
 - (void)newCanvas:(GSButton *)canvasButton {
-    if ([[[self currentPage] selectedElementView] isKindOfClass:[GLCanvasElement class]]
+    if ([[self currentPage] selectedElementView]
+        && [[[self currentPage] selectedElementView] isKindOfClass:[GLCanvasElement class]]
         && ![[[self currentPage] selectedElementView] isTransformed]) {
         [[[self currentPage] selectedElementView] select];
     } else {
@@ -317,7 +318,8 @@
 }
 
 - (void)newText:(GSButton *)textButton {
-    if ([[[self currentPage] selectedElementView] isKindOfClass:[TextElement class]]
+    if ([[self currentPage] selectedElementView]
+        && [[[self currentPage] selectedElementView] isKindOfClass:[TextElement class]]
         && ![[[self currentPage] selectedElementView] isTransformed]) {
         [[[self currentPage] selectedElementView] select];
     } else {
@@ -330,6 +332,9 @@
 - (void)lockPage:(GSButton *)lockButton {
     [lockButton setSelected:![lockButton isSelected]];
     [[self currentPage] setIsLocked:![[self currentPage] isLocked]];
+    if (![[self currentPage] isLocked]) {
+        [[self currentPage] focusOnTopElement];
+    }
 }
 
 - (void)doneEditing {

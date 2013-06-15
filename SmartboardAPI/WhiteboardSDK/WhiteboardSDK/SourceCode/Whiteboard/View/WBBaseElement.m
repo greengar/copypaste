@@ -166,7 +166,7 @@
     return !CGAffineTransformEqualToTransform(self.currentTransform, self.defaultTransform);
 }
 
-- (void)showMenu {
+- (void)showMenuAt:(CGPoint)location {
     NSArray *menuItems = @[[KxMenuItem menuItem:@"Edit"
                                           image:nil
                                          target:self
@@ -183,10 +183,8 @@
                                           image:nil
                                          target:self
                                          action:@selector(delete)], ];
-    UIView *focusView = [[UIView alloc] initWithFrame:[self focusFrame]];
-    focusView.transform = self.transform;
     [KxMenu showMenuInView:[self superview]
-                  fromRect:focusView.frame
+                  fromRect:self.bounds
                  menuItems:menuItems];
 }
 
@@ -271,7 +269,8 @@
 
 - (void)elementPress:(UILongPressGestureRecognizer *)pressGesture {
     if ([pressGesture state] == UIGestureRecognizerStateBegan) {
-        [self showMenu];
+        CGPoint location = [pressGesture locationInView:self];
+        [self showMenuAt:location];
     }
 }
 

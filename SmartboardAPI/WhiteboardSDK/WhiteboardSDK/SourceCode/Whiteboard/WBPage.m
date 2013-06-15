@@ -119,6 +119,18 @@
     }
 }
 
+- (void)focusOnTopElement {
+    if ([self.elements count]) {
+        self.selectedElementView = [self.elements objectAtIndex:[self.elements count]-1];
+        [self.selectedElementView select];
+    } else {
+        // There's always at least 1 element
+        // And it should be the canvas view
+        GLCanvasElement *element = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        [self addElement:element];
+    }
+}
+
 #pragma mark - Elements Delegate
 - (void)deselectAll {
     for (WBBaseElement *existedElement in self.elements) {

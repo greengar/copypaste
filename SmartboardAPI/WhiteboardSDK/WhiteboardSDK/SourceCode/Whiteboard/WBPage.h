@@ -37,6 +37,8 @@
 - (void)addElement:(WBBaseElement *)element;
 - (void)removeElement:(WBBaseElement *)element;
 
+- (void)focusOnTopElement;
+
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSMutableArray *elements;
 @property (nonatomic) BOOL isLocked;

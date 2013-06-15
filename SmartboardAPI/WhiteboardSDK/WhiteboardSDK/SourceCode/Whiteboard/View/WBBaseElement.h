@@ -35,7 +35,6 @@
 - (BOOL) isTransformed;
 
 - (void)resetTransform;
-- (void)showMenu;
 - (CGRect)focusFrame;
 - (NSDictionary *)saveToDict;
 + (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary;
