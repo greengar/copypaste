@@ -305,6 +305,9 @@
 		7BEB7FE7176A39D800F5FE5D /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
 		7BEE0CC81769256800BD8C27 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CC71769256800BD8C27 /* RoomListViewController.m */; };
 		7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */; };
+		A9D3B455176F1B5C005574D2 /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */; };
+		A9D3B456176F1B5C005574D2 /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */; };
+		A9D3B457176F1B5C005574D2 /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B454176F1B5C005574D2 /* WBToolbarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -519,6 +522,12 @@
 		7BEE0CC71769256800BD8C27 /* RoomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomListViewController.m; sourceTree = "<group>"; };
 		7BEE0CC9176927BF00BD8C27 /* RoomDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataViewController.h; sourceTree = "<group>"; };
 		7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataViewController.m; sourceTree = "<group>"; };
+		A9D3B44F176F1B5C005574D2 /* WBCanvasButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBCanvasButton.h; sourceTree = "<group>"; };
+		A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBCanvasButton.m; sourceTree = "<group>"; };
+		A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBCanvasToolbarView.h; sourceTree = "<group>"; };
+		A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBCanvasToolbarView.m; sourceTree = "<group>"; };
+		A9D3B453176F1B5C005574D2 /* WBToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBToolbarView.h; sourceTree = "<group>"; };
+		A9D3B454176F1B5C005574D2 /* WBToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBToolbarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -847,6 +856,7 @@
 		7BEA5316176687F0001BC5FE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A9D3B44E176F1B5C005574D2 /* WBToolbarView */,
 				7BEA535E176687F1001BC5FE /* WBBaseElement.h */,
 				7BEA535F176687F1001BC5FE /* WBBaseElement.m */,
 				7BEA5317176687F0001BC5FE /* CanvasView */,
@@ -1129,6 +1139,20 @@
 				7BEB7FDF176A386800F5FE5D /* CGPaintingView.m */,
 			);
 			path = BezierPathView;
+			sourceTree = "<group>";
+		};
+		A9D3B44E176F1B5C005574D2 /* WBToolbarView */ = {
+			isa = PBXGroup;
+			children = (
+				A9D3B44F176F1B5C005574D2 /* WBCanvasButton.h */,
+				A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */,
+				A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */,
+				A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */,
+				A9D3B453176F1B5C005574D2 /* WBToolbarView.h */,
+				A9D3B454176F1B5C005574D2 /* WBToolbarView.m */,
+			);
+			name = WBToolbarView;
+			path = ../../../WBToolbarView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1467,6 +1491,9 @@
 				7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */,
 				7BEB7FE1176A386800F5FE5D /* CGPaintingView.m in Sources */,
 				7BEB7FE6176A39D800F5FE5D /* CGCanvasElement.m in Sources */,
+				A9D3B455176F1B5C005574D2 /* WBCanvasButton.m in Sources */,
+				A9D3B456176F1B5C005574D2 /* WBCanvasToolbarView.m in Sources */,
+				A9D3B457176F1B5C005574D2 /* WBToolbarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
