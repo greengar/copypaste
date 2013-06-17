@@ -33,6 +33,7 @@
 + (WBPage *)loadFromDict:(NSDictionary *)dict;
 
 - (void)addElement:(WBBaseElement *)element;
+- (void)restoreElement:(WBBaseElement *)element;
 - (void)removeElement:(WBBaseElement *)element;
 
 - (void)focusOnTopElement;

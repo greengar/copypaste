@@ -39,8 +39,10 @@
 - (void)setActive:(BOOL)active {
     [super setActive:active];
     if (active) {
+        self.element.currentTransform = self.changedTransform;
         [self.element setTransform:self.changedTransform];
     } else {
+        self.element.currentTransform = self.originalTransform;
         [self.element setTransform:self.originalTransform];
     }
 }

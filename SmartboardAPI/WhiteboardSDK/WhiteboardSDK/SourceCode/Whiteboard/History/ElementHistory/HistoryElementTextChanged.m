@@ -24,8 +24,10 @@
     [super setActive:active];
     if (active) {
         [((TextElement *) self.element) setText:self.changedText];
+        [self.element restore];
     } else {
         [((TextElement *) self.element) setText:self.originalText];
+        [self.element restore];
     }
 }
 

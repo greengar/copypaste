@@ -90,7 +90,6 @@
     } else {
         [[HistoryManager sharedManager] activateAction:action];
     }
-    [[self superview] bringSubviewToFront:self];
 }
 
 - (void)updateHistoryView {

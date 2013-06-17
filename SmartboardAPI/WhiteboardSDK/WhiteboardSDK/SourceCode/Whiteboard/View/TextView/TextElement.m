@@ -125,6 +125,17 @@
     self.transform = self.currentTransform;
 }
 
+- (void)restore {
+    self.transform = self.defaultTransform;
+    self.placeHolderTextView.frame = CGRectMake(self.placeHolderTextView.frame.origin.x,
+                                                self.placeHolderTextView.frame.origin.y,
+                                                self.placeHolderTextView.contentSize.width,
+                                                self.placeHolderTextView.contentSize.height);
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                            self.contentView.frame.size.width, self.contentView.frame.size.height);
+    self.transform = self.currentTransform;
+}
+
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
     self.myFontName = fontName;
     self.myFontSize = fontSize;

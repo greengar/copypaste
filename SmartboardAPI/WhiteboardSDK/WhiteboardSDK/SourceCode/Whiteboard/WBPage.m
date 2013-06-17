@@ -103,6 +103,13 @@
     [element select];
 }
 
+- (void)restoreElement:(WBBaseElement *)element {
+    [self addSubview:element];
+    [self.elements addObject:element];
+    [element setDelegate:self];
+    [element restore];
+}
+
 - (void)removeElement:(WBBaseElement *)element {
     BOOL isExisted = NO;
     for (WBBaseElement *existedElement in self.elements) {

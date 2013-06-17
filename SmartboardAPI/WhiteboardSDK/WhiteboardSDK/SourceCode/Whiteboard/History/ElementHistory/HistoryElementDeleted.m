@@ -31,7 +31,7 @@
     if (active) {
         [self.page removeElement:self.element];
     } else {
-        [self.page addElement:self.element];
+        [self.page restoreElement:self.element];
     }
 }
 

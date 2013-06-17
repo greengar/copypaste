@@ -28,7 +28,7 @@
 - (void)setActive:(BOOL)active {
     [super setActive:active];
     if (active) {
-        [self.page addElement:self.element];
+        [self.page restoreElement:self.element];
     } else {
         [self.page removeElement:self.element];
     }

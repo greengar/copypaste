@@ -168,6 +168,10 @@
     }
 }
 
+- (void)restore {
+    
+}
+
 - (BOOL)isTransformed {
     return !CGAffineTransformEqualToTransform(self.currentTransform, self.defaultTransform);
 }

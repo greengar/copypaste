@@ -31,6 +31,7 @@
 
 - (void)select;
 - (void)deselect;
+- (void)restore;
 
 - (BOOL) isTransformed;
 
