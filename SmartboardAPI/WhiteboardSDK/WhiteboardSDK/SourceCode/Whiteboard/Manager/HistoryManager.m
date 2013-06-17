@@ -12,6 +12,7 @@
 #import "HistoryElementTextChanged.h"
 #import "HistoryElementTextFontChanged.h"
 #import "HistoryElementTextColorChanged.h"
+#import "HistoryElementTransform.h"
 
 #define kHistoryMaxBuffer 10
 
@@ -51,6 +52,7 @@ static HistoryManager *shareManager = nil;
     if (index != NSNotFound) {
         for (int i = 0; i <= index; i++) {
             HistoryAction *action = [self.historyPool objectAtIndex:i];
+            DLog(@"Active %@", action.name);
             [action setActive:YES];
         }
         
@@ -65,6 +67,7 @@ static HistoryManager *shareManager = nil;
     if (index != NSNotFound) {
         for (int i = [self.historyPool count]-1; i >= index; i--) {
             HistoryAction *action = [self.historyPool objectAtIndex:i];
+            DLog(@"Deactive %@", action.name);
             [action setActive:NO];
         }
         
@@ -108,6 +111,35 @@ static HistoryManager *shareManager = nil;
     [action setElement:element];
     [self addAction:action];
     [self activateAction:action];
+}
+
+- (NSString *)addActionTransformElement:(WBBaseElement *)element
+                         withName:(NSString *)name
+              withOriginTransform:(CGAffineTransform)transform {
+    for (HistoryElement *action in self.historyPool) {
+        if ([action isKindOfClass:[HistoryElementTransform class]]
+            && [action.element.uid isEqualToString:element.uid]
+            && !((HistoryElementTransform *) action).isFinished) {
+            [((HistoryElementTransform *) action) setChangedTransform:transform];
+        }
+    }
+    
+    HistoryElementTransform *action = [[HistoryElementTransform alloc] initWithName:name];
+    [action setElement:element];
+    [action setOriginalTransform:transform];
+    [self addAction:action];
+    return [action uid];
+}
+
+- (void)updateTransformElementWithId:(NSString *)uid
+                withChangedTransform:(CGAffineTransform)transform {
+    for (HistoryElement *action in self.historyPool) {
+        if ([action.uid isEqualToString:uid]
+            && [action isKindOfClass:[HistoryElementTransform class]]
+            && !((HistoryElementTransform *) action).isFinished) {
+            [((HistoryElementTransform *) action) setChangedTransform:transform];
+        }
+    }
 }
 
 - (void)addActionTextContentChangedElement:(TextElement *)element

@@ -8,6 +8,11 @@
 
 #import "HistoryAction.h"
 #import "WBBaseElement.h"
+#import "TextElement.h"
+#import "GLCanvasElement.h"
+#import "CGCanvasElement.h"
+#import "ImageElement.h"
+#import "BackgroundElement.h"
 
 @interface HistoryElement : HistoryAction
 

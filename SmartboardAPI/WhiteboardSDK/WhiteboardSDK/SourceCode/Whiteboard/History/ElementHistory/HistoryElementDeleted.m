@@ -12,11 +12,18 @@
 
 @synthesize page = _page;
 
-- (id)init {
-    if (self = [super init]) {
-        self.name = @"Deleted";
+- (void)setElement:(WBBaseElement *)element {
+    [super setElement:element];
+    if ([element isKindOfClass:[TextElement class]]) {
+        self.name = @"Remove Text";
+    } else if ([element isKindOfClass:[GLCanvasElement class]]
+               || [element isKindOfClass:[CGCanvasElement class]]) {
+        self.name = @"Remove Brush";
+    } else if ([element isKindOfClass:[ImageElement class]]) {
+        self.name = @"Remove Image";
+    } else if ([element isKindOfClass:[BackgroundElement class]]) {
+        self.name = @"Remove Background";
     }
-    return self;
 }
 
 - (void)setActive:(BOOL)active {

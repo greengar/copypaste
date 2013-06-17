@@ -12,5 +12,6 @@
 
 @property (nonatomic) CGAffineTransform originalTransform;
 @property (nonatomic) CGAffineTransform changedTransform;
+@property (nonatomic) BOOL isFinished;
 
 @end

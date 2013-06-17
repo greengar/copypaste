@@ -19,6 +19,9 @@
 
 @interface WBBaseElement()
 @property (nonatomic, strong) CAShapeLayer *border;
+@property (nonatomic, strong) NSString *currentPanId;
+@property (nonatomic, strong) NSString *currentRotateId;
+@property (nonatomic, strong) NSString *currentScaleId;
 @end
 
 @implementation WBBaseElement
@@ -30,6 +33,9 @@
 @synthesize currentTransform = _currentTransform;
 @synthesize elementCreated = _elementCreated;
 @synthesize border = _border;
+@synthesize currentPanId = _currentPanId;
+@synthesize currentRotateId = _currentRotateId;
+@synthesize currentScaleId = _currentScaleId;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     CGRect frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
@@ -208,62 +214,67 @@
 }
 
 - (void)elementPan:(UIPanGestureRecognizer *)panGesture {
-    if ([panGesture state] == UIGestureRecognizerStateBegan || [panGesture state] == UIGestureRecognizerStateChanged) {
+    // Add to History
+    if ([panGesture state] == UIGestureRecognizerStateBegan) {
+        self.currentPanId = [[HistoryManager sharedManager] addActionTransformElement:self
+                                                                             withName:@"Move"
+                                                                  withOriginTransform:self.transform];
+    }
+    
+    if ([panGesture state] == UIGestureRecognizerStateEnded) {
+        [[HistoryManager sharedManager] updateTransformElementWithId:self.currentPanId
+                                                withChangedTransform:self.transform];
+    }
+    
+    if ([panGesture state] == UIGestureRecognizerStateBegan
+        || [panGesture state] == UIGestureRecognizerStateChanged) {
         CGPoint translation = [panGesture translationInView:self];
         [self moveTo:translation];
         [panGesture setTranslation:CGPointZero inView:self];
     }
-    
-    // Add to History
-    if ([panGesture state] == UIGestureRecognizerStateBegan) {
-        HistoryElementTransform *action = [[HistoryElementTransform alloc] initWithName:@"Moved"];
-        [[HistoryManager sharedManager] addAction:action];
-        [action setElement:self];
-        [action setOriginalTransform:self.transform];
-        
-    } else if ([panGesture state] == UIGestureRecognizerStateEnded) {
-        [((HistoryElementTransform *) [[HistoryManager sharedManager] currentAction]) setChangedTransform:self.transform];
-        [[HistoryManager sharedManager] finishAction];
-    }
 }
 
 - (void)elementRotate:(UIRotationGestureRecognizer *)rotationGesture {
-    if ([rotationGesture state] == UIGestureRecognizerStateBegan || [rotationGesture state] == UIGestureRecognizerStateChanged) {
+    DLog(@"Start Rotate %@ %d", rotationGesture, [rotationGesture state]);
+    // Add to History
+    if ([rotationGesture state] == UIGestureRecognizerStateBegan) {
+        self.currentRotateId = [[HistoryManager sharedManager] addActionTransformElement:self
+                                                                                withName:@"Rotate"
+                                                                     withOriginTransform:self.transform];
+    }
+    
+    if ([rotationGesture state] == UIGestureRecognizerStateEnded) {
+        [[HistoryManager sharedManager] updateTransformElementWithId:self.currentRotateId
+                                                withChangedTransform:self.transform];
+    }
+    
+    if ([rotationGesture state] == UIGestureRecognizerStateBegan
+        || [rotationGesture state] == UIGestureRecognizerStateChanged) {
         float rotation = [rotationGesture rotation];
         [self rotateTo:rotation];
         [rotationGesture setRotation:0];
     }
-    
-    // Add to History
-    if ([rotationGesture state] == UIGestureRecognizerStateBegan) {
-        HistoryElementTransform *action = [[HistoryElementTransform alloc] initWithName:@"Rotated"];
-        [[HistoryManager sharedManager] addAction:action];
-        [action setElement:self];
-        [action setOriginalTransform:self.transform];
-        
-    } else if ([rotationGesture state] == UIGestureRecognizerStateEnded) {
-        [((HistoryElementTransform *) [[HistoryManager sharedManager] currentAction]) setChangedTransform:self.transform];
-        [[HistoryManager sharedManager] finishAction];
-    }
 }
 
 - (void)elementScale:(UIPinchGestureRecognizer *)pinchGesture {
-    if ([pinchGesture state] == UIGestureRecognizerStateBegan || [pinchGesture state] == UIGestureRecognizerStateChanged) {
+    DLog(@"Start Pinch %@ %d", pinchGesture, [pinchGesture state]);
+    // Add to History
+    if ([pinchGesture state] == UIGestureRecognizerStateBegan) {
+        self.currentScaleId = [[HistoryManager sharedManager] addActionTransformElement:self
+                                                                               withName:@"Zoom"
+                                                                    withOriginTransform:self.transform];
+    }
+    
+    if ([pinchGesture state] == UIGestureRecognizerStateEnded) {
+        [[HistoryManager sharedManager] updateTransformElementWithId:self.currentScaleId
+                                                withChangedTransform:self.transform];
+    }
+    
+    if ([pinchGesture state] == UIGestureRecognizerStateBegan
+        || [pinchGesture state] == UIGestureRecognizerStateChanged) {
         float scale = pinchGesture.scale;
         [self scaleTo:scale];
         [pinchGesture setScale:1.0f];
-    }
-    
-    // Add to History
-    if ([pinchGesture state] == UIGestureRecognizerStateBegan) {
-        HistoryElementTransform *action = [[HistoryElementTransform alloc] initWithName:@"Scaled"];
-        [[HistoryManager sharedManager] addAction:action];
-        [action setElement:self];
-        [action setOriginalTransform:self.transform];
-        
-    } else if ([pinchGesture state] == UIGestureRecognizerStateEnded) {
-        [((HistoryElementTransform *) [[HistoryManager sharedManager] currentAction]) setChangedTransform:self.transform];
-        [[HistoryManager sharedManager] finishAction];
     }
 }
 

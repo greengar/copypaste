@@ -11,11 +11,18 @@
 @implementation HistoryElementCreated
 @synthesize page = _page;
 
-- (id)init {
-    if (self = [super init]) {
-        self.name = @"Created";
+- (void)setElement:(WBBaseElement *)element {
+    [super setElement:element];
+    if ([element isKindOfClass:[TextElement class]]) {
+        self.name = @"Type Text";
+    } else if ([element isKindOfClass:[GLCanvasElement class]]
+               || [element isKindOfClass:[CGCanvasElement class]]) {
+        self.name = @"Brush";
+    } else if ([element isKindOfClass:[ImageElement class]]) {
+        self.name = @"Add Image";
+    } else if ([element isKindOfClass:[BackgroundElement class]]) {
+        self.name = @"Add Background";
     }
-    return self;
 }
 
 - (void)setActive:(BOOL)active {

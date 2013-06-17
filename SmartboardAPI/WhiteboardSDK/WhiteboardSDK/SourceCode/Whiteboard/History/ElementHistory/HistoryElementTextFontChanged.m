@@ -17,7 +17,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.name = @"Font Changed";
+        self.name = @"Change Text Font";
     }
     return self;
 }

@@ -19,7 +19,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.name = @"Color Changed";
+        self.name = @"Change Text Color";
     }
     return self;
 }

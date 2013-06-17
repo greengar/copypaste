@@ -29,6 +29,11 @@
 // Helper
 - (void)addActionCreateElement:(WBBaseElement *)element forPage:(WBPage *)page;
 - (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page;
+- (NSString *)addActionTransformElement:(WBBaseElement *)element
+                               withName:(NSString *)name
+                    withOriginTransform:(CGAffineTransform)transform;
+- (void)updateTransformElementWithId:(NSString *)uid
+                withChangedTransform:(CGAffineTransform)transform;
 - (void)addActionTextContentChangedElement:(TextElement *)element
                             withOriginText:(NSString *)text1
                            withChangedText:(NSString *)text2;

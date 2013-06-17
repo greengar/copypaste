@@ -15,8 +15,9 @@
 
 - (id)init {
     if (self = [super init]) {
+        self.uid = [WBUtils generateUniqueIdWithPrefix:@"H_"];
         self.active = YES;
-        self.name = @"View";
+        self.name = @"";
         self.date = [NSDate date];
     }
     return self;
@@ -24,6 +25,7 @@
 
 - (id)initWithName:(NSString *)name {
     if (self = [super init]) {
+        self.uid = [WBUtils generateUniqueIdWithPrefix:@"H_"];
         self.active = YES;
         self.name = name;
         self.date = [NSDate date];
