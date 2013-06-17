@@ -75,7 +75,7 @@
     
     HistoryAction *action = [[[HistoryManager sharedManager] historyPool] objectAtIndex:[indexPath row]];
     cell.textLabel.text = action.name;
-    cell.detailTextLabel.text = [WBUtils stringFromDate:action.date];
+    cell.detailTextLabel.text = [WBUtils dateDiffFromDate:action.date];
     cell.contentView.backgroundColor = (action.active ? [UIColor whiteColor] : [UIColor lightGrayColor]);
     
     return cell;

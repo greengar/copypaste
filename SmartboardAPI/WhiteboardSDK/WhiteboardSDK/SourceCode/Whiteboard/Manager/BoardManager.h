@@ -18,6 +18,9 @@
 + (NSDictionary *)writeBoardToFile:(WBBoard *)board;
 + (WBBoard *)readBoardFromFileWithUid:(NSString *)uid;
 
++ (NSDictionary *)exportBoardToData:(WBBoard *)board;
++ (WBBoard *)importDataToCreateBoard:(NSDictionary *)dict;
+
 + (WBBoard *)loadBoardWithUid:(NSString *)uid;
 + (WBBoard *)loadBoardWithName:(NSString *)name;
 - (void)createANewBoard:(WBBoard *)board;

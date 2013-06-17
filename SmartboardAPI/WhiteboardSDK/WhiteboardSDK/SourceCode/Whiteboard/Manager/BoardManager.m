@@ -7,6 +7,7 @@
 //
 
 #import "BoardManager.h"
+#import "HistoryManager.h"
 #import "WBUtils.h"
 #import "WBBoard.h"
 
@@ -35,7 +36,6 @@ static BoardManager *shareManager = nil;
     NSString *folderPath = [BoardManager getBaseDocumentFolder];
     NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", board.uid]];
     NSDictionary *boardDict = [board saveToDict];
-    DLog(@"boardDict: %@", boardDict);
 	[boardDict writeToFile:filePath atomically:NO];
     return boardDict;
 }
@@ -45,7 +45,6 @@ static BoardManager *shareManager = nil;
     NSString *folderPath = [BoardManager getBaseDocumentFolder];
     NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", uid]];
     NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    DLog(@"boardDict: %@", boardDict);
     return [WBBoard loadFromDict:boardDict];
 }
 
