@@ -14,6 +14,7 @@
 #import "SettingManager.h"
 #import "GSButton.h"
 #import "HistoryView.h"
+#import "WBToolbarView.h"
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
@@ -67,6 +68,7 @@
 @synthesize isTargetViewCurled = _isTargetViewCurled;
 @synthesize toolLayer = _toolLayer;
 
+// TODO: why doesn't this call -initWithNibName:...?
 - (id)initWithDict:(NSDictionary *)dictionary {
     self = [super init];
     if (self) {
@@ -132,6 +134,13 @@
 
 #pragma mark - Tool/Control for Board
 - (void)initLayersWithFrame:(CGRect)frame {
+    
+    float bottomToolbarHeight = 74;
+    float bottomMargin = 26;
+    WBToolbarView *toolbarView = [[WBToolbarView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-bottomToolbarHeight-bottomMargin, self.view.frame.size.width, bottomToolbarHeight)];
+    toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:toolbarView];
+    
     // Canvas/Text/History/Lock
     self.toolLayer = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                               frame.size.height-kToolBarItemHeight,
