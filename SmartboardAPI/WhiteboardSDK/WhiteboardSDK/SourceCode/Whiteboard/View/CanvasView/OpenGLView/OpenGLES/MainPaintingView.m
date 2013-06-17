@@ -20,7 +20,7 @@
 //#import "ImageManipulation.h" // for USE_PNG_FILE_FORMAT
 
 #define kInvalidCoord (-100)
-#define kUndoMaxBuffer 10
+#define kUndoMaxBuffer 50
 
 @interface MainPaintingView () {
     Transforms viewTransform;
@@ -1067,6 +1067,10 @@
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(checkUndo:)]) {
         [self.delegate checkUndo:[undoSequenceArray count]];
+    }
+    
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addedCommandToUndoPool)]) {
+        [self.delegate addedCommandToUndoPool];
     }
 }
 

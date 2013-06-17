@@ -12,7 +12,7 @@
 
 @class GLCanvasElement;
 
-@interface GLCanvasElement : WBBaseElement
+@interface GLCanvasElement : WBBaseElement <MainPaintViewDelegate>
 
 - (void)takeScreenshot;
 - (void)removeScreenshot;

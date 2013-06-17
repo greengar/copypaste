@@ -34,6 +34,7 @@
                     withOriginTransform:(CGAffineTransform)transform;
 - (void)updateTransformElementWithId:(NSString *)uid
                 withChangedTransform:(CGAffineTransform)transform;
+- (void)addActionBrushElement:(WBBaseElement *)element;
 - (void)addActionTextContentChangedElement:(TextElement *)element
                             withOriginText:(NSString *)text1
                            withChangedText:(NSString *)text2;

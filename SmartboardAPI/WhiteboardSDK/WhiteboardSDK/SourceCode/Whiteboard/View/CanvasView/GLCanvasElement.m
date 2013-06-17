@@ -8,6 +8,7 @@
 
 #import "GLCanvasElement.h"
 #import "SettingManager.h"
+#import "HistoryManager.h"
 #import "GSButton.h"
 
 @interface GLCanvasElement()
@@ -57,6 +58,7 @@
                                                                               frame.size.width,
                                                                               frame.size.height)];
         [self addSubview:self.drawingView];
+        [self.drawingView setDelegate:self];
         [self.drawingView initialDrawing];
         [self initControlWithFrame:frame];
         
@@ -134,6 +136,10 @@
 }
 
 #pragma mark - Undo/Redo
+- (void)addedCommandToUndoPool {
+    [[HistoryManager sharedManager] addActionBrushElement:self];
+}
+
 - (void)checkUndo:(int)undoCount {
     
 }

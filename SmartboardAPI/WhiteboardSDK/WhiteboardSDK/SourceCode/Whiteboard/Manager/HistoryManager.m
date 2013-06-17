@@ -12,9 +12,10 @@
 #import "HistoryElementTextChanged.h"
 #import "HistoryElementTextFontChanged.h"
 #import "HistoryElementTextColorChanged.h"
+#import "HistoryElementCanvasDraw.h"
 #import "HistoryElementTransform.h"
 
-#define kHistoryMaxBuffer 10
+#define kHistoryMaxBuffer 50
 
 static HistoryManager *shareManager = nil;
 
@@ -52,8 +53,9 @@ static HistoryManager *shareManager = nil;
     if (index != NSNotFound) {
         for (int i = 0; i <= index; i++) {
             HistoryAction *action = [self.historyPool objectAtIndex:i];
-            DLog(@"Active %@", action.name);
-            [action setActive:YES];
+            if (![action active]) {
+                [action setActive:YES];
+            }
         }
         
         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updateHistoryView)]) {
@@ -67,8 +69,9 @@ static HistoryManager *shareManager = nil;
     if (index != NSNotFound) {
         for (int i = [self.historyPool count]-1; i >= index; i--) {
             HistoryAction *action = [self.historyPool objectAtIndex:i];
-            DLog(@"Deactive %@", action.name);
-            [action setActive:NO];
+            if ([action active]) {
+                [action setActive:NO];
+            }
         }
         
         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updateHistoryView)]) {
@@ -140,6 +143,12 @@ static HistoryManager *shareManager = nil;
             [((HistoryElementTransform *) action) setChangedTransform:transform];
         }
     }
+}
+
+- (void)addActionBrushElement:(WBBaseElement *)element {
+    HistoryElementCanvasDraw *action = [[HistoryElementCanvasDraw alloc] init];
+    [action setElement:element];
+    [self addAction:action];
 }
 
 - (void)addActionTextContentChangedElement:(TextElement *)element

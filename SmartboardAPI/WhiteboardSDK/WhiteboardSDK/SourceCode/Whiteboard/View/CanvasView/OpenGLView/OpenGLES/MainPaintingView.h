@@ -35,6 +35,7 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)startLineAtPoint:(CGPoint)start;
 - (void)drawLineFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 - (void)endLineAtPoint:(CGPoint)end;
+- (void)addedCommandToUndoPool;
 - (void)doneUndo:(int)undoCount;
 - (void)doneRedo:(int)redoCount;
 - (void)checkUndo:(int)undoCount;

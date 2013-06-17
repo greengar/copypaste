@@ -62,6 +62,9 @@
 		7B82E790175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E791175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E792175F9E4C00B063D7 /* Whiteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B82E78F175F9E4C00B063D7 /* Whiteboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7BBCAC9E176F7CB000950ABA /* HistoryElementCanvasDraw.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */; };
+		7BBCAC9F176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
+		7BBCACA0176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
 		7BEA52DC1766873A001BC5FE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5F3175F9D3200B063D7 /* CoreFoundation.framework */; };
 		7BEA52E21766873A001BC5FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA52E01766873A001BC5FE /* InfoPlist.strings */; };
 		7BEA5369176687F1001BC5FE /* HistoryElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA52ED176687F0001BC5FE /* HistoryElement.h */; };
@@ -347,6 +350,8 @@
 		7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Whiteboard.bundle; sourceTree = "<group>"; };
 		7B82E78F175F9E4C00B063D7 /* Whiteboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Whiteboard.h; sourceTree = "<group>"; };
 		7B82E8EA175FBA0700B063D7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElementCanvasDraw.h; sourceTree = "<group>"; };
+		7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementCanvasDraw.m; sourceTree = "<group>"; };
 		7BEA52DB1766873A001BC5FE /* Collaborative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Collaborative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BEA52DF1766873A001BC5FE /* Collaborative-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Collaborative-Info.plist"; sourceTree = "<group>"; };
 		7BEA52E11766873A001BC5FE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -802,6 +807,8 @@
 				7BEA52F0176687F0001BC5FE /* HistoryElementCreated.m */,
 				7BEA52F1176687F0001BC5FE /* HistoryElementDeleted.h */,
 				7BEA52F2176687F0001BC5FE /* HistoryElementDeleted.m */,
+				7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */,
+				7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */,
 				7BEA52F3176687F0001BC5FE /* HistoryElementTextChanged.h */,
 				7BEA52F4176687F0001BC5FE /* HistoryElementTextChanged.m */,
 				7BEA52F5176687F0001BC5FE /* HistoryElementTextColorChanged.h */,
@@ -1218,6 +1225,7 @@
 				7BEA5401176687F1001BC5FE /* WBPage.h in Headers */,
 				7BEB7FE0176A386800F5FE5D /* CGPaintingView.h in Headers */,
 				7BEB7FE5176A39D800F5FE5D /* CGCanvasElement.h in Headers */,
+				7BBCAC9E176F7CB000950ABA /* HistoryElementCanvasDraw.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1494,6 +1502,7 @@
 				A9D3B455176F1B5C005574D2 /* WBCanvasButton.m in Sources */,
 				A9D3B456176F1B5C005574D2 /* WBCanvasToolbarView.m in Sources */,
 				A9D3B457176F1B5C005574D2 /* WBToolbarView.m in Sources */,
+				7BBCAC9F176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1554,6 +1563,7 @@
 				7BEA5409176687F1001BC5FE /* WBUtils.m in Sources */,
 				7BEB7FE2176A386800F5FE5D /* CGPaintingView.m in Sources */,
 				7BEB7FE7176A39D800F5FE5D /* CGCanvasElement.m in Sources */,
+				7BBCACA0176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
