@@ -39,8 +39,6 @@
         self.layer.borderColor = [UIColor lightGrayColor].CGColor;
         self.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9];
         
-        [[SettingManager sharedManager] setCurrentColorTab:0];
-        
         UIImage *colorSpectrumImage = [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPublic.png"];
         self.colorSpectrumImageView = [[ColorSpectrumImageView alloc] initWithImage:colorSpectrumImage];
         [self.colorSpectrumImageView setFrame:CGRectMake(0, 0, colorSpectrumImage.size.width, colorSpectrumImage.size.height)];

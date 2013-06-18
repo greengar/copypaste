@@ -112,6 +112,8 @@ static SettingManager *shareManager = nil;
         // Load Setting from Preferences
         [self loadColorTabSetting];
         [self loadTextSetting];
+        
+        [self setCurrentColorTab:0];
     }
     return self;
 }
