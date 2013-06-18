@@ -11,17 +11,57 @@
 
 @implementation WBCanvasButton
 
-
+static inline int PerceivedBrightness(float red, float green, float blue, float alpha)
+{
+    alpha = 1-alpha;
+    
+    float bgred = 1, bggreen = 1, bgblue = 1;
+    
+    red   = ((1-alpha)*red)  +(alpha*bgred);
+    green = ((1-alpha)*green)+(alpha*bggreen);
+    blue  = ((1-alpha)*blue)  +(alpha*bgblue);
+    
+    // convert values from range [0-1] to range [0-255]
+    
+    red *= 255.0f;
+    green *= 255.0f;
+    blue *= 255.0f;
+    
+//    alpha = 1 - alpha;
+//    
+//    //float bgred = 1, bggreen = 1, bgblue = 1;
+//    float bgred = 255, bggreen = 255, bgblue = 255;
+//    
+//    //blue = 255.0f * (alpha * blue + alpha * bgblue);
+//    
+//    red = (alpha * (red / 255) + alpha * (bgred / 255)) * 255;
+//    blue = (alpha * (blue / 255) + alpha * (bgblue / 255)) * 255;
+//    green = (alpha * (green / 255) + alpha * (bggreen / 255)) * 255;
+    
+    float brightness = sqrtf(red * red * .241 +
+                             green * green * .691 +
+                             blue * blue * .068);
+    
+    return brightness;
+    // brightness > 130 ? black : white
+}
 
 - (void)drawRect:(CGRect)rect
 {
     // Color Declarations
     UIColor* selectedButtonOutlineWhite = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+    
     UIColor* tabColor = [[SettingManager sharedManager] getCurrentColorTab].tabColor;
     float red, green, blue, alpha;
     [tabColor getRed:&red green:&green blue:&blue alpha:&alpha];
     alpha = [[SettingManager sharedManager] getCurrentColorTab].opacity;
     UIColor* currentBrushColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+    
+    if (PerceivedBrightness(red, green, blue, alpha) > 130)
+    {
+        selectedButtonOutlineWhite = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+    }
+    
     if (self.state == UIControlStateHighlighted)
     {
         CGFloat currentBrushColorRGBA[4];
