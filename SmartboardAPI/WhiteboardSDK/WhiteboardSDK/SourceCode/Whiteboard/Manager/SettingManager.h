@@ -21,7 +21,7 @@
 
 #define kDefaultOpacity			0.9
 #define kCoolOpacity            0.9
-#define kDefaultPointSize		9.0
+#define kDefaultPointSize		18.0
 
 #define kEraserTabIndex ((IS_IPAD) ? 6 : 3)
 
@@ -40,13 +40,15 @@
 - (ColorTabElement *) getCurrentColorTab;               // Get current drawing Color Tab
 - (ColorTabElement *) getColorTabAtIndex:(int)index;    // Get Color Tab at valid index
 - (int) getCurrentColorTabIndex;
+
 - (void) setCurrentColorTab:(int)currentIndex;          // User can only set valid index for current Color Tab
 - (void) setCurrentColorTabWithPointSize:(float)pointSize;
 - (void) setCurrentColorTabWithOpacity:(float)opacity;
-
 - (void) setCurrentColorTabWithColor:(UIColor *)color2
                            atOffsetX:(float)offsetX
                            atOffsetY:(float)offsetY;
+
+- (void)swapColorHistory;
 
 - (void)setupRenderPoint;
 - (void)teardownRenderPoint;

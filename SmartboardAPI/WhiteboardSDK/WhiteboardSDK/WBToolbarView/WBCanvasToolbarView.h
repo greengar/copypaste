@@ -10,6 +10,7 @@
 
 @protocol WBCanvasToolbarDelegate
 - (void)showColorSpectrum:(BOOL)show;
+- (void)selectHistoryColor;
 @end
 
 @interface WBCanvasToolbarView : UIView

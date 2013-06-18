@@ -68,6 +68,9 @@
 		7BBCACA3176FBA5600950ABA /* WBToolMonitorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */; };
 		7BBCACA4176FBA5600950ABA /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */; };
 		7BBCACA5176FBA5600950ABA /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */; };
+		7BC34BC21770E3A200CF6EBA /* WBHistoryColorButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BC34BC01770E3A100CF6EBA /* WBHistoryColorButton.h */; };
+		7BC34BC31770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */; };
+		7BC34BC41770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */; };
 		7BEA52DC1766873A001BC5FE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5F3175F9D3200B063D7 /* CoreFoundation.framework */; };
 		7BEA52E21766873A001BC5FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA52E01766873A001BC5FE /* InfoPlist.strings */; };
 		7BEA5369176687F1001BC5FE /* HistoryElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA52ED176687F0001BC5FE /* HistoryElement.h */; };
@@ -372,6 +375,8 @@
 		7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementCanvasDraw.m; sourceTree = "<group>"; };
 		7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBToolMonitorView.h; sourceTree = "<group>"; };
 		7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBToolMonitorView.m; sourceTree = "<group>"; };
+		7BC34BC01770E3A100CF6EBA /* WBHistoryColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBHistoryColorButton.h; sourceTree = "<group>"; };
+		7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryColorButton.m; sourceTree = "<group>"; };
 		7BEA52DB1766873A001BC5FE /* Collaborative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Collaborative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BEA52DF1766873A001BC5FE /* Collaborative-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Collaborative-Info.plist"; sourceTree = "<group>"; };
 		7BEA52E11766873A001BC5FE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1177,8 +1182,14 @@
 		A9D3B44E176F1B5C005574D2 /* WBToolbarView */ = {
 			isa = PBXGroup;
 			children = (
+				A9520C9617701F4900B180BA /* WBButton.h */,
+				A9520C9717701F4900B180BA /* WBButton.m */,
 				A9D3B44F176F1B5C005574D2 /* WBCanvasButton.h */,
 				A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */,
+				A9520C9B17701F5F00B180BA /* WBEraserButton.h */,
+				A9520C9C17701F5F00B180BA /* WBEraserButton.m */,
+				7BC34BC01770E3A100CF6EBA /* WBHistoryColorButton.h */,
+				7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */,
 				A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */,
 				A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */,
 				A9D3B453176F1B5C005574D2 /* WBToolbarView.h */,
@@ -1187,10 +1198,6 @@
 				A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */,
 				7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */,
 				7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */,
-				A9520C9617701F4900B180BA /* WBButton.h */,
-				A9520C9717701F4900B180BA /* WBButton.m */,
-				A9520C9B17701F5F00B180BA /* WBEraserButton.h */,
-				A9520C9C17701F5F00B180BA /* WBEraserButton.m */,
 			);
 			name = WBToolbarView;
 			path = ../../../WBToolbarView;
@@ -1267,6 +1274,7 @@
 				7BBCACA3176FBA5600950ABA /* WBToolMonitorView.h in Headers */,
 				A9520C9817701F4900B180BA /* WBButton.h in Headers */,
 				A9520C9D17701F5F00B180BA /* WBEraserButton.h in Headers */,
+				7BC34BC21770E3A200CF6EBA /* WBHistoryColorButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1548,6 +1556,7 @@
 				7BBCACA4176FBA5600950ABA /* WBToolMonitorView.m in Sources */,
 				A9520C9917701F4900B180BA /* WBButton.m in Sources */,
 				A9520C9E17701F5F00B180BA /* WBEraserButton.m in Sources */,
+				7BC34BC31770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1616,6 +1625,7 @@
 				7BBCACA5176FBA5600950ABA /* WBToolMonitorView.m in Sources */,
 				A9520C9A17701F4900B180BA /* WBButton.m in Sources */,
 				A9520C9F17701F5F00B180BA /* WBEraserButton.m in Sources */,
+				7BC34BC41770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

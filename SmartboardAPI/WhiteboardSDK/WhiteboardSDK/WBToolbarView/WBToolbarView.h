@@ -11,6 +11,7 @@
 
 @protocol WBToolbarDelegate
 - (void)showColorSpectrum:(BOOL)show from:(UIView *)view;
+- (void)selectHistoryColor;
 @end
 
 @interface WBToolbarView : UIView <WBCanvasToolbarDelegate>

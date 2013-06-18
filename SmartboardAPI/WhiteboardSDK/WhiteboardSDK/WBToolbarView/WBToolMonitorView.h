@@ -26,4 +26,6 @@
 
 @property (nonatomic, assign) id<WBToolMonitorDelegate> delegate;
 
+- (void)enableEraser:(BOOL)enable;
+
 @end

@@ -55,8 +55,6 @@ typedef enum {
 
 #define getDocumentPath() ([NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0])
 
-#define kSelectedTabKey @"kSelectedTabKey"
-
 #define kPointSizeKeyFormat @"kPointSizeKeyFormat%d"
 
 #define kOpacityKeyFormat @"kOpacityKeyFormat%d"

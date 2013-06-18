@@ -64,6 +64,12 @@
     }
 }
 
+- (void)selectHistoryColor {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(selectHistoryColor)]) {
+        [self.delegate selectHistoryColor];
+    }
+}
+
 - (void)monitorClosed {
     [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) monitorClosed];
 }

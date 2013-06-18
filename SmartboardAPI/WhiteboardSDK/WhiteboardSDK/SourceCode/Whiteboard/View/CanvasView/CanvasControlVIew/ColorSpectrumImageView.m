@@ -65,7 +65,14 @@
                 [[pickedColorDelegateArray objectAtIndex:i] wantToPickColorWhenEraserIsActivated];
             }
         }
+    } else {
+        [[SettingManager sharedManager] swapColorHistory];
     }
+    
+    ColorTabElement *currentTab = [[SettingManager sharedManager] getCurrentColorTab];
+    [[SettingManager sharedManager] setCurrentColorTab:0];
+    [[SettingManager sharedManager] setCurrentColorTabWithOpacity:currentTab.opacity];
+    [[SettingManager sharedManager] setCurrentColorTabWithPointSize:currentTab.pointSize];
     
     [self touchesEvent:touches];
 }

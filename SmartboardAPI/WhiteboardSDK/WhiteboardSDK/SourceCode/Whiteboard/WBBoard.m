@@ -439,6 +439,10 @@
     }
 }
 
+- (void)selectHistoryColor {
+    [(WBToolMonitorView *)[self.view viewWithTag:kToolMonitorTag] enableEraser:NO];
+}
+
 - (void)monitorClosed {
     [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) monitorClosed];
 }

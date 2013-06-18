@@ -8,6 +8,7 @@
 
 #import "WBCanvasToolbarView.h"
 #import "WBCanvasButton.h"
+#import "WBHistoryColorButton.h"
 #import "SettingManager.h"
 
 #define kCanvasButtonTag 777
@@ -30,6 +31,16 @@
         self.canvasButton.tag = kCanvasButtonTag;
         [self.canvasButton addTarget:self action:@selector(showColorSpectrum:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:self.canvasButton];
+        
+        float barWidth = frame.size.width-kCanvasButtonWidth;
+        float barHeight = frame.size.height;
+        int count = [[[SettingManager sharedManager] colorTabList] count]-1; // Don't count eraser color
+        for (int i = 0; i < count; i++) {
+            WBHistoryColorButton *historyColorBtn = [[WBHistoryColorButton alloc] initWithFrame:CGRectMake(barWidth*(count-i-1)/count, 0, barWidth/count, barHeight)];
+            [historyColorBtn setIndex:i];
+            [historyColorBtn addTarget:self action:@selector(selectHistoryColor:) forControlEvents:UIControlEventTouchDown];
+            [self addSubview:historyColorBtn];
+        }
     }
     return self;
 }
@@ -41,19 +52,30 @@
     [button setSelected:!button.isSelected];
 }
 
+- (void)selectHistoryColor:(WBHistoryColorButton *)button {
+    [[SettingManager sharedManager] setCurrentColorTab:button.index];
+    [self selectEraser:NO];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(selectHistoryColor)]) {
+        [self.delegate selectHistoryColor];
+    }
+}
+
 - (void)updateColor:(UIColor *)color {
-    [self.canvasButton setNeedsDisplay];
-    [self setNeedsDisplay];
+    for (UIView *subview in [self subviews]) {
+        [subview setNeedsDisplay];
+    }
 }
 
 - (void)updateAlpha:(float)alpha {
-    [self.canvasButton setNeedsDisplay];
-    [self setNeedsDisplay];
+    for (UIView *subview in [self subviews]) {
+        [subview setNeedsDisplay];
+    }
 }
 
 - (void)updatePointSize:(float)pointSize {
-    [self.canvasButton setNeedsDisplay];
-    [self setNeedsDisplay];
+    for (UIView *subview in [self subviews]) {
+        [subview setNeedsDisplay];
+    }
 }
 
 - (void)monitorClosed {
@@ -62,53 +84,8 @@
 
 - (void)selectEraser:(BOOL)select {
     [self.canvasButton setEraserEnabled:select];
-    [self.canvasButton setNeedsDisplay];
-}
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    float barWidth = self.frame.size.width-kCanvasButtonWidth;
-    float barHeight = self.frame.size.height;
-    // Color Declarations
-    UIColor* strokeColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
-    UIColor* color = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
-    UIColor* lightGrayOutlineColor = [UIColor colorWithRed: 0.757 green: 0.757 blue: 0.757 alpha: 1];
-
-    //// Frames
-    CGRect bottomToolbarFrame = self.bounds; //CGRectMake(285, 669, 444, 74);
-    
-    //// Recent Tray Drawing
-    UIBezierPath* recentTrayPath = [UIBezierPath bezierPath];
-    [recentTrayPath moveToPoint: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 363.5, CGRectGetMinY(bottomToolbarFrame) + 73.5)];
-    [recentTrayPath addLineToPoint: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 6.5, CGRectGetMinY(bottomToolbarFrame) + 73.5)];
-    [recentTrayPath addCurveToPoint: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 0.5, CGRectGetMinY(bottomToolbarFrame) + 67.5) controlPoint1: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 6.5, CGRectGetMinY(bottomToolbarFrame) + 73.5) controlPoint2: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 0.56, CGRectGetMinY(bottomToolbarFrame) + 73.38)];
-    [recentTrayPath addCurveToPoint: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 0.5, CGRectGetMinY(bottomToolbarFrame) + 6.5) controlPoint1: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 0.44, CGRectGetMinY(bottomToolbarFrame) + 61.62) controlPoint2: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 0.5, CGRectGetMinY(bottomToolbarFrame) + 6.5)];
-    [recentTrayPath addCurveToPoint: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 6.5, CGRectGetMinY(bottomToolbarFrame) + 0.5) controlPoint1: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 0.5, CGRectGetMinY(bottomToolbarFrame) + 6.5) controlPoint2: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 0.78, CGRectGetMinY(bottomToolbarFrame) + 0.5)];
-    [recentTrayPath addCurveToPoint: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 363.5, CGRectGetMinY(bottomToolbarFrame) + 0.5) controlPoint1: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 12.22, CGRectGetMinY(bottomToolbarFrame) + 0.5) controlPoint2: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 363.5, CGRectGetMinY(bottomToolbarFrame) + 0.5)];
-    [color setFill];
-    [recentTrayPath fill];
-    [lightGrayOutlineColor setStroke];
-    recentTrayPath.lineWidth = 1;
-    [recentTrayPath stroke];
-    
-    for (int i = 0; i < 6; i++) {
-        float colorSize = [[SettingManager sharedManager] getColorTabAtIndex:i].pointSize*1.5;
-        UIColor *color = [[SettingManager sharedManager] getColorTabAtIndex:i].tabColor;
-        float red, green, blue, alpha;
-        [color getRed:&red green:&green blue:&blue alpha:&alpha];
-        alpha = [[SettingManager sharedManager] getColorTabAtIndex:i].opacity;
-        UIColor *alphaColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-        UIBezierPath* historyColorPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(barWidth-barWidth*(i+1)/6+(barWidth/6-colorSize)/2,
-                                                                                           (barHeight-colorSize)/2,
-                                                                                           colorSize,
-                                                                                           colorSize)];
-        [alphaColor setFill];
-        [historyColorPath fill];
-        [strokeColor setStroke];
-        historyColorPath.lineWidth = 2;
-        [historyColorPath stroke];
+    for (UIView *subview in [self subviews]) {
+        [subview setNeedsDisplay];
     }
 }
 

@@ -155,17 +155,14 @@ static SettingManager *shareManager = nil;
     currentTab.pointSize = pointSize;
     
     [[PaintingManager sharedManager] updatePointSize:pointSize of:nil];
-    
-    // don't persist here
 }
 
 - (void) setCurrentColorTabWithOpacity:(float)opacity {
     ColorTabElement *currentTab = [self.colorTabList objectAtIndex:self.currentColorTab];
     currentTab.opacity = opacity;
     
-    [[PaintingManager sharedManager] updateOpacity:opacity of:nil];
-    
-    // don't persist here
+    CGFloat effectiveTransformedOpacity = 1.0-powf(1.0-currentTab.opacity, 1.0/([UIScreen mainScreen].scale*currentTab.pointSize));
+    [[PaintingManager sharedManager] updateOpacity:effectiveTransformedOpacity of:nil];
 }
 
 - (void) setCurrentColorTabWithColor:(UIColor *)color2 atOffsetX:(float)offsetX atOffsetY:(float)offsetY {
@@ -175,27 +172,31 @@ static SettingManager *shareManager = nil;
     currentTab.offsetYOnSpectrum = offsetY;
     
     [[PaintingManager sharedManager] updateColor:color2.CGColor of:nil];
+}
+
+- (void)swapColorHistory {
+    // Keep the first color
+    ColorTabElement *firstTab = [self.colorTabList objectAtIndex:0];
+    ColorTabElement *newColorTab = [[ColorTabElement alloc] initWithPointSize:firstTab.pointSize
+                                                                      opacity:firstTab.opacity
+                                                                        color:firstTab.tabColor];
+    // Swap each color by its previous one
+    for (int i = [self.colorTabList count]-2; i > 0; i--) {
+        ColorTabElement *currentTab = [self.colorTabList objectAtIndex:i];
+        ColorTabElement *previousTab = [self.colorTabList objectAtIndex:i-1];
+        currentTab = previousTab;
+    }
     
-    // don't persist here
+    // Remove the one before Eraser
+    [self.colorTabList removeObjectAtIndex:([self.colorTabList count]-2)];
+    
+    // Add the new color
+    [self.colorTabList insertObject:newColorTab atIndex:0];
+    
 }
 
 - (void) loadColorTabSetting {
-    self.currentColorTab = [[NSDEF objectForKey:kSelectedTabKey] intValue];
-    
-    if (self.currentColorTab < 0 || self.currentColorTab >= [self.colorTabList count]) { // Invalid current tab index, because of the different number of tabs on iPad and iPhone
-        self.currentColorTab = [self.colorTabList count] - 1; // Set to the last valid tab
-        
-        if (self.currentColorTab == kEraserTabIndex) { // But if it's the eraser
-            self.currentColorTab = self.currentColorTab - 1; // We should use another color tab instead
-        }
-        
-        if (self.currentColorTab < 0 || self.currentColorTab >= [self.colorTabList count]) { // Just to be save
-            self.currentColorTab = 0; // If we try to use one valid tab and the current index of color tab is invalid again, just use the first color tab
-        }
-    }
-    
     for (int i = 0; i < [self.colorTabList count]; i++) {
-        
         ColorTabElement *currentTab = [self.colorTabList objectAtIndex:i];
         
         NSNumber *number = [NSDEF objectForKey:[NSString stringWithFormat:kPointSizeKeyFormat, i]];

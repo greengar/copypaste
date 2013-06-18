@@ -101,6 +101,7 @@
         eraserButton = [[WBEraserButton alloc] init];
         eraserButton.frame = CGRectMake(82, previewTopMargin+2, [eraserButton preferredSize].width, [eraserButton preferredSize].height);
         [eraserButton addTarget:self action:@selector(switchToEraser:) forControlEvents:UIControlEventTouchDown];
+        [eraserButton setSelected:([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex)];
         [canvasMonitorView addSubview:eraserButton];
         
         float closeButtonSize = 44;
@@ -162,15 +163,9 @@
 }
 
 - (void)opacityChanged:(CustomSlider *)opacitySlider {
-    if ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) {
-        return;
-    }
-    
     [[SettingManager sharedManager] setCurrentColorTabWithOpacity:opacitySlider.value];
     [self invalidatePreviewArea];
     [self.colorSpectrumImageView setNeedsDisplay];
-    CGFloat opacity = 1.0-powf(1.0-opacitySlider.value, 1.0/([[SettingManager sharedManager] getCurrentColorTab].pointSize*[UIScreen mainScreen].scale));
-    [[PaintingManager sharedManager] updateOpacity:opacity of:nil];
 	
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(opacityChanged:)]) {
         [self.delegate opacityChanged:opacitySlider.value];
@@ -188,6 +183,7 @@
 
 - (void)closeMe {
     [self removeFromSuperview];
+    [[SettingManager sharedManager] persistColorTabSetting];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(monitorClosed)]) {
         [self.delegate monitorClosed];
     }
