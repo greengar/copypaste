@@ -9,6 +9,7 @@
 #import "WBToolMonitorView.h"
 #import "WBUtils.h"
 #import "SettingManager.h"
+#import "WBEraserButton.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kCanvasMonitorTag   777
@@ -17,10 +18,16 @@
 #define kPreviewAreaTag     kCanvasMonitorTag+3
 
 @interface WBToolMonitorView()
+{
+    WBEraserButton *eraserButton;
+}
 @property (nonatomic, strong) ColorSpectrumImageView *colorSpectrumImageView;
 @property (nonatomic, strong) ColorPreviewView *previewArea;
+
 @end
+
 @implementation WBToolMonitorView
+
 @synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame
@@ -89,10 +96,10 @@
         [self.colorSpectrumImageView registerDelegate:self.previewArea];
         [canvasMonitorView addSubview:self.previewArea];
         
-        // TODO: change to custom button
-        UIButton *eraserButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [eraserButton setTitle:@"Eraser" forState:UIControlStateNormal];
-        [eraserButton setFrame:CGRectMake(79, previewTopMargin*1.5, 60, previewHeight-2*previewTopMargin)];
+        eraserButton = [[WBEraserButton alloc] init];
+//        [eraserButton setTitle:@"Eraser" forState:UIControlStateNormal];
+//        [eraserButton setFrame:CGRectMake(79, previewTopMargin*1.5, 60, previewHeight-2*previewTopMargin)];
+        eraserButton.frame = CGRectMake(79, previewTopMargin, [eraserButton preferredSize].width, [eraserButton preferredSize].height);
         [eraserButton addTarget:self action:@selector(switchToEraser:) forControlEvents:UIControlEventTouchDown];
         [canvasMonitorView addSubview:eraserButton];
         
@@ -149,6 +156,7 @@
 }
 
 - (void)switchToEraser:(UIButton *)button {
+    button.selected = YES;
     [[SettingManager sharedManager] setCurrentColorTab:kEraserTabIndex];
     [self.previewArea setNeedsDisplay];
 }
@@ -161,6 +169,9 @@
 }
 
 - (void)colorPicked:(UIColor *)color {
+    
+    eraserButton.selected = NO;
+    
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(colorPicked:)]) {
         [self.delegate colorPicked:color];
     }

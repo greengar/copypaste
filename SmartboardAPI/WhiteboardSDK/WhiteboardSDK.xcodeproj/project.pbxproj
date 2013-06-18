@@ -320,6 +320,12 @@
 		A9520C93176FB8AD00B180BA /* WBCanvasButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A9D3B44F176F1B5C005574D2 /* WBCanvasButton.h */; };
 		A9520C94176FB8AD00B180BA /* WBCanvasToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */; };
 		A9520C95176FB8AD00B180BA /* WBToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = A9D3B453176F1B5C005574D2 /* WBToolbarView.h */; };
+		A9520C9817701F4900B180BA /* WBButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A9520C9617701F4900B180BA /* WBButton.h */; };
+		A9520C9917701F4900B180BA /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9717701F4900B180BA /* WBButton.m */; };
+		A9520C9A17701F4900B180BA /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9717701F4900B180BA /* WBButton.m */; };
+		A9520C9D17701F5F00B180BA /* WBEraserButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A9520C9B17701F5F00B180BA /* WBEraserButton.h */; };
+		A9520C9E17701F5F00B180BA /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9C17701F5F00B180BA /* WBEraserButton.m */; };
+		A9520C9F17701F5F00B180BA /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9C17701F5F00B180BA /* WBEraserButton.m */; };
 		A9D3B455176F1B5C005574D2 /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */; };
 		A9D3B456176F1B5C005574D2 /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */; };
 		A9D3B457176F1B5C005574D2 /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B454176F1B5C005574D2 /* WBToolbarView.m */; };
@@ -543,6 +549,10 @@
 		7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataViewController.m; sourceTree = "<group>"; };
 		A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBBottomRightToolbarView.h; sourceTree = "<group>"; };
 		A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBBottomRightToolbarView.m; sourceTree = "<group>"; };
+		A9520C9617701F4900B180BA /* WBButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBButton.h; sourceTree = "<group>"; };
+		A9520C9717701F4900B180BA /* WBButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBButton.m; sourceTree = "<group>"; };
+		A9520C9B17701F5F00B180BA /* WBEraserButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBEraserButton.h; sourceTree = "<group>"; };
+		A9520C9C17701F5F00B180BA /* WBEraserButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBEraserButton.m; sourceTree = "<group>"; };
 		A9D3B44F176F1B5C005574D2 /* WBCanvasButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBCanvasButton.h; sourceTree = "<group>"; };
 		A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBCanvasButton.m; sourceTree = "<group>"; };
 		A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBCanvasToolbarView.h; sourceTree = "<group>"; };
@@ -1177,6 +1187,10 @@
 				A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */,
 				7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */,
 				7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */,
+				A9520C9617701F4900B180BA /* WBButton.h */,
+				A9520C9717701F4900B180BA /* WBButton.m */,
+				A9520C9B17701F5F00B180BA /* WBEraserButton.h */,
+				A9520C9C17701F5F00B180BA /* WBEraserButton.m */,
 			);
 			name = WBToolbarView;
 			path = ../../../WBToolbarView;
@@ -1251,6 +1265,8 @@
 				A9520C94176FB8AD00B180BA /* WBCanvasToolbarView.h in Headers */,
 				A9520C95176FB8AD00B180BA /* WBToolbarView.h in Headers */,
 				7BBCACA3176FBA5600950ABA /* WBToolMonitorView.h in Headers */,
+				A9520C9817701F4900B180BA /* WBButton.h in Headers */,
+				A9520C9D17701F5F00B180BA /* WBEraserButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1530,6 +1546,8 @@
 				7BBCAC9F176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */,
 				A9520C8E176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */,
 				7BBCACA4176FBA5600950ABA /* WBToolMonitorView.m in Sources */,
+				A9520C9917701F4900B180BA /* WBButton.m in Sources */,
+				A9520C9E17701F5F00B180BA /* WBEraserButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1596,6 +1614,8 @@
 				A9520C91176FB87E00B180BA /* WBCanvasToolbarView.m in Sources */,
 				A9520C92176FB87E00B180BA /* WBToolbarView.m in Sources */,
 				7BBCACA5176FBA5600950ABA /* WBToolMonitorView.m in Sources */,
+				A9520C9A17701F4900B180BA /* WBButton.m in Sources */,
+				A9520C9F17701F5F00B180BA /* WBEraserButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
