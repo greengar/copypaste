@@ -12,17 +12,17 @@
 #import "WBEraserButton.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define kCanvasMonitorTag   777
-#define kOpacitySliderTag   kCanvasMonitorTag+1
-#define kWidthSliderTag     kCanvasMonitorTag+2
-#define kPreviewAreaTag     kCanvasMonitorTag+3
-
-@interface WBToolMonitorView()
-{
-    WBEraserButton *eraserButton;
+@interface WBToolMonitorView() {
+    UIView                 *toolMonitorView;
+    ColorSpectrumImageView *colorSpectrumImageView;
+    UIView                 *canvasMonitorView;
+    CustomSlider           *widthSlider;
+    CustomSlider           *opacitySlider;
+    ColorPreviewView       *previewArea;
+    WBEraserButton         *eraserButton;
+    BOOL                   isAnimationUp;
+    BOOL                   isAnimationDown;
 }
-@property (nonatomic, strong) ColorSpectrumImageView *colorSpectrumImageView;
-
 @end
 
 @implementation WBToolMonitorView
@@ -35,53 +35,59 @@
     if (self) {
         self.layer.cornerRadius = 5;
         self.clipsToBounds = YES;
-        self.layer.borderWidth = 1;
-        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        self.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9];
+        self.backgroundColor = [UIColor clearColor];
+        
+        // Use an inside view for doing the animation
+        toolMonitorView = [[UIView alloc] initWithFrame:CGRectMake(0, kOffsetForBouncing, frame.size.width, frame.size.height-kOffsetForBouncing)];
+        toolMonitorView.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9];
+        toolMonitorView.clipsToBounds = YES;
+        toolMonitorView.layer.cornerRadius = 5;
+        toolMonitorView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        toolMonitorView.layer.borderWidth = 1;
+        [self addSubview:toolMonitorView];
         
         UIImage *colorSpectrumImage = [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPublic.png"];
-        self.colorSpectrumImageView = [[ColorSpectrumImageView alloc] initWithImage:colorSpectrumImage];
-        [self.colorSpectrumImageView setFrame:CGRectMake(0, 0, colorSpectrumImage.size.width, colorSpectrumImage.size.height)];
-        [self.colorSpectrumImageView setUserInteractionEnabled:YES];
-        [self.colorSpectrumImageView registerDelegate:self];
-        [self addSubview:self.colorSpectrumImageView];
+        colorSpectrumImageView = [[ColorSpectrumImageView alloc] initWithImage:colorSpectrumImage];
+        [colorSpectrumImageView setFrame:CGRectMake(0, 0, colorSpectrumImage.size.width, colorSpectrumImage.size.height)];
+        [colorSpectrumImageView setUserInteractionEnabled:YES];
+        [colorSpectrumImageView registerDelegate:self];
+        [toolMonitorView addSubview:colorSpectrumImageView];
         
-        UIView *canvasMonitorView = [[UIView alloc] initWithFrame:CGRectMake(colorSpectrumImage.size.width, 0,
-                                                                             frame.size.width-colorSpectrumImage.size.width,
-                                                                             colorSpectrumImage.size.height)];
+        canvasMonitorView = [[UIView alloc] initWithFrame:CGRectMake(colorSpectrumImage.size.width, 0,
+                                                                     frame.size.width-colorSpectrumImage.size.width,
+                                                                     colorSpectrumImage.size.height)];
         [canvasMonitorView setBackgroundColor:[UIColor clearColor]];
-        [canvasMonitorView setTag:kCanvasMonitorTag];
-        [self addSubview:canvasMonitorView];
+        [toolMonitorView addSubview:canvasMonitorView];
         
         float sliderLeftMargin = 10;
         float sliderWidth = frame.size.width-colorSpectrumImage.size.width-2*sliderLeftMargin;
-        CustomSlider *opacitySlider = [[CustomSlider alloc] initWithFrame:CGRectMake(sliderLeftMargin,
-                                                                                     colorSpectrumImage.size.height-40,
-                                                                                     sliderWidth,
-                                                                                     20)];
+        float sliderHeight = 20;
+        opacitySlider = [[CustomSlider alloc] initWithFrame:CGRectMake(sliderLeftMargin,
+                                                                       colorSpectrumImage.size.height-40,
+                                                                       sliderWidth,
+                                                                       sliderHeight)];
         opacitySlider.backgroundColor = [UIColor clearColor];
         opacitySlider.minimumValue = 0.19f;
         opacitySlider.maximumValue = 1.0f;
         opacitySlider.continuous = YES;
         opacitySlider.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-        opacitySlider.tag = kOpacitySliderTag;
-        opacitySlider.value = [[SettingManager sharedManager] getCurrentColorTab].opacity;
+        opacitySlider.enabled = !([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex);
+        opacitySlider.value = ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) ? 1.0f :[[SettingManager sharedManager] getCurrentColorTab].opacity;
         [opacitySlider setMinimumTitle:@"0%"];
         [opacitySlider setMaximumTitle:@"100%"];
         [opacitySlider addTarget:self action:@selector(opacityChanged:) forControlEvents:UIControlEventValueChanged];
         [opacitySlider addTarget:self action:@selector(persistOpacity) forControlEvents:UIControlEventTouchUpInside];
         [canvasMonitorView addSubview:opacitySlider];
         
-        CustomSlider *widthSlider = [[CustomSlider alloc] initWithFrame:CGRectMake(sliderLeftMargin,
-                                                                                   colorSpectrumImage.size.height-80,
-                                                                                   sliderWidth,
-                                                                                   20)];
+        widthSlider = [[CustomSlider alloc] initWithFrame:CGRectMake(sliderLeftMargin,
+                                                                     colorSpectrumImage.size.height-80,
+                                                                     sliderWidth,
+                                                                     sliderHeight)];
         widthSlider.backgroundColor = [UIColor clearColor];
         widthSlider.minimumValue = kMinPointSize;
         widthSlider.maximumValue = kMaxPointSize;
         widthSlider.continuous = YES;
         widthSlider.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-        widthSlider.tag = kWidthSliderTag;
         widthSlider.value = [[SettingManager sharedManager] getCurrentColorTab].pointSize;
         [widthSlider setMinimumTitle:@"-"];
         [widthSlider setMaximumTitle:@"+"];
@@ -92,10 +98,9 @@
         float previewWidth = sliderWidth*2.5/4;
         float previewTopMargin = 20;
         float previewHeight = 80;
-        ColorPreviewView *previewArea = [[ColorPreviewView alloc] initWithFrame:CGRectMake(sliderLeftMargin, previewTopMargin,
-                                                                              previewWidth, previewHeight)];
-        [previewArea setTag:kPreviewAreaTag];
-        [self.colorSpectrumImageView registerDelegate:previewArea];
+        previewArea = [[ColorPreviewView alloc] initWithFrame:CGRectMake(sliderLeftMargin, previewTopMargin,
+                                                                         previewWidth, previewHeight)];
+        [colorSpectrumImageView registerDelegate:previewArea];
         [canvasMonitorView addSubview:previewArea];
         
         eraserButton = [[WBEraserButton alloc] init];
@@ -111,32 +116,75 @@
         [closeButton setTitle:@"x" forState:UIControlStateNormal];
         [closeButton setFrame:CGRectMake(frame.size.width-closeButtonSize, 0, closeButtonSize, closeButtonSize)];
         [closeButton addTarget:self action:@selector(closeMe) forControlEvents:UIControlEventTouchDown];
-        [self addSubview:closeButton];
+        [toolMonitorView addSubview:closeButton];
     }
     return self;
 }
 
+#pragma mark - Animation
+- (void)animateUp {
+    NSValue * from = [NSNumber numberWithFloat:self.frame.size.height*2];
+    NSValue * to = [NSNumber numberWithFloat:(self.frame.size.height+kOffsetForBouncing)/2];
+    NSString * keypath = @"position.y";
+    
+    [toolMonitorView.layer addAnimation:[WBUtils bounceAnimationFrom:from
+                                                                  to:to
+                                                          forKeyPath:keypath
+                                                        withDuration:.6
+                                                            delegate:self]
+                                                      forKey:@"bounce"];
+    [toolMonitorView.layer setValue:to forKeyPath:keypath];
+    isAnimationUp = YES;
+}
+
+- (void)animateDown {
+    self.layer.borderWidth = 0;
+    NSValue * from = [NSNumber numberWithFloat:self.frame.size.height/2];
+    NSValue * to = [NSNumber numberWithFloat:self.frame.size.height*2];
+    NSString * keypath = @"position.y";
+    
+    [toolMonitorView.layer addAnimation:[WBUtils bounceAnimationFrom:from
+                                                                  to:to
+                                                          forKeyPath:keypath
+                                                        withDuration:.6
+                                                            delegate:self]
+                                                      forKey:@"bounce"];
+    [toolMonitorView.layer setValue:to forKeyPath:keypath];
+    isAnimationDown = YES;
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    if (isAnimationUp) {
+        isAnimationUp = NO;
+    }
+    
+    if (isAnimationDown) {
+        [self removeFromSuperview];
+        isAnimationDown = NO;
+    }
+}
+
 #pragma mark - Update UI
 - (void)invalidateOpacitySlider {
-    [((CustomSlider *) [[self viewWithTag:kCanvasMonitorTag] viewWithTag:kOpacitySliderTag]) setValue:[[SettingManager sharedManager] getCurrentColorTab].opacity animated:NO];
+    [opacitySlider setValue:[[SettingManager sharedManager] getCurrentColorTab].opacity animated:NO];
 }
 
 - (void)invalidatePreviewArea {
-    [[[self viewWithTag:kCanvasMonitorTag] viewWithTag:kPreviewAreaTag] setNeedsDisplay];
+    [previewArea setNeedsDisplay];
 }
 
 - (void)invalidateWidthSlider {
-    [((CustomSlider *) [[self viewWithTag:kCanvasMonitorTag] viewWithTag:kWidthSliderTag]) setValue:[[SettingManager sharedManager] getCurrentColorTab].pointSize animated:NO];
+    [widthSlider setValue:[[SettingManager sharedManager] getCurrentColorTab].pointSize animated:NO];
 }
 
 - (void)enableEraser:(BOOL)enable {
     if (enable) {
         eraserButton.selected = YES;
-        [((CustomSlider *) [[self viewWithTag:kCanvasMonitorTag] viewWithTag:kOpacitySliderTag]) setEnabled:NO];
-        [((CustomSlider *) [[self viewWithTag:kCanvasMonitorTag] viewWithTag:kOpacitySliderTag]) setValue:1.0f animated:NO];
+        [opacitySlider setEnabled:NO];
+        [opacitySlider setValue:1.0f animated:NO];
     } else {
         eraserButton.selected = NO;
-        [((CustomSlider *) [[self viewWithTag:kCanvasMonitorTag] viewWithTag:kOpacitySliderTag]) setEnabled:YES];
+        [opacitySlider setEnabled:YES];
         [self invalidateOpacitySlider];
     }
     [self invalidatePreviewArea];
@@ -153,19 +201,19 @@
 }
 
 #pragma mark - Delegate
-- (void)pointSizeChanged:(CustomSlider *)widthSlider {
-    [[SettingManager sharedManager] setCurrentColorTabWithPointSize:widthSlider.value];
+- (void)pointSizeChanged:(CustomSlider *)widthSlider_ {
+    [[SettingManager sharedManager] setCurrentColorTabWithPointSize:widthSlider_.value];
     [self invalidatePreviewArea];
-    [self.colorSpectrumImageView setNeedsDisplay];
+    [colorSpectrumImageView setNeedsDisplay];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pointSizeChanged:)]) {
         [self.delegate pointSizeChanged:widthSlider.value];
     }
 }
 
-- (void)opacityChanged:(CustomSlider *)opacitySlider {
-    [[SettingManager sharedManager] setCurrentColorTabWithOpacity:opacitySlider.value];
+- (void)opacityChanged:(CustomSlider *)opacitySlider_ {
+    [[SettingManager sharedManager] setCurrentColorTabWithOpacity:opacitySlider_.value];
     [self invalidatePreviewArea];
-    [self.colorSpectrumImageView setNeedsDisplay];
+    [colorSpectrumImageView setNeedsDisplay];
 	
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(opacityChanged:)]) {
         [self.delegate opacityChanged:opacitySlider.value];
@@ -182,7 +230,7 @@
 }
 
 - (void)closeMe {
-    [self removeFromSuperview];
+    [self animateDown];
     [[SettingManager sharedManager] persistColorTabSetting];
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(monitorClosed)]) {
         [self.delegate monitorClosed];
@@ -202,6 +250,14 @@
 
 - (void)wantToPickColorWhenEraserIsActivated {
     [[SettingManager sharedManager] setCurrentColorTab:0];
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    UIView *hitView = [super hitTest:point withEvent:event];
+    if (point.y > kOffsetForBouncing) {
+        return hitView;
+    }
+    return nil;
 }
 
 @end

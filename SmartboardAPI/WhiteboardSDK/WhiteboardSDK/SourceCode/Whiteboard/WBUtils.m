@@ -320,4 +320,18 @@
     return copy;
 }
 
++ (CABasicAnimation *)bounceAnimationFrom:(NSValue *)from
+                                       to:(NSValue *)to
+                               forKeyPath:(NSString *)keypath
+                             withDuration:(CFTimeInterval)duration
+                                 delegate:(id)delegate {
+    CABasicAnimation * boundAnim = [CABasicAnimation animationWithKeyPath:keypath];
+    [boundAnim setFromValue:from];
+    [boundAnim setToValue:to];
+    [boundAnim setDuration:duration];
+    [boundAnim setDelegate:delegate];
+    [boundAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.5 :1.8 :0.8 :0.8]];
+    return  boundAnim;
+}
+
 @end

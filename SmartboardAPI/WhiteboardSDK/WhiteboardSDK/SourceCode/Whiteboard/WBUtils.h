@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 #define IS_IPAD      (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
 #define IS_IPAD1    ((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()) && ([UIScreen mainScreen].scale == 1.0) && (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]))
@@ -142,9 +143,15 @@ typedef enum {
 + (void)removeSearchBarBackground:(UISearchBar *)searchBar;
 + (BOOL)isValidURL:(NSString *)urlString;
 + (int)maxValueSize;
-+ (BOOL) isIOS5OrHigher;
-+ (BOOL) isIOS6OrHigher;
-+ (int) angleFromOrientation:(UIInterfaceOrientation)fromOrientation toOrientation:(UIInterfaceOrientation)toOrientation;
-+ (UIImage*) rotateImage:(UIImage *)image withOrientation:(UIImageOrientation)orient;
-
++ (BOOL)isIOS5OrHigher;
++ (BOOL)isIOS6OrHigher;
++ (int)angleFromOrientation:(UIInterfaceOrientation)fromOrientation
+              toOrientation:(UIInterfaceOrientation)toOrientation;
++ (UIImage*)rotateImage:(UIImage *)image
+        withOrientation:(UIImageOrientation)orient;
++ (CABasicAnimation *)bounceAnimationFrom:(NSValue *)from
+                                       to:(NSValue *)to
+                               forKeyPath:(NSString *)keypath
+                             withDuration:(CFTimeInterval)duration
+                                 delegate:(id)delegate;
 @end

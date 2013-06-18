@@ -11,6 +11,7 @@
 #import "CustomSlider.h"
 #import "ColorPreviewView.h"
 
+#define kOffsetForBouncing      30
 #define kWBToolMonitorWidth     [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPrivate.png"].size.width
 #define kWBToolMonitorHeight    [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPrivate.png"].size.height
 
@@ -26,6 +27,8 @@
 
 @property (nonatomic, assign) id<WBToolMonitorDelegate> delegate;
 
+- (void)animateUp;
+- (void)animateDown;
 - (void)enableEraser:(BOOL)enable;
 
 @end

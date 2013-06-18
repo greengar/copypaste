@@ -54,7 +54,7 @@
 - (void)selectPage:(WBPage *)page;
 
 // Control for board
-@property (nonatomic, strong) UIView             *toolLayer;
+@property (nonatomic, strong) WBToolbarView             *toolbarView;
 @end
 
 @implementation WBBoard
@@ -69,7 +69,7 @@
 @synthesize animationTimer = _animationTimer;
 @synthesize timer = _timer;
 @synthesize isTargetViewCurled = _isTargetViewCurled;
-@synthesize toolLayer = _toolLayer;
+@synthesize toolbarView = _toolbarView;
 
 // TODO: why doesn't this call -initWithNibName:...?
 // This is a test, this method is not used
@@ -143,65 +143,15 @@
     float bottomToolbarHeight = 74;
     float bottomMargin = 26;
     float leftMargin = 25;
-    // float bottomRightToolbarWidth = 156;
-    //self.view.frame.size.width-leftMargin
     float bottomToolbarWidth = 600;
-    WBToolbarView *toolbarView = [[WBToolbarView alloc] initWithFrame:CGRectMake(leftMargin, self.view.frame.size.height-bottomToolbarHeight-bottomMargin, bottomToolbarWidth, bottomToolbarHeight)];
-    toolbarView.delegate = self;
-    toolbarView.tag = kToolBarTag;
-    toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:toolbarView];
     
-    // Canvas/Text/History/Lock
-    self.toolLayer = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                              0,
-                                                              kToolBarItemWidth*4,
-                                                              kToolBarItemHeight)];
-    [self.toolLayer setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:self.toolLayer];
-    [self initToolBarButtonsWithFrame:frame];
-}
-
-- (void)initToolBarButtonsWithFrame:(CGRect)frame {
-    GSButton *canvasButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/PencilButton.fw.png"]
-                            forState:UIControlStateNormal];
-    [canvasButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/CanvasButtonActive.fw.png"]
-                            forState:UIControlStateSelected];
-    [canvasButton setFrame:CGRectMake(kToolBarItemWidth*0, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [canvasButton addTarget:self action:@selector(newCanvas:) forControlEvents:UIControlEventTouchUpInside];
-    [canvasButton setTag:kCanvasButtonIndex];
-    [canvasButton setSelected:YES]; // Default is canvas button
-    [self.toolLayer addSubview:canvasButton];
+    self.toolbarView = [[WBToolbarView alloc] initWithFrame:CGRectMake(leftMargin, self.view.frame.size.height-bottomToolbarHeight-bottomMargin, bottomToolbarWidth, bottomToolbarHeight)];
+    self.toolbarView.delegate = self;
+    self.toolbarView.tag = kToolBarTag;
+    self.toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:self.toolbarView];
     
-    GSButton *textButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButton.fw.png"]
-                          forState:UIControlStateNormal];
-    [textButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/TextButtonActive.fw.png"]
-                          forState:UIControlStateSelected];
-    [textButton setFrame:CGRectMake(kToolBarItemWidth, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [textButton addTarget:self action:@selector(newText:) forControlEvents:UIControlEventTouchUpInside];
-    [textButton setTag:kTextButtonIndex];
-    [self.toolLayer addSubview:textButton];
-    
-    GSButton *historyButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [historyButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/HistoryButton.fw.png"]
-                             forState:UIControlStateNormal];
-    [historyButton setFrame:CGRectMake(kToolBarItemWidth*2, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [historyButton addTarget:self action:@selector(showHistoryView) forControlEvents:UIControlEventTouchUpInside];
-    [historyButton setTag:kHistoryButtonIndex];
-    [self.toolLayer addSubview:historyButton];
-    
-    GSButton *lockButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButton.fw.png"]
-                          forState:UIControlStateNormal];
-    [lockButton setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/MoveButtonActive.fw.png"]
-                          forState:UIControlStateSelected];
-    [lockButton setFrame:CGRectMake(kToolBarItemWidth*3, 0, kToolBarItemWidth, kToolBarItemHeight)];
-    [lockButton addTarget:self action:@selector(lockPage:) forControlEvents:UIControlEventTouchUpInside];
-    [lockButton setTag:kLockButtonIndex];
-    [self.toolLayer addSubview:lockButton];
-    
+    // Page Curl Button
     GSButton *pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
     [pageCurlButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
                     forState:UIControlStateNormal];
@@ -283,21 +233,11 @@
 }
 
 - (void)elementSelected:(WBBaseElement *)element {
-    if ([element isKindOfClass:[CGCanvasElement class]]
-        || [element isKindOfClass:[GLCanvasElement class]]) {
-        [((GSButton *) [self.toolLayer viewWithTag:kCanvasButtonIndex]) setSelected:YES];
-    } else if ([element isKindOfClass:[TextElement class]]) {
-        [((GSButton *) [self.toolLayer viewWithTag:kTextButtonIndex]) setSelected:YES];
-    }
+    
 }
 
 - (void)elementDeselected:(WBBaseElement *)element {
-    if ([element isKindOfClass:[CGCanvasElement class]]
-        || [element isKindOfClass:[GLCanvasElement class]]) {
-        [((GSButton *) [self.toolLayer viewWithTag:kCanvasButtonIndex]) setSelected:NO];
-    } else if ([element isKindOfClass:[TextElement class]]) {
-        [((GSButton *) [self.toolLayer viewWithTag:kTextButtonIndex]) setSelected:NO];
-    }
+    
 }
 
 #pragma mark - Export output data
@@ -359,8 +299,10 @@
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [button setHidden:YES];
         });
-        [[self toolLayer] setHidden:YES];
+        [[self toolbarView] setHidden:YES];
         [[self currentPage] setHidden:YES];
+        [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setHidden:YES];
+        
         UILabel *pageLabel = (UILabel *) [self.view viewWithTag:kPageLabelTag];
         [pageLabel setText:[NSString stringWithFormat:@"Page: %d/%d", self.currentPageIndex+1, [self.pages count]]];
         self.isAnimating = YES;
@@ -372,7 +314,6 @@
         [UIView setAnimationDelegate:self];
         [UIView setAnimationRepeatAutoreverses:YES];
         [UIView commitAnimations];
-        [self.toolLayer setHidden:YES];
     }
 }
 
@@ -402,7 +343,8 @@
 	[self setTimer:nil];
 	
 	[[self currentPage] setHidden:NO];
-    [self.toolLayer setHidden:NO];
+    [[self toolbarView] setHidden:NO];
+    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setHidden:NO];
     [((GSButton *) [self.view viewWithTag:kPageCurlButtonTag]) setHidden:NO];
 }
 
@@ -427,15 +369,18 @@
 #pragma mark - Tool Bar Buttons
 - (void)showColorSpectrum:(BOOL)show from:(UIView *)toolbar {
     if (show) {
+        int monitorHeight = kWBToolMonitorHeight+kOffsetForBouncing;
         WBToolMonitorView *toolMonitorView = [[WBToolMonitorView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x,
-                                                                                   toolbar.frame.origin.y-kWBToolMonitorHeight,
-                                                                                   toolbar.frame.size.width,
-                                                                                   kWBToolMonitorHeight)];
+                                                                                                 toolbar.frame.origin.y-monitorHeight,
+                                                                                                 toolbar.frame.size.width,
+                                                                                                 monitorHeight)];
         [toolMonitorView setTag:kToolMonitorTag];
         [toolMonitorView setDelegate:self];
         [self.view addSubview:toolMonitorView];
+        [toolMonitorView animateUp];
+        
     } else {
-        [[self.view viewWithTag:kToolMonitorTag] removeFromSuperview];
+        [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) animateDown];
     }
 }
 
@@ -567,19 +512,18 @@
 #pragma mark - Keyboard Delegate
 - (void)keyboardWasShown:(NSNotification*)aNotification {
     [self hideHistoryView];
-    [((GSButton *) [self.toolLayer viewWithTag:kTextButtonIndex]) setSelected:YES];
-    //    NSDictionary* info = [aNotification userInfo];
-    //    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    //
-    //
-    //    [UIView animateWithDuration:0.2f animations:^{
-    //        CGRect frame = CGRectMake(self.textToolLayer.frame.origin.x,
-    //                                  self.frame.size.height-kToolBarItemHeight,
-    //                                  self.textToolLayer.frame.size.width,
-    //                                  self.textToolLayer.frame.size.height);
-    //        frame.origin.y -= kbSize.height;
-    //        self.textToolLayer.frame = frame;
-    //    }];
+//    NSDictionary* info = [aNotification userInfo];
+//    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//
+//
+//    [UIView animateWithDuration:0.2f animations:^{
+//        CGRect frame = CGRectMake(self.textToolLayer.frame.origin.x,
+//                                  self.frame.size.height-kToolBarItemHeight,
+//                                  self.textToolLayer.frame.size.width,
+//                                  self.textToolLayer.frame.size.height);
+//        frame.origin.y -= kbSize.height;
+//        self.textToolLayer.frame = frame;
+//    }];
 }
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
