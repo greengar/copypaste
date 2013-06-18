@@ -68,4 +68,8 @@
     [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) monitorClosed];
 }
 
+- (void)selectEraser:(BOOL)select {
+    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) selectEraser:select];
+}
+
 @end

@@ -97,8 +97,6 @@
         [canvasMonitorView addSubview:self.previewArea];
         
         eraserButton = [[WBEraserButton alloc] init];
-//        [eraserButton setTitle:@"Eraser" forState:UIControlStateNormal];
-//        [eraserButton setFrame:CGRectMake(79, previewTopMargin*1.5, 60, previewHeight-2*previewTopMargin)];
         eraserButton.frame = CGRectMake(79, previewTopMargin, [eraserButton preferredSize].width, [eraserButton preferredSize].height);
         [eraserButton addTarget:self action:@selector(switchToEraser:) forControlEvents:UIControlEventTouchDown];
         [canvasMonitorView addSubview:eraserButton];
@@ -159,6 +157,9 @@
     button.selected = YES;
     [[SettingManager sharedManager] setCurrentColorTab:kEraserTabIndex];
     [self.previewArea setNeedsDisplay];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(selectEraser:)]) {
+        [self.delegate selectEraser:YES];
+    }
 }
 
 - (void)closeMe {
@@ -169,11 +170,13 @@
 }
 
 - (void)colorPicked:(UIColor *)color {
-    
     eraserButton.selected = NO;
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(colorPicked:)]) {
         [self.delegate colorPicked:color];
+    }
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(selectEraser:)]) {
+        [self.delegate selectEraser:NO];
     }
 }
 

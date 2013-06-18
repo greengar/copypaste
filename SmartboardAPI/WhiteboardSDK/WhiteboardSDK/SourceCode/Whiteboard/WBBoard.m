@@ -443,6 +443,10 @@
     [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) monitorClosed];
 }
 
+- (void)selectEraser:(BOOL)select {
+    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) selectEraser:select];
+}
+
 - (void)colorPicked:(UIColor *)color {
     [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) updateColor:color];
 }

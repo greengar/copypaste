@@ -12,4 +12,6 @@
 
 @interface WBCanvasButton : WBButton
 
+@property (nonatomic) BOOL eraserEnabled;
+
 @end

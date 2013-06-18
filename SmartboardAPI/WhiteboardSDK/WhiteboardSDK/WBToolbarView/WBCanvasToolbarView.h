@@ -20,5 +20,6 @@
 - (void)updateAlpha:(float)alpha;
 - (void)updatePointSize:(float)pointSize;
 - (void)monitorClosed;
+- (void)selectEraser:(BOOL)select;
 
 @end

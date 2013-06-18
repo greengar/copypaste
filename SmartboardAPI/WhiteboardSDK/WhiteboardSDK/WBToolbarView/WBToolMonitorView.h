@@ -19,6 +19,7 @@
 - (void)opacityChanged:(float)opacity;
 - (void)pointSizeChanged:(float)pointSize;
 - (void)monitorClosed;
+- (void)selectEraser:(BOOL)select;
 @end
 
 @interface WBToolMonitorView : UIView <ColorPickerImageViewDelegate>

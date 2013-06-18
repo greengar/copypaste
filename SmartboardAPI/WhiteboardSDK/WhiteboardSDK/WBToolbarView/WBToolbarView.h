@@ -19,6 +19,7 @@
 - (void)updateAlpha:(float)alpha;
 - (void)updatePointSize:(float)size;
 - (void)monitorClosed;
+- (void)selectEraser:(BOOL)select;
 
 @property (nonatomic, assign) id<WBToolbarDelegate> delegate;
 
