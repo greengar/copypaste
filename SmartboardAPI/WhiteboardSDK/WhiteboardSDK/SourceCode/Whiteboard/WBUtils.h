@@ -48,7 +48,6 @@ typedef enum {
 #define UnimplementedException @"UnimplementedException"
 
 #define kPushAboutToSettingNotification @"PushAboutToSettingNotification"
-
 #define kStartToConnectNotification @"kStartToConnectNotification"
 #define kStopConnectingNotification @"kStopConnectingNotification"
 

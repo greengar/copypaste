@@ -13,7 +13,7 @@
 #import "HistoryManager.h"
 
 @interface FontColorPickerView()
-@property (nonatomic, strong) ColorPickerImageView *colorPickerImageView;
+@property (nonatomic, strong) ColorSpectrumImageView *colorPickerImageView;
 @end
 
 @implementation FontColorPickerView
@@ -27,7 +27,7 @@
         
         self.backgroundColor = OPAQUE_HEXCOLOR_FILL(0x0c0d14);
         
-        self.colorPickerImageView = [[ColorPickerImageView alloc] initWithImage:[UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPublic.png"]];
+        self.colorPickerImageView = [[ColorSpectrumImageView alloc] initWithImage:[UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPublic.png"]];
         [self.colorPickerImageView setFrame:CGRectMake(0, 0, frame.size.width, kColorSpectrum)];
         [self.colorPickerImageView setUserInteractionEnabled:YES];
         [self addSubview:self.colorPickerImageView];
@@ -38,7 +38,6 @@
 
 - (void)setCurrentTextView:(TextElement *)currentTextView {
     _currentTextView = currentTextView;
-    [self.colorPickerImageView setHolderView:_currentTextView];
 }
 
 - (void)setHidden:(BOOL)hidden {

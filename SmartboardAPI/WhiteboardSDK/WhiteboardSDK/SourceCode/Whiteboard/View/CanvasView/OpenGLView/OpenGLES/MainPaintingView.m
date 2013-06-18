@@ -330,7 +330,7 @@
 
 - (void)drawWhenTouchMove:(NSSet *)touches paintId:(NSString *)paintId {
 	for (UITouch *touch in touches) {
-        if (firstUITouch && touch != firstUITouch && [SettingManager sharedManager].isEnablePanZoom) {
+        if (firstUITouch && touch != firstUITouch) {
             continue;
         }
         
@@ -350,7 +350,7 @@
 
 - (void)drawWhenTouchEnd:(NSSet *)touches {
     for (UITouch *touch in touches) {
-        if (firstUITouch && touch != firstUITouch && [SettingManager sharedManager].isEnablePanZoom) {
+        if (firstUITouch && touch != firstUITouch) {
             continue;
         }
         
@@ -505,10 +505,8 @@
         }        
     }
     
-	[[NSNotificationCenter defaultCenter] postNotificationName:kHideRedoNotification object:nil];
-    
     // Hector: Pan/Zoom is disable
-    if (![SettingManager sharedManager].isEnablePanZoom) {
+    if (NO) {
         for (UITouch *touch in touches) {
             GSTouchData *touchData = [[GSTouchData alloc] init];
             touchData.firstTouch = YES;
@@ -570,7 +568,7 @@
     }
     
     // Hector: Pan/Zoom is disable
-    if (![SettingManager sharedManager].isEnablePanZoom) {
+    if (NO) {
         [self drawWhenTouchMove:touches paintId:self.currentPaintingId];
         return;
     }
@@ -711,7 +709,7 @@
 	[self finalizeTouch];
     
     // Hector: Pan/Zoom is disable
-    if (![SettingManager sharedManager].isEnablePanZoom) {
+    if (NO) {
         [self drawWhenTouchEnd:touches];
         return;
     }

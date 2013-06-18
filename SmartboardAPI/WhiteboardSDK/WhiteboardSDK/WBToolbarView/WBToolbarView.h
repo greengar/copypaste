@@ -7,7 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WBCanvasToolbarView.h"
 
-@interface WBToolbarView : UIView
+@protocol WBToolbarDelegate
+- (void)showColorSpectrum:(BOOL)show from:(UIView *)view;
+@end
+
+@interface WBToolbarView : UIView <WBCanvasToolbarDelegate>
+
+- (void)updateColor:(UIColor *)color;
+- (void)updateAlpha:(float)alpha;
+- (void)updatePointSize:(float)size;
+- (void)monitorClosed;
+
+@property (nonatomic, assign) id<WBToolbarDelegate> delegate;
 
 @end

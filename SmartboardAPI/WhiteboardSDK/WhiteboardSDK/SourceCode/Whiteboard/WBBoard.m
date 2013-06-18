@@ -15,6 +15,7 @@
 #import "GSButton.h"
 #import "HistoryView.h"
 #import "WBToolbarView.h"
+#import "WBToolMonitorView.h"
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
@@ -28,6 +29,8 @@
 #define kHistoryViewTag     888
 #define kPageCurlButtonTag  kHistoryViewTag+1
 #define kPageLabelTag       kHistoryViewTag+2
+#define kToolBarTag         kHistoryViewTag+3
+#define kToolMonitorTag     kHistoryViewTag+4
 
 #define kCanvasButtonIndex  777
 #define kTextButtonIndex    (kCanvasButtonIndex+1)
@@ -51,7 +54,7 @@
 - (void)selectPage:(WBPage *)page;
 
 // Control for board
-@property (nonatomic, strong) UIView         *toolLayer;
+@property (nonatomic, strong) UIView             *toolLayer;
 @end
 
 @implementation WBBoard
@@ -69,6 +72,7 @@
 @synthesize toolLayer = _toolLayer;
 
 // TODO: why doesn't this call -initWithNibName:...?
+// This is a test, this method is not used
 - (id)initWithDict:(NSDictionary *)dictionary {
     self = [super init];
     if (self) {
@@ -135,15 +139,22 @@
 #pragma mark - Tool/Control for Board
 - (void)initLayersWithFrame:(CGRect)frame {
     
+    // Toolbar (Canvas/Plus/Move/Color History Tray)
     float bottomToolbarHeight = 74;
     float bottomMargin = 26;
-    WBToolbarView *toolbarView = [[WBToolbarView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-bottomToolbarHeight-bottomMargin, self.view.frame.size.width, bottomToolbarHeight)];
+    float leftMargin = 25;
+    // float bottomRightToolbarWidth = 156;
+    //self.view.frame.size.width-leftMargin
+    float bottomToolbarWidth = 600;
+    WBToolbarView *toolbarView = [[WBToolbarView alloc] initWithFrame:CGRectMake(leftMargin, self.view.frame.size.height-bottomToolbarHeight-bottomMargin, bottomToolbarWidth, bottomToolbarHeight)];
+    toolbarView.delegate = self;
+    toolbarView.tag = kToolBarTag;
     toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:toolbarView];
     
     // Canvas/Text/History/Lock
     self.toolLayer = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                              frame.size.height-kToolBarItemHeight,
+                                                              0,
                                                               kToolBarItemWidth*4,
                                                               kToolBarItemHeight)];
     [self.toolLayer setBackgroundColor:[UIColor clearColor]];
@@ -414,6 +425,36 @@
 }
 
 #pragma mark - Tool Bar Buttons
+- (void)showColorSpectrum:(BOOL)show from:(UIView *)toolbar {
+    if (show) {
+        WBToolMonitorView *toolMonitorView = [[WBToolMonitorView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x,
+                                                                                   toolbar.frame.origin.y-kWBToolMonitorHeight,
+                                                                                   toolbar.frame.size.width,
+                                                                                   kWBToolMonitorHeight)];
+        [toolMonitorView setTag:kToolMonitorTag];
+        [toolMonitorView setDelegate:self];
+        [self.view addSubview:toolMonitorView];
+    } else {
+        [[self.view viewWithTag:kToolMonitorTag] removeFromSuperview];
+    }
+}
+
+- (void)monitorClosed {
+    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) monitorClosed];
+}
+
+- (void)colorPicked:(UIColor *)color {
+    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) updateColor:color];
+}
+
+- (void)opacityChanged:(float)opacity {
+    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) updateAlpha:opacity];
+}
+
+- (void)pointSizeChanged:(float)pointSize {
+    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) updatePointSize:pointSize];
+}
+
 - (void)newCanvas:(GSButton *)canvasButton {
     if ([[self currentPage] selectedElementView]
         && [[[self currentPage] selectedElementView] isKindOfClass:[GLCanvasElement class]]

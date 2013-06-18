@@ -9,6 +9,10 @@
 #import "WBToolbarView.h"
 #import "WBCanvasToolbarView.h"
 #import "WBBottomRightToolbarView.h"
+#import <QuartzCore/QuartzCore.h>
+
+#define kCanvasToolBarTag 777
+#define kBottomRightToolBarTag kCanvasToolBarTag+1
 
 @implementation WBToolbarView
 
@@ -18,29 +22,50 @@
     if (self) {
         // Initialization code
         
-        // for debugging
-        //self.backgroundColor = [UIColor yellowColor];
+        self.layer.cornerRadius = 5;
+        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        self.layer.borderWidth = 1;
+        self.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.8];
         
-        float leftMargin = 25;
-        WBCanvasToolbarView *canvasToolbarView = [[WBCanvasToolbarView alloc] initWithFrame:CGRectMake(leftMargin, 0, self.frame.size.width / 2 + 50 - leftMargin, self.frame.size.height)];
+        float leftMargin = 0;
+        float bottomRightToolbarWidth = 156;
+        WBCanvasToolbarView *canvasToolbarView = [[WBCanvasToolbarView alloc] initWithFrame:CGRectMake(leftMargin, 0,
+                                                                                                       frame.size.width-bottomRightToolbarWidth,
+                                                                                                       frame.size.height)];
         canvasToolbarView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+        canvasToolbarView.delegate = self;
+        canvasToolbarView.tag = kCanvasToolBarTag;
         [self addSubview:canvasToolbarView];
         
         float x = canvasToolbarView.frame.origin.x + canvasToolbarView.frame.size.width;
         WBBottomRightToolbarView *bottomRightToolbarView = [[WBBottomRightToolbarView alloc] initWithFrame:CGRectMake(x, canvasToolbarView.frame.origin.y, self.frame.size.width - x, self.frame.size.height)];
         bottomRightToolbarView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+        bottomRightToolbarView.tag = kBottomRightToolBarTag;
         [self addSubview:bottomRightToolbarView];
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+- (void)updateColor:(UIColor *)color {
+    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) updateColor:color];
 }
-*/
+
+- (void)updateAlpha:(float)alpha {
+    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) updateAlpha:alpha];
+}
+
+- (void)updatePointSize:(float)size {
+    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) updatePointSize:size];
+}
+
+- (void)showColorSpectrum:(BOOL)show {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showColorSpectrum:from:)]) {
+        [self.delegate showColorSpectrum:show from:self];
+    }
+}
+
+- (void)monitorClosed {
+    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) monitorClosed];
+}
 
 @end

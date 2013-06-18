@@ -8,10 +8,10 @@
 
 #import "ColorPickerView.h"
 #import "WBUtils.h"
-#import "ColorPickerImageView.h"
+#import "ColorSpectrumImageView.h"
 #import "SettingManager.h"
-#import "MySlider.h"
-#import "PreviewArea.h"
+#import "CustomSlider.h"
+#import "ColorPreviewView.h"
 
 #define kOffset                     5.0
 #define kLabelIndent                5.0
@@ -41,11 +41,11 @@
 @interface ColorPickerView()
 @property (nonatomic, strong) UIView *whiteArea;
 @property (nonatomic, strong) UIImageView *colorPickerTitleBar;
-@property (nonatomic, strong) ColorPickerImageView *colorSpectrum;
-@property (nonatomic, strong) MySlider *opacitySlider;
-@property (nonatomic, strong) MySlider *widthSlider;
+@property (nonatomic, strong) ColorSpectrumImageView *colorSpectrum;
+@property (nonatomic, strong) CustomSlider *opacitySlider;
+@property (nonatomic, strong) CustomSlider *widthSlider;
 @property (nonatomic, strong) UIView *brushToolsView;
-@property (nonatomic, strong) PreviewArea *previewArea;
+@property (nonatomic, strong) ColorPreviewView *previewArea;
 @end
 
 @implementation ColorPickerView
@@ -76,7 +76,7 @@
     self.colorPickerTitleBar.frame = CGRectMake(0, frame.size.height-kColorSpectrum-9, frame.size.width, 9);
     [self addSubview:self.colorPickerTitleBar];
     
-    self.colorSpectrum = [[ColorPickerImageView alloc] initWithImage:[UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPublic.png"]];
+    self.colorSpectrum = [[ColorSpectrumImageView alloc] initWithImage:[UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPublic.png"]];
     [self addSubview:self.colorSpectrum];
     
     [self.colorSpectrum registerDelegate:self];
@@ -121,7 +121,7 @@
     self.brushToolsView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
     [self addSubview:self.brushToolsView];
     
-    self.previewArea = [[PreviewArea alloc] initWithFrame:CGRectMake(0, kPreviewAreaTopMargin, kPreviewAreaSize, kPreviewAreaSize)];
+    self.previewArea = [[ColorPreviewView alloc] initWithFrame:CGRectMake(0, kPreviewAreaTopMargin, kPreviewAreaSize, kPreviewAreaSize)];
     [self.brushToolsView addSubview:self.previewArea];
     
     [self initializeOpacitySliderWithFrame:frame];
@@ -144,7 +144,7 @@
     [opacityLabel setShadowOffset:CGSizeMake(0,1)];
     [opacityLabel setBackgroundColor:[UIColor clearColor]];
     
-    self.opacitySlider = [[MySlider alloc] initWithFrame:CGRectMake(kOffset + kPreviewAreaSize, kOpacityLabelY + kLabelHeight - 1, kSliderWidth, kSliderHeight)];
+    self.opacitySlider = [[CustomSlider alloc] initWithFrame:CGRectMake(kOffset + kPreviewAreaSize, kOpacityLabelY + kLabelHeight - 1, kSliderWidth, kSliderHeight)];
     self.opacitySlider.backgroundColor = [UIColor clearColor];
     self.opacitySlider.minimumValue = 0.19f;
     self.opacitySlider.maximumValue = 1.0f;
@@ -197,7 +197,7 @@
     [widthLabel setShadowOffset:CGSizeMake(0,1)];
     [widthLabel setBackgroundColor:[UIColor clearColor]];
     
-    self.widthSlider = [[MySlider alloc] initWithFrame:CGRectMake(kOffset + kPreviewAreaSize, kLabelHeight - 1, kSliderWidth, kSliderHeight)];
+    self.widthSlider = [[CustomSlider alloc] initWithFrame:CGRectMake(kOffset + kPreviewAreaSize, kLabelHeight - 1, kSliderWidth, kSliderHeight)];
     self.widthSlider.backgroundColor = [UIColor clearColor];
     self.widthSlider.minimumValue = kMinPointSize;
     self.widthSlider.maximumValue = kMaxPointSize;

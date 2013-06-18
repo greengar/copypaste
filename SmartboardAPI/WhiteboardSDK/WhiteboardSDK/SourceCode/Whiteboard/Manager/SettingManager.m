@@ -22,12 +22,6 @@ static SettingManager *shareManager = nil;
 @synthesize currentColorTab =_currentColorTab;
 @synthesize tempOpacity = _tempOpacity;
 @synthesize textureScale = _textureScale;
-@synthesize currentTool = _currentTool;
-@synthesize currentShakeAction = _currentShakeAction;
-@synthesize isShowColorTab = _isShowColorTab;
-@synthesize isShakeActionConfirm = _isShakeActionConfirm;
-@synthesize isEnablePanZoom = _isEnablePanZoom;
-@synthesize isEnableAutosave = _isEnableAutosave;
 @synthesize colorTabList = _colorTabList;
 @synthesize currentFontName = _currentFontName;
 @synthesize currentFontSize = _currentFontSize;
@@ -143,14 +137,19 @@ static SettingManager *shareManager = nil;
                                                                       color:OPAQUE_HEXCOLOR(0x8BB4F8)], // blue
                                  [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
                                                                     opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0xFFFFFF)], // eraser
+                                                                      color:OPAQUE_HEXCOLOR(0xFFC0CB)], // pink
+                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
+                                                                    opacity:kCoolOpacity
+                                                                      color:OPAQUE_HEXCOLOR(0xFFFF00)], // yellow,
+                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
+                                                                    opacity:kCoolOpacity
+                                                                      color:OPAQUE_HEXCOLOR(0xA52A2A)], // brown
                                  nil];
         }
         
         // Load Setting from Preferences
         [self loadColorTabSetting];
         [self loadTextSetting];
-        [self loadGeneralSetting];
     }
     return self;
 }
@@ -184,8 +183,6 @@ static SettingManager *shareManager = nil;
         
         // Save the brush size to Painting Manager
         [[PaintingManager sharedManager] updatePointSize:currentTab.pointSize of:nil];
-        
-        [self persistGeneralSetting];
     }
 }
 
@@ -283,24 +280,6 @@ static SettingManager *shareManager = nil;
     }
 }
 
-- (void) loadGeneralSetting {
-    self.currentShakeAction = [NSDEF integerForKey:kCurrentShakeActionPreference];
-    self.isShakeActionConfirm = [NSDEF boolForKey:kIsShakeActionConfirmPreference];
-    self.isShowColorTab = [NSDEF boolForKey:kIsShowColorTabPreference];
-    self.isEnablePanZoom = YES; // [NSDEF boolForKey:kIsEnablePanZoomPreference];
-    self.isEnableAutosave = [NSDEF boolForKey:kIsEnableAutosavePreference];
-}
-
-- (void) loadAboutSetting {
-    self.isShowColorTab = [NSDEF boolForKey:kIsShowColorTabPreference];
-    self.isEnablePanZoom = [NSDEF boolForKey:kIsEnablePanZoomPreference];
-}
-
-- (void) loadEraserSetting {        
-    self.currentShakeAction = [NSDEF integerForKey:kCurrentShakeActionPreference];
-    self.isShakeActionConfirm = [NSDEF boolForKey:kIsShakeActionConfirmPreference];
-}
-
 - (void) persistColorTabSetting {
     for (int i = 0; i < [self.colorTabList count]; i++) {
         ColorTabElement *currentTab = [self.colorTabList objectAtIndex:i];
@@ -328,29 +307,6 @@ static SettingManager *shareManager = nil;
     [NSDEF setObject:[currentTab.tabColor gsStringWithX:currentTab.offsetXOnSpectrum
                                                       y:currentTab.offsetYOnSpectrum]
               forKey:[NSString stringWithFormat:kColorKeyFormat, self.currentColorTab]];
-    [NSDEF synchronize];
-}
-
-- (void) persistGeneralSetting {
-    [NSDEF setInteger:self.currentShakeAction forKey:kCurrentShakeActionPreference];
-    [NSDEF setBool:self.isShakeActionConfirm forKey:kIsShakeActionConfirmPreference];
-    [NSDEF setBool:self.isEnablePanZoom forKey:kIsEnablePanZoomPreference];
-    [NSDEF setBool:self.isShowColorTab forKey:kIsShowColorTabPreference];
-    [NSDEF setBool:self.isEnableAutosave forKey:kIsEnableAutosavePreference];
-    [NSDEF setInteger:self.currentColorTab forKey:kSelectedTabKey];
-    [NSDEF synchronize];
-}
-
-- (void) persistAboutSetting {
-    [NSDEF setBool:self.isEnablePanZoom forKey:kIsEnablePanZoomPreference];
-    [NSDEF setBool:self.isShowColorTab forKey:kIsShowColorTabPreference];
-    [NSDEF synchronize];
-}
-
-- (void) persistEraserSetting {
-    [NSDEF setInteger:self.currentShakeAction forKey:kCurrentShakeActionPreference];
-    [NSDEF setBool:self.isShakeActionConfirm forKey:kIsShakeActionConfirmPreference];
-    [NSDEF setBool:self.isEnableAutosave forKey:kIsEnableAutosavePreference];
     [NSDEF synchronize];
 }
 

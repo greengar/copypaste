@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define FLEXIBLE 1
-
 typedef enum {
 	iPhoneDevice = 0,
     iPhone5Device,

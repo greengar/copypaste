@@ -6,10 +6,10 @@
 //  Copyright 2013 Greengar. All rights reserved.
 //
 
-#import "GSColorCircle.h"
+#import "ColorCircleView.h"
 #import "SettingManager.h"
 
-@implementation GSColorCircle
+@implementation ColorCircleView
 @synthesize circleColor = _circleColor;
 @synthesize circleOpacity = _circleOpacity;
 @synthesize circlePointSize = _circlePointSize;

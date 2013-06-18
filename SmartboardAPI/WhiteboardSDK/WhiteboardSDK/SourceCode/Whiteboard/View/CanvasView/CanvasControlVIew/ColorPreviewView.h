@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PaintingManager.h"
+#import "ColorSpectrumImageView.h"
 
-@interface PreviewArea : UIView<PaintingManagerDelegate>
+@interface ColorPreviewView : UIView <ColorPickerImageViewDelegate>
 
 - (CGColorRef)CGColorFromUIColor:(UIColor *)drawingColor opacity:(float)drawingOpacity;
 

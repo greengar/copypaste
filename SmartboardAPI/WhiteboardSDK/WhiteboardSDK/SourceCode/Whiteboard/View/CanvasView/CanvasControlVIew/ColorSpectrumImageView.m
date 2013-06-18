@@ -6,17 +6,16 @@
 //  Copyright 2009 Mark Johnson. All rights reserved.
 //
 
-#import "ColorPickerImageView.h"
+#import "ColorSpectrumImageView.h"
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/CoreAnimation.h>
-#import "GSColorCircle.h"
+#import "ColorCircleView.h"
 #import "SettingManager.h"
 #import "WBBaseElement.h"
 #import "TextElement.h"
 
-@implementation ColorPickerImageView
-@synthesize holderView = _holderView;
-@synthesize pickedColorDelegate;
+@implementation ColorSpectrumImageView
+@synthesize pickedColorDelegate = _pickedColorDelegate;
 
 - (id)initWithImage:(UIImage *)image {
     if ((self = [super initWithImage:image])) {
@@ -30,20 +29,13 @@
     CGPoint point = [touch locationInView:self]; //where image was tapped
     if (point.y >= 0 && point.x >= 0 && point.y < self.frame.size.height && point.x < self.frame.size.width) {
         UIColor * lastColor = [self getPixelColorAtLocation:point];
-        
-        if (self.holderView && [self.holderView isKindOfClass:[TextElement class]]) {
-            [((TextElement *) self.holderView) updateWithColor:lastColor x:point.x y:point.y];
-            [[SettingManager sharedManager] setCurrentFontColor:lastColor];
-            
-        } else {
-            [[SettingManager sharedManager] setCurrentColorTabWithColor:lastColor
-                                                              atOffsetX:point.x
-                                                              atOffsetY:point.y];
-        }
+        [[SettingManager sharedManager] setCurrentColorTabWithColor:lastColor
+                                                          atOffsetX:point.x
+                                                          atOffsetY:point.y];
         
         for (int i = 0; i < [pickedColorDelegateArray count]; i++) {
-            if ([[pickedColorDelegateArray objectAtIndex:i] respondsToSelector:@selector(colorPicked)]) {
-                [[pickedColorDelegateArray objectAtIndex:i] colorPicked];
+            if ([[pickedColorDelegateArray objectAtIndex:i] respondsToSelector:@selector(colorPicked:)]) {
+                [[pickedColorDelegateArray objectAtIndex:i] colorPicked:lastColor];
             }
         }
         [self setCircleX:point.x y:point.y color:lastColor];
@@ -55,7 +47,7 @@
         DLog(@"WARNING: color is nil");
     } else {
         if (!circle) {
-            circle = [[GSColorCircle alloc] initWithFrame:CGRectMake(x-11, y-11, 22, 23)];
+            circle = [[ColorCircleView alloc] initWithFrame:CGRectMake(x-11, y-11, 22, 23)];
             circle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
             [self addSubview:circle];
         } else {
@@ -76,11 +68,7 @@
 
 - (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
     [self touchesEvent:touches];
-    if (self.holderView && [self.holderView isKindOfClass:[TextElement class]]) {
-        [[SettingManager sharedManager] persistTextSetting];
-    } else {
-        [[SettingManager sharedManager] persistColorTabSettingAtCurrentIndex];
-    }
+    [[SettingManager sharedManager] persistColorTabSettingAtCurrentIndex];
 }
 
 - (UIColor*) getPixelColorAtLocation:(CGPoint)point {
@@ -108,40 +96,14 @@
     }
     
     if (data != NULL) {
-        
-        float x;
-        float y;
-        //#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 30200 // why is this working anyway? I don't know
-        if (IS_IPAD) {
-            // normalize point.x and point.y between 0 and 1
-            // this depends on the current width/height
-            CGFloat scale = [UIScreen mainScreen].scale;
-            
-            x = point.x*scale / self.frame.size.width;
-            y = point.y*scale;
-            
-            // multiply by image's actual width/height
-            x = x * 768.0f;
-            
-            // cap at edge
-            if (x >= 768.0f*scale) {
-                x = 767.0f*scale;
-            }
-            
-        } else {
-            //#endif
-            x = point.x; // TODO: handle rotation
-            y = point.y; //
-            //#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 30200
-        }
-        //#endif
-        
+        float x = point.x;
+        float y = point.y;
+    
         // offset locates the pixel in the data from x,y.
 		// 4 for 4 bytes of data per pixel, w is width of one row of data.
         // use floor intead of round to tolerate extreme cases 
         // E.g (iPhone, if y = 159.5, round(y) = 160 >> offset is out of array bound
         //      floor(159.5) = 159
-        
 		int offset = 4*((w*floor(y))+floor(x));
         int alpha =  data[offset];
         int red = data[offset+1];

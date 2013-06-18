@@ -7,17 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GSColorCircle.h"
+#import "ColorCircleView.h"
 
 @interface TabWrapperView : NSObject {
-    GSColorCircle   *displayView;
+    ColorCircleView   *displayView;
     UIButton        *eventView;
 }
 
 - (id)initWithFrame:(CGRect)frame;
 - (id)init;
 
-@property (nonatomic, retain) GSColorCircle *displayView;
+@property (nonatomic, retain) ColorCircleView *displayView;
 @property (nonatomic, retain) UIButton      *eventView;
 @property (nonatomic) BOOL selected;
 

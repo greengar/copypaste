@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "WBUtils.h"
 #import "WBPage.h"
+#import "WBToolbarView.h"
+#import "WBToolMonitorView.h"
 
-@interface WBBoard : UIViewController <WBPageDelegate>
+@interface WBBoard : UIViewController <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate>
 
 - (id)initWithDict:(NSDictionary *)dictionary;
 
