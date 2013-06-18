@@ -10,8 +10,8 @@
 #import "ColorSpectrumImageView.h"
 #import "CustomSlider.h"
 #import "ColorPreviewView.h"
+#import "SettingManager.h"
 
-#define kOffsetForBouncing      30
 #define kWBToolMonitorWidth     [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPrivate.png"].size.width
 #define kWBToolMonitorHeight    [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPrivate.png"].size.height
 

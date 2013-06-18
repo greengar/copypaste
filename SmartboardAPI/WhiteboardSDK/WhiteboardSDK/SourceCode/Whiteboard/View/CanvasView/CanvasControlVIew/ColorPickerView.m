@@ -21,7 +21,6 @@
 #define kSliderHeight               22.0
 #define kMinPointSize               1.0
 #define kMaxPointSize               32.0
-#define kDefaultPointSize           9.0
 #define kEraseButtonWidth           100.0
 #define kPreviewAreaTopMargin       9
 #define kBrushToolsViewY            (kOffset + 87 + (kOffset + 70 - (460 - frame.size.height)) + 25 + 16)

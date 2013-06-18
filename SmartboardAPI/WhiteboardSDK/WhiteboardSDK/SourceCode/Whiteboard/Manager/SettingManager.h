@@ -11,6 +11,8 @@
 #import "PaintingManager.h"
 #import "WBUtils.h"
 
+#define kOffsetForBouncing 30
+
 #define kPointSizeKeyFormat                 @"kPointSizeKeyFormat%d"
 #define kOpacityKeyFormat                   @"kOpacityKeyFormat%d"
 #define kColorKeyFormat                     @"kColorKeyFormat%d"

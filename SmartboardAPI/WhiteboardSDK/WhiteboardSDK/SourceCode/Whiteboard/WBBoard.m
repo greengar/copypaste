@@ -29,8 +29,7 @@
 #define kHistoryViewTag     888
 #define kPageCurlButtonTag  kHistoryViewTag+1
 #define kPageLabelTag       kHistoryViewTag+2
-#define kToolBarTag         kHistoryViewTag+3
-#define kToolMonitorTag     kHistoryViewTag+4
+#define kToolMonitorTag     kHistoryViewTag+3
 
 #define kCanvasButtonIndex  777
 #define kTextButtonIndex    (kCanvasButtonIndex+1)
@@ -54,6 +53,7 @@
 - (void)selectPage:(WBPage *)page;
 
 // Control for board
+@property (nonatomic, strong) WBMenubarView             *menubarView;
 @property (nonatomic, strong) WBToolbarView             *toolbarView;
 @end
 
@@ -69,6 +69,7 @@
 @synthesize animationTimer = _animationTimer;
 @synthesize timer = _timer;
 @synthesize isTargetViewCurled = _isTargetViewCurled;
+@synthesize menubarView = _menubarView;
 @synthesize toolbarView = _toolbarView;
 
 // TODO: why doesn't this call -initWithNibName:...?
@@ -138,16 +139,22 @@
 
 #pragma mark - Tool/Control for Board
 - (void)initLayersWithFrame:(CGRect)frame {
+    // Menubar (Menu/Undo/History)
+    float leftMargin = 25;
+    float topMargin = 25;
+    float topMenubarHeight = 79;
+    float topMenubarWidth = topMenubarHeight*3;
+    self.menubarView = [[WBMenubarView alloc] initWithFrame:CGRectMake(leftMargin, topMargin, topMenubarWidth, topMenubarHeight)];
+    self.menubarView.delegate = self;
+    self.menubarView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+    [self.view addSubview:self.menubarView];
     
     // Toolbar (Canvas/Plus/Move/Color History Tray)
     float bottomToolbarHeight = 74;
     float bottomMargin = 26;
-    float leftMargin = 25;
     float bottomToolbarWidth = 600;
-    
     self.toolbarView = [[WBToolbarView alloc] initWithFrame:CGRectMake(leftMargin, self.view.frame.size.height-bottomToolbarHeight-bottomMargin, bottomToolbarWidth, bottomToolbarHeight)];
     self.toolbarView.delegate = self;
-    self.toolbarView.tag = kToolBarTag;
     self.toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:self.toolbarView];
     
@@ -301,6 +308,7 @@
         });
         [[self toolbarView] setHidden:YES];
         [[self currentPage] setHidden:YES];
+        [[self menubarView] setHidden:YES];
         [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setHidden:YES];
         
         UILabel *pageLabel = (UILabel *) [self.view viewWithTag:kPageLabelTag];
@@ -344,6 +352,7 @@
 	
 	[[self currentPage] setHidden:NO];
     [[self toolbarView] setHidden:NO];
+    [[self menubarView] setHidden:NO];
     [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setHidden:NO];
     [((GSButton *) [self.view viewWithTag:kPageCurlButtonTag]) setHidden:NO];
 }
@@ -364,6 +373,38 @@
 #pragma mark - Export output data
 - (UIImage *)exportBoardToUIImage {
     return [[self currentPage] exportPageToImage];
+}
+
+#pragma mark - Menu Bar Buttons
+- (void)showMenu {
+    
+}
+
+- (void)performUndo {
+    
+}
+
+- (void)showHistory:(BOOL)show from:(UIView *)menubar {
+    if (show) {
+        int historyHeight = kHistoryViewHeight+kOffsetForBouncing;
+        HistoryView *historyView = [[HistoryView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x,
+                                                                                 menubar.frame.origin.y+menubar.frame.size.height,
+                                                                                 menubar.frame.size.width,
+                                                                                 historyHeight)];
+        [historyView setTag:kHistoryViewTag];
+        [historyView setDelegate:self];
+        [self.view addSubview:historyView];
+        [historyView animateDown];
+        
+        [[HistoryManager sharedManager] setDelegate:historyView];
+        
+    } else {
+        [((HistoryView *) [self.view viewWithTag:kHistoryViewTag]) animateUp];
+    }
+}
+
+- (void)historyClosed {
+    [self.menubarView historyClosed];
 }
 
 #pragma mark - Tool Bar Buttons
@@ -389,23 +430,23 @@
 }
 
 - (void)monitorClosed {
-    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) monitorClosed];
+    [self.toolbarView monitorClosed];
 }
 
 - (void)selectEraser:(BOOL)select {
-    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) selectEraser:select];
+    [self.toolbarView selectEraser:select];
 }
 
 - (void)colorPicked:(UIColor *)color {
-    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) updateColor:color];
+    [self.toolbarView updateColor:color];
 }
 
 - (void)opacityChanged:(float)opacity {
-    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) updateAlpha:opacity];
+    [self.toolbarView updateAlpha:opacity];
 }
 
 - (void)pointSizeChanged:(float)pointSize {
-    [((WBToolbarView *) [self.view viewWithTag:kToolBarTag]) updatePointSize:pointSize];
+    [self.toolbarView updatePointSize:pointSize];
 }
 
 - (void)newCanvas:(GSButton *)canvasButton {
@@ -455,17 +496,6 @@
     [UIView commitAnimations];
 }
 
-#pragma mark - History View
-- (void)showHistoryView {
-    HistoryView *historyView = [[HistoryView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-kToolBarItemHeight*4, self.view.frame.size.width, kToolBarItemHeight*4)];
-    [historyView setTag:kHistoryViewTag];
-    [self.view addSubview:historyView];
-}
-
-- (void)hideHistoryView {
-    [[self.view viewWithTag:kHistoryViewTag] removeFromSuperview];
-}
-
 #pragma mark - Animation Page Curl
 - (void)animationWillStart:(NSString *)animationID context:(void *)context {	
 	self.isAnimating = YES;
@@ -511,19 +541,15 @@
 
 #pragma mark - Keyboard Delegate
 - (void)keyboardWasShown:(NSNotification*)aNotification {
-    [self hideHistoryView];
-//    NSDictionary* info = [aNotification userInfo];
-//    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-//
-//
-//    [UIView animateWithDuration:0.2f animations:^{
-//        CGRect frame = CGRectMake(self.textToolLayer.frame.origin.x,
-//                                  self.frame.size.height-kToolBarItemHeight,
-//                                  self.textToolLayer.frame.size.width,
-//                                  self.textToolLayer.frame.size.height);
-//        frame.origin.y -= kbSize.height;
-//        self.textToolLayer.frame = frame;
-//    }];
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+
+    [UIView animateWithDuration:0.2f animations:^{
+        CGRect frame = self.toolbarView.frame;
+        frame.origin.y -= kbSize.height;
+        self.toolbarView.frame = frame;
+    }];
 }
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {

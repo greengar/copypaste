@@ -10,9 +10,11 @@
 #import "WBUtils.h"
 #import "WBPage.h"
 #import "WBToolbarView.h"
+#import "WBMenubarView.h"
 #import "WBToolMonitorView.h"
+#import "HistoryView.h"
 
-@interface WBBoard : UIViewController <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate>
+@interface WBBoard : UIViewController <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, HistoryViewDelegate>
 
 - (id)initWithDict:(NSDictionary *)dictionary;
 
