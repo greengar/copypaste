@@ -11,6 +11,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface MySlider : UISlider
+@interface CustomSlider : UISlider
 
 @end

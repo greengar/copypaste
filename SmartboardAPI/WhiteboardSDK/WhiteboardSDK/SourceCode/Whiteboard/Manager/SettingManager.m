@@ -22,12 +22,6 @@ static SettingManager *shareManager = nil;
 @synthesize currentColorTab =_currentColorTab;
 @synthesize tempOpacity = _tempOpacity;
 @synthesize textureScale = _textureScale;
-@synthesize currentTool = _currentTool;
-@synthesize currentShakeAction = _currentShakeAction;
-@synthesize isShowColorTab = _isShowColorTab;
-@synthesize isShakeActionConfirm = _isShakeActionConfirm;
-@synthesize isEnablePanZoom = _isEnablePanZoom;
-@synthesize isEnableAutosave = _isEnableAutosave;
 @synthesize colorTabList = _colorTabList;
 @synthesize currentFontName = _currentFontName;
 @synthesize currentFontSize = _currentFontSize;
@@ -77,57 +71,25 @@ static SettingManager *shareManager = nil;
             self.colorTabList = [[NSMutableArray alloc] initWithObjects:
                                  [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
                                                                     opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0x8BB4F8)], // blue
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:[UIColor colorWithRed:0 green:0 blue:0 alpha:kCoolOpacity]],
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0xBEBEBE)],
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
                                                                       color:OPAQUE_HEXCOLOR(0xE78383)], // red
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0xFFCC00)], // yellow
                                  [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
                                                                     opacity:kCoolOpacity
                                                                       color:OPAQUE_HEXCOLOR(0xA4FBB8)], // green
                                  [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:0
-                                                                      color:OPAQUE_HEXCOLOR(0xFFFFFF)], // eraser
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
                                                                     opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0xA020F0)], // purple
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0xA52A2A)], // brown
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0x000000)], // pure black
-                        
-                                 // Cut off for Portrait Mode
+                                                                      color:OPAQUE_HEXCOLOR(0x8BB4F8)], // blue
                                  [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
                                                                     opacity:kCoolOpacity
                                                                       color:OPAQUE_HEXCOLOR(0xFFC0CB)], // pink
                                  [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
                                                                     opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0xFFFFFF)], // behind
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0xBEBEBE)], // grey
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0xCCCCCC)], // light grey
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0x990000)], // dark red
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
-                                                                      color:OPAQUE_HEXCOLOR(0x006600)], // dark green
-                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
                                                                       color:OPAQUE_HEXCOLOR(0xFFFF00)], // yellow,
+                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
+                                                                    opacity:kCoolOpacity
+                                                                      color:OPAQUE_HEXCOLOR(0xA52A2A)], // brown
+                                 [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
+                                                                    opacity:0
+                                                                      color:OPAQUE_HEXCOLOR(0xFFFFFF)], // eraser
                                  nil];
         }
         else {
@@ -142,7 +104,7 @@ static SettingManager *shareManager = nil;
                                                                     opacity:kCoolOpacity
                                                                       color:OPAQUE_HEXCOLOR(0x8BB4F8)], // blue
                                  [[ColorTabElement alloc] initWithPointSize:kDefaultPointSize
-                                                                    opacity:kCoolOpacity
+                                                                    opacity:0
                                                                       color:OPAQUE_HEXCOLOR(0xFFFFFF)], // eraser
                                  nil];
         }
@@ -150,7 +112,6 @@ static SettingManager *shareManager = nil;
         // Load Setting from Preferences
         [self loadColorTabSetting];
         [self loadTextSetting];
-        [self loadGeneralSetting];
     }
     return self;
 }
@@ -184,8 +145,6 @@ static SettingManager *shareManager = nil;
         
         // Save the brush size to Painting Manager
         [[PaintingManager sharedManager] updatePointSize:currentTab.pointSize of:nil];
-        
-        [self persistGeneralSetting];
     }
 }
 
@@ -283,24 +242,6 @@ static SettingManager *shareManager = nil;
     }
 }
 
-- (void) loadGeneralSetting {
-    self.currentShakeAction = [NSDEF integerForKey:kCurrentShakeActionPreference];
-    self.isShakeActionConfirm = [NSDEF boolForKey:kIsShakeActionConfirmPreference];
-    self.isShowColorTab = [NSDEF boolForKey:kIsShowColorTabPreference];
-    self.isEnablePanZoom = YES; // [NSDEF boolForKey:kIsEnablePanZoomPreference];
-    self.isEnableAutosave = [NSDEF boolForKey:kIsEnableAutosavePreference];
-}
-
-- (void) loadAboutSetting {
-    self.isShowColorTab = [NSDEF boolForKey:kIsShowColorTabPreference];
-    self.isEnablePanZoom = [NSDEF boolForKey:kIsEnablePanZoomPreference];
-}
-
-- (void) loadEraserSetting {        
-    self.currentShakeAction = [NSDEF integerForKey:kCurrentShakeActionPreference];
-    self.isShakeActionConfirm = [NSDEF boolForKey:kIsShakeActionConfirmPreference];
-}
-
 - (void) persistColorTabSetting {
     for (int i = 0; i < [self.colorTabList count]; i++) {
         ColorTabElement *currentTab = [self.colorTabList objectAtIndex:i];
@@ -328,29 +269,6 @@ static SettingManager *shareManager = nil;
     [NSDEF setObject:[currentTab.tabColor gsStringWithX:currentTab.offsetXOnSpectrum
                                                       y:currentTab.offsetYOnSpectrum]
               forKey:[NSString stringWithFormat:kColorKeyFormat, self.currentColorTab]];
-    [NSDEF synchronize];
-}
-
-- (void) persistGeneralSetting {
-    [NSDEF setInteger:self.currentShakeAction forKey:kCurrentShakeActionPreference];
-    [NSDEF setBool:self.isShakeActionConfirm forKey:kIsShakeActionConfirmPreference];
-    [NSDEF setBool:self.isEnablePanZoom forKey:kIsEnablePanZoomPreference];
-    [NSDEF setBool:self.isShowColorTab forKey:kIsShowColorTabPreference];
-    [NSDEF setBool:self.isEnableAutosave forKey:kIsEnableAutosavePreference];
-    [NSDEF setInteger:self.currentColorTab forKey:kSelectedTabKey];
-    [NSDEF synchronize];
-}
-
-- (void) persistAboutSetting {
-    [NSDEF setBool:self.isEnablePanZoom forKey:kIsEnablePanZoomPreference];
-    [NSDEF setBool:self.isShowColorTab forKey:kIsShowColorTabPreference];
-    [NSDEF synchronize];
-}
-
-- (void) persistEraserSetting {
-    [NSDEF setInteger:self.currentShakeAction forKey:kCurrentShakeActionPreference];
-    [NSDEF setBool:self.isShakeActionConfirm forKey:kIsShakeActionConfirmPreference];
-    [NSDEF setBool:self.isEnableAutosave forKey:kIsEnableAutosavePreference];
     [NSDEF synchronize];
 }
 

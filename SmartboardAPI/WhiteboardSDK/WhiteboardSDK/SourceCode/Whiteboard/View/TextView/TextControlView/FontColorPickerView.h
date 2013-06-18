@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TextElement.h"
-#import "ColorPickerImageView.h"
+#import "ColorSpectrumImageView.h"
 
 @interface FontColorPickerView : UIView
 

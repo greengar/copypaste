@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define kCanvasButtonWidth 79
+
 @interface WBCanvasButton : UIButton
 
 @property float radius;

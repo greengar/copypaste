@@ -7,6 +7,7 @@
 //
 
 #import "WBCanvasButton.h"
+#import "SettingManager.h"
 
 @interface WBCanvasButton ()
 {
@@ -55,12 +56,13 @@ static inline float radians(double degrees) { return degrees * M_PI / 180; };
 
 - (void)drawRect:(CGRect)rect
 {
-    //// Color Declarations
+    // Color Declarations
     UIColor* selectedButtonOutlineWhite = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
-//    UIColor* strokeColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
-    UIColor* currentBrushColor = [UIColor colorWithRed: 0.831 green: 0.137 blue: 0.329 alpha: 1];
-    
-    
+    UIColor* tabColor = [[SettingManager sharedManager] getCurrentColorTab].tabColor;
+    float red, green, blue, alpha;
+    [tabColor getRed:&red green:&green blue:&blue alpha:&alpha];
+    alpha = [[SettingManager sharedManager] getCurrentColorTab].opacity;
+    UIColor* currentBrushColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
     if (self.state == UIControlStateHighlighted)
     {
         CGFloat currentBrushColorRGBA[4];
@@ -69,7 +71,6 @@ static inline float radians(double degrees) { return degrees * M_PI / 180; };
         currentBrushColor = [UIColor colorWithRed: (currentBrushColorRGBA[0] * 0.5 + 0.5) green: (currentBrushColorRGBA[1] * 0.5 + 0.5) blue: (currentBrushColorRGBA[2] * 0.5 + 0.5) alpha: (currentBrushColorRGBA[3] * 0.5 + 0.5)];
         
     }
-    
     
 //    UIColor* color = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
 //    UIColor* lightGrayOutlineColor = [UIColor colorWithRed: 0.757 green: 0.757 blue: 0.757 alpha: 1];

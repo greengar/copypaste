@@ -10,7 +10,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface GSColorCircle : UIView
+@interface ColorCircleView : UIView
 
 - (id)initWithFrame:(CGRect)frame;
 - (id)initWithFrame:(CGRect)frame andColor:(UIColor *)nColor andOpacity:(float)newOpacity andPointSize:(float)newPointSize;

@@ -17,7 +17,7 @@
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super init])) {
         // Initialization code
-		self.displayView = [[GSColorCircle alloc] initWithFrame:CGRectMake(21, 11, 22, 23)];
+		self.displayView = [[ColorCircleView alloc] initWithFrame:CGRectMake(21, 11, 22, 23)];
         self.eventView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.eventView setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/SelectedTabBackground.png"]
                                   forState:UIControlStateNormal];
@@ -29,7 +29,7 @@
     if ((self = [super init])) {
         // color does not matter because it is always later overwritten by SettingManager
         // same for opacity and pointSize
-		self.displayView = [[GSColorCircle alloc] initWithFrame:CGRectMake(21, 11, 22, 23) andColor:[UIColor blackColor] andOpacity:0.95 andPointSize:9.0];
+		self.displayView = [[ColorCircleView alloc] initWithFrame:CGRectMake(21, 11, 22, 23) andColor:[UIColor blackColor] andOpacity:0.95 andPointSize:9.0];
         self.eventView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.eventView setBackgroundImage:[UIImage imageNamed:@"Whiteboard.bundle/SelectedTabBackground.png"]
                                   forState:UIControlStateNormal];
