@@ -13,4 +13,7 @@
 
 @interface CustomSlider : UISlider
 
+- (void)setMinimumTitle:(NSString *)minTitle;
+- (void)setMaximumTitle:(NSString *)maxTitle;
+
 @end

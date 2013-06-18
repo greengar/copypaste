@@ -8,18 +8,43 @@
 
 #import "CustomSlider.h"
 
-#define THUMB_SIZE 10
-#define EFFECTIVE_THUMB_SIZE 30 //20
-
 @implementation CustomSlider
+
+- (id)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        [self setMinimumTrackTintColor:[UIColor darkGrayColor]];
+        [self setThumbTintColor:[UIColor whiteColor]];
+    }
+    return self;
+}
 
 - (BOOL) pointInside:(CGPoint)point withEvent:(UIEvent*)event {
 	CGRect bounds = self.bounds;
-	bounds = CGRectInset(bounds, -10, -3); //-8
+	bounds = CGRectInset(bounds, -10, -3);
 	return CGRectContainsPoint(bounds, point);
 }
 
-- (BOOL) beginTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event {
+- (void)setMinimumTitle:(NSString *)minTitle {
+    UILabel *minLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, -10, self.frame.size.width/2, self.frame.size.height/2)];
+    [minLabel setText:minTitle];
+    [minLabel setTextAlignment:NSTextAlignmentLeft];
+    [minLabel setBackgroundColor:[UIColor clearColor]];
+    [minLabel setTextColor:[UIColor darkGrayColor]];
+    [minLabel setFont:[UIFont systemFontOfSize:14.0f]];
+    [self addSubview:minLabel];
+}
+
+- (void)setMaximumTitle:(NSString *)maxTitle {
+    UILabel *maxLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2, -10, self.frame.size.width/2, self.frame.size.height/2)];
+    [maxLabel setText:maxTitle];
+    [maxLabel setTextAlignment:NSTextAlignmentRight];
+    [maxLabel setBackgroundColor:[UIColor clearColor]];
+    [maxLabel setTextColor:[UIColor darkGrayColor]];
+    [maxLabel setFont:[UIFont systemFontOfSize:14.0f]];
+    [self addSubview:maxLabel];
+}
+
+- (BOOL)beginTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event {
 	return YES;
 }
 
