@@ -14,85 +14,107 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    // TODO: replace with Move Button
-    // Color Declarations
+    //// Color Declarations
     UIColor* selectedButtonOutlineWhite = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+    UIColor* blackCircleButtonOutline = [UIColor colorWithRed: 0.157 green: 0.157 blue: 0.157 alpha: 1];
+    UIColor* whiteCircleButtonFill = [UIColor colorWithRed: 0.996 green: 0.996 blue: 0.996 alpha: 1];
     
-    UIColor* currentBrushColor = [UIColor redColor];
-    
-    if (self.state == UIControlStateHighlighted)
+    // Use bitwise & operator to see whether the state is highlighted or selected
+    if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
     {
-        CGFloat currentBrushColorRGBA[4];
-        [currentBrushColor getRed: &currentBrushColorRGBA[0] green: &currentBrushColorRGBA[1] blue: &currentBrushColorRGBA[2] alpha: &currentBrushColorRGBA[3]];
-        
-        currentBrushColor = [UIColor colorWithRed: (currentBrushColorRGBA[0] * 0.5 + 0.5) green: (currentBrushColorRGBA[1] * 0.5 + 0.5) blue: (currentBrushColorRGBA[2] * 0.5 + 0.5) alpha: (currentBrushColorRGBA[3] * 0.5 + 0.5)];
+        // ordering here is important
+        UIColor* selectedButtonOutlineWhiteTemp = [whiteCircleButtonFill copy];
+        selectedButtonOutlineWhite = blackCircleButtonOutline;
+        whiteCircleButtonFill =  blackCircleButtonOutline;
+        blackCircleButtonOutline = selectedButtonOutlineWhiteTemp;
         
     }
     
-    //// Subframes
-    CGRect canvasButtonFrame = self.bounds;
+    //// Frames
+    CGRect moveButtonGroupFrame = self.bounds; //CGRectMake(808, 669, 76, 73);
     
     
-    //// Group
+    //// Bottom Right Toolbar Tray
     {
-        //// Selected Brush Square Background Drawing
-        UIBezierPath* selectedBrushSquareBackgroundPath = [UIBezierPath bezierPathWithRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 0.5, CGRectGetMinY(canvasButtonFrame) + 0.5, 79, 74)];
-        [currentBrushColor setFill];
-        [selectedBrushSquareBackgroundPath fill];
-        
-        
-        //// Selected Brush Circle Button Drawing
-        UIBezierPath* selectedBrushCircleButtonPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 12.5, CGRectGetMinY(canvasButtonFrame) + 9.5, 56, 56)];
-        [selectedButtonOutlineWhite setStroke];
-        selectedBrushCircleButtonPath.lineWidth = 1;
-        [selectedBrushCircleButtonPath stroke];
-        
-        
-        //// Pencil Tip Drawing
-        UIBezierPath* pencilTipPath = [UIBezierPath bezierPath];
-        [pencilTipPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 28, CGRectGetMinY(canvasButtonFrame) + 45)];
-        [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 25, CGRectGetMinY(canvasButtonFrame) + 54)];
-        [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 34, CGRectGetMinY(canvasButtonFrame) + 51)];
-        [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 28, CGRectGetMinY(canvasButtonFrame) + 45)];
-        [pencilTipPath closePath];
-        [selectedButtonOutlineWhite setFill];
-        [pencilTipPath fill];
-        
-        
-        //// Pencil Body Drawing
-        UIBezierPath* pencilBodyPath = [UIBezierPath bezierPath];
-        [pencilBodyPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 30, CGRectGetMinY(canvasButtonFrame) + 44)];
-        [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 35.5, CGRectGetMinY(canvasButtonFrame) + 49.5)];
-        [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 52, CGRectGetMinY(canvasButtonFrame) + 33)];
-        [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 46, CGRectGetMinY(canvasButtonFrame) + 27)];
-        [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 30, CGRectGetMinY(canvasButtonFrame) + 44)];
-        [pencilBodyPath closePath];
-        [selectedButtonOutlineWhite setFill];
-        [pencilBodyPath fill];
-        
-        
-        //// Pencil Eraser Drawing
-        UIBezierPath* pencilEraserPath = [UIBezierPath bezierPath];
-        [pencilEraserPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 47.5, CGRectGetMinY(canvasButtonFrame) + 25.5)];
-        [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 51.5, CGRectGetMinY(canvasButtonFrame) + 21.5)];
-        [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 57.5, CGRectGetMinY(canvasButtonFrame) + 27.5)];
-        [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 53.5, CGRectGetMinY(canvasButtonFrame) + 31.5)];
-        [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 47.5, CGRectGetMinY(canvasButtonFrame) + 25.5)];
-        [pencilEraserPath closePath];
-        [selectedButtonOutlineWhite setFill];
-        [pencilEraserPath fill];
-        
-        
-        //// Top Arrow Tip Drawing
-        UIBezierPath* topArrowTipPath = [UIBezierPath bezierPath];
-        [topArrowTipPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-        [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 44.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-        [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 40.5, CGRectGetMinY(canvasButtonFrame) + 2.5)];
-        [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-        [topArrowTipPath closePath];
-        [selectedButtonOutlineWhite setFill];
-        [topArrowTipPath fill];
+        //// Move Button Group
+        {
+            //// Move Button Circle Drawing
+            UIBezierPath* moveButtonCirclePath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(moveButtonGroupFrame) + 9, CGRectGetMinY(moveButtonGroupFrame) + 8, 56, 56)];
+            [whiteCircleButtonFill setFill];
+            [moveButtonCirclePath fill];
+            [blackCircleButtonOutline setStroke];
+            moveButtonCirclePath.lineWidth = 2;
+            [moveButtonCirclePath stroke];
+            
+            
+            //// Up Arrow in Move Button Drawing
+            UIBezierPath* upArrowInMoveButtonPath = [UIBezierPath bezierPath];
+            [upArrowInMoveButtonPath moveToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 30, CGRectGetMinY(moveButtonGroupFrame) + 27)];
+            [upArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 44, CGRectGetMinY(moveButtonGroupFrame) + 27)];
+            [upArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 37, CGRectGetMinY(moveButtonGroupFrame) + 20)];
+            [upArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 30, CGRectGetMinY(moveButtonGroupFrame) + 27)];
+            [upArrowInMoveButtonPath closePath];
+            [whiteCircleButtonFill setFill];
+            [upArrowInMoveButtonPath fill];
+            [blackCircleButtonOutline setStroke];
+            upArrowInMoveButtonPath.lineWidth = 1.5;
+            [upArrowInMoveButtonPath stroke];
+            
+            
+            //// Down Arrow in Move Button Drawing
+            UIBezierPath* downArrowInMoveButtonPath = [UIBezierPath bezierPath];
+            [downArrowInMoveButtonPath moveToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 30, CGRectGetMinY(moveButtonGroupFrame) + 47)];
+            [downArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 44, CGRectGetMinY(moveButtonGroupFrame) + 47)];
+            [downArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 37, CGRectGetMinY(moveButtonGroupFrame) + 54)];
+            [downArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 30, CGRectGetMinY(moveButtonGroupFrame) + 47)];
+            [downArrowInMoveButtonPath closePath];
+            [whiteCircleButtonFill setFill];
+            [downArrowInMoveButtonPath fill];
+            [blackCircleButtonOutline setStroke];
+            downArrowInMoveButtonPath.lineWidth = 1.5;
+            [downArrowInMoveButtonPath stroke];
+            
+            
+            //// Left Arrow in Move Button Drawing
+            UIBezierPath* leftArrowInMoveButtonPath = [UIBezierPath bezierPath];
+            [leftArrowInMoveButtonPath moveToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 27, CGRectGetMinY(moveButtonGroupFrame) + 30)];
+            [leftArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 27, CGRectGetMinY(moveButtonGroupFrame) + 44)];
+            [leftArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 20, CGRectGetMinY(moveButtonGroupFrame) + 36)];
+            [leftArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 27, CGRectGetMinY(moveButtonGroupFrame) + 30)];
+            [leftArrowInMoveButtonPath closePath];
+            [whiteCircleButtonFill setFill];
+            [leftArrowInMoveButtonPath fill];
+            [blackCircleButtonOutline setStroke];
+            leftArrowInMoveButtonPath.lineWidth = 1.5;
+            [leftArrowInMoveButtonPath stroke];
+            
+            
+            //// Right Arrow in Move Button Drawing
+            UIBezierPath* rightArrowInMoveButtonPath = [UIBezierPath bezierPath];
+            [rightArrowInMoveButtonPath moveToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 48, CGRectGetMinY(moveButtonGroupFrame) + 30)];
+            [rightArrowInMoveButtonPath addLineToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 48, CGRectGetMinY(moveButtonGroupFrame) + 43)];
+            [rightArrowInMoveButtonPath addCurveToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 54, CGRectGetMinY(moveButtonGroupFrame) + 37) controlPoint1: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 48, CGRectGetMinY(moveButtonGroupFrame) + 43) controlPoint2: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 53.71, CGRectGetMinY(moveButtonGroupFrame) + 37.29)];
+            [rightArrowInMoveButtonPath addCurveToPoint: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 48, CGRectGetMinY(moveButtonGroupFrame) + 30) controlPoint1: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 54.29, CGRectGetMinY(moveButtonGroupFrame) + 36.71) controlPoint2: CGPointMake(CGRectGetMinX(moveButtonGroupFrame) + 48, CGRectGetMinY(moveButtonGroupFrame) + 30)];
+            [rightArrowInMoveButtonPath closePath];
+            [whiteCircleButtonFill setFill];
+            [rightArrowInMoveButtonPath fill];
+            [blackCircleButtonOutline setStroke];
+            rightArrowInMoveButtonPath.lineWidth = 1.5;
+            [rightArrowInMoveButtonPath stroke];
+            
+            
+            //// Small Circle in Move Button Drawing
+            UIBezierPath* smallCircleInMoveButtonPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(moveButtonGroupFrame) + 33.5, CGRectGetMinY(moveButtonGroupFrame) + 33.5, 7, 7)];
+            [selectedButtonOutlineWhite setFill];
+            [smallCircleInMoveButtonPath fill];
+            [blackCircleButtonOutline setStroke];
+            smallCircleInMoveButtonPath.lineWidth = 1.5;
+            [smallCircleInMoveButtonPath stroke];
+        }
     }
+    
+    
+
 }
 
 @end
