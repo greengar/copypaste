@@ -40,20 +40,14 @@
         [self addSubview:historyView];
         
         UILabel *historyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, kHistoryTitleHeight)];
-        [historyLabel setBackgroundColor:[UIColor lightGrayColor]];
+        [historyLabel setBackgroundColor:[UIColor clearColor]];
         [historyLabel setText:@"Previous actions"];
         [historyLabel setTextAlignment:NSTextAlignmentCenter];
-        [historyLabel setTextColor:[UIColor whiteColor]];
-        [historyLabel setShadowColor:[UIColor darkGrayColor]];
-        [historyLabel setShadowOffset:CGSizeMake(0, -1)];
-        [historyLabel setFont:[UIFont systemFontOfSize:20.0f]];
+        [historyLabel setTextColor:[UIColor darkGrayColor]];
+        [historyLabel setFont:[UIFont systemFontOfSize:25.0f]];
+        [historyLabel.layer setBorderWidth:1];
+        [historyLabel.layer setBorderColor:[UIColor lightGrayColor].CGColor];
         [historyView addSubview:historyLabel];
-        
-        GSButton *closeButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
-        [closeButton setFrame:CGRectMake(frame.size.width-44, 0, 44, 44)];
-        [closeButton setTitle:@"X" forState:UIControlStateNormal];
-        [closeButton addTarget:self action:@selector(closeMe) forControlEvents:UIControlEventTouchUpInside];
-        [historyView addSubview:closeButton];
         
         historyTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHistoryTitleHeight, historyView.frame.size.width, kHistoryCellHeight*4)];
         [historyTableView setBackgroundColor:[UIColor clearColor]];
@@ -107,13 +101,6 @@
     
     if (isAnimationDown) {
         isAnimationDown = NO;
-    }
-}
-
-- (void)closeMe {
-    [self animateUp];
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(historyClosed)]) {
-        [self.delegate historyClosed];
     }
 }
 

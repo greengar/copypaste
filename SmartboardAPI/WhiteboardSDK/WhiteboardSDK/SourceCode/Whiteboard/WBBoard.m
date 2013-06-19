@@ -11,6 +11,7 @@
 #import "GLCanvasElement.h"
 #import "BoardManager.h"
 #import "HistoryManager.h"
+#import "HistoryElement.h"
 #import "SettingManager.h"
 #import "GSButton.h"
 #import "HistoryView.h"
@@ -382,7 +383,13 @@
 }
 
 - (void)performUndo {
-    
+    for (int i = [[[HistoryManager sharedManager] historyPool] count]-1; i >= 0; i--) {
+        HistoryElement *action = [[[HistoryManager sharedManager] historyPool] objectAtIndex:i];
+        if (action.active) {
+            [[HistoryManager sharedManager] deactivateAction:action];
+            break;
+        }
+    }
 }
 
 - (void)showHistory:(BOOL)show from:(UIView *)menubar {

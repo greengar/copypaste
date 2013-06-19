@@ -52,7 +52,7 @@
 
 #pragma mark - Animation
 - (void)animateUp {
-    NSValue * from = [NSNumber numberWithFloat:self.frame.size.height*2];
+    NSValue * from = [NSNumber numberWithFloat:self.frame.size.height*1.3];
     NSValue * to = [NSNumber numberWithFloat:(self.frame.size.height+kOffsetForBouncing)/2];
     NSString * keypath = @"position.y";
     
