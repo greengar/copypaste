@@ -206,8 +206,6 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
             [topArrowTipPath closePath];
             [selectedButtonOutlineWhite setFill];
             [topArrowTipPath fill];
-            
-            
         }
     }
 }

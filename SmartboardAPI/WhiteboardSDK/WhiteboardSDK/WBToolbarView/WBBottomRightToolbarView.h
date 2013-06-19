@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WBAddMoreButton.h"
+#import "WBMoveButton.h"
+
+@protocol WBBottomRightToolbarDelegate
+- (void)showAddMore:(BOOL)show from:(UIView *)view;
+- (void)enableMove:(BOOL)enable;
+@end
 
 @interface WBBottomRightToolbarView : UIView
+
+@property (nonatomic, assign) id<WBBottomRightToolbarDelegate> delegate;
 
 @end

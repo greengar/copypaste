@@ -62,6 +62,12 @@
 		7B82E790175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E791175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E792175F9E4C00B063D7 /* Whiteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B82E78F175F9E4C00B063D7 /* Whiteboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B931E0D1771645B005500AB /* WBAddMoreButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B931E091771645A005500AB /* WBAddMoreButton.h */; };
+		7B931E0E1771645B005500AB /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0A1771645B005500AB /* WBAddMoreButton.m */; };
+		7B931E0F1771645B005500AB /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0A1771645B005500AB /* WBAddMoreButton.m */; };
+		7B931E101771645B005500AB /* WBMoveButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B931E0B1771645B005500AB /* WBMoveButton.h */; };
+		7B931E111771645B005500AB /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0C1771645B005500AB /* WBMoveButton.m */; };
+		7B931E121771645B005500AB /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0C1771645B005500AB /* WBMoveButton.m */; };
 		7BBCAC9E176F7CB000950ABA /* HistoryElementCanvasDraw.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */; };
 		7BBCAC9F176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
 		7BBCACA0176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
@@ -374,6 +380,10 @@
 		7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Whiteboard.bundle; sourceTree = "<group>"; };
 		7B82E78F175F9E4C00B063D7 /* Whiteboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Whiteboard.h; sourceTree = "<group>"; };
 		7B82E8EA175FBA0700B063D7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7B931E091771645A005500AB /* WBAddMoreButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBAddMoreButton.h; sourceTree = "<group>"; };
+		7B931E0A1771645B005500AB /* WBAddMoreButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBAddMoreButton.m; sourceTree = "<group>"; };
+		7B931E0B1771645B005500AB /* WBMoveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMoveButton.h; sourceTree = "<group>"; };
+		7B931E0C1771645B005500AB /* WBMoveButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMoveButton.m; sourceTree = "<group>"; };
 		7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElementCanvasDraw.h; sourceTree = "<group>"; };
 		7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementCanvasDraw.m; sourceTree = "<group>"; };
 		7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBToolMonitorView.h; sourceTree = "<group>"; };
@@ -1195,6 +1205,10 @@
 				A9520C9C17701F5F00B180BA /* WBEraserButton.m */,
 				7BC34BC01770E3A100CF6EBA /* WBHistoryColorButton.h */,
 				7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */,
+				7B931E091771645A005500AB /* WBAddMoreButton.h */,
+				7B931E0A1771645B005500AB /* WBAddMoreButton.m */,
+				7B931E0B1771645B005500AB /* WBMoveButton.h */,
+				7B931E0C1771645B005500AB /* WBMoveButton.m */,
 				A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */,
 				A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */,
 				A9D3B453176F1B5C005574D2 /* WBToolbarView.h */,
@@ -1283,6 +1297,8 @@
 				A9520C9D17701F5F00B180BA /* WBEraserButton.h in Headers */,
 				7BC34BC21770E3A200CF6EBA /* WBHistoryColorButton.h in Headers */,
 				7BC34BC7177108C700CF6EBA /* WBMenubarView.h in Headers */,
+				7B931E0D1771645B005500AB /* WBAddMoreButton.h in Headers */,
+				7B931E101771645B005500AB /* WBMoveButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1566,6 +1582,8 @@
 				A9520C9E17701F5F00B180BA /* WBEraserButton.m in Sources */,
 				7BC34BC31770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */,
 				7BC34BC8177108C700CF6EBA /* WBMenubarView.m in Sources */,
+				7B931E0E1771645B005500AB /* WBAddMoreButton.m in Sources */,
+				7B931E111771645B005500AB /* WBMoveButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1636,6 +1654,8 @@
 				A9520C9F17701F5F00B180BA /* WBEraserButton.m in Sources */,
 				7BC34BC41770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */,
 				7BC34BC9177108C700CF6EBA /* WBMenubarView.m in Sources */,
+				7B931E0F1771645B005500AB /* WBAddMoreButton.m in Sources */,
+				7B931E121771645B005500AB /* WBMoveButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

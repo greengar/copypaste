@@ -40,6 +40,7 @@
         float x = canvasToolbarView.frame.origin.x + canvasToolbarView.frame.size.width;
         WBBottomRightToolbarView *bottomRightToolbarView = [[WBBottomRightToolbarView alloc] initWithFrame:CGRectMake(x, canvasToolbarView.frame.origin.y, self.frame.size.width - x, self.frame.size.height)];
         bottomRightToolbarView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+        bottomRightToolbarView.delegate = self;
         bottomRightToolbarView.tag = kBottomRightToolBarTag;
         [self addSubview:bottomRightToolbarView];
     }
@@ -76,6 +77,18 @@
 
 - (void)selectEraser:(BOOL)select {
     [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) selectEraser:select];
+}
+
+- (void)showAddMore:(BOOL)show from:(UIView *)view {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showAddMore:from:)]) {
+        [self.delegate showAddMore:show from:view];
+    }
+}
+
+- (void)enableMove:(BOOL)enable {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(enableMove:)]) {
+        [self.delegate enableMove:enable];
+    }
 }
 
 @end

@@ -449,6 +449,17 @@
     [self.toolbarView updatePointSize:pointSize];
 }
 
+- (void)showAddMore:(BOOL)show from:(UIView *)view {
+    
+}
+
+- (void)enableMove:(BOOL)enable {
+    [[self currentPage] setIsLocked:enable];
+    if (![[self currentPage] isLocked]) {
+        [[self currentPage] focusOnTopElement];
+    }
+}
+
 - (void)newCanvas:(GSButton *)canvasButton {
     if ([[self currentPage] selectedElementView]
         && [[[self currentPage] selectedElementView] isKindOfClass:[GLCanvasElement class]]
@@ -470,14 +481,6 @@
         TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
         [[self currentPage] addElement:textElement];
         [[HistoryManager sharedManager] addActionCreateElement:textElement forPage:[self currentPage]];
-    }
-}
-
-- (void)lockPage:(GSButton *)lockButton {
-    [lockButton setSelected:![lockButton isSelected]];
-    [[self currentPage] setIsLocked:![[self currentPage] isLocked]];
-    if (![[self currentPage] isLocked]) {
-        [[self currentPage] focusOnTopElement];
     }
 }
 

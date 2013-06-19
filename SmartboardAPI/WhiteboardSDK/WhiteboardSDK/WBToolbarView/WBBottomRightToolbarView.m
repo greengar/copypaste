@@ -8,55 +8,47 @@
 
 #import "WBBottomRightToolbarView.h"
 
+@interface WBBottomRightToolbarView()
+@property (nonatomic, strong) WBAddMoreButton *addMoreButton;
+@property (nonatomic, strong) WBMoveButton *moveButton;
+@end
+
 @implementation WBBottomRightToolbarView
+@synthesize addMoreButton = _addMoreButton;
+@synthesize moveButton = _moveButton;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        
         self.opaque = NO;
+        
+        self.addMoreButton = [[WBAddMoreButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/2, frame.size.height)];
+        self.addMoreButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [self.addMoreButton addTarget:self action:@selector(addMore:) forControlEvents:UIControlEventTouchDown];
+        [self addSubview:self.addMoreButton];
+        
+        self.moveButton = [[WBMoveButton alloc] initWithFrame:CGRectMake(frame.size.width/2, 0, frame.size.width/2, frame.size.height)];
+        self.moveButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [self.moveButton addTarget:self action:@selector(enableMove:) forControlEvents:UIControlEventTouchDown];
+        [self addSubview:self.moveButton];
     }
     return self;
 }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-    
-    //// Color Declarations
-    UIColor* translucentWhiteBackground = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
-    UIColor* lightGrayOutlineColor = [UIColor colorWithRed: 0.757 green: 0.757 blue: 0.757 alpha: 1];
-    
-    //// Frames
-    CGRect bottomRightButtonsFrame = self.bounds; //CGRectMake(729, 668, 156, 75);
-    
-    //// Subframes
-    CGRect bottomToolbarFrame = CGRectMake(CGRectGetMinX(bottomRightButtonsFrame) - 444, CGRectGetMinY(bottomRightButtonsFrame), 444, 74);
-    
-    
-    //// Bottom Right Toolbar Tray
-    {
-        //// Bottom Right Tray Bezier Drawing
-        UIBezierPath* bottomRightTrayBezierPath = [UIBezierPath bezierPath];
-        [bottomRightTrayBezierPath moveToPoint: CGPointMake(CGRectGetMinX(bottomToolbarFrame) + 443.5, CGRectGetMinY(bottomToolbarFrame) + 0.5)];
-        [bottomRightTrayBezierPath addLineToPoint: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 150.5, CGRectGetMinY(bottomRightButtonsFrame) + 0.5)];
-        [bottomRightTrayBezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 155.5, CGRectGetMinY(bottomRightButtonsFrame) + 5.5) controlPoint1: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 150.5, CGRectGetMinY(bottomRightButtonsFrame) + 0.5) controlPoint2: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 155.5, CGRectGetMinY(bottomRightButtonsFrame) + 0.6)];
-        [bottomRightTrayBezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 155.5, CGRectGetMinY(bottomRightButtonsFrame) + 69.5) controlPoint1: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 155.5, CGRectGetMinY(bottomRightButtonsFrame) + 10.4) controlPoint2: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 155.5, CGRectGetMinY(bottomRightButtonsFrame) + 69.5)];
-        [bottomRightTrayBezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 150.56, CGRectGetMinY(bottomRightButtonsFrame) + 74.5) controlPoint1: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 155.5, CGRectGetMinY(bottomRightButtonsFrame) + 69.5) controlPoint2: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 155.39, CGRectGetMinY(bottomRightButtonsFrame) + 74.43)];
-        [bottomRightTrayBezierPath addCurveToPoint: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) - 0.5, CGRectGetMinY(bottomRightButtonsFrame) + 74.5) controlPoint1: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) + 145.74, CGRectGetMinY(bottomRightButtonsFrame) + 74.57) controlPoint2: CGPointMake(CGRectGetMinX(bottomRightButtonsFrame) - 0.5, CGRectGetMinY(bottomRightButtonsFrame) + 74.5)];
-        [translucentWhiteBackground setFill];
-        [bottomRightTrayBezierPath fill];
-        [lightGrayOutlineColor setStroke];
-        bottomRightTrayBezierPath.lineWidth = 1;
-        [bottomRightTrayBezierPath stroke];
+- (void)addMore:(WBAddMoreButton *)button {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showAddMore:from:)]) {
+        [self.delegate showAddMore:!button.isSelected from:self];
     }
-    
-    
+    [button setSelected:!button.isSelected];
+}
 
+- (void)enableMove:(WBMoveButton *)button {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(enableMove:)]) {
+        [self.delegate enableMove:!button.isSelected];
+    }
+    [button setSelected:!button.isSelected];
 }
 
 @end

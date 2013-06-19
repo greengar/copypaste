@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "WBCanvasToolbarView.h"
+#import "WBBottomRightToolbarView.h"
 
 @protocol WBToolbarDelegate
 - (void)showColorSpectrum:(BOOL)show from:(UIView *)view;
 - (void)selectHistoryColor;
+- (void)showAddMore:(BOOL)show from:(UIView *)view;
+- (void)enableMove:(BOOL)enable;
 @end
 
-@interface WBToolbarView : UIView <WBCanvasToolbarDelegate>
+@interface WBToolbarView : UIView <WBCanvasToolbarDelegate, WBBottomRightToolbarDelegate>
 
 - (void)updateColor:(UIColor *)color;
 - (void)updateAlpha:(float)alpha;

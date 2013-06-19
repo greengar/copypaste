@@ -11,8 +11,6 @@
 #import "WBHistoryColorButton.h"
 #import "SettingManager.h"
 
-#define kCanvasButtonTag 777
-
 @interface WBCanvasToolbarView()
 @property (nonatomic, strong) WBCanvasButton *canvasButton;
 @end
@@ -28,7 +26,6 @@
         self.canvasButton = [[WBCanvasButton alloc] initWithFrame:CGRectMake(self.frame.size.width-kCanvasButtonWidth,
                                                                              0, kCanvasButtonWidth, frame.size.height)];
         self.canvasButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        self.canvasButton.tag = kCanvasButtonTag;
         [self.canvasButton addTarget:self action:@selector(showColorSpectrum:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:self.canvasButton];
         
