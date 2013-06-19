@@ -32,6 +32,8 @@
 - (NSDictionary *)saveToDict;
 + (WBPage *)loadFromDict:(NSDictionary *)dict;
 
+- (void)focusOnCanvas;
+- (void)focusOnText;
 - (void)addElement:(WBBaseElement *)element;
 - (void)restoreElement:(WBBaseElement *)element;
 - (void)removeElement:(WBBaseElement *)element;

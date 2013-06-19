@@ -11,11 +11,13 @@
 #import "WBMoveButton.h"
 
 @protocol WBBottomRightToolbarDelegate
-- (void)showAddMore:(BOOL)show from:(UIView *)view;
+- (void)showAddMore:(BOOL)show;
 - (void)enableMove:(BOOL)enable;
 @end
 
 @interface WBBottomRightToolbarView : UIView
+
+- (void)bottomRightClosed;
 
 @property (nonatomic, assign) id<WBBottomRightToolbarDelegate> delegate;
 

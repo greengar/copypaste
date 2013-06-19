@@ -30,6 +30,7 @@
 #define kPageCurlButtonTag  kHistoryViewTag+1
 #define kPageLabelTag       kHistoryViewTag+2
 #define kToolMonitorTag     kHistoryViewTag+3
+#define kAddMoreTag         kHistoryViewTag+4
 
 #define kCanvasButtonIndex  777
 #define kTextButtonIndex    (kCanvasButtonIndex+1)
@@ -387,10 +388,7 @@
 - (void)showHistory:(BOOL)show from:(UIView *)menubar {
     if (show) {
         int historyHeight = kHistoryViewHeight+kOffsetForBouncing;
-        HistoryView *historyView = [[HistoryView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x,
-                                                                                 menubar.frame.origin.y+menubar.frame.size.height,
-                                                                                 menubar.frame.size.width,
-                                                                                 historyHeight)];
+        HistoryView *historyView = [[HistoryView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width, historyHeight)];
         [historyView setTag:kHistoryViewTag];
         [historyView setDelegate:self];
         [self.view addSubview:historyView];
@@ -420,9 +418,16 @@
         [self.view addSubview:toolMonitorView];
         [toolMonitorView animateUp];
         
+        [self forceHideAddMore];
+        [self addCanvas];
     } else {
         [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) animateDown];
     }
+}
+
+- (void)forceHideColorSpectrum {
+    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) animateDown];
+    [self.toolbarView monitorClosed];
 }
 
 - (void)selectHistoryColor {
@@ -449,8 +454,24 @@
     [self.toolbarView updatePointSize:pointSize];
 }
 
-- (void)showAddMore:(BOOL)show from:(UIView *)view {
-    
+- (void)showAddMore:(BOOL)show from:(UIView *)toolbar {
+    if (show) {
+        int addMoreHeight = kAddMoreViewHeight+kOffsetForBouncing;
+        WBAddMoreSelectionView *toolMonitorView = [[WBAddMoreSelectionView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*3, toolbar.frame.origin.y-addMoreHeight, kAddMoreCellHeight*3, addMoreHeight)];
+        [toolMonitorView setTag:kAddMoreTag];
+        [toolMonitorView setDelegate:self];
+        [self.view addSubview:toolMonitorView];
+        [toolMonitorView animateUp];
+        
+        [self forceHideColorSpectrum];
+    } else {
+        [((WBAddMoreSelectionView *) [self.view viewWithTag:kAddMoreTag]) animateDown];
+    }
+}
+
+- (void)forceHideAddMore {
+    [((WBAddMoreSelectionView *) [self.view viewWithTag:kAddMoreTag]) animateDown];
+    [self.toolbarView bottomRightClosed];
 }
 
 - (void)enableMove:(BOOL)enable {
@@ -460,28 +481,25 @@
     }
 }
 
-- (void)newCanvas:(GSButton *)canvasButton {
-    if ([[self currentPage] selectedElementView]
-        && [[[self currentPage] selectedElementView] isKindOfClass:[GLCanvasElement class]]
-        && ![[[self currentPage] selectedElementView] isTransformed]) {
-        [[[self currentPage] selectedElementView] select];
-    } else {
-        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        [[self currentPage] addElement:canvasElement];
-        [[HistoryManager sharedManager] addActionCreateElement:canvasElement forPage:[self currentPage]];
-    }
+- (void)addCanvas {
+    [[self currentPage] focusOnCanvas];
 }
 
-- (void)newText:(GSButton *)textButton {
-    if ([[self currentPage] selectedElementView]
-        && [[[self currentPage] selectedElementView] isKindOfClass:[TextElement class]]
-        && ![[[self currentPage] selectedElementView] isTransformed]) {
-        [[[self currentPage] selectedElementView] select];
-    } else {
-        TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        [[self currentPage] addElement:textElement];
-        [[HistoryManager sharedManager] addActionCreateElement:textElement forPage:[self currentPage]];
-    }
+- (void)addCamera {
+    [self.toolbarView bottomRightClosed];
+}
+
+- (void)addPhoto {
+    [self.toolbarView bottomRightClosed];
+}
+
+- (void)addText {
+    [self.toolbarView bottomRightClosed];
+    [[self currentPage] focusOnText];
+}
+
+- (void)addPaste {
+    [self.toolbarView bottomRightClosed];
 }
 
 - (void)doneEditing {
@@ -547,7 +565,6 @@
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 
-
     [UIView animateWithDuration:0.2f animations:^{
         CGRect frame = self.toolbarView.frame;
         frame.origin.y -= kbSize.height;
@@ -556,7 +573,14 @@
 }
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
+    [UIView animateWithDuration:0.2f animations:^{
+        CGRect frame = self.toolbarView.frame;
+        frame.origin.y += kbSize.height;
+        self.toolbarView.frame = frame;
+    }];
 }
 
 #pragma mark - Backup/Restore Save/Load

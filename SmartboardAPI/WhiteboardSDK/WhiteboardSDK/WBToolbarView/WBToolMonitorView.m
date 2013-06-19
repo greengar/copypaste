@@ -138,7 +138,6 @@
 }
 
 - (void)animateDown {
-    self.layer.borderWidth = 0;
     NSValue * from = [NSNumber numberWithFloat:self.frame.size.height/2];
     NSValue * to = [NSNumber numberWithFloat:self.frame.size.height*2];
     NSString * keypath = @"position.y";

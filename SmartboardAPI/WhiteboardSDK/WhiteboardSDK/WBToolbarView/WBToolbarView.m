@@ -75,13 +75,17 @@
     [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) monitorClosed];
 }
 
+- (void)bottomRightClosed {
+    [((WBBottomRightToolbarView *) [self viewWithTag:kBottomRightToolBarTag]) bottomRightClosed];
+}
+
 - (void)selectEraser:(BOOL)select {
     [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) selectEraser:select];
 }
 
-- (void)showAddMore:(BOOL)show from:(UIView *)view {
+- (void)showAddMore:(BOOL)show {
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showAddMore:from:)]) {
-        [self.delegate showAddMore:show from:view];
+        [self.delegate showAddMore:show from:self];
     }
 }
 

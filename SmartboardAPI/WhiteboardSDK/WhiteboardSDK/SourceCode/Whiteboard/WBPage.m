@@ -101,6 +101,8 @@
     [self.elements addObject:element];
     [element setDelegate:self];
     [element select];
+    
+    [[HistoryManager sharedManager] addActionCreateElement:element forPage:self];
 }
 
 - (void)restoreElement:(WBBaseElement *)element {
@@ -129,12 +131,39 @@
 - (void)focusOnTopElement {
     if ([self.elements count]) {
         self.selectedElementView = [self.elements objectAtIndex:[self.elements count]-1];
-        [self.selectedElementView select];
+        if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
+            [self focusOnText];
+        } else if ([self.selectedElementView isKindOfClass:[GLCanvasElement class]]) {
+            [self focusOnCanvas];
+        } else {
+            [self.selectedElementView select];
+        }
     } else {
         // There's always at least 1 element
         // And it should be the canvas view
         GLCanvasElement *element = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
         [self addElement:element];
+    }
+}
+
+- (void)focusOnCanvas {
+    if (self.selectedElementView
+        && [self.selectedElementView isKindOfClass:[GLCanvasElement class]]
+        && ![self.selectedElementView isTransformed]) {
+        [self.selectedElementView select];
+    } else {
+        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        [self addElement:canvasElement];
+    }
+}
+
+- (void)focusOnText {
+    if (self.selectedElementView
+        && [self.selectedElementView isKindOfClass:[TextElement class]]) {
+        [self.selectedElementView select];
+    } else {
+        TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        [self addElement:textElement];
     }
 }
 

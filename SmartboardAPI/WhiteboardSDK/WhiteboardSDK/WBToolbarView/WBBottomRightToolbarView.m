@@ -38,8 +38,8 @@
 }
 
 - (void)addMore:(WBAddMoreButton *)button {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showAddMore:from:)]) {
-        [self.delegate showAddMore:!button.isSelected from:self];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showAddMore:)]) {
+        [self.delegate showAddMore:!button.isSelected];
     }
     [button setSelected:!button.isSelected];
 }
@@ -49,6 +49,10 @@
         [self.delegate enableMove:!button.isSelected];
     }
     [button setSelected:!button.isSelected];
+}
+
+- (void)bottomRightClosed {
+    [self.addMoreButton setSelected:NO];
 }
 
 @end
