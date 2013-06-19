@@ -10,8 +10,14 @@
 
 #define kCanvasButtonWidth 79
 
+typedef enum {
+    kCanvasMode = 0,
+    kEraserMode,
+    kTextMode
+} CanvasMode;
+
 @interface WBCanvasButton : WBButton
 
-@property (nonatomic) BOOL eraserEnabled;
+@property (nonatomic) CanvasMode mode;
 
 @end

@@ -21,14 +21,19 @@
 - (void)pointSizeChanged:(float)pointSize;
 - (void)monitorClosed;
 - (void)selectEraser:(BOOL)select;
+- (void)fontChanged:(NSString *)fontName;
 @end
 
-@interface WBToolMonitorView : UIView <ColorPickerImageViewDelegate>
+@interface WBToolMonitorView : UIView <ColorPickerImageViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, assign) id<WBToolMonitorDelegate> delegate;
+
+@property (nonatomic) NSString *currentFont;
+@property (nonatomic) BOOL textMode;
 
 - (void)animateUp;
 - (void)animateDown;
 - (void)enableEraser:(BOOL)enable;
+- (void)scrollFontTableViewToFont:(NSString *)font;
 
 @end

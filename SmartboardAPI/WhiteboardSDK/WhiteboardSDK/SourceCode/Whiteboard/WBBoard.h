@@ -15,7 +15,7 @@
 #import "HistoryView.h"
 #import "WBAddMoreSelectionView.h"
 
-@interface WBBoard : UIViewController <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, HistoryViewDelegate, WBAddMoreSelectionDelegate>
+@interface WBBoard : UIViewController <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate>
 
 - (id)initWithDict:(NSDictionary *)dictionary;
 

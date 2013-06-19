@@ -216,12 +216,6 @@
 		7BEA53EC176687F1001BC5FE /* ImageElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5352176687F1001BC5FE /* ImageElement.h */; };
 		7BEA53ED176687F1001BC5FE /* ImageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5353176687F1001BC5FE /* ImageElement.m */; };
 		7BEA53EE176687F1001BC5FE /* ImageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5353176687F1001BC5FE /* ImageElement.m */; };
-		7BEA53EF176687F1001BC5FE /* FontColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5356176687F1001BC5FE /* FontColorPickerView.h */; };
-		7BEA53F0176687F1001BC5FE /* FontColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5357176687F1001BC5FE /* FontColorPickerView.m */; };
-		7BEA53F1176687F1001BC5FE /* FontColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5357176687F1001BC5FE /* FontColorPickerView.m */; };
-		7BEA53F2176687F1001BC5FE /* FontPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5358176687F1001BC5FE /* FontPickerView.h */; };
-		7BEA53F3176687F1001BC5FE /* FontPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5359176687F1001BC5FE /* FontPickerView.m */; };
-		7BEA53F4176687F1001BC5FE /* FontPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5359176687F1001BC5FE /* FontPickerView.m */; };
 		7BEA53F5176687F1001BC5FE /* PlaceHolderTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA535A176687F1001BC5FE /* PlaceHolderTextView.h */; };
 		7BEA53F6176687F1001BC5FE /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA535B176687F1001BC5FE /* PlaceHolderTextView.m */; };
 		7BEA53F7176687F1001BC5FE /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA535B176687F1001BC5FE /* PlaceHolderTextView.m */; };
@@ -489,10 +483,6 @@
 		7BEA5351176687F1001BC5FE /* BackgroundElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundElement.m; sourceTree = "<group>"; };
 		7BEA5352176687F1001BC5FE /* ImageElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageElement.h; sourceTree = "<group>"; };
 		7BEA5353176687F1001BC5FE /* ImageElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageElement.m; sourceTree = "<group>"; };
-		7BEA5356176687F1001BC5FE /* FontColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontColorPickerView.h; sourceTree = "<group>"; };
-		7BEA5357176687F1001BC5FE /* FontColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontColorPickerView.m; sourceTree = "<group>"; };
-		7BEA5358176687F1001BC5FE /* FontPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontPickerView.h; sourceTree = "<group>"; };
-		7BEA5359176687F1001BC5FE /* FontPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontPickerView.m; sourceTree = "<group>"; };
 		7BEA535A176687F1001BC5FE /* PlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceHolderTextView.h; sourceTree = "<group>"; };
 		7BEA535B176687F1001BC5FE /* PlaceHolderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceHolderTextView.m; sourceTree = "<group>"; };
 		7BEA535C176687F1001BC5FE /* TextElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextElement.h; sourceTree = "<group>"; };
@@ -1063,10 +1053,6 @@
 		7BEA5355176687F1001BC5FE /* TextControlView */ = {
 			isa = PBXGroup;
 			children = (
-				7BEA5356176687F1001BC5FE /* FontColorPickerView.h */,
-				7BEA5357176687F1001BC5FE /* FontColorPickerView.m */,
-				7BEA5358176687F1001BC5FE /* FontPickerView.h */,
-				7BEA5359176687F1001BC5FE /* FontPickerView.m */,
 				7BEA535A176687F1001BC5FE /* PlaceHolderTextView.h */,
 				7BEA535B176687F1001BC5FE /* PlaceHolderTextView.m */,
 			);
@@ -1285,8 +1271,6 @@
 				7BEA53E3176687F1001BC5FE /* StrokePaintingCmd.h in Headers */,
 				7BEA53E9176687F1001BC5FE /* BackgroundElement.h in Headers */,
 				7BEA53EC176687F1001BC5FE /* ImageElement.h in Headers */,
-				7BEA53EF176687F1001BC5FE /* FontColorPickerView.h in Headers */,
-				7BEA53F2176687F1001BC5FE /* FontPickerView.h in Headers */,
 				7BEA53F5176687F1001BC5FE /* PlaceHolderTextView.h in Headers */,
 				7BEA53F8176687F1001BC5FE /* TextElement.h in Headers */,
 				7BEA53FB176687F1001BC5FE /* WBBaseElement.h in Headers */,
@@ -1545,8 +1529,6 @@
 				7BEA53E7176687F1001BC5FE /* GSButton.m in Sources */,
 				7BEA53EA176687F1001BC5FE /* BackgroundElement.m in Sources */,
 				7BEA53ED176687F1001BC5FE /* ImageElement.m in Sources */,
-				7BEA53F0176687F1001BC5FE /* FontColorPickerView.m in Sources */,
-				7BEA53F3176687F1001BC5FE /* FontPickerView.m in Sources */,
 				7BEA53F6176687F1001BC5FE /* PlaceHolderTextView.m in Sources */,
 				7BEA53F9176687F1001BC5FE /* TextElement.m in Sources */,
 				7BEA53FC176687F1001BC5FE /* WBBaseElement.m in Sources */,
@@ -1643,8 +1625,6 @@
 				7BEA53E8176687F1001BC5FE /* GSButton.m in Sources */,
 				7BEA53EB176687F1001BC5FE /* BackgroundElement.m in Sources */,
 				7BEA53EE176687F1001BC5FE /* ImageElement.m in Sources */,
-				7BEA53F1176687F1001BC5FE /* FontColorPickerView.m in Sources */,
-				7BEA53F4176687F1001BC5FE /* FontPickerView.m in Sources */,
 				7BEA53F7176687F1001BC5FE /* PlaceHolderTextView.m in Sources */,
 				7BEA53FA176687F1001BC5FE /* TextElement.m in Sources */,
 				7BEA53FD176687F1001BC5FE /* WBBaseElement.m in Sources */,

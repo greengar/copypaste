@@ -18,6 +18,7 @@
 - (void)elementSelected:(WBBaseElement *)element;
 - (void)elementDeselected:(WBBaseElement *)element;
 - (void)elementDeleted:(WBBaseElement *)element;
+- (void)elementUnlocked:(WBBaseElement *)element;
 @end
 
 @interface WBBaseElement : UIView <UIGestureRecognizerDelegate>
@@ -33,7 +34,7 @@
 - (void)deselect;
 - (void)restore;
 
-- (BOOL) isTransformed;
+- (BOOL)isTransformed;
 
 - (void)resetTransform;
 - (CGRect)focusFrame;
@@ -46,6 +47,7 @@
 @property (nonatomic) CGRect defaultFrame;
 @property (nonatomic) CGAffineTransform defaultTransform;
 @property (nonatomic) CGAffineTransform currentTransform;
+@property (nonatomic, strong) CAShapeLayer *border;
 
 // For History Created
 @property (nonatomic) BOOL elementCreated;

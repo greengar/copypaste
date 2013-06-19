@@ -15,6 +15,7 @@
 - (void)addCamera;
 - (void)addPhoto;
 - (void)addText;
+- (void)addCanvas;
 - (void)addPaste;
 @end
 
@@ -24,5 +25,6 @@
 - (void)animateDown;
 
 @property (nonatomic, assign) id<WBAddMoreSelectionDelegate> delegate;
+@property (nonatomic) BOOL isCanvasMode;
 
 @end

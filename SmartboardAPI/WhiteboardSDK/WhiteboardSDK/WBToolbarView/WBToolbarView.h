@@ -11,10 +11,10 @@
 #import "WBBottomRightToolbarView.h"
 
 @protocol WBToolbarDelegate
-- (void)showColorSpectrum:(BOOL)show from:(UIView *)view;
+- (void)canvasButtonTappedFrom:(UIView *)view;
 - (void)selectHistoryColor;
-- (void)showAddMore:(BOOL)show from:(UIView *)view;
-- (void)enableMove:(BOOL)enable;
+- (void)addMoreButtonTappedFrom:(UIView *)view;
+- (void)moveButtonTapped;
 @end
 
 @interface WBToolbarView : UIView <WBCanvasToolbarDelegate, WBBottomRightToolbarDelegate>
@@ -22,9 +22,11 @@
 - (void)updateColor:(UIColor *)color;
 - (void)updateAlpha:(float)alpha;
 - (void)updatePointSize:(float)size;
-- (void)monitorClosed;
-- (void)bottomRightClosed;
-- (void)selectEraser:(BOOL)select;
+- (void)selectCanvasMode:(CanvasMode)mode;
+
+- (void)didShowMonitorView:(BOOL)success;
+- (void)didShowAddMoreView:(BOOL)success;
+- (void)didActivatedMove:(BOOL)success;
 
 @property (nonatomic, assign) id<WBToolbarDelegate> delegate;
 

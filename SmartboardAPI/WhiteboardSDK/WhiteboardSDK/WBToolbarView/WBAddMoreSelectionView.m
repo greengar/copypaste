@@ -21,6 +21,8 @@
 @end
 
 @implementation WBAddMoreSelectionView
+@synthesize delegate = _delegate;
+@synthesize isCanvasMode = _isCanvasMode;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -92,6 +94,11 @@
     }
 }
 
+- (void)setIsCanvasMode:(BOOL)isCanvasMode {
+    _isCanvasMode = isCanvasMode;
+    [addMoreTableView reloadData];
+}
+
 #pragma mark - UITableView Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -121,7 +128,11 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
-    cell.textLabel.text = [ADD_MORE_ARRAY objectAtIndex:[indexPath row]];
+    if ([indexPath row] == 2 && !self.isCanvasMode) {
+        cell.textLabel.text = @"Brush";
+    } else {
+        cell.textLabel.text = [ADD_MORE_ARRAY objectAtIndex:[indexPath row]];
+    }
     
     return cell;
 }
@@ -140,8 +151,14 @@
             }
             break;
         case 2:
-            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addText)]) {
-                [self.delegate addText];
+            if (!self.isCanvasMode) {
+                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addCanvas)]) {
+                    [self.delegate addCanvas];
+                }
+            } else {
+                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addText)]) {
+                    [self.delegate addText];
+                }
             }
         case 3:
             if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addPaste)]) {

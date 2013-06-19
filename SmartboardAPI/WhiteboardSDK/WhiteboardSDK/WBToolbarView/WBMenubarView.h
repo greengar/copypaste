@@ -11,12 +11,12 @@
 @protocol WBMenubarDelegate
 - (void)showMenu;
 - (void)performUndo;
-- (void)showHistory:(BOOL)show from:(UIView *)view;
+- (void)historyButtonTappedFrom:(UIView *)view;
 @end
 
 @interface WBMenubarView : UIView
 
-- (void)historyClosed;
+- (void)didShowHistoryView:(BOOL)success;
 
 @property (nonatomic, assign) id<WBMenubarDelegate> delegate;
 

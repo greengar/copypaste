@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WBCanvasButton.h"
 
 @protocol WBCanvasToolbarDelegate
-- (void)showColorSpectrum:(BOOL)show;
+- (void)canvasButtonTapped;
 - (void)selectHistoryColor;
 @end
 
@@ -20,7 +21,8 @@
 - (void)updateColor:(UIColor *)color;
 - (void)updateAlpha:(float)alpha;
 - (void)updatePointSize:(float)pointSize;
-- (void)monitorClosed;
-- (void)selectEraser:(BOOL)select;
+- (void)didShowMonitorView:(BOOL)success;
+
+- (void)selectCanvasMode:(CanvasMode)mode;
 
 @end

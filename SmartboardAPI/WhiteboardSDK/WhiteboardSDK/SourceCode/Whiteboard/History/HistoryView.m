@@ -10,7 +10,7 @@
 #import "WBUtils.h"
 #import "GSButton.h"
 
-#define kUndoButtonTag 100
+#define kUndoLabelTag 100
 
 @interface HistoryView() {
     UIView                 *historyView;
@@ -21,7 +21,6 @@
 @end
 
 @implementation HistoryView
-@synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -105,10 +104,6 @@
 }
 
 #pragma mark - UITableView Datasource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return kHistoryCellHeight;
 }
@@ -125,38 +120,40 @@
     
     if(cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-        cell.contentView.backgroundColor = [UIColor clearColor];
-        cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.textLabel.font = [UIFont systemFontOfSize:25.0f];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:20.0f];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         
-        UIButton *undoButton = [[UIButton alloc] init];
-        [undoButton setTitle:@"Undo" forState:UIControlStateNormal];
-        [undoButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        [undoButton setFrame:CGRectMake(tableView.frame.size.width-kHistoryCellHeight, 0, kHistoryCellHeight, kHistoryCellHeight)];
-        [undoButton setTag:kUndoButtonTag];
-        [undoButton addTarget:self action:@selector(undoAction:) forControlEvents:UIControlEventTouchDown];
-        [undoButton setHidden:YES];
-        [cell addSubview:undoButton];
+        UILabel *undoLabel = [[UILabel alloc] init];
+        [undoLabel setText:@"Undo"];
+        [undoLabel setTextColor:[UIColor whiteColor]];
+        [undoLabel setBackgroundColor:[UIColor clearColor]];
+        [undoLabel setTextAlignment:NSTextAlignmentCenter];
+        [undoLabel setFont:[UIFont systemFontOfSize:20.0f]];
+        [undoLabel setFrame:CGRectMake(tableView.frame.size.width-kHistoryCellHeight, 0, kHistoryCellHeight, kHistoryCellHeight)];
+        [undoLabel setTag:kUndoLabelTag];
+        [undoLabel setHidden:YES];
+        [cell addSubview:undoLabel];
     }
     
     if ([[[HistoryManager sharedManager] historyPool] count] == 0) {
         cell.textLabel.text = @"No action";
         cell.detailTextLabel.text = @"";
-        [cell viewWithTag:kUndoButtonTag].hidden = YES;
+        [cell viewWithTag:kUndoLabelTag].hidden = YES;
         
     } else {
         HistoryAction *action = [[[HistoryManager sharedManager] historyPool] objectAtIndex:[indexPath row]];
         cell.textLabel.text = action.name;
         cell.detailTextLabel.text = [WBUtils dateDiffFromDate:action.date];
         cell.contentView.backgroundColor = (action.active ? [UIColor clearColor] : [UIColor lightGrayColor]);
+        cell.textLabel.textColor = (action.active ? [UIColor darkGrayColor] : [UIColor whiteColor]);
+        cell.detailTextLabel.textColor = (action.active ? [UIColor lightGrayColor] : [UIColor whiteColor]);
         if (action.active) {
-            [cell viewWithTag:kUndoButtonTag].hidden = YES;
+            [cell viewWithTag:kUndoLabelTag].hidden = YES;
         } else {
-            [cell viewWithTag:kUndoButtonTag].hidden = NO;
+            [cell viewWithTag:kUndoLabelTag].hidden = NO;
         }
     }
     

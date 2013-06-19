@@ -26,7 +26,7 @@
         self.canvasButton = [[WBCanvasButton alloc] initWithFrame:CGRectMake(self.frame.size.width-kCanvasButtonWidth,
                                                                              0, kCanvasButtonWidth, frame.size.height)];
         self.canvasButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        [self.canvasButton addTarget:self action:@selector(showColorSpectrum:) forControlEvents:UIControlEventTouchDown];
+        [self.canvasButton addTarget:self action:@selector(canvasButtonTapped:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:self.canvasButton];
         
         float barWidth = frame.size.width-kCanvasButtonWidth;
@@ -42,16 +42,20 @@
     return self;
 }
 
-- (void)showColorSpectrum:(WBCanvasButton *)button {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showColorSpectrum:)]) {
-        [self.delegate showColorSpectrum:!button.isSelected];
+- (void)canvasButtonTapped:(WBCanvasButton *)button {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(canvasButtonTapped)]) {
+        [self.delegate canvasButtonTapped];
     }
-    [button setSelected:!button.isSelected];
 }
 
 - (void)selectHistoryColor:(WBHistoryColorButton *)button {
     [[SettingManager sharedManager] setCurrentColorTab:button.index];
-    [self selectEraser:NO];
+    
+    if (self.canvasButton.mode == kEraserMode) {
+        [self selectCanvasMode:kCanvasMode];
+    }
+    [self.canvasButton setNeedsDisplay];
+    
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(selectHistoryColor)]) {
         [self.delegate selectHistoryColor];
     }
@@ -75,12 +79,12 @@
     }
 }
 
-- (void)monitorClosed {
-    [self.canvasButton setSelected:NO];
+- (void)didShowMonitorView:(BOOL)success {
+    [self.canvasButton setSelected:success];
 }
 
-- (void)selectEraser:(BOOL)select {
-    [self.canvasButton setEraserEnabled:select];
+- (void)selectCanvasMode:(CanvasMode)mode {
+    [self.canvasButton setMode:mode];
     for (UIView *subview in [self subviews]) {
         [subview setNeedsDisplay];
     }

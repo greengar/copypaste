@@ -18,7 +18,6 @@
 #import "KxMenu.h"
 
 @interface WBBaseElement()
-@property (nonatomic, strong) CAShapeLayer *border;
 @property (nonatomic, strong) NSString *currentPanId;
 @property (nonatomic, strong) NSString *currentRotateId;
 @property (nonatomic, strong) NSString *currentScaleId;
@@ -77,6 +76,10 @@
 - (void)setIsLocked:(BOOL)isLocked {
     _isLocked = isLocked;
     if (isLocked) {
+        UITapGestureRecognizer *tapGesture;
+        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(elementTap:)];
+        tapGesture.delegate = self;
+        
         UIPanGestureRecognizer *panGesture;
         panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(elementPan:)];
         panGesture.maximumNumberOfTouches = 2;
@@ -94,6 +97,7 @@
         pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(elementPress:)];
         pressGesture.delegate = self;
         
+        [self addGestureRecognizer:tapGesture];
         [self addGestureRecognizer:panGesture];
         [self addGestureRecognizer:rotateGesture];
         [self addGestureRecognizer:pinchGesture];
@@ -145,7 +149,14 @@
     [super setTransform:transform];
 }
 
-#pragma mark - Actions on Content View
+#pragma mark - Actions on Content View 
+- (void)unlock {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementUnlocked:)]) {
+        [self.delegate elementUnlocked:self];
+    }
+    [self select];
+}
+
 - (void)select {
     if ([self contentView]) {
         [[self contentView] setUserInteractionEnabled:YES];
@@ -177,11 +188,7 @@
 }
 
 - (void)showMenuAt:(CGPoint)location {
-    NSArray *menuItems = @[[KxMenuItem menuItem:@"Edit"
-                                          image:nil
-                                         target:self
-                                         action:@selector(select)],
-                           [KxMenuItem menuItem:@"Send to back"
+    NSArray *menuItems = @[[KxMenuItem menuItem:@"Send to back"
                                           image:nil
                                          target:self
                                          action:@selector(sendBack)],
@@ -215,6 +222,12 @@
 #pragma mark - Gestures
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
+}
+
+- (void)elementTap:(UITapGestureRecognizer *)tapGesture {
+    if ([tapGesture state] == UIGestureRecognizerStateEnded) {
+        [self unlock];
+    }
 }
 
 - (void)elementPan:(UIPanGestureRecognizer *)panGesture {

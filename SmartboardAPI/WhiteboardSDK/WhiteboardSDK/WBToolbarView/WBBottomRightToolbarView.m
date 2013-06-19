@@ -38,21 +38,23 @@
 }
 
 - (void)addMore:(WBAddMoreButton *)button {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showAddMore:)]) {
-        [self.delegate showAddMore:!button.isSelected];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addMoreButtonTapped)]) {
+        [self.delegate addMoreButtonTapped];
     }
-    [button setSelected:!button.isSelected];
 }
 
 - (void)enableMove:(WBMoveButton *)button {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(enableMove:)]) {
-        [self.delegate enableMove:!button.isSelected];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(moveButtonTapped)]) {
+        [self.delegate moveButtonTapped];
     }
-    [button setSelected:!button.isSelected];
 }
 
-- (void)bottomRightClosed {
-    [self.addMoreButton setSelected:NO];
+- (void)didShowAddMoreView:(BOOL)success {
+    [self.addMoreButton setSelected:success];
+}
+
+- (void)didActivatedMove:(BOOL)success {
+    [self.moveButton setSelected:success];
 }
 
 @end

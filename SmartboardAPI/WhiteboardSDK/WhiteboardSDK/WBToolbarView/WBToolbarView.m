@@ -59,9 +59,9 @@
     [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) updatePointSize:size];
 }
 
-- (void)showColorSpectrum:(BOOL)show {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showColorSpectrum:from:)]) {
-        [self.delegate showColorSpectrum:show from:self];
+- (void)canvasButtonTapped {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(canvasButtonTappedFrom:)]) {
+        [self.delegate canvasButtonTappedFrom:self];
     }
 }
 
@@ -71,27 +71,31 @@
     }
 }
 
-- (void)monitorClosed {
-    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) monitorClosed];
+- (void)didShowMonitorView:(BOOL)success {
+    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) didShowMonitorView:success];
 }
 
-- (void)bottomRightClosed {
-    [((WBBottomRightToolbarView *) [self viewWithTag:kBottomRightToolBarTag]) bottomRightClosed];
+- (void)didShowAddMoreView:(BOOL)success {
+    [((WBBottomRightToolbarView *) [self viewWithTag:kBottomRightToolBarTag]) didShowAddMoreView:success];
 }
 
-- (void)selectEraser:(BOOL)select {
-    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) selectEraser:select];
+- (void)selectCanvasMode:(CanvasMode)mode {
+    [((WBCanvasToolbarView *) [self viewWithTag:kCanvasToolBarTag]) selectCanvasMode:mode];
 }
 
-- (void)showAddMore:(BOOL)show {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showAddMore:from:)]) {
-        [self.delegate showAddMore:show from:self];
+- (void)didActivatedMove:(BOOL)success {
+    [((WBBottomRightToolbarView *) [self viewWithTag:kBottomRightToolBarTag]) didActivatedMove:success];
+}
+
+- (void)addMoreButtonTapped {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addMoreButtonTappedFrom:)]) {
+        [self.delegate addMoreButtonTappedFrom:self];
     }
 }
 
-- (void)enableMove:(BOOL)enable {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(enableMove:)]) {
-        [self.delegate enableMove:enable];
+- (void)moveButtonTapped {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(moveButtonTapped)]) {
+        [self.delegate moveButtonTapped];
     }
 }
 

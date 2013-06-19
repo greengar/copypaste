@@ -14,14 +14,9 @@
 #define kHistoryTitleHeight 44
 #define kHistoryViewHeight (kHistoryTitleHeight+4*kHistoryCellHeight)
 
-@protocol HistoryViewDelegate
-- (void)historyClosed;
-@end
-
 @interface HistoryView : UIView <UITableViewDelegate, UITableViewDataSource, HistoryManagerDelegate>
+
 - (void)animateUp;
 - (void)animateDown;
-
-@property (nonatomic, assign) id<HistoryViewDelegate> delegate;
 
 @end

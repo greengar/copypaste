@@ -116,10 +116,10 @@ typedef enum {
 #define kToolsMinimizedKey @"kToolsMinimizedKey"
 
 #define		FONT_SIZES			[NSNumber numberWithInt:6],[NSNumber numberWithInt:8],[NSNumber numberWithInt:9],[NSNumber numberWithInt:10],[NSNumber numberWithInt:11],[NSNumber numberWithInt:12],[NSNumber numberWithInt:14],[NSNumber numberWithInt:16],[NSNumber numberWithInt:18],[NSNumber numberWithInt:20],[NSNumber numberWithInt:22],[NSNumber numberWithInt:24],[NSNumber numberWithInt:25],[NSNumber numberWithInt:26],[NSNumber numberWithInt:28],[NSNumber numberWithInt:29],[NSNumber numberWithInt:30],[NSNumber numberWithInt:32],[NSNumber numberWithInt:40],[NSNumber numberWithInt:50],nil
-#define		FONTS_AVAILABLE_ON_ALL_DEVICES		@"AmericanTypewriter",@"Apple Color Emoji",@"AppleGothic",@"Arial",@"Arial Hebrew",@"Arial Rounded MT Bold",@"Bangla Sangam MN",@"Baskerville",@"Chalkboard SE",@"Cochin",@"Courier",@"Courier New",@"DB LCD Temp",@"Devanagari Sangam MN",@"Futura",@"Geeza Pro",@"Georgia",@"Gujarati Sangam MN",@"Gurmukhi MN",@"Heiti J",@"Heiti K",@"Heiti SC",@"Heiti TC",@"Helvetica",@"Helvetica Neue",@"Hiragino Kaku Gothic ProN",@"Kailasa",@"Kannada Sangam MN",@"Marker Felt",@"Oriya Sangam MN",@"Palatino",@"Sinhala Sangam MN",@"Snell Roundhand",@"Tamil Sangam MN",@"Telugu Sangam MN",@"Times New Roman",@"Trebuchet MS",@"Verdana",@"Zapfino",nil
+#define		FONTS_AVAILABLE_ON_ALL_DEVICES		@[@"AmericanTypewriter",@"Apple Color Emoji",@"AppleGothic",@"Arial",@"Arial Hebrew",@"Arial Rounded MT Bold",@"Bangla Sangam MN",@"Baskerville",@"Chalkboard SE",@"Cochin",@"Courier",@"Courier New" ,@"Devanagari Sangam MN",@"Futura",@"Geeza Pro",@"Georgia",@"Gujarati Sangam MN",@"Gurmukhi MN",@"Heiti SC",@"Heiti TC",@"Helvetica",@"Helvetica Neue",@"Hiragino Kaku Gothic ProN",@"Kailasa",@"Kannada Sangam MN",@"Marker Felt",@"Oriya Sangam MN",@"Palatino",@"Snell Roundhand",@"Tamil Sangam MN",@"Telugu Sangam MN",@"Times New Roman",@"Trebuchet MS",@"Verdana",@"Zapfino"]
 
 #define kDefaultFontName @"Arial"
-#define kDefaultFontSize (IS_IPAD ? 30 : 18)
+#define kDefaultFontSize (IS_IPAD ? 20 : 18)
 
 #define THROW_EXCEPTION_TYPE(type) [NSException raise:type format:@"%s Line %d", __PRETTY_FUNCTION__, __LINE__];
 

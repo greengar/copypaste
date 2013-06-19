@@ -10,7 +10,7 @@
 #import "SettingManager.h"
 
 @implementation WBCanvasButton
-@synthesize eraserEnabled = _eraserEnabled;
+@synthesize mode = _mode;
 
 static inline int PerceivedBrightness(float red, float green, float blue, float alpha)
 {
@@ -48,7 +48,7 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
 }
 
 - (void)drawRect:(CGRect)rect {
-    if (self.eraserEnabled) {
+    if (self.mode == kEraserMode) {
         //// Color Declarations
         UIColor* blackCircleButtonOutline = [UIColor colorWithRed: 0.157 green: 0.157 blue: 0.157 alpha: 1];
         UIColor* whiteCircleButtonFill = [UIColor colorWithRed: 0.996 green: 0.996 blue: 0.996 alpha: 1];
@@ -119,6 +119,58 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
             [topArrowTipPath fill];
         }
 
+    } else if (self.mode == kTextMode) {
+        // TODO: replace with Text Paint Code
+        // Color Declarations
+        UIColor* selectedButtonOutlineWhite = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+        
+        UIColor* tabColor = [[SettingManager sharedManager] getCurrentColorTab].tabColor;
+        float red, green, blue, alpha;
+        [tabColor getRed:&red green:&green blue:&blue alpha:&alpha];
+        alpha = [[SettingManager sharedManager] getCurrentColorTab].opacity;
+        UIColor* currentBrushColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+        
+        if (PerceivedBrightness(red, green, blue, alpha) > 130)
+        {
+            selectedButtonOutlineWhite = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+        }
+        
+        if (self.state == UIControlStateHighlighted)
+        {
+            CGFloat currentBrushColorRGBA[4];
+            [currentBrushColor getRed: &currentBrushColorRGBA[0] green: &currentBrushColorRGBA[1] blue: &currentBrushColorRGBA[2] alpha: &currentBrushColorRGBA[3]];
+            
+            currentBrushColor = [UIColor colorWithRed: (currentBrushColorRGBA[0] * 0.5 + 0.5) green: (currentBrushColorRGBA[1] * 0.5 + 0.5) blue: (currentBrushColorRGBA[2] * 0.5 + 0.5) alpha: (currentBrushColorRGBA[3] * 0.5 + 0.5)];
+            
+        }
+        
+        //// Subframes
+        CGRect canvasButtonFrame = self.bounds;
+        
+        
+        //// Group
+        {
+            //// Selected Brush Square Background Drawing
+            UIBezierPath* selectedBrushSquareBackgroundPath = [UIBezierPath bezierPathWithRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 0.5, CGRectGetMinY(canvasButtonFrame) + 0.5, 79, 74)];
+            [currentBrushColor setFill];
+            [selectedBrushSquareBackgroundPath fill];
+            
+            //// Selected Brush Circle Button Drawing
+            UIBezierPath* selectedBrushCircleButtonPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 12.5, CGRectGetMinY(canvasButtonFrame) + 9.5, 56, 56)];
+            [selectedButtonOutlineWhite setStroke];
+            selectedBrushCircleButtonPath.lineWidth = 1;
+            [selectedBrushCircleButtonPath stroke];
+            
+            //// Top Arrow Tip Drawing
+            UIBezierPath* topArrowTipPath = [UIBezierPath bezierPath];
+            [topArrowTipPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
+            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 44.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
+            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 40.5, CGRectGetMinY(canvasButtonFrame) + 2.5)];
+            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
+            [topArrowTipPath closePath];
+            [selectedButtonOutlineWhite setFill];
+            [topArrowTipPath fill];
+        }
     } else {
         // Color Declarations
         UIColor* selectedButtonOutlineWhite = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];

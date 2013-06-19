@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WBUtils.h"
+
+#define kTextViewMaxWidth (IS_IPAD ? 768 : 320)
 
 @interface PlaceHolderTextView : UITextView <UITextInput>
 - (void)setPlaceHolderText:(NSString *)placeHolderText;
 - (void)textChanged;
+- (void)select;
+- (void)deselect;
 @end

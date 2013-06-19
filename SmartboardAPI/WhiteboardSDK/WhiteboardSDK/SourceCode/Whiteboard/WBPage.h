@@ -10,8 +10,6 @@
 #import "WBBaseElement.h"
 #import "GLCanvasElement.h"
 #import "CGCanvasElement.h"
-#import "FontPickerView.h"
-#import "FontColorPickerView.h"
 #import "ColorTabView.h"
 #import "ColorPickerView.h"
 
@@ -20,6 +18,7 @@
 @protocol WBPageDelegate
 @optional
 - (void)pageSelected:(WBPage *)page;
+- (void)pageUnlocked:(WBPage *)page;
 - (void)elementSelected:(WBBaseElement *)element;
 - (void)elementDeselected:(WBBaseElement *)element;
 @end

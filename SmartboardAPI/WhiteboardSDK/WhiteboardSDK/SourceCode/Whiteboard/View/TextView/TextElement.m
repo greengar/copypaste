@@ -58,7 +58,7 @@
         
         [self updateWithFontName:[[SettingManager sharedManager] currentFontName]
                             size:[[SettingManager sharedManager] currentFontSize]];
-        [self updateWithColor:[[SettingManager sharedManager] currentFontColor] x:-50 y:-50];
+        [self updateWithColor:[[SettingManager sharedManager] getCurrentColorTab].tabColor x:-50 y:-50];
     }
     return self;
 }
@@ -86,15 +86,14 @@
 - (void)select {
     [super select];
     [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
-    [self.placeHolderTextView textChanged];
-    
+    [self.placeHolderTextView select];
     [self checkHistory];
 }
 
 - (void)deselect {
     [super deselect];
     [self.placeHolderTextView setPlaceHolderText:@""];
-    [self.placeHolderTextView textChanged];
+    [self.placeHolderTextView deselect];
     
     if (self.elementCreated == NO) {
 
@@ -119,10 +118,6 @@
     }
     [self checkHistory];
     self.elementCreated = YES;
-    self.transform = self.defaultTransform;
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y,
-                            self.contentView.frame.size.width, self.contentView.frame.size.height);
-    self.transform = self.currentTransform;
 }
 
 - (void)restore {
@@ -140,12 +135,24 @@
     self.myFontName = fontName;
     self.myFontSize = fontSize;
     [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:fontSize]];
+    [self restore];
+}
+
+- (void)updateWithFontName:(NSString *)fontName {
+    self.myFontName = fontName;
+    [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:self.myFontSize]];
+    [self restore];
 }
 
 - (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y {
     self.myColor = color;
     self.myColorLocX = x;
     self.myColorLocY = y;
+    [self.placeHolderTextView setTextColor:color];
+}
+
+- (void)updateWithColor:(UIColor *)color {
+    self.myColor = color;
     [self.placeHolderTextView setTextColor:color];
 }
 

@@ -74,6 +74,7 @@
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"P_"];
         self.elements = [NSMutableArray new];
         
+        // Default has a Canvas Element
         GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self addElement:canvasElement];
     }
@@ -130,14 +131,7 @@
 
 - (void)focusOnTopElement {
     if ([self.elements count]) {
-        self.selectedElementView = [self.elements objectAtIndex:[self.elements count]-1];
-        if ([self.selectedElementView isKindOfClass:[TextElement class]]) {
-            [self focusOnText];
-        } else if ([self.selectedElementView isKindOfClass:[GLCanvasElement class]]) {
-            [self focusOnCanvas];
-        } else {
-            [self.selectedElementView select];
-        }
+        [self focusOnCanvas];
     } else {
         // There's always at least 1 element
         // And it should be the canvas view
@@ -162,7 +156,7 @@
         && [self.selectedElementView isKindOfClass:[TextElement class]]) {
         [self.selectedElementView select];
     } else {
-        TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, self.frame.size.height/8, self.frame.size.width, self.frame.size.height/2)];
         [self addElement:textElement];
     }
 }
@@ -173,6 +167,13 @@
         if (existedElement != self.selectedElementView) {
             [existedElement deselect];
         }
+    }
+}
+
+- (void)elementUnlocked:(WBBaseElement *)element {
+    [self setIsLocked:NO];
+    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageUnlocked:)]) {
+        [self.pageDelegate pageUnlocked:self];
     }
 }
 

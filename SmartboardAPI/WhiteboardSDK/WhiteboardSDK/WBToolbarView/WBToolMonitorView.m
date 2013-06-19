@@ -20,14 +20,17 @@
     CustomSlider           *opacitySlider;
     ColorPreviewView       *previewArea;
     WBEraserButton         *eraserButton;
+    UIView                 *textMonitorView;
+    UITableView            *fontTableView;
     BOOL                   isAnimationUp;
     BOOL                   isAnimationDown;
 }
 @end
 
 @implementation WBToolMonitorView
-
 @synthesize delegate = _delegate;
+@synthesize currentFont = _currentFont;
+@synthesize textMode = _textMode;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -46,6 +49,7 @@
         toolMonitorView.layer.borderWidth = 1;
         [self addSubview:toolMonitorView];
         
+#pragma mark - Init Color Spectrum
         UIImage *colorSpectrumImage = [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPublic.png"];
         colorSpectrumImageView = [[ColorSpectrumImageView alloc] initWithImage:colorSpectrumImage];
         [colorSpectrumImageView setFrame:CGRectMake(0, 0, colorSpectrumImage.size.width, colorSpectrumImage.size.height)];
@@ -53,6 +57,7 @@
         [colorSpectrumImageView registerDelegate:self];
         [toolMonitorView addSubview:colorSpectrumImageView];
         
+#pragma mark - Init Canvas Monitor
         canvasMonitorView = [[UIView alloc] initWithFrame:CGRectMake(colorSpectrumImage.size.width, 0,
                                                                      frame.size.width-colorSpectrumImage.size.width,
                                                                      colorSpectrumImage.size.height)];
@@ -109,7 +114,21 @@
         [eraserButton setSelected:([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex)];
         [canvasMonitorView addSubview:eraserButton];
         
+#pragma mark - Init Text Monitor
         float closeButtonSize = 44;
+        textMonitorView = [[UIView alloc] initWithFrame:canvasMonitorView.frame];
+        [textMonitorView setBackgroundColor:[UIColor clearColor]];
+        [toolMonitorView addSubview:textMonitorView];
+        
+        fontTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, closeButtonSize,
+                                                                      textMonitorView.frame.size.width,
+                                                                      textMonitorView.frame.size.height-closeButtonSize)];
+        [fontTableView setBackgroundColor:[UIColor clearColor]];
+        [fontTableView setDelegate:self];
+        [fontTableView setDataSource:self];
+        [textMonitorView addSubview:fontTableView];
+        
+#pragma mark - Close Button
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [closeButton.titleLabel setFont:[UIFont systemFontOfSize:36.0f]];
         [closeButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
@@ -117,8 +136,37 @@
         [closeButton setFrame:CGRectMake(frame.size.width-closeButtonSize, 0, closeButtonSize, closeButtonSize)];
         [closeButton addTarget:self action:@selector(closeMe) forControlEvents:UIControlEventTouchDown];
         [toolMonitorView addSubview:closeButton];
+        
+        // Default text mode is dismiss
+        [textMonitorView setHidden:YES];
     }
     return self;
+}
+
+#pragma mark - Text Mode
+- (void)setTextMode:(BOOL)textMode {
+    _textMode = textMode;
+    [canvasMonitorView setHidden:textMode];
+    [textMonitorView setHidden:!textMode];    
+}
+
+- (void)setCurrentFont:(NSString *)currentFont {
+    _currentFont = currentFont;
+    [self scrollFontTableViewToFont:currentFont];
+}
+
+- (void)scrollFontTableViewToFont:(NSString *)font {
+    int row = 0;
+    for (int i = 0; i < [FONTS_AVAILABLE_ON_ALL_DEVICES count]; i++) {
+        NSString *fontName = [FONTS_AVAILABLE_ON_ALL_DEVICES objectAtIndex:i];
+        if ([fontName isEqualToString:font]) {
+            row = i;
+            break;
+        }
+    }
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    [fontTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    [fontTableView reloadData];
 }
 
 #pragma mark - Animation
@@ -257,6 +305,53 @@
         return hitView;
     }
     return nil;
+}
+
+#pragma mark - Font Table View Datasource
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 46;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [FONTS_AVAILABLE_ON_ALL_DEVICES count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+    if(cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        cell.clipsToBounds = YES;
+    }
+    
+    NSString *fontName = [FONTS_AVAILABLE_ON_ALL_DEVICES objectAtIndex:[indexPath row]];
+    cell.textLabel.text = fontName;
+    cell.textLabel.font = [UIFont fontWithName:fontName size:kDefaultFontSize];
+    
+    if (self.currentFont && [fontName isEqualToString:self.currentFont]) {
+        cell.contentView.backgroundColor = [UIColor lightGrayColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
+    } else {
+        cell.contentView.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor darkGrayColor];
+    }
+    
+    return cell;
+}
+
+#pragma mark - UITableView Delegate methods
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *fontName = [FONTS_AVAILABLE_ON_ALL_DEVICES objectAtIndex:[indexPath row]];
+    _currentFont = fontName;
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(fontChanged:)]) {
+        [self.delegate fontChanged:fontName];
+    }
+    [tableView reloadData];
 }
 
 @end

@@ -60,14 +60,13 @@
 }
 
 - (void)historyButtonTapped:(UIButton *)button {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showHistory:from:)]) {
-        [self.delegate showHistory:!button.isSelected from:self];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(historyButtonTappedFrom:)]) {
+        [self.delegate historyButtonTappedFrom:self];
     }
-    [button setSelected:!button.isSelected];
 }
 
-- (void)historyClosed {
-    [self.historyButton setSelected:NO];
+- (void)didShowHistoryView:(BOOL)success {
+    [self.historyButton setSelected:success];
 }
 
 @end
