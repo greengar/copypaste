@@ -3,7 +3,7 @@
 //  WhiteboardSDK
 //
 //  Created by Elliot Lee on 6/17/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -16,9 +16,11 @@
 @end
 
 @interface WBBottomRightToolbarView : UIView
-- (void)didShowAddMoreView:(BOOL)success;
-- (void)didActivatedMove:(BOOL)success;
 
 @property (nonatomic, assign) id<WBBottomRightToolbarDelegate> delegate;
+
++ (CGSize)preferredSize;
+- (void)didShowAddMoreView:(BOOL)success;
+- (void)didActivatedMove:(BOOL)success;
 
 @end

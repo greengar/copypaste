@@ -76,7 +76,7 @@
 
 - (NSString *)accessibilityLabel
 {
-    return _(@"Menu"); // requires WBUtils
+    return _(@"History"); // requires WBUtils
 }
 
 /* This custom view behaves like a button. */
@@ -87,7 +87,7 @@
 
 - (NSString *)accessibilityHint
 {
-    return _(@"Opens Menu popover with items like Back to Organizer");
+    return _(@"Opens History popover with table of previous actions");
 }
 
 @end

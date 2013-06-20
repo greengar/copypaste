@@ -28,7 +28,7 @@
         self.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.8];
         
         float leftMargin = 0;
-        float bottomRightToolbarWidth = 156;
+        float bottomRightToolbarWidth = [WBBottomRightToolbarView preferredSize].width;
         WBCanvasToolbarView *canvasToolbarView = [[WBCanvasToolbarView alloc] initWithFrame:CGRectMake(leftMargin, 0,
                                                                                                        frame.size.width-bottomRightToolbarWidth,
                                                                                                        frame.size.height)];
@@ -38,7 +38,8 @@
         [self addSubview:canvasToolbarView];
         
         float x = canvasToolbarView.frame.origin.x + canvasToolbarView.frame.size.width;
-        WBBottomRightToolbarView *bottomRightToolbarView = [[WBBottomRightToolbarView alloc] initWithFrame:CGRectMake(x, canvasToolbarView.frame.origin.y, self.frame.size.width - x, self.frame.size.height)];
+        WBBottomRightToolbarView *bottomRightToolbarView = [[WBBottomRightToolbarView alloc] initWithFrame:CGRectMake(x, canvasToolbarView.frame.origin.y, [WBBottomRightToolbarView preferredSize].width, [WBBottomRightToolbarView preferredSize].height)];
+        // self.frame.size.width - x, self.frame.size.height
         bottomRightToolbarView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
         bottomRightToolbarView.delegate = self;
         bottomRightToolbarView.tag = kBottomRightToolBarTag;

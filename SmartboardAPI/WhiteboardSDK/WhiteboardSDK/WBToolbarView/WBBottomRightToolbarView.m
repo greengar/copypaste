@@ -7,6 +7,7 @@
 //
 
 #import "WBBottomRightToolbarView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface WBBottomRightToolbarView()
 @property (nonatomic, strong) WBAddMoreButton *addMoreButton;
@@ -17,6 +18,11 @@
 @synthesize addMoreButton = _addMoreButton;
 @synthesize moveButton = _moveButton;
 
++ (CGSize)preferredSize
+{
+    return CGSizeMake([WBAddMoreButton preferredSize].width * 2, [WBAddMoreButton preferredSize].height);
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -24,8 +30,14 @@
         // Initialization code
         self.opaque = NO;
         
-        self.addMoreButton = [[WBAddMoreButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/2, frame.size.height)];
-        self.addMoreButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        // Apparently this may be slow: http://stackoverflow.com/questions/4735623/uilabel-layer-cornerradius-negatively-impacting-performance
+        //self.layer.cornerRadius = 5;
+        //self.clipsToBounds = YES;
+        
+        self.addMoreButton = [[WBAddMoreButton alloc] init];
+        //CGRectMake(0, 0, frame.size.width/2, frame.size.height)
+        self.addMoreButton.frame = CGRectMake(0, 0, [WBAddMoreButton preferredSize].width, [WBAddMoreButton preferredSize].height);
+        self.addMoreButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
         [self.addMoreButton addTarget:self action:@selector(addMore:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:self.addMoreButton];
         

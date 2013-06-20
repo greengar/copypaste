@@ -25,18 +25,16 @@
 - (void)drawRect:(CGRect)rect
 {
     //// Color Declarations
-    UIColor* selectedButtonOutlineWhite = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
-    UIColor* blackCircleButtonOutline = [UIColor colorWithRed: 0.157 green: 0.157 blue: 0.157 alpha: 1];
-    UIColor* strokeColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+    UIColor* selectedButtonGrayBackground = [UIColor clearColor];
+    UIColor* selectedUndoButtonWhite = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1]; // black (stroke)
     
     // Use bitwise & operator to see whether the state is highlighted or selected
     if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
     {
         // ordering here is important
-        UIColor* blackCircleButtonOutlineTemp = [blackCircleButtonOutline copy];
-        blackCircleButtonOutline = selectedButtonOutlineWhite;
-        strokeColor = selectedButtonOutlineWhite;
-        selectedButtonOutlineWhite = blackCircleButtonOutlineTemp;
+        UIColor* undoArrowBlackColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1]; // white
+        selectedButtonGrayBackground = [UIColor colorWithRed: 0.557 green: 0.557 blue: 0.557 alpha: 1];
+        selectedUndoButtonWhite = undoArrowBlackColor;
         
     }
     
@@ -46,11 +44,15 @@
     
     //// Menu Button Group
     {
+        //// Menu Button Background Rectangle Drawing
+        UIBezierPath* menuButtonBackgroundRectanglePath = [UIBezierPath bezierPathWithRect: CGRectMake(CGRectGetMinX(menuButtonFrame), CGRectGetMinY(menuButtonFrame), 81, 74)];
+        [selectedButtonGrayBackground setFill];
+        [menuButtonBackgroundRectanglePath fill];
+        
+        
         //// Menu Button Circle Drawing
         UIBezierPath* menuButtonCirclePath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(menuButtonFrame) + 11.5, CGRectGetMinY(menuButtonFrame) + 8.5, 56, 56)];
-        [selectedButtonOutlineWhite setFill];
-        [menuButtonCirclePath fill];
-        [strokeColor setStroke];
+        [selectedUndoButtonWhite setStroke];
         menuButtonCirclePath.lineWidth = 1.5;
         [menuButtonCirclePath stroke];
         
@@ -61,7 +63,7 @@
         [menuTopLinePath addLineToPoint: CGPointMake(CGRectGetMinX(menuButtonFrame) + 54.5, CGRectGetMinY(menuButtonFrame) + 26.5)];
         menuTopLinePath.lineCapStyle = kCGLineCapRound;
         
-        [blackCircleButtonOutline setStroke];
+        [selectedUndoButtonWhite setStroke];
         menuTopLinePath.lineWidth = 3;
         [menuTopLinePath stroke];
         
@@ -72,7 +74,7 @@
         [menuMiddleLinePath addLineToPoint: CGPointMake(CGRectGetMinX(menuButtonFrame) + 54.5, CGRectGetMinY(menuButtonFrame) + 37.5)];
         menuMiddleLinePath.lineCapStyle = kCGLineCapRound;
         
-        [blackCircleButtonOutline setStroke];
+        [selectedUndoButtonWhite setStroke];
         menuMiddleLinePath.lineWidth = 3;
         [menuMiddleLinePath stroke];
         
@@ -83,7 +85,7 @@
         [menuButtonLinePath addLineToPoint: CGPointMake(CGRectGetMinX(menuButtonFrame) + 54.5, CGRectGetMinY(menuButtonFrame) + 47.5)];
         menuButtonLinePath.lineCapStyle = kCGLineCapRound;
         
-        [blackCircleButtonOutline setStroke];
+        [selectedUndoButtonWhite setStroke];
         menuButtonLinePath.lineWidth = 3;
         [menuButtonLinePath stroke];
     }
