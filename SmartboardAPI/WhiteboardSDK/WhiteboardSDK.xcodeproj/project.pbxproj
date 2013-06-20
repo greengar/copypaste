@@ -329,6 +329,134 @@
 		A90CE9BB17736230006DD933 /* WBHistoryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A90CE9B917736230006DD933 /* WBHistoryButton.h */; };
 		A90CE9BC17736230006DD933 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9BA17736230006DD933 /* WBHistoryButton.m */; };
 		A90CE9BD17736230006DD933 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9BA17736230006DD933 /* WBHistoryButton.m */; };
+		A90CE9C017736720006DD933 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B82E5DD175F9D0C00B063D7 /* main.m */; };
+		A90CE9C117736720006DD933 /* WAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B82E5E1175F9D0C00B063D7 /* WAppDelegate.m */; };
+		A90CE9C217736720006DD933 /* WBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4AF56B176059700049D77D /* WBViewController.m */; };
+		A90CE9C317736720006DD933 /* HistoryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52EE176687F0001BC5FE /* HistoryElement.m */; };
+		A90CE9C417736720006DD933 /* HistoryElementCreated.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52F0176687F0001BC5FE /* HistoryElementCreated.m */; };
+		A90CE9C517736720006DD933 /* HistoryElementDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52F2176687F0001BC5FE /* HistoryElementDeleted.m */; };
+		A90CE9C617736720006DD933 /* HistoryElementTextChanged.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52F4176687F0001BC5FE /* HistoryElementTextChanged.m */; };
+		A90CE9C717736720006DD933 /* HistoryElementTextColorChanged.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52F6176687F0001BC5FE /* HistoryElementTextColorChanged.m */; };
+		A90CE9C817736720006DD933 /* HistoryElementTextFontChanged.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52F8176687F0001BC5FE /* HistoryElementTextFontChanged.m */; };
+		A90CE9C917736720006DD933 /* HistoryElementTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52FA176687F0001BC5FE /* HistoryElementTransform.m */; };
+		A90CE9CA17736720006DD933 /* HistoryAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52FC176687F0001BC5FE /* HistoryAction.m */; };
+		A90CE9CB17736720006DD933 /* HistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52FE176687F0001BC5FE /* HistoryView.m */; };
+		A90CE9CC17736720006DD933 /* BoardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5302176687F0001BC5FE /* BoardManager.m */; };
+		A90CE9CD17736720006DD933 /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5304176687F0001BC5FE /* HistoryManager.m */; };
+		A90CE9CE17736720006DD933 /* SettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5306176687F0001BC5FE /* SettingManager.m */; };
+		A90CE9CF17736720006DD933 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA530A176687F0001BC5FE /* CGPointExtension.m */; };
+		A90CE9D017736720006DD933 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA530F176687F0001BC5FE /* KxMenu.m */; };
+		A90CE9D117736720006DD933 /* NSData+WBBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5311176687F0001BC5FE /* NSData+WBBase64.m */; };
+		A90CE9D217736720006DD933 /* UIColor+GSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5313176687F0001BC5FE /* UIColor+GSString.m */; };
+		A90CE9D317736720006DD933 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5315176687F0001BC5FE /* UIDevice+Hardware.m */; };
+		A90CE9D417736720006DD933 /* ColorSpectrumImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531A176687F0001BC5FE /* ColorSpectrumImageView.m */; };
+		A90CE9D517736720006DD933 /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531C176687F0001BC5FE /* ColorPickerView.m */; };
+		A90CE9D617736720006DD933 /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531E176687F0001BC5FE /* ColorTabView.m */; };
+		A90CE9D717736720006DD933 /* ColorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5320176687F0001BC5FE /* ColorCircleView.m */; };
+		A90CE9D817736720006DD933 /* CustomSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5322176687F0001BC5FE /* CustomSlider.m */; };
+		A90CE9D917736720006DD933 /* ColorPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5324176687F0001BC5FE /* ColorPreviewView.m */; };
+		A90CE9DA17736720006DD933 /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5326176687F0001BC5FE /* TabWrapperView.m */; };
+		A90CE9DB17736720006DD933 /* GLCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5328176687F0001BC5FE /* GLCanvasElement.m */; };
+		A90CE9DC17736720006DD933 /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA532C176687F0001BC5FE /* Painting.m */; };
+		A90CE9DD17736720006DD933 /* PaintingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA532E176687F0001BC5FE /* PaintingManager.m */; };
+		A90CE9DE17736720006DD933 /* ColorTabElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5331176687F0001BC5FE /* ColorTabElement.m */; };
+		A90CE9DF17736720006DD933 /* GSMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5333176687F0001BC5FE /* GSMutableDictionary.m */; };
+		A90CE9E017736720006DD933 /* GSTouchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5335176687F0001BC5FE /* GSTouchData.m */; };
+		A90CE9E117736720006DD933 /* DrawingLayerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5338176687F0001BC5FE /* DrawingLayerInfo.m */; };
+		A90CE9E217736720006DD933 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA533A176687F0001BC5FE /* EAGLView.m */; };
+		A90CE9E317736720006DD933 /* FB2GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA533C176687F0001BC5FE /* FB2GLView.m */; };
+		A90CE9E417736720006DD933 /* MainPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA533E176687F0001BC5FE /* MainPaintingView.m */; };
+		A90CE9E517736720006DD933 /* PaintingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5340176687F0001BC5FE /* PaintingView.mm */; };
+		A90CE9E617736720006DD933 /* ClearPaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5343176687F0001BC5FE /* ClearPaintingCmd.m */; };
+		A90CE9E717736720006DD933 /* ImagePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5345176687F0001BC5FE /* ImagePaintingCmd.m */; };
+		A90CE9E817736720006DD933 /* MultiStrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5347176687F0001BC5FE /* MultiStrokePaintingCmd.m */; };
+		A90CE9E917736720006DD933 /* PaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5349176687F0001BC5FE /* PaintingCmd.m */; };
+		A90CE9EA17736720006DD933 /* StrokePaintingCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA534B176687F0001BC5FE /* StrokePaintingCmd.m */; };
+		A90CE9EB17736720006DD933 /* GSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA534E176687F0001BC5FE /* GSButton.m */; };
+		A90CE9EC17736720006DD933 /* BackgroundElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5351176687F1001BC5FE /* BackgroundElement.m */; };
+		A90CE9ED17736720006DD933 /* ImageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5353176687F1001BC5FE /* ImageElement.m */; };
+		A90CE9EE17736720006DD933 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA535B176687F1001BC5FE /* PlaceHolderTextView.m */; };
+		A90CE9EF17736720006DD933 /* TextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA535D176687F1001BC5FE /* TextElement.m */; };
+		A90CE9F017736720006DD933 /* WBBaseElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA535F176687F1001BC5FE /* WBBaseElement.m */; };
+		A90CE9F117736720006DD933 /* WBBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5362176687F1001BC5FE /* WBBoard.m */; };
+		A90CE9F217736720006DD933 /* WBPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5364176687F1001BC5FE /* WBPage.m */; };
+		A90CE9F317736720006DD933 /* WBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5368176687F1001BC5FE /* WBUtils.m */; };
+		A90CE9F417736720006DD933 /* GSReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA545E17668A47001BC5FE /* GSReachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A90CE9F517736720006DD933 /* CoreTextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA546417668A47001BC5FE /* CoreTextUtils.m */; };
+		A90CE9F617736720006DD933 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA546717668A47001BC5FE /* NSAttributedString+Attributes.m */; };
+		A90CE9F717736720006DD933 /* NSTextCheckingResult+ExtendedURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA546917668A47001BC5FE /* NSTextCheckingResult+ExtendedURL.m */; };
+		A90CE9F817736720006DD933 /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA546B17668A47001BC5FE /* OHAttributedLabel.m */; };
+		A90CE9F917736720006DD933 /* OHParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA546D17668A47001BC5FE /* OHParagraphStyle.m */; };
+		A90CE9FA17736720006DD933 /* OHASBasicHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA547017668A47001BC5FE /* OHASBasicHTMLParser.m */; };
+		A90CE9FB17736720006DD933 /* OHASBasicMarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA547217668A47001BC5FE /* OHASBasicMarkupParser.m */; };
+		A90CE9FC17736720006DD933 /* OHASMarkupParserBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA547417668A47001BC5FE /* OHASMarkupParserBase.m */; };
+		A90CE9FD17736720006DD933 /* GSSVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA547817668A47001BC5FE /* GSSVProgressHUD.m */; };
+		A90CE9FE17736720006DD933 /* GSTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA547C17668A47001BC5FE /* GSTheme.m */; };
+		A90CE9FF17736720006DD933 /* NSData+GSBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA547E17668A47001BC5FE /* NSData+GSBase64.m */; };
+		A90CEA0017736720006DD933 /* UIColor+GSExpanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA548017668A47001BC5FE /* UIColor+GSExpanded.m */; };
+		A90CEA0117736720006DD933 /* UITextField+GSCustomPlaceholderTextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA548217668A47001BC5FE /* UITextField+GSCustomPlaceholderTextColor.m */; };
+		A90CEA0217736720006DD933 /* GSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54B617668A88001BC5FE /* GSObject.m */; };
+		A90CEA0317736720006DD933 /* GSParseQueryHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54B817668A88001BC5FE /* GSParseQueryHelper.m */; };
+		A90CEA0417736720006DD933 /* GSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54BA17668A88001BC5FE /* GSSession.m */; };
+		A90CEA0517736720006DD933 /* GSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54BE17668A88001BC5FE /* GSUser.m */; };
+		A90CEA0617736720006DD933 /* GSUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA54C017668A88001BC5FE /* GSUtils.m */; };
+		A90CEA0717736720006DD933 /* CollaborativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B23544D1767A9B30055A319 /* CollaborativeViewController.m */; };
+		A90CEA0817736720006DD933 /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2354531767AFBF0055A319 /* GSLogInViewController.m */; };
+		A90CEA0917736720006DD933 /* GSSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2354551767AFBF0055A319 /* GSSignUpViewController.m */; };
+		A90CEA0A17736720006DD933 /* GSRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B23545D1767BECB0055A319 /* GSRoom.m */; };
+		A90CEA0B17736720006DD933 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CC71769256800BD8C27 /* RoomListViewController.m */; };
+		A90CEA0C17736720006DD933 /* RoomDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */; };
+		A90CEA0D17736720006DD933 /* CGPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FDF176A386800F5FE5D /* CGPaintingView.m */; };
+		A90CEA0E17736720006DD933 /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
+		A90CEA0F17736720006DD933 /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */; };
+		A90CEA1017736720006DD933 /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */; };
+		A90CEA1117736720006DD933 /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B454176F1B5C005574D2 /* WBToolbarView.m */; };
+		A90CEA1217736720006DD933 /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
+		A90CEA1317736720006DD933 /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */; };
+		A90CEA1417736720006DD933 /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */; };
+		A90CEA1517736720006DD933 /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9717701F4900B180BA /* WBButton.m */; };
+		A90CEA1617736720006DD933 /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9C17701F5F00B180BA /* WBEraserButton.m */; };
+		A90CEA1717736720006DD933 /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */; };
+		A90CEA1817736720006DD933 /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC6177108C600CF6EBA /* WBMenubarView.m */; };
+		A90CEA1917736720006DD933 /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0A1771645B005500AB /* WBAddMoreButton.m */; };
+		A90CEA1A17736720006DD933 /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0C1771645B005500AB /* WBMoveButton.m */; };
+		A90CEA1B17736720006DD933 /* WBAddMoreSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E1417716A80005500AB /* WBAddMoreSelectionView.m */; };
+		A90CEA1C17736720006DD933 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B017729F4C006DD933 /* WBMenuButton.m */; };
+		A90CEA1D17736720006DD933 /* WBUndoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B51773548C006DD933 /* WBUndoButton.m */; };
+		A90CEA1E17736720006DD933 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9BA17736230006DD933 /* WBHistoryButton.m */; };
+		A90CEA2017736720006DD933 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F617668CC1001BC5FE /* libsqlite3.dylib */; };
+		A90CEA2117736720006DD933 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F417668C84001BC5FE /* libicucore.dylib */; };
+		A90CEA2217736720006DD933 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F217668C73001BC5FE /* AdSupport.framework */; };
+		A90CEA2317736720006DD933 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F017668C61001BC5FE /* Social.framework */; };
+		A90CEA2417736720006DD933 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EE17668C34001BC5FE /* CoreText.framework */; };
+		A90CEA2517736720006DD933 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EC17668BDF001BC5FE /* SystemConfiguration.framework */; };
+		A90CEA2617736720006DD933 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EA17668BDA001BC5FE /* StoreKit.framework */; };
+		A90CEA2717736720006DD933 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54E817668BD5001BC5FE /* Security.framework */; };
+		A90CEA2817736720006DD933 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54E617668BCE001BC5FE /* MobileCoreServices.framework */; };
+		A90CEA2917736720006DD933 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54E417668BC8001BC5FE /* libz.1.1.3.dylib */; };
+		A90CEA2A17736720006DD933 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54E217668BC0001BC5FE /* CoreLocation.framework */; };
+		A90CEA2B17736720006DD933 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5D5175F9D0C00B063D7 /* CoreGraphics.framework */; };
+		A90CEA2C17736720006DD933 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54E017668BB5001BC5FE /* CFNetwork.framework */; };
+		A90CEA2D17736720006DD933 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54DE17668B38001BC5FE /* AudioToolbox.framework */; };
+		A90CEA2E17736720006DD933 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54DC17668B2E001BC5FE /* Accounts.framework */; };
+		A90CEA2F17736720006DD933 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D617668AE6001BC5FE /* FacebookSDK.framework */; };
+		A90CEA3017736720006DD933 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D717668AE6001BC5FE /* Firebase.framework */; };
+		A90CEA3117736720006DD933 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D817668AE6001BC5FE /* Parse.framework */; };
+		A90CEA3217736720006DD933 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4AF57317605AB50049D77D /* OpenGLES.framework */; };
+		A90CEA3317736720006DD933 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4AF57117605AAD0049D77D /* QuartzCore.framework */; };
+		A90CEA3417736720006DD933 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5D1175F9D0C00B063D7 /* UIKit.framework */; };
+		A90CEA3517736720006DD933 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5D3175F9D0C00B063D7 /* Foundation.framework */; };
+		A90CEA3717736720006DD933 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E5DA175F9D0C00B063D7 /* InfoPlist.strings */; };
+		A90CEA3817736720006DD933 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E5E3175F9D0C00B063D7 /* Default.png */; };
+		A90CEA3917736720006DD933 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E5E5175F9D0C00B063D7 /* Default@2x.png */; };
+		A90CEA3A17736720006DD933 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E5E7175F9D0C00B063D7 /* Default-568h@2x.png */; };
+		A90CEA3B17736720006DD933 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
+		A90CEA3C17736720006DD933 /* WBViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4AF56C176059700049D77D /* WBViewController~iphone.xib */; };
+		A90CEA3D17736720006DD933 /* WBViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4AF56F176059860049D77D /* WBViewController~ipad.xib */; };
+		A90CEA3E17736720006DD933 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA546117668A47001BC5FE /* LICENSE */; };
+		A90CEA3F17736720006DD933 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA547517668A47001BC5FE /* README.md */; };
+		A90CEA4017736720006DD933 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA547917668A47001BC5FE /* SVProgressHUD.bundle */; };
+		A90CEA4117736720006DD933 /* CollaborativeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */; };
 		A9520C8D176FB5ED00B180BA /* WBBottomRightToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */; };
 		A9520C8E176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */; };
 		A9520C8F176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */; };
@@ -577,6 +705,8 @@
 		A90CE9B51773548C006DD933 /* WBUndoButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUndoButton.m; sourceTree = "<group>"; };
 		A90CE9B917736230006DD933 /* WBHistoryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBHistoryButton.h; sourceTree = "<group>"; };
 		A90CE9BA17736230006DD933 /* WBHistoryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryButton.m; sourceTree = "<group>"; };
+		A90CEA4517736720006DD933 /* WhiteboardSDK Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WhiteboardSDK Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A90CEA4617736721006DD933 /* WhiteboardSDK Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WhiteboardSDK Dev-Info.plist"; path = "/Users/eml/copypaste/SmartboardAPI/WhiteboardSDK/WhiteboardSDK Dev-Info.plist"; sourceTree = "<absolute>"; };
 		A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBBottomRightToolbarView.h; sourceTree = "<group>"; };
 		A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBBottomRightToolbarView.m; sourceTree = "<group>"; };
 		A9520C9617701F4900B180BA /* WBButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBButton.h; sourceTree = "<group>"; };
@@ -637,6 +767,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A90CEA1F17736720006DD933 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A90CEA2017736720006DD933 /* libsqlite3.dylib in Frameworks */,
+				A90CEA2117736720006DD933 /* libicucore.dylib in Frameworks */,
+				A90CEA2217736720006DD933 /* AdSupport.framework in Frameworks */,
+				A90CEA2317736720006DD933 /* Social.framework in Frameworks */,
+				A90CEA2417736720006DD933 /* CoreText.framework in Frameworks */,
+				A90CEA2517736720006DD933 /* SystemConfiguration.framework in Frameworks */,
+				A90CEA2617736720006DD933 /* StoreKit.framework in Frameworks */,
+				A90CEA2717736720006DD933 /* Security.framework in Frameworks */,
+				A90CEA2817736720006DD933 /* MobileCoreServices.framework in Frameworks */,
+				A90CEA2917736720006DD933 /* libz.1.1.3.dylib in Frameworks */,
+				A90CEA2A17736720006DD933 /* CoreLocation.framework in Frameworks */,
+				A90CEA2B17736720006DD933 /* CoreGraphics.framework in Frameworks */,
+				A90CEA2C17736720006DD933 /* CFNetwork.framework in Frameworks */,
+				A90CEA2D17736720006DD933 /* AudioToolbox.framework in Frameworks */,
+				A90CEA2E17736720006DD933 /* Accounts.framework in Frameworks */,
+				A90CEA2F17736720006DD933 /* FacebookSDK.framework in Frameworks */,
+				A90CEA3017736720006DD933 /* Firebase.framework in Frameworks */,
+				A90CEA3117736720006DD933 /* Parse.framework in Frameworks */,
+				A90CEA3217736720006DD933 /* OpenGLES.framework in Frameworks */,
+				A90CEA3317736720006DD933 /* QuartzCore.framework in Frameworks */,
+				A90CEA3417736720006DD933 /* UIKit.framework in Frameworks */,
+				A90CEA3517736720006DD933 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -674,6 +833,7 @@
 				7BEA52DD1766873A001BC5FE /* Collaborative */,
 				7B82E5D0175F9D0C00B063D7 /* Frameworks */,
 				7B82E5CF175F9D0C00B063D7 /* Products */,
+				A90CEA4617736721006DD933 /* WhiteboardSDK Dev-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -683,6 +843,7 @@
 				7B82E5CE175F9D0C00B063D7 /* WhiteboardSDK.app */,
 				7B82E5F2175F9D3200B063D7 /* Whiteboard.framework */,
 				7BEA52DB1766873A001BC5FE /* Collaborative.framework */,
+				A90CEA4517736720006DD933 /* WhiteboardSDK Dev.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1403,6 +1564,23 @@
 			productReference = 7BEA52DB1766873A001BC5FE /* Collaborative.framework */;
 			productType = "com.apple.product-type.bundle";
 		};
+		A90CE9BE17736720006DD933 /* WhiteboardSDK Dev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A90CEA4217736720006DD933 /* Build configuration list for PBXNativeTarget "WhiteboardSDK Dev" */;
+			buildPhases = (
+				A90CE9BF17736720006DD933 /* Sources */,
+				A90CEA1F17736720006DD933 /* Frameworks */,
+				A90CEA3617736720006DD933 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WhiteboardSDK Dev";
+			productName = WhiteboardSDK;
+			productReference = A90CEA4517736720006DD933 /* WhiteboardSDK Dev.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1430,6 +1608,7 @@
 				7B82E793175F9EC800B063D7 /* BuildWhiteboardSDK */,
 				7BEA52DA1766873A001BC5FE /* Collaborative */,
 				7BEA540A17668844001BC5FE /* BuildCollaborativeSDK */,
+				A90CE9BE17736720006DD933 /* WhiteboardSDK Dev */,
 			);
 		};
 /* End PBXProject section */
@@ -1468,6 +1647,24 @@
 			files = (
 				7BEA52E21766873A001BC5FE /* InfoPlist.strings in Resources */,
 				7BEA54A617668A47001BC5FE /* SVProgressHUD.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A90CEA3617736720006DD933 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A90CEA3717736720006DD933 /* InfoPlist.strings in Resources */,
+				A90CEA3817736720006DD933 /* Default.png in Resources */,
+				A90CEA3917736720006DD933 /* Default@2x.png in Resources */,
+				A90CEA3A17736720006DD933 /* Default-568h@2x.png in Resources */,
+				A90CEA3B17736720006DD933 /* Whiteboard.bundle in Resources */,
+				A90CEA3C17736720006DD933 /* WBViewController~iphone.xib in Resources */,
+				A90CEA3D17736720006DD933 /* WBViewController~ipad.xib in Resources */,
+				A90CEA3E17736720006DD933 /* LICENSE in Resources */,
+				A90CEA3F17736720006DD933 /* README.md in Resources */,
+				A90CEA4017736720006DD933 /* SVProgressHUD.bundle in Resources */,
+				A90CEA4117736720006DD933 /* CollaborativeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1705,6 +1902,108 @@
 				7B2354581767AFBF0055A319 /* GSLogInViewController.m in Sources */,
 				7B23545B1767AFBF0055A319 /* GSSignUpViewController.m in Sources */,
 				7B2354601767BECC0055A319 /* GSRoom.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A90CE9BF17736720006DD933 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A90CE9C017736720006DD933 /* main.m in Sources */,
+				A90CE9C117736720006DD933 /* WAppDelegate.m in Sources */,
+				A90CE9C217736720006DD933 /* WBViewController.m in Sources */,
+				A90CE9C317736720006DD933 /* HistoryElement.m in Sources */,
+				A90CE9C417736720006DD933 /* HistoryElementCreated.m in Sources */,
+				A90CE9C517736720006DD933 /* HistoryElementDeleted.m in Sources */,
+				A90CE9C617736720006DD933 /* HistoryElementTextChanged.m in Sources */,
+				A90CE9C717736720006DD933 /* HistoryElementTextColorChanged.m in Sources */,
+				A90CE9C817736720006DD933 /* HistoryElementTextFontChanged.m in Sources */,
+				A90CE9C917736720006DD933 /* HistoryElementTransform.m in Sources */,
+				A90CE9CA17736720006DD933 /* HistoryAction.m in Sources */,
+				A90CE9CB17736720006DD933 /* HistoryView.m in Sources */,
+				A90CE9CC17736720006DD933 /* BoardManager.m in Sources */,
+				A90CE9CD17736720006DD933 /* HistoryManager.m in Sources */,
+				A90CE9CE17736720006DD933 /* SettingManager.m in Sources */,
+				A90CE9CF17736720006DD933 /* CGPointExtension.m in Sources */,
+				A90CE9D017736720006DD933 /* KxMenu.m in Sources */,
+				A90CE9D117736720006DD933 /* NSData+WBBase64.m in Sources */,
+				A90CE9D217736720006DD933 /* UIColor+GSString.m in Sources */,
+				A90CE9D317736720006DD933 /* UIDevice+Hardware.m in Sources */,
+				A90CE9D417736720006DD933 /* ColorSpectrumImageView.m in Sources */,
+				A90CE9D517736720006DD933 /* ColorPickerView.m in Sources */,
+				A90CE9D617736720006DD933 /* ColorTabView.m in Sources */,
+				A90CE9D717736720006DD933 /* ColorCircleView.m in Sources */,
+				A90CE9D817736720006DD933 /* CustomSlider.m in Sources */,
+				A90CE9D917736720006DD933 /* ColorPreviewView.m in Sources */,
+				A90CE9DA17736720006DD933 /* TabWrapperView.m in Sources */,
+				A90CE9DB17736720006DD933 /* GLCanvasElement.m in Sources */,
+				A90CE9DC17736720006DD933 /* Painting.m in Sources */,
+				A90CE9DD17736720006DD933 /* PaintingManager.m in Sources */,
+				A90CE9DE17736720006DD933 /* ColorTabElement.m in Sources */,
+				A90CE9DF17736720006DD933 /* GSMutableDictionary.m in Sources */,
+				A90CE9E017736720006DD933 /* GSTouchData.m in Sources */,
+				A90CE9E117736720006DD933 /* DrawingLayerInfo.m in Sources */,
+				A90CE9E217736720006DD933 /* EAGLView.m in Sources */,
+				A90CE9E317736720006DD933 /* FB2GLView.m in Sources */,
+				A90CE9E417736720006DD933 /* MainPaintingView.m in Sources */,
+				A90CE9E517736720006DD933 /* PaintingView.mm in Sources */,
+				A90CE9E617736720006DD933 /* ClearPaintingCmd.m in Sources */,
+				A90CE9E717736720006DD933 /* ImagePaintingCmd.m in Sources */,
+				A90CE9E817736720006DD933 /* MultiStrokePaintingCmd.m in Sources */,
+				A90CE9E917736720006DD933 /* PaintingCmd.m in Sources */,
+				A90CE9EA17736720006DD933 /* StrokePaintingCmd.m in Sources */,
+				A90CE9EB17736720006DD933 /* GSButton.m in Sources */,
+				A90CE9EC17736720006DD933 /* BackgroundElement.m in Sources */,
+				A90CE9ED17736720006DD933 /* ImageElement.m in Sources */,
+				A90CE9EE17736720006DD933 /* PlaceHolderTextView.m in Sources */,
+				A90CE9EF17736720006DD933 /* TextElement.m in Sources */,
+				A90CE9F017736720006DD933 /* WBBaseElement.m in Sources */,
+				A90CE9F117736720006DD933 /* WBBoard.m in Sources */,
+				A90CE9F217736720006DD933 /* WBPage.m in Sources */,
+				A90CE9F317736720006DD933 /* WBUtils.m in Sources */,
+				A90CE9F417736720006DD933 /* GSReachability.m in Sources */,
+				A90CE9F517736720006DD933 /* CoreTextUtils.m in Sources */,
+				A90CE9F617736720006DD933 /* NSAttributedString+Attributes.m in Sources */,
+				A90CE9F717736720006DD933 /* NSTextCheckingResult+ExtendedURL.m in Sources */,
+				A90CE9F817736720006DD933 /* OHAttributedLabel.m in Sources */,
+				A90CE9F917736720006DD933 /* OHParagraphStyle.m in Sources */,
+				A90CE9FA17736720006DD933 /* OHASBasicHTMLParser.m in Sources */,
+				A90CE9FB17736720006DD933 /* OHASBasicMarkupParser.m in Sources */,
+				A90CE9FC17736720006DD933 /* OHASMarkupParserBase.m in Sources */,
+				A90CE9FD17736720006DD933 /* GSSVProgressHUD.m in Sources */,
+				A90CE9FE17736720006DD933 /* GSTheme.m in Sources */,
+				A90CE9FF17736720006DD933 /* NSData+GSBase64.m in Sources */,
+				A90CEA0017736720006DD933 /* UIColor+GSExpanded.m in Sources */,
+				A90CEA0117736720006DD933 /* UITextField+GSCustomPlaceholderTextColor.m in Sources */,
+				A90CEA0217736720006DD933 /* GSObject.m in Sources */,
+				A90CEA0317736720006DD933 /* GSParseQueryHelper.m in Sources */,
+				A90CEA0417736720006DD933 /* GSSession.m in Sources */,
+				A90CEA0517736720006DD933 /* GSUser.m in Sources */,
+				A90CEA0617736720006DD933 /* GSUtils.m in Sources */,
+				A90CEA0717736720006DD933 /* CollaborativeViewController.m in Sources */,
+				A90CEA0817736720006DD933 /* GSLogInViewController.m in Sources */,
+				A90CEA0917736720006DD933 /* GSSignUpViewController.m in Sources */,
+				A90CEA0A17736720006DD933 /* GSRoom.m in Sources */,
+				A90CEA0B17736720006DD933 /* RoomListViewController.m in Sources */,
+				A90CEA0C17736720006DD933 /* RoomDataViewController.m in Sources */,
+				A90CEA0D17736720006DD933 /* CGPaintingView.m in Sources */,
+				A90CEA0E17736720006DD933 /* CGCanvasElement.m in Sources */,
+				A90CEA0F17736720006DD933 /* WBCanvasButton.m in Sources */,
+				A90CEA1017736720006DD933 /* WBCanvasToolbarView.m in Sources */,
+				A90CEA1117736720006DD933 /* WBToolbarView.m in Sources */,
+				A90CEA1217736720006DD933 /* HistoryElementCanvasDraw.m in Sources */,
+				A90CEA1317736720006DD933 /* WBBottomRightToolbarView.m in Sources */,
+				A90CEA1417736720006DD933 /* WBToolMonitorView.m in Sources */,
+				A90CEA1517736720006DD933 /* WBButton.m in Sources */,
+				A90CEA1617736720006DD933 /* WBEraserButton.m in Sources */,
+				A90CEA1717736720006DD933 /* WBHistoryColorButton.m in Sources */,
+				A90CEA1817736720006DD933 /* WBMenubarView.m in Sources */,
+				A90CEA1917736720006DD933 /* WBAddMoreButton.m in Sources */,
+				A90CEA1A17736720006DD933 /* WBMoveButton.m in Sources */,
+				A90CEA1B17736720006DD933 /* WBAddMoreSelectionView.m in Sources */,
+				A90CEA1C17736720006DD933 /* WBMenuButton.m in Sources */,
+				A90CEA1D17736720006DD933 /* WBUndoButton.m in Sources */,
+				A90CEA1E17736720006DD933 /* WBHistoryButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1960,6 +2259,39 @@
 			};
 			name = Release;
 		};
+		A90CEA4317736720006DD933 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/WhiteboardSDK\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WhiteboardSDK/WhiteboardSDK-Prefix.pch";
+				INFOPLIST_FILE = "WhiteboardSDK Dev-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "WhiteboardSDK Dev";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A90CEA4417736720006DD933 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/WhiteboardSDK\"",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WhiteboardSDK/WhiteboardSDK-Prefix.pch";
+				INFOPLIST_FILE = "WhiteboardSDK Dev-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "WhiteboardSDK Dev";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2013,6 +2345,15 @@
 			buildConfigurations = (
 				7BEA540C17668844001BC5FE /* Debug */,
 				7BEA540D17668844001BC5FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A90CEA4217736720006DD933 /* Build configuration list for PBXNativeTarget "WhiteboardSDK Dev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A90CEA4317736720006DD933 /* Debug */,
+				A90CEA4417736720006DD933 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
