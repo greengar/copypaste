@@ -148,7 +148,7 @@
     float topMenubarWidth = topMenubarHeight*3;
     self.menubarView = [[WBMenubarView alloc] initWithFrame:CGRectMake(leftMargin, topMargin, topMenubarWidth, topMenubarHeight)];
     self.menubarView.delegate = self;
-    self.menubarView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+    self.menubarView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
     [self.view addSubview:self.menubarView];
     
     // Toolbar (Canvas/Plus/Move/Color History Tray)
@@ -157,7 +157,7 @@
     float bottomToolbarWidth = 600;
     self.toolbarView = [[WBToolbarView alloc] initWithFrame:CGRectMake(leftMargin, self.view.frame.size.height-bottomToolbarHeight-bottomMargin, bottomToolbarWidth, bottomToolbarHeight)];
     self.toolbarView.delegate = self;
-    self.toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    self.toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [self.view addSubview:self.toolbarView];
     
     // Page Curl Button
@@ -168,6 +168,7 @@
                                         frame.size.height-kPageCurlHeight,
                                         kPageCurlWidth,
                                         kPageCurlHeight)];
+    [pageCurlButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin];
     [pageCurlButton addTarget:self action:@selector(showExportControl:)
              forControlEvents:UIControlEventTouchUpInside];
     [pageCurlButton setTag:kPageCurlButtonTag];
@@ -361,7 +362,6 @@
 	[[self currentPage] setHidden:NO];
     [[self toolbarView] setHidden:NO];
     [[self menubarView] setHidden:NO];
-    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setHidden:NO];
     [((GSButton *) [self.view viewWithTag:kPageCurlButtonTag]) setHidden:NO];
 }
 
@@ -371,7 +371,17 @@
 }
 
 - (void)nextPage {
+    [self hideExportControl];
     
+    if (self.currentPageIndex == [self.pages count]-1) {
+        [self addNewPage];
+    } else {
+        self.currentPageIndex++;
+    }
+    
+    [self.view bringSubviewToFront:self.toolbarView];
+    [self.view bringSubviewToFront:self.menubarView];
+    [self.view bringSubviewToFront:((GSButton *) [self.view viewWithTag:kPageCurlButtonTag])];
 }
 
 - (void)exportPage {
@@ -710,7 +720,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations {
     if (IS_IPAD) {
-        return UIInterfaceOrientationMaskAll;
+        return UIInterfaceOrientationMaskPortrait;
     } else {
         return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
     }

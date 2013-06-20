@@ -51,6 +51,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         // OpenGL View
         self.drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0,

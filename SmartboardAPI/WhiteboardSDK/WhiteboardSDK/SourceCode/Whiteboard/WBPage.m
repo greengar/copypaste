@@ -71,6 +71,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"P_"];
         self.elements = [NSMutableArray new];
         
