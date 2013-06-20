@@ -48,10 +48,10 @@
 @interface WBBoard ()
 @property (nonatomic, strong) NSMutableArray *pages;
 @property (nonatomic) int currentPageIndex;
-@property (nonatomic) BOOL isAnimating;
-@property (nonatomic, strong) NSTimer *animationTimer;
-@property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic) BOOL isTargetViewCurled;
+@property (nonatomic) BOOL isPageCurlUpAnimating;
+@property (nonatomic, strong) NSTimer *timerToStopPageCurlUp;
+@property (nonatomic, strong) NSTimer *timerToShowControlWhenPageCurlDown;
+@property (nonatomic) BOOL isPageCurled;
 - (void)selectPage:(WBPage *)page;
 
 // Control for board
@@ -67,10 +67,10 @@
 @synthesize pages = _pages;
 @synthesize currentPageIndex = _currentPageIndex;
 @synthesize delegate = _delegate;
-@synthesize isAnimating = _isAnimating;
-@synthesize animationTimer = _animationTimer;
-@synthesize timer = _timer;
-@synthesize isTargetViewCurled = _isTargetViewCurled;
+@synthesize isPageCurlUpAnimating = _isAnimating;
+@synthesize timerToStopPageCurlUp = _animationTimer;
+@synthesize timerToShowControlWhenPageCurlDown = _timer;
+@synthesize isPageCurled = _isTargetViewCurled;
 @synthesize menubarView = _menubarView;
 @synthesize toolbarView = _toolbarView;
 
@@ -307,7 +307,7 @@
 }
 
 - (void)showExportControl:(GSButton *)button {
-    if (!self.isAnimating && !self.isTargetViewCurled) {
+    if (!self.isPageCurlUpAnimating && !self.isPageCurled) {
         double delayInSeconds = 0.25;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -322,7 +322,7 @@
         
         UILabel *pageLabel = (UILabel *) [self.view viewWithTag:kPageLabelTag];
         [pageLabel setText:[NSString stringWithFormat:@"Page: %d/%d", self.currentPageIndex+1, [self.pages count]]];
-        self.isAnimating = YES;
+        self.isPageCurlUpAnimating = YES;
         [UIView beginAnimations:kCurlUpAndDownAnimationID context:nil];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
                                forView:[self currentPage]
@@ -335,8 +335,8 @@
 }
 
 - (void)hideExportControl {
-    if (!self.isAnimating && self.isTargetViewCurled) {
-		self.isAnimating = YES;
+    if (!self.isPageCurlUpAnimating && self.isPageCurled) {
+		self.isPageCurlUpAnimating = YES;
         
 		CFTimeInterval pausedTime = [[self currentPage].layer timeOffset];
 		[self currentPage].layer.speed = 1.0;
@@ -347,17 +347,17 @@
 		[self currentPage].layer.beginTime = timeSincePause-2*(kCurlAnimationDuration-kCurlAnimationShouldStopAfter);
 		
         // Necessary to avoid a flick during the removal of layer and setting the target view visible again
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.25f
-                                                      target:self
-                                                    selector:@selector(showCurrentPage)
-                                                    userInfo:nil
-                                                     repeats:NO];
+        self.timerToShowControlWhenPageCurlDown = [NSTimer scheduledTimerWithTimeInterval:0.25f
+                                                                                   target:self
+                                                                                 selector:@selector(showPageAfterCurlDown)
+                                                                                 userInfo:nil
+                                                                                  repeats:NO];
 	}
 }
 
-- (void)showCurrentPage {
-	[self.timer invalidate];
-	[self setTimer:nil];
+- (void)showPageAfterCurlDown {
+	[self.timerToShowControlWhenPageCurlDown invalidate];
+	[self setTimerToShowControlWhenPageCurlDown:nil];
 	
 	[[self currentPage] setHidden:NO];
     [[self toolbarView] setHidden:NO];
@@ -372,20 +372,38 @@
 
 - (void)nextPage {
     [self hideExportControl];
-    
-    if (self.currentPageIndex == [self.pages count]-1) {
-        [self addNewPage];
-    } else {
-        self.currentPageIndex++;
-    }
-    
-    [self.view bringSubviewToFront:self.toolbarView];
-    [self.view bringSubviewToFront:self.menubarView];
-    [self.view bringSubviewToFront:((GSButton *) [self.view viewWithTag:kPageCurlButtonTag])];
 }
 
 - (void)exportPage {
     [self doneEditing];
+}
+
+#pragma mark - Animation Page Curl
+- (void)animationWillStart:(NSString *)animationID context:(void *)context {
+	self.isPageCurlUpAnimating = YES;
+	self.timerToStopPageCurlUp = [NSTimer scheduledTimerWithTimeInterval:kCurlAnimationShouldStopAfter
+                                                                  target:self
+                                                                selector:@selector(stopPageCurlUp)
+                                                                userInfo:nil
+                                                                 repeats:NO];
+	return;
+}
+
+- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+	self.isPageCurlUpAnimating = NO;
+    self.isPageCurled = NO;
+}
+
+- (void)stopPageCurlUp {
+	[self.timerToStopPageCurlUp invalidate];
+	[self setTimerToStopPageCurlUp:nil];
+    
+    CFTimeInterval pausedTime = [[self currentPage].layer convertTime:CACurrentMediaTime() fromLayer:nil];
+    [self currentPage].layer.speed = 0.0;
+    [self currentPage].layer.timeOffset = pausedTime;
+	
+	self.isPageCurled = YES;
+	self.isPageCurlUpAnimating = NO;
 }
 
 #pragma mark - Export output data
@@ -605,35 +623,6 @@
                              cache:YES];
     [UIView setAnimationDuration:kWBSessionAnimationDuration];
     [UIView commitAnimations];
-}
-
-#pragma mark - Animation Page Curl
-- (void)animationWillStart:(NSString *)animationID context:(void *)context {	
-	self.isAnimating = YES;
-	self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:kCurlAnimationShouldStopAfter
-														   target:self
-														 selector:@selector(stopCurl)
-														 userInfo:nil
-														  repeats:NO];
-	return;
-}
-
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-	self.isAnimating = NO;
-    self.isTargetViewCurled = NO;
-	self.isAnimating = NO;
-}
-
-- (void)stopCurl {
-	[self.animationTimer invalidate];
-	[self setAnimationTimer:nil];
-    
-    CFTimeInterval pausedTime = [[self currentPage].layer convertTime:CACurrentMediaTime() fromLayer:nil];
-    [self currentPage].layer.speed = 0.0;
-    [self currentPage].layer.timeOffset = pausedTime;
-	
-	self.isTargetViewCurled = YES;
-	self.isAnimating = NO;
 }
 
 #pragma mark - Animation Show/Dismiss board
