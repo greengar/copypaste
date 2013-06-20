@@ -10,7 +10,7 @@
 #import "SettingManager.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define ADD_MORE_ARRAY @[@"Camera", @"Image", @"Text", @"Paste"]
+#define ADD_MORE_ARRAY @[@"Use Camera", @"Add Photo", @"Add Text", @"Paste"]
 
 @interface WBAddMoreSelectionView() {
     UIView                 *addMoreView;
