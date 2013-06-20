@@ -7,17 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WBUtils.h"
 
 #define kAddMoreCellHeight 79
 #define kAddMoreViewHeight kAddMoreCellHeight*4
-
-@protocol WBAddMoreSelectionDelegate
-- (void)addCamera;
-- (void)addPhoto;
-- (void)addText;
-- (void)addCanvas;
-- (void)addPaste;
-@end
 
 @interface WBAddMoreSelectionView : UIView <UITableViewDelegate, UITableViewDataSource>
 

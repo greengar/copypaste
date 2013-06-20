@@ -9,30 +9,30 @@
 #import <UIKit/UIKit.h>
 #import "WBUtils.h"
 #import "WBPage.h"
-#import "WBToolbarView.h"
-#import "WBMenubarView.h"
-#import "WBToolMonitorView.h"
-#import "HistoryView.h"
-#import "WBAddMoreSelectionView.h"
 
 @interface WBBoard : UIViewController <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate>
 
-- (id)initWithDict:(NSDictionary *)dictionary;
-
+/*
+ Show the board with default animation
+ Recommend to call this instead of pushViewController
+ @param controller UIViewController: the root view controller to push the board
+ */
 - (void)showMeWithAnimationFromController:(UIViewController *)controller;
 
+/*
+ Return the number of pages in the current board
+ @result Return int: number of pages
+ */
 - (int)numOfPages;
 
-- (WBPage *)currentPage;
-- (WBPage *)pageAtIndex:(int)index;
-
+- (id)initWithDict:(NSDictionary *)dictionary;
 - (NSDictionary *)saveToDict;
 + (WBBoard *)loadFromDict:(NSDictionary *)dict;
 
-@property (nonatomic, strong) NSString *uid;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) UIImage *previewImage;
-@property (nonatomic, strong) NSMutableArray *tags;
-@property (nonatomic, assign) id<WBBoardDelegate> delegate;
+@property (nonatomic, strong) NSString              *uid;
+@property (nonatomic, strong) NSString              *name;
+@property (nonatomic, strong) UIImage               *previewImage;
+@property (nonatomic, strong) NSMutableArray        *tags;
+@property (nonatomic, assign) id<WBBoardDelegate>   delegate;
 
 @end

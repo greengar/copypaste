@@ -24,103 +24,18 @@
 
 #define NSDEF [NSUserDefaults standardUserDefaults]
 
-// via http://stackoverflow.com/questions/7888702/macro-for-nslocalizedstring
 #define _(format, ...) [[NSBundle mainBundle] localizedStringForKey: [NSString stringWithFormat:@"%@", [NSString stringWithFormat:format, ##__VA_ARGS__]] value:@"" table:nil]
 
 #define OPAQUE_HEXCOLOR(c) [UIColor colorWithRed:((c>>16)&0xFF)/255.0 green:((c>>8)&0xFF)/255.0 blue:(c&0xFF)/255.0 alpha:0.9]
 #define OPAQUE_HEXCOLOR_FILL(c) [UIColor colorWithRed:((c>>16)&0xFF)/255.0 green:((c>>8)&0xFF)/255.0 blue:(c&0xFF)/255.0 alpha:1.0]
 
-#define kCPBackgroundColor OPAQUE_HEXCOLOR(0xE1CAA7)
-#define kCPPasteTextColor OPAQUE_HEXCOLOR(0xFA891F)
-#define kCPLightOrangeColor OPAQUE_HEXCOLOR(0xF7A058)
-
-typedef enum {
-    kUnknownToolType = 0,
-    kBrushToolType,
-    kSprayToolType,
-    kColorPickerToolType,
-    kTextToolType,
-    kClipartToolType
-} ToolType;
-
-typedef enum {
-    kUnknownShakeActionType = 0,
-    kStartOverShakeActionType,
-    kUndoShakeActionType
-} ShakeActionType;
-
 #define UnimplementedException @"UnimplementedException"
-
-#define kPushAboutToSettingNotification @"PushAboutToSettingNotification"
-#define kStartToConnectNotification @"kStartToConnectNotification"
-#define kStopConnectingNotification @"kStopConnectingNotification"
+#define ArrayIndexOutOfBoundException @"ArrayIndexOutOfBoundException"
 
 #define degreesToRadian(x) (3.14159265358979323846 * x / 180.0)
-
 #define getDocumentPath() ([NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0])
 
-#define kPointSizeKeyFormat @"kPointSizeKeyFormat%d"
-
-#define kOpacityKeyFormat @"kOpacityKeyFormat%d"
-
-#define kToolKeyFormat @"kToolKeyFormat%d"
-
-#define kColorKeyFormat @"kColorKeyFormat%d"
-
-#define kColorCoordinateKeyFormat @"kColorCoordinateKeyFormat%d"
-
-#define kBrushTool 0
-#define kSprayTool 1
-#define kTextTool 2
-
-#define kNumberOfTab ((IS_IPAD)?12:5)
-#define kTabWidth 64
-
-#define kSelectedTabBackgroundWidth 64
-#define kSelectedTabBackgroundHeight 43
-
-#define kScreenWidth  ([[UIScreen mainScreen] bounds].size.width)
-#define kScreenHeight ([[UIScreen mainScreen] bounds].size.height)
-
-#define kStatusBarHeight 20
-#define kUndoRedoOffsetWhenShowColorTabOnIpad 90 + 20
-
-#define kLauncherAnimationOffsetPortrait 963
-#define kLauncherAnimationOffsetLandscape 707
-
-// Color Tab in Bottom of Screen (21, 21, 22, 23)
-#define kColorTabOriginX 20
-#define kColorTabOriginY 21
-#define kColorTabWidth 24
-#define kColorTabHeight 23
-
-// Hide Show Button in Bottom of Screen (12, 0, 40, 40)
-#define kHideShowButtonInTabArrayOriginX 12
-#define kHideShowButtonInTabArrayOriginY 0
-#define kHideShowButtonInTabArrayWidth 40
-#define kHideShowButtonInTabArrayHeight 40
-
-#define kSliderHeight			22.0
-#define kMinPointSize			1.0
-#define kMaxPointSize			32.0
-//#define kDefaultPointSize		10.0 // warning: 'kDefaultPointSize' macro redefined
-#define kEraseButtonWidth		100.0
-#define kPickerDisplayConnectionViewDuration 0.12
-#define kStatusBarHeight 20
-
-#define kSCStartOverIndex	0
-#define kSCUndoIndex		1
-#define kSCNoneIndex		2
-
-#define kButtonHeight       44
-
-#define kColorSpectrum      160
-
-#define kToolsMinimizedKey @"kToolsMinimizedKey"
-
-#define		FONT_SIZES			[NSNumber numberWithInt:6],[NSNumber numberWithInt:8],[NSNumber numberWithInt:9],[NSNumber numberWithInt:10],[NSNumber numberWithInt:11],[NSNumber numberWithInt:12],[NSNumber numberWithInt:14],[NSNumber numberWithInt:16],[NSNumber numberWithInt:18],[NSNumber numberWithInt:20],[NSNumber numberWithInt:22],[NSNumber numberWithInt:24],[NSNumber numberWithInt:25],[NSNumber numberWithInt:26],[NSNumber numberWithInt:28],[NSNumber numberWithInt:29],[NSNumber numberWithInt:30],[NSNumber numberWithInt:32],[NSNumber numberWithInt:40],[NSNumber numberWithInt:50],nil
-#define		FONTS_AVAILABLE_ON_ALL_DEVICES		@[@"AmericanTypewriter",@"Apple Color Emoji",@"AppleGothic",@"Arial",@"Arial Hebrew",@"Arial Rounded MT Bold",@"Bangla Sangam MN",@"Baskerville",@"Chalkboard SE",@"Cochin",@"Courier",@"Courier New" ,@"Devanagari Sangam MN",@"Futura",@"Geeza Pro",@"Georgia",@"Gujarati Sangam MN",@"Gurmukhi MN",@"Heiti SC",@"Heiti TC",@"Helvetica",@"Helvetica Neue",@"Hiragino Kaku Gothic ProN",@"Kailasa",@"Kannada Sangam MN",@"Marker Felt",@"Oriya Sangam MN",@"Palatino",@"Snell Roundhand",@"Tamil Sangam MN",@"Telugu Sangam MN",@"Times New Roman",@"Trebuchet MS",@"Verdana",@"Zapfino"]
-
+#define	FONTS_AVAILABLE_ON_ALL_DEVICES @[@"AmericanTypewriter",@"Apple Color Emoji",@"AppleGothic",@"Arial",@"Arial Hebrew",@"Arial Rounded MT Bold",@"Bangla Sangam MN",@"Baskerville",@"Chalkboard SE",@"Cochin",@"Courier",@"Courier New" ,@"Devanagari Sangam MN",@"Futura",@"Geeza Pro",@"Georgia",@"Gujarati Sangam MN",@"Gurmukhi MN",@"Heiti SC",@"Heiti TC",@"Helvetica",@"Helvetica Neue",@"Hiragino Kaku Gothic ProN",@"Kailasa",@"Kannada Sangam MN",@"Marker Felt",@"Oriya Sangam MN",@"Palatino",@"Snell Roundhand",@"Tamil Sangam MN",@"Telugu Sangam MN",@"Times New Roman",@"Trebuchet MS",@"Verdana",@"Zapfino"]
 #define kDefaultFontName @"Arial"
 #define kDefaultFontSize (IS_IPAD ? 20 : 18)
 
@@ -130,6 +45,46 @@ typedef enum {
 @optional
 - (void)doneEditingBoardWithResult:(UIImage *)image;
 - (void)exportBoardData:(NSDictionary *)data;
+@end
+
+@class WBPage;
+@class WBBaseElement;
+@protocol WBPageDelegate
+@optional
+- (void)pageSelected:(WBPage *)page;
+- (void)pageUnlocked:(WBPage *)page;
+- (void)elementSelected:(WBBaseElement *)element;
+- (void)elementDeselected:(WBBaseElement *)element;
+@end
+
+@protocol WBAddMoreSelectionDelegate
+- (void)addCamera;
+- (void)addPhoto;
+- (void)addText;
+- (void)addCanvas;
+- (void)addPaste;
+@end
+
+@protocol WBToolMonitorDelegate
+- (void)colorPicked:(UIColor *)color;
+- (void)opacityChanged:(float)opacity;
+- (void)pointSizeChanged:(float)pointSize;
+- (void)monitorClosed;
+- (void)selectEraser:(BOOL)select;
+- (void)fontChanged:(NSString *)fontName;
+@end
+
+@protocol WBMenubarDelegate
+- (void)showMenu;
+- (void)performUndo;
+- (void)historyButtonTappedFrom:(UIView *)view;
+@end
+
+@protocol WBToolbarDelegate
+- (void)canvasButtonTappedFrom:(UIView *)view;
+- (void)selectHistoryColor;
+- (void)addMoreButtonTappedFrom:(UIView *)view;
+- (void)moveButtonTapped;
 @end
 
 @interface WBUtils : NSObject

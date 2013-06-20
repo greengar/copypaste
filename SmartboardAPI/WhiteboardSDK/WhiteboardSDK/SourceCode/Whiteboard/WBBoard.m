@@ -15,8 +15,10 @@
 #import "SettingManager.h"
 #import "GSButton.h"
 #import "HistoryView.h"
+#import "WBMenubarView.h"
 #import "WBToolbarView.h"
 #import "WBToolMonitorView.h"
+#import "WBAddMoreSelectionView.h"
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
@@ -251,7 +253,11 @@
 }
 
 - (WBPage *)pageAtIndex:(int)index {
-    return [self.pages objectAtIndex:index];
+    if (index >= 0 && index < [self.pages count]) {
+        return [self.pages objectAtIndex:index];
+    }
+    THROW_EXCEPTION_TYPE(ArrayIndexOutOfBoundException);
+    return nil;
 }
 
 - (void)elementSelected:(WBBaseElement *)element {

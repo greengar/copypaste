@@ -27,7 +27,8 @@
 #define kOpacityLabelY              (kLabelHeight + kSliderHeight - 3)
 #define kTapHereHeightiPad          618
 #define kBrushToolBackgroundHeight  257
-#define kPreviewAreaSize       64.0
+#define kPreviewAreaSize            64.0
+#define kColorSpectrum              160
 
 #define kScreenWidth                ([[UIScreen mainScreen] bounds].size.width)
 #define kScreenHeight               ([[UIScreen mainScreen] bounds].size.height)

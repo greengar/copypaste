@@ -225,7 +225,7 @@
 		7BEA53FB176687F1001BC5FE /* WBBaseElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA535E176687F1001BC5FE /* WBBaseElement.h */; };
 		7BEA53FC176687F1001BC5FE /* WBBaseElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA535F176687F1001BC5FE /* WBBaseElement.m */; };
 		7BEA53FD176687F1001BC5FE /* WBBaseElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA535F176687F1001BC5FE /* WBBaseElement.m */; };
-		7BEA53FE176687F1001BC5FE /* WBBoard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5361176687F1001BC5FE /* WBBoard.h */; };
+		7BEA53FE176687F1001BC5FE /* WBBoard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5361176687F1001BC5FE /* WBBoard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BEA53FF176687F1001BC5FE /* WBBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5362176687F1001BC5FE /* WBBoard.m */; };
 		7BEA5400176687F1001BC5FE /* WBBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5362176687F1001BC5FE /* WBBoard.m */; };
 		7BEA5401176687F1001BC5FE /* WBPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5363176687F1001BC5FE /* WBPage.h */; };
@@ -980,12 +980,12 @@
 		7BEA52E9176687F0001BC5FE /* Whiteboard */ = {
 			isa = PBXGroup;
 			children = (
-				7BEA5367176687F1001BC5FE /* WBUtils.h */,
-				7BEA5368176687F1001BC5FE /* WBUtils.m */,
 				7BEA5361176687F1001BC5FE /* WBBoard.h */,
 				7BEA5362176687F1001BC5FE /* WBBoard.m */,
 				7BEA5363176687F1001BC5FE /* WBPage.h */,
 				7BEA5364176687F1001BC5FE /* WBPage.m */,
+				7BEA5367176687F1001BC5FE /* WBUtils.h */,
+				7BEA5368176687F1001BC5FE /* WBUtils.m */,
 				7BEA52EA176687F0001BC5FE /* History */,
 				7BEA5300176687F0001BC5FE /* Manager */,
 				7BEA5316176687F0001BC5FE /* View */,
@@ -1407,8 +1407,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B82E792175F9E4C00B063D7 /* Whiteboard.h in Headers */,
-				7BEA53E6176687F1001BC5FE /* GSButton.h in Headers */,
+				7BEA53FE176687F1001BC5FE /* WBBoard.h in Headers */,
 				7BEA5407176687F1001BC5FE /* WBUtils.h in Headers */,
+				7BEA53E6176687F1001BC5FE /* GSButton.h in Headers */,
+				7BEA5401176687F1001BC5FE /* WBPage.h in Headers */,
 				7BEA5369176687F1001BC5FE /* HistoryElement.h in Headers */,
 				7BEA536C176687F1001BC5FE /* HistoryElementCreated.h in Headers */,
 				7BEA536F176687F1001BC5FE /* HistoryElementDeleted.h in Headers */,
@@ -1456,8 +1458,6 @@
 				7BEA53F5176687F1001BC5FE /* PlaceHolderTextView.h in Headers */,
 				7BEA53F8176687F1001BC5FE /* TextElement.h in Headers */,
 				7BEA53FB176687F1001BC5FE /* WBBaseElement.h in Headers */,
-				7BEA53FE176687F1001BC5FE /* WBBoard.h in Headers */,
-				7BEA5401176687F1001BC5FE /* WBPage.h in Headers */,
 				7BEB7FE0176A386800F5FE5D /* CGPaintingView.h in Headers */,
 				7BEB7FE5176A39D800F5FE5D /* CGCanvasElement.h in Headers */,
 				7BBCAC9E176F7CB000950ABA /* HistoryElementCanvasDraw.h in Headers */,

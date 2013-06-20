@@ -11,6 +11,14 @@
 #import "TabWrapperView.h"
 #import "SettingManager.h"
 
+#define kTabWidth 64
+
+// Color Tab in Bottom of Screen (21, 21, 22, 23)
+#define kColorTabOriginX 20
+#define kColorTabOriginY 21
+#define kColorTabWidth 24
+#define kColorTabHeight 23
+
 #define kHideShowButtonHeight 50
 
 @interface ColorTabView()

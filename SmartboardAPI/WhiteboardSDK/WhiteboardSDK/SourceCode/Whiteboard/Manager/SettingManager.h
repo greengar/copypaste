@@ -25,6 +25,9 @@
 #define kCoolOpacity            0.9
 #define kDefaultPointSize		18.0
 
+#define kMinPointSize			1.0
+#define kMaxPointSize			32.0
+
 #define kEraserTabIndex ((IS_IPAD) ? 6 : 3)
 
 #define kAboutViewAnimationDuration 0.35

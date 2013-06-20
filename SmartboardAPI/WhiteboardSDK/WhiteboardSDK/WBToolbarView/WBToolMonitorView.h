@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WBUtils.h"
 #import "ColorSpectrumImageView.h"
 #import "CustomSlider.h"
 #import "ColorPreviewView.h"
@@ -14,15 +15,6 @@
 
 #define kWBToolMonitorWidth     [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPrivate.png"].size.width
 #define kWBToolMonitorHeight    [UIImage imageNamed:@"Whiteboard.bundle/ColorSpectrumPrivate.png"].size.height
-
-@protocol WBToolMonitorDelegate
-- (void)colorPicked:(UIColor *)color;
-- (void)opacityChanged:(float)opacity;
-- (void)pointSizeChanged:(float)pointSize;
-- (void)monitorClosed;
-- (void)selectEraser:(BOOL)select;
-- (void)fontChanged:(NSString *)fontName;
-@end
 
 @interface WBToolMonitorView : UIView <ColorPickerImageViewDelegate, UITableViewDataSource, UITableViewDelegate>
 

@@ -63,8 +63,6 @@ static HistoryManager *shareManager = nil;
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updateHistoryView)]) {
         [self.delegate updateHistoryView];
     }
-    
-    DLog(@"Current History: %@", [self.historyPool description]);
 }
 
 - (void)activateAction:(HistoryAction *)action forPage:(WBPage *)page {
