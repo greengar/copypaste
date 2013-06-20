@@ -7,6 +7,7 @@
 //
 
 #import "WBMenuButton.h"
+#import "WBUtils.h"
 
 @implementation WBMenuButton
 
@@ -89,6 +90,29 @@
     
     
 
+}
+
+#pragma mark - Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    return _(@"Menu"); // requires WBUtils
+}
+
+/* This custom view behaves like a button. */
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    return UIAccessibilityTraitButton;
+}
+
+- (NSString *)accessibilityHint
+{
+    return _(@"Opens Menu popover with items like Back to Organizer");
 }
 
 @end

@@ -24,6 +24,9 @@
 
 #define NSDEF [NSUserDefaults standardUserDefaults]
 
+// via http://stackoverflow.com/questions/7888702/macro-for-nslocalizedstring
+#define _(format, ...) [[NSBundle mainBundle] localizedStringForKey: [NSString stringWithFormat:@"%@", [NSString stringWithFormat:format, ##__VA_ARGS__]] value:@"" table:nil]
+
 #define OPAQUE_HEXCOLOR(c) [UIColor colorWithRed:((c>>16)&0xFF)/255.0 green:((c>>8)&0xFF)/255.0 blue:(c&0xFF)/255.0 alpha:0.9]
 #define OPAQUE_HEXCOLOR_FILL(c) [UIColor colorWithRed:((c>>16)&0xFF)/255.0 green:((c>>8)&0xFF)/255.0 blue:(c&0xFF)/255.0 alpha:1.0]
 

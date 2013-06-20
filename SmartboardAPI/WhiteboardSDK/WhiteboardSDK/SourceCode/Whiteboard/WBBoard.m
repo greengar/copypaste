@@ -145,8 +145,9 @@
     // Menubar (Menu/Undo/History)
     float leftMargin = 25;
     float topMargin = 25;
-    float topMenubarHeight = 79;
-    float topMenubarWidth = topMenubarHeight*3;
+    float topMenubarHeight = 74;
+    float topMenubarButtonWidth = 81;
+    float topMenubarWidth = topMenubarButtonWidth * 3;
     self.menubarView = [[WBMenubarView alloc] initWithFrame:CGRectMake(leftMargin, topMargin, topMenubarWidth, topMenubarHeight)];
     self.menubarView.delegate = self;
     self.menubarView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;

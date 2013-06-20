@@ -7,8 +7,10 @@
 //
 
 #import "WBMenubarView.h"
-#import <QuartzCore/QuartzCore.h>
 #import "WBMenuButton.h"
+#import "WBUndoButton.h"
+#import "WBHistoryButton.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface WBMenubarView ()
 @property (nonatomic, strong) UIButton *historyButton;
@@ -31,15 +33,11 @@
         [menuButton addTarget:self action:@selector(menuButtonTapped:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:menuButton];
         
-        UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [undoButton setFrame:CGRectMake(frame.size.width/3, 0, frame.size.width/3, frame.size.height)];
-        [undoButton setTitle:@"Undo" forState:UIControlStateNormal];
+        WBUndoButton *undoButton = [[WBUndoButton alloc] initWithFrame:CGRectMake(frame.size.width/3, 0, frame.size.width/3, frame.size.height)];
         [undoButton addTarget:self action:@selector(undoButtonTapped:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:undoButton];
         
-        self.historyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [self.historyButton setFrame:CGRectMake(frame.size.width*2/3, 0, frame.size.width/3, frame.size.height)];
-        [self.historyButton setTitle:@"History" forState:UIControlStateNormal];
+        self.historyButton = [[WBHistoryButton alloc] initWithFrame:CGRectMake(frame.size.width*2/3, 0, frame.size.width/3, frame.size.height)];
         [self.historyButton addTarget:self action:@selector(historyButtonTapped:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:self.historyButton];
     }
