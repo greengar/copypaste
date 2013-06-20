@@ -320,6 +320,9 @@
 		7BEB7FE7176A39D800F5FE5D /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
 		7BEE0CC81769256800BD8C27 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CC71769256800BD8C27 /* RoomListViewController.m */; };
 		7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */; };
+		A90CE9B117729F4C006DD933 /* WBMenuButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A90CE9AF17729F4C006DD933 /* WBMenuButton.h */; };
+		A90CE9B217729F4C006DD933 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B017729F4C006DD933 /* WBMenuButton.m */; };
+		A90CE9B317729F4C006DD933 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B017729F4C006DD933 /* WBMenuButton.m */; };
 		A9520C8D176FB5ED00B180BA /* WBBottomRightToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */; };
 		A9520C8E176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */; };
 		A9520C8F176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */; };
@@ -562,6 +565,8 @@
 		7BEE0CC71769256800BD8C27 /* RoomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomListViewController.m; sourceTree = "<group>"; };
 		7BEE0CC9176927BF00BD8C27 /* RoomDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataViewController.h; sourceTree = "<group>"; };
 		7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataViewController.m; sourceTree = "<group>"; };
+		A90CE9AF17729F4C006DD933 /* WBMenuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuButton.h; sourceTree = "<group>"; };
+		A90CE9B017729F4C006DD933 /* WBMenuButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuButton.m; sourceTree = "<group>"; };
 		A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBBottomRightToolbarView.h; sourceTree = "<group>"; };
 		A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBBottomRightToolbarView.m; sourceTree = "<group>"; };
 		A9520C9617701F4900B180BA /* WBButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBButton.h; sourceTree = "<group>"; };
@@ -1212,6 +1217,8 @@
 				7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */,
 				7B931E1317716A7F005500AB /* WBAddMoreSelectionView.h */,
 				7B931E1417716A80005500AB /* WBAddMoreSelectionView.m */,
+				A90CE9AF17729F4C006DD933 /* WBMenuButton.h */,
+				A90CE9B017729F4C006DD933 /* WBMenuButton.m */,
 			);
 			name = WBToolbarView;
 			path = ../../../WBToolbarView;
@@ -1291,6 +1298,7 @@
 				7B931E0D1771645B005500AB /* WBAddMoreButton.h in Headers */,
 				7B931E101771645B005500AB /* WBMoveButton.h in Headers */,
 				7B931E1517716A80005500AB /* WBAddMoreSelectionView.h in Headers */,
+				A90CE9B117729F4C006DD933 /* WBMenuButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1575,6 +1583,7 @@
 				7B931E0E1771645B005500AB /* WBAddMoreButton.m in Sources */,
 				7B931E111771645B005500AB /* WBMoveButton.m in Sources */,
 				7B931E1617716A80005500AB /* WBAddMoreSelectionView.m in Sources */,
+				A90CE9B217729F4C006DD933 /* WBMenuButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1646,6 +1655,7 @@
 				7B931E0F1771645B005500AB /* WBAddMoreButton.m in Sources */,
 				7B931E121771645B005500AB /* WBMoveButton.m in Sources */,
 				7B931E1717716A80005500AB /* WBAddMoreSelectionView.m in Sources */,
+				A90CE9B317729F4C006DD933 /* WBMenuButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
