@@ -538,10 +538,13 @@
 }
 
 - (void)performUndo {
-    for (int i = [[[HistoryManager sharedManager] historyPool] count]-1; i >= 0; i--) {
-        HistoryElement *action = [[[HistoryManager sharedManager] historyPool] objectAtIndex:i];
+    // Get the history for that page
+    NSMutableArray *historyForPage = [[[HistoryManager sharedManager] historyPool] objectForKey:[self currentPage].uid];
+    
+    for (int i = [historyForPage count]-1; i >= 0; i--) {
+        HistoryElement *action = [historyForPage objectAtIndex:i];
         if (action.active) {
-            [[HistoryManager sharedManager] deactivateAction:action];
+            [[HistoryManager sharedManager] deactivateAction:action forPage:[self currentPage]];
             break;
         }
     }
@@ -552,6 +555,7 @@
         int historyHeight = kHistoryViewHeight+kOffsetForBouncing;
         HistoryView *historyView = [[HistoryView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width, historyHeight)];
         [historyView setTag:kHistoryViewTag];
+        [historyView setCurrentPage:[self currentPage]];
         [self.view addSubview:historyView];
         [historyView animateDown];
         

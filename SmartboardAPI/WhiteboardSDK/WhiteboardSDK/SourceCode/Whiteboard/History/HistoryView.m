@@ -21,6 +21,7 @@
 @end
 
 @implementation HistoryView
+@synthesize currentPage = _currentPage;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -109,7 +110,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int count = [[[HistoryManager sharedManager] historyPool] count];
+    // Get the history for that page
+    NSMutableArray *historyForPage = [[[HistoryManager sharedManager] historyPool] objectForKey:[self currentPage].uid];
+    int count = [historyForPage count];
     return (count == 0) ? 1 : count;
 }
 
@@ -138,13 +141,16 @@
         [cell addSubview:undoLabel];
     }
     
-    if ([[[HistoryManager sharedManager] historyPool] count] == 0) {
+    // Get the history for that page
+    NSMutableArray *historyForPage = [[[HistoryManager sharedManager] historyPool] objectForKey:[self currentPage].uid];
+    
+    if ([historyForPage count] == 0) {
         cell.textLabel.text = @"No action";
         cell.detailTextLabel.text = @"";
         [cell viewWithTag:kUndoLabelTag].hidden = YES;
         
     } else {
-        HistoryAction *action = [[[HistoryManager sharedManager] historyPool] objectAtIndex:[indexPath row]];
+        HistoryAction *action = [historyForPage objectAtIndex:[indexPath row]];
         cell.textLabel.text = action.name;
         cell.detailTextLabel.text = [WBUtils dateDiffFromDate:action.date];
         cell.contentView.backgroundColor = (action.active ? [UIColor clearColor] : [UIColor lightGrayColor]);
@@ -162,38 +168,33 @@
 
 #pragma mark - UITableView Delegate methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([[[HistoryManager sharedManager] historyPool] count] == 0) {
+    // Get the history for that page
+    NSMutableArray *historyForPage = [[[HistoryManager sharedManager] historyPool] objectForKey:[self currentPage].uid];
+    
+    if ([historyForPage count] == 0) {
         
     } else {
-        HistoryAction *currentAction = [[[HistoryManager sharedManager] historyPool] objectAtIndex:[indexPath row]];
+        HistoryAction *currentAction = [historyForPage objectAtIndex:[indexPath row]];
         // Not last action
-        if ([indexPath row] < [[[HistoryManager sharedManager] historyPool] count]-1) {
+        if ([indexPath row] < [historyForPage count]-1) {
             if ([currentAction active]) {
-                HistoryAction *nextAction = [[[HistoryManager sharedManager] historyPool] objectAtIndex:([indexPath row]+1)];
+                HistoryAction *nextAction = [historyForPage objectAtIndex:([indexPath row]+1)];
                 if ([nextAction active]) {
-                    [[HistoryManager sharedManager] deactivateAction:nextAction];
+                    [[HistoryManager sharedManager] deactivateAction:nextAction forPage:self.currentPage];
                 }
             } else {
-                [[HistoryManager sharedManager] activateAction:currentAction];
+                [[HistoryManager sharedManager] activateAction:currentAction forPage:self.currentPage];
             }
             
         } else { // Last action, so we need to activate or deactivate it immediately
             if ([currentAction active]) {
-                [[HistoryManager sharedManager] deactivateAction:currentAction];
+                [[HistoryManager sharedManager] deactivateAction:currentAction forPage:self.currentPage];
             } else {
-                [[HistoryManager sharedManager] activateAction:currentAction];
+                [[HistoryManager sharedManager] activateAction:currentAction forPage:self.currentPage];
             }
         }
     }
     [tableView reloadData];
-}
-
-- (void)undoAction:(UIButton *)button {
-    int index = [[historyTableView indexPathForCell:((UITableViewCell *)[button superview])] row];
-    HistoryAction *action = [[[HistoryManager sharedManager] historyPool] objectAtIndex:index];
-    if (![action active]) {
-        [[HistoryManager sharedManager] activateAction:action];
-    }
 }
 
 - (void)updateHistoryView {

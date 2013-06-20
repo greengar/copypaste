@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HistoryManager.h"
 #import "SettingManager.h"
+#import "WBPage.h"
 
 #define kHistoryCellHeight 79
 #define kHistoryTitleHeight 44
@@ -18,5 +19,7 @@
 
 - (void)animateUp;
 - (void)animateDown;
+
+@property (nonatomic, strong) WBPage *currentPage;
 
 @end

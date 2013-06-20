@@ -102,7 +102,8 @@
                                                      withOriginFontName:self.oldFontName
                                                                fontSize:self.oldFontSize
                                                     withChangedFontName:self.myFontName
-                                                               fontSize:self.myFontSize];
+                                                               fontSize:self.myFontSize
+                                                                forPage:(WBPage *)self.superview];
         
         [[HistoryManager sharedManager] addActionTextColorChangedElement:self
                                                          withOriginColor:self.oldColor
@@ -110,11 +111,13 @@
                                                                        y:self.oldColorY
                                                         withChangedColor:self.myColor
                                                                        x:self.myColorLocX
-                                                                       y:self.myColorLocY];
+                                                                       y:self.myColorLocY
+                                                                 forPage:(WBPage *)self.superview];
 
         [[HistoryManager sharedManager] addActionTextContentChangedElement:self
                                                             withOriginText:self.oldText
-                                                           withChangedText:((UITextView *)[self contentView]).text];
+                                                           withChangedText:((UITextView *)[self contentView]).text
+                                                                   forPage:(WBPage *)self.superview];
     }
     [self checkHistory];
     self.elementCreated = YES;

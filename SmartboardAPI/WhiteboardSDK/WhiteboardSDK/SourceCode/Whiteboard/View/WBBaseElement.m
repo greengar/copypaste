@@ -235,12 +235,14 @@
     if ([panGesture state] == UIGestureRecognizerStateBegan) {
         self.currentPanId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                              withName:@"Move"
-                                                                  withOriginTransform:self.transform];
+                                                                  withOriginTransform:self.transform
+                                                                              forPage:(WBPage *)self.superview];
     }
     
     if ([panGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentPanId
-                                                withChangedTransform:self.transform];
+                                                withChangedTransform:self.transform
+                                                             forPage:(WBPage *)self.superview];
     }
     
     if ([panGesture state] == UIGestureRecognizerStateBegan
@@ -252,17 +254,18 @@
 }
 
 - (void)elementRotate:(UIRotationGestureRecognizer *)rotationGesture {
-    DLog(@"Start Rotate %@ %d", rotationGesture, [rotationGesture state]);
     // Add to History
     if ([rotationGesture state] == UIGestureRecognizerStateBegan) {
         self.currentRotateId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                                 withName:@"Rotate"
-                                                                     withOriginTransform:self.transform];
+                                                                     withOriginTransform:self.transform
+                                                                                 forPage:(WBPage *)self.superview];
     }
     
     if ([rotationGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentRotateId
-                                                withChangedTransform:self.transform];
+                                                withChangedTransform:self.transform
+                                                             forPage:(WBPage *)self.superview];
     }
     
     if ([rotationGesture state] == UIGestureRecognizerStateBegan
@@ -274,17 +277,18 @@
 }
 
 - (void)elementScale:(UIPinchGestureRecognizer *)pinchGesture {
-    DLog(@"Start Pinch %@ %d", pinchGesture, [pinchGesture state]);
     // Add to History
     if ([pinchGesture state] == UIGestureRecognizerStateBegan) {
         self.currentScaleId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                                withName:@"Zoom"
-                                                                    withOriginTransform:self.transform];
+                                                                    withOriginTransform:self.transform
+                                                                                forPage:(WBPage *)self.superview];
     }
     
     if ([pinchGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentScaleId
-                                                withChangedTransform:self.transform];
+                                                withChangedTransform:self.transform
+                                                             forPage:(WBPage *)self.superview];
     }
     
     if ([pinchGesture state] == UIGestureRecognizerStateBegan

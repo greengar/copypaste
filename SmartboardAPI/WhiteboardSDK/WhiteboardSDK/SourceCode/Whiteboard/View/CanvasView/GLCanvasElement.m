@@ -138,7 +138,7 @@
 
 #pragma mark - Undo/Redo
 - (void)addedCommandToUndoPool {
-    [[HistoryManager sharedManager] addActionBrushElement:self];
+    [[HistoryManager sharedManager] addActionBrushElement:self forPage:(WBPage *)self.superview];
 }
 
 - (void)checkUndo:(int)undoCount {
