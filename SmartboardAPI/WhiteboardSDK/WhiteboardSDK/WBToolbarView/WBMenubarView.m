@@ -8,8 +8,9 @@
 
 #import "WBMenubarView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "WBMenuButton.h"
 
-@interface WBMenubarView()
+@interface WBMenubarView ()
 @property (nonatomic, strong) UIButton *historyButton;
 @end
 
@@ -26,9 +27,7 @@
         self.layer.borderColor = [UIColor lightGrayColor].CGColor;
         self.layer.borderWidth = 1;
         
-        UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [menuButton setFrame:CGRectMake(0, 0, frame.size.width/3, frame.size.height)];
-        [menuButton setTitle:@"Menu" forState:UIControlStateNormal];
+        WBMenuButton *menuButton = [[WBMenuButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/3, frame.size.height)];
         [menuButton addTarget:self action:@selector(menuButtonTapped:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:menuButton];
         
