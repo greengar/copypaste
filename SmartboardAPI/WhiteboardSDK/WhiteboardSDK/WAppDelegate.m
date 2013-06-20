@@ -7,7 +7,11 @@
 //
 
 #import "WAppDelegate.h"
-#import "WBViewController.h"
+#if DEV
+    #import "WBViewControllerDev.h"
+#else
+    #import "WBViewController.h"
+#endif
 
 @implementation WAppDelegate
 
@@ -22,7 +26,12 @@
      UIRemoteNotificationTypeSound];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+#if DEV
+    self.viewController = [[WBViewControllerDev alloc] initWithNibName:@"WBViewController" bundle:nil];
+#else
     self.viewController = [[WBViewController alloc] initWithNibName:@"WBViewController" bundle:nil];
+#endif
+    
     self.window.rootViewController = self.viewController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

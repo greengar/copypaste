@@ -32,8 +32,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		7B23544F1767A9B30055A319 /* CollaborativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B23544D1767A9B30055A319 /* CollaborativeViewController.m */; };
-		7B2354501767A9B30055A319 /* CollaborativeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */; };
 		7B2354561767AFBF0055A319 /* GSLogInViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B2354521767AFBF0055A319 /* GSLogInViewController.h */; };
 		7B2354571767AFBF0055A319 /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2354531767AFBF0055A319 /* GSLogInViewController.m */; };
 		7B2354581767AFBF0055A319 /* GSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B2354531767AFBF0055A319 /* GSLogInViewController.m */; };
@@ -83,6 +81,7 @@
 		7BC34BC7177108C700CF6EBA /* WBMenubarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BC34BC5177108C500CF6EBA /* WBMenubarView.h */; };
 		7BC34BC8177108C700CF6EBA /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC6177108C600CF6EBA /* WBMenubarView.m */; };
 		7BC34BC9177108C700CF6EBA /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC6177108C600CF6EBA /* WBMenubarView.m */; };
+		7BE9D9441773BB2400A2481C /* WBViewControllerDev.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */; };
 		7BEA52DC1766873A001BC5FE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5F3175F9D3200B063D7 /* CoreFoundation.framework */; };
 		7BEA52E21766873A001BC5FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA52E01766873A001BC5FE /* InfoPlist.strings */; };
 		7BEA5369176687F1001BC5FE /* HistoryElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA52ED176687F0001BC5FE /* HistoryElement.h */; };
@@ -318,8 +317,6 @@
 		7BEB7FE5176A39D800F5FE5D /* CGCanvasElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEB7FE3176A39D700F5FE5D /* CGCanvasElement.h */; };
 		7BEB7FE6176A39D800F5FE5D /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
 		7BEB7FE7176A39D800F5FE5D /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
-		7BEE0CC81769256800BD8C27 /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CC71769256800BD8C27 /* RoomListViewController.m */; };
-		7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */; };
 		A90CE9B117729F4C006DD933 /* WBMenuButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A90CE9AF17729F4C006DD933 /* WBMenuButton.h */; };
 		A90CE9B217729F4C006DD933 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B017729F4C006DD933 /* WBMenuButton.m */; };
 		A90CE9B317729F4C006DD933 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B017729F4C006DD933 /* WBMenuButton.m */; };
@@ -331,7 +328,6 @@
 		A90CE9BD17736230006DD933 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9BA17736230006DD933 /* WBHistoryButton.m */; };
 		A90CE9C017736720006DD933 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B82E5DD175F9D0C00B063D7 /* main.m */; };
 		A90CE9C117736720006DD933 /* WAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B82E5E1175F9D0C00B063D7 /* WAppDelegate.m */; };
-		A90CE9C217736720006DD933 /* WBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4AF56B176059700049D77D /* WBViewController.m */; };
 		A90CE9C317736720006DD933 /* HistoryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52EE176687F0001BC5FE /* HistoryElement.m */; };
 		A90CE9C417736720006DD933 /* HistoryElementCreated.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52F0176687F0001BC5FE /* HistoryElementCreated.m */; };
 		A90CE9C517736720006DD933 /* HistoryElementDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52F2176687F0001BC5FE /* HistoryElementDeleted.m */; };
@@ -528,6 +524,8 @@
 		7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryColorButton.m; sourceTree = "<group>"; };
 		7BC34BC5177108C500CF6EBA /* WBMenubarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenubarView.h; sourceTree = "<group>"; };
 		7BC34BC6177108C600CF6EBA /* WBMenubarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenubarView.m; sourceTree = "<group>"; };
+		7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WBViewControllerDev.m; path = WhiteboardSDK/WBViewControllerDev.m; sourceTree = SOURCE_ROOT; };
+		7BE9D93C1773B9B100A2481C /* WBViewControllerDev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WBViewControllerDev.h; path = WhiteboardSDK/WBViewControllerDev.h; sourceTree = SOURCE_ROOT; };
 		7BEA52DB1766873A001BC5FE /* Collaborative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Collaborative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BEA52DF1766873A001BC5FE /* Collaborative-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Collaborative-Info.plist"; sourceTree = "<group>"; };
 		7BEA52E11766873A001BC5FE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -802,6 +800,8 @@
 		7B23544B1767A98C0055A319 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				7BE9D93C1773B9B100A2481C /* WBViewControllerDev.h */,
+				7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */,
 				7B23544C1767A9B30055A319 /* CollaborativeViewController.h */,
 				7B23544D1767A9B30055A319 /* CollaborativeViewController.m */,
 				7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */,
@@ -883,11 +883,8 @@
 			children = (
 				7B82E5E0175F9D0C00B063D7 /* WAppDelegate.h */,
 				7B82E5E1175F9D0C00B063D7 /* WAppDelegate.m */,
-				7B4AF56A176059700049D77D /* WBViewController.h */,
-				7B4AF56B176059700049D77D /* WBViewController.m */,
-				7B4AF56C176059700049D77D /* WBViewController~iphone.xib */,
-				7B4AF56F176059860049D77D /* WBViewController~ipad.xib */,
-				7B23544B1767A98C0055A319 /* ViewControllers */,
+				7BE9D9391773B94A00A2481C /* ReleaseSampleApp */,
+				7BE9D93A1773B97700A2481C /* DevelopmentApp */,
 				7B82E78F175F9E4C00B063D7 /* Whiteboard.h */,
 				7BEA540F17668936001BC5FE /* Collaborative.h */,
 				7BEA52E7176687F0001BC5FE /* SourceCode */,
@@ -927,6 +924,25 @@
 				7B82E5FB175F9D3200B063D7 /* Whiteboard-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7BE9D9391773B94A00A2481C /* ReleaseSampleApp */ = {
+			isa = PBXGroup;
+			children = (
+				7B4AF56A176059700049D77D /* WBViewController.h */,
+				7B4AF56B176059700049D77D /* WBViewController.m */,
+				7B4AF56C176059700049D77D /* WBViewController~iphone.xib */,
+				7B4AF56F176059860049D77D /* WBViewController~ipad.xib */,
+			);
+			name = ReleaseSampleApp;
+			sourceTree = "<group>";
+		};
+		7BE9D93A1773B97700A2481C /* DevelopmentApp */ = {
+			isa = PBXGroup;
+			children = (
+				7B23544B1767A98C0055A319 /* ViewControllers */,
+			);
+			name = DevelopmentApp;
 			sourceTree = "<group>";
 		};
 		7BEA52DD1766873A001BC5FE /* Collaborative */ = {
@@ -1628,7 +1644,6 @@
 				7BEA548617668A47001BC5FE /* LICENSE in Resources */,
 				7BEA54A017668A47001BC5FE /* README.md in Resources */,
 				7BEA54A517668A47001BC5FE /* SVProgressHUD.bundle in Resources */,
-				7B2354501767A9B30055A319 /* CollaborativeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1775,12 +1790,9 @@
 				7BEA54CB17668A88001BC5FE /* GSSession.m in Sources */,
 				7BEA54D117668A88001BC5FE /* GSUser.m in Sources */,
 				7BEA54D417668A88001BC5FE /* GSUtils.m in Sources */,
-				7B23544F1767A9B30055A319 /* CollaborativeViewController.m in Sources */,
 				7B2354571767AFBF0055A319 /* GSLogInViewController.m in Sources */,
 				7B23545A1767AFBF0055A319 /* GSSignUpViewController.m in Sources */,
 				7B23545F1767BECC0055A319 /* GSRoom.m in Sources */,
-				7BEE0CC81769256800BD8C27 /* RoomListViewController.m in Sources */,
-				7BEE0CCB176927BF00BD8C27 /* RoomDataViewController.m in Sources */,
 				7BEB7FE1176A386800F5FE5D /* CGPaintingView.m in Sources */,
 				7BEB7FE6176A39D800F5FE5D /* CGCanvasElement.m in Sources */,
 				A9D3B455176F1B5C005574D2 /* WBCanvasButton.m in Sources */,
@@ -1911,7 +1923,6 @@
 			files = (
 				A90CE9C017736720006DD933 /* main.m in Sources */,
 				A90CE9C117736720006DD933 /* WAppDelegate.m in Sources */,
-				A90CE9C217736720006DD933 /* WBViewController.m in Sources */,
 				A90CE9C317736720006DD933 /* HistoryElement.m in Sources */,
 				A90CE9C417736720006DD933 /* HistoryElementCreated.m in Sources */,
 				A90CE9C517736720006DD933 /* HistoryElementDeleted.m in Sources */,
@@ -2004,6 +2015,7 @@
 				A90CEA1C17736720006DD933 /* WBMenuButton.m in Sources */,
 				A90CEA1D17736720006DD933 /* WBUndoButton.m in Sources */,
 				A90CEA1E17736720006DD933 /* WBHistoryButton.m in Sources */,
+				7BE9D9441773BB2400A2481C /* WBViewControllerDev.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2269,6 +2281,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WhiteboardSDK/WhiteboardSDK-Prefix.pch";
 				INFOPLIST_FILE = "WhiteboardSDK Dev-Info.plist";
+				OTHER_CFLAGS = "-DDEV";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DDEV",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "WhiteboardSDK Dev";
 				WRAPPER_EXTENSION = app;
@@ -2286,6 +2303,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WhiteboardSDK/WhiteboardSDK-Prefix.pch";
 				INFOPLIST_FILE = "WhiteboardSDK Dev-Info.plist";
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"-DDEV",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DDEV",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "WhiteboardSDK Dev";
 				WRAPPER_EXTENSION = app;

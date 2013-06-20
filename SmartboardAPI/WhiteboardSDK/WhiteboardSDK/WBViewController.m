@@ -7,7 +7,6 @@
 //
 
 #import "WBViewController.h"
-#import "CollaborativeViewController.h"
 #import "GSButton.h"
 
 @interface WBViewController ()
@@ -38,15 +37,6 @@
     [useWhiteboardSDK addTarget:self action:@selector(useWhiteboardSDK)
                forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:useWhiteboardSDK];
-    
-    GSButton *useCollaborativeSDK = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
-    [useCollaborativeSDK setTitle:@"Use Collaborative SDK" forState:UIControlStateNormal];
-    useCollaborativeSDK.titleLabel.font = [UIFont systemFontOfSize:22];
-    [useCollaborativeSDK setFrame:CGRectMake(0, 0, 300, 80)];
-    [useCollaborativeSDK setCenter:CGPointMake(self.view.center.x, self.view.center.y + 100)];
-    [useCollaborativeSDK addTarget:self action:@selector(useCollaborativeSDK)
-                  forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:useCollaborativeSDK];
 }
 
 - (void)useWhiteboardSDK {
@@ -55,42 +45,8 @@
     [board showMeWithAnimationFromController:self];
 }
 
-- (void)useCollaborativeSDK {
-    CollaborativeViewController *controller = [[CollaborativeViewController alloc] init];
-    [controller setTitle:@"Collaborative SDK"];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    [self presentViewController:navController animated:YES completion:NULL];
-}
-
 - (void)doneEditingBoardWithResult:(UIImage *)image {
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-}
-
-- (void)exportCurrentBoardData:(NSDictionary *)data {
-    [[GSSession activeSession] createRoomWithName:@"Board"
-                                        isPrivate:NO
-                                      codeToEnter:nil
-                                        shareWith:nil
-                                            block:^(id object, NSError *error) {
-        if (error || !object) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:[error description]
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-        } else {
-            GSRoom *room = (GSRoom *)object;
-            [room setData:[NSMutableDictionary dictionaryWithDictionary:data]];
-            [[GSSession activeSession] sendRoomDataToServer:room];
-        }
-    }];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

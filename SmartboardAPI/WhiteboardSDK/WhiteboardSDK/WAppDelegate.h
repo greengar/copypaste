@@ -9,12 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "GSSession.h"
 
-@class WBViewController;
+#if DEV
+    @class WBViewControllerDev;
+#else
+    @class WBViewController;
+#endif
 
 @interface WAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) WBViewController *viewController;
+#if DEV
+    @property (strong, nonatomic) WBViewControllerDev *viewController;
+#else
+    @property (strong, nonatomic) WBViewController *viewController;
+#endif
 
 @end
