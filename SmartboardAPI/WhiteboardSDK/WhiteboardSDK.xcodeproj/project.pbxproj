@@ -526,6 +526,7 @@
 		7BC34BC6177108C600CF6EBA /* WBMenubarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenubarView.m; sourceTree = "<group>"; };
 		7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WBViewControllerDev.m; path = WhiteboardSDK/WBViewControllerDev.m; sourceTree = SOURCE_ROOT; };
 		7BE9D93C1773B9B100A2481C /* WBViewControllerDev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WBViewControllerDev.h; path = WhiteboardSDK/WBViewControllerDev.h; sourceTree = SOURCE_ROOT; };
+		7BE9D9451773BBD800A2481C /* WhiteboardSDK Dev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WhiteboardSDK Dev-Info.plist"; sourceTree = "<group>"; };
 		7BEA52DB1766873A001BC5FE /* Collaborative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Collaborative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BEA52DF1766873A001BC5FE /* Collaborative-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Collaborative-Info.plist"; sourceTree = "<group>"; };
 		7BEA52E11766873A001BC5FE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -704,7 +705,6 @@
 		A90CE9B917736230006DD933 /* WBHistoryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBHistoryButton.h; sourceTree = "<group>"; };
 		A90CE9BA17736230006DD933 /* WBHistoryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryButton.m; sourceTree = "<group>"; };
 		A90CEA4517736720006DD933 /* WhiteboardSDK Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WhiteboardSDK Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A90CEA4617736721006DD933 /* WhiteboardSDK Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WhiteboardSDK Dev-Info.plist"; path = "/Users/eml/copypaste/SmartboardAPI/WhiteboardSDK/WhiteboardSDK Dev-Info.plist"; sourceTree = "<absolute>"; };
 		A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBBottomRightToolbarView.h; sourceTree = "<group>"; };
 		A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBBottomRightToolbarView.m; sourceTree = "<group>"; };
 		A9520C9617701F4900B180BA /* WBButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBButton.h; sourceTree = "<group>"; };
@@ -833,7 +833,7 @@
 				7BEA52DD1766873A001BC5FE /* Collaborative */,
 				7B82E5D0175F9D0C00B063D7 /* Frameworks */,
 				7B82E5CF175F9D0C00B063D7 /* Products */,
-				A90CEA4617736721006DD933 /* WhiteboardSDK Dev-Info.plist */,
+				7BE9D9451773BBD800A2481C /* WhiteboardSDK Dev-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1620,11 +1620,11 @@
 			projectRoot = "";
 			targets = (
 				7B82E5CD175F9D0C00B063D7 /* WhiteboardSDK */,
+				A90CE9BE17736720006DD933 /* WhiteboardSDK Dev */,
 				7B82E5F1175F9D3200B063D7 /* Whiteboard */,
 				7B82E793175F9EC800B063D7 /* BuildWhiteboardSDK */,
 				7BEA52DA1766873A001BC5FE /* Collaborative */,
 				7BEA540A17668844001BC5FE /* BuildCollaborativeSDK */,
-				A90CE9BE17736720006DD933 /* WhiteboardSDK Dev */,
 			);
 		};
 /* End PBXProject section */
