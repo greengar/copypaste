@@ -378,6 +378,24 @@
 	}
 }
 
+- (void)previousPage {
+    isPageCurlAnimating = YES;
+    wantToTurnToPreviousPage = YES;
+    CFTimeInterval pausedTime = [[self currentPage].layer timeOffset];
+    [self currentPage].layer.speed = 1.0;
+    [self currentPage].layer.timeOffset = 0.0;
+    [self currentPage].layer.beginTime = 0.0;
+    CFTimeInterval timeSincePause = [[self currentPage].layer convertTime:CACurrentMediaTime()
+                                                                fromLayer:nil]-pausedTime;
+    [self currentPage].layer.beginTime = timeSincePause-2*(kShowExportBehindCurlDuration-kCurlAnimationShouldStopAfter);
+    
+    double delayInSeconds = 0.25;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [[self currentPage] setHidden:NO];
+    });
+}
+
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     if (wantToTurnToPreviousPage) {
         wantToTurnToPreviousPage = NO;
@@ -401,13 +419,20 @@
                 [UIView setAnimationDelegate:self];
                 [UIView setAnimationRepeatAutoreverses:NO];
                 [UIView commitAnimations];
-                [self showAllControl];
-                [self hideExportControl];
             });
         }
         
         // Now current index is the previous page index
         self.currentPageIndex--;
+        
+        double delayInSeconds = kShowNewPageWithCurlDownDuration-0.2;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self showAllControl];
+            [self hideExportControl];
+            isPageCurled = NO;
+            isPageCurlAnimating = NO;
+        });
         
         // Remove pages after next page
         for (int i = self.currentPageIndex+2; i < [self.pages count]; i++) {
@@ -415,14 +440,7 @@
             [next2Page setHidden:NO];
             [next2Page removeFromSuperview];
         }
-        
-        
     }
-}
-
-- (void)previousPage {
-    [self performPageCurlDown:nil];
-    wantToTurnToPreviousPage = YES;
 }
 
 - (void)nextPage {
