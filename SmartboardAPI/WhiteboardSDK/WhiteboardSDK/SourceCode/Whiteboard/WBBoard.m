@@ -541,7 +541,7 @@
     // Get the history for that page
     NSMutableArray *historyForPage = [[[HistoryManager sharedManager] historyPool] objectForKey:[self currentPage].uid];
     
-    for (int i = [historyForPage count]-1; i >= 0; i--) {
+    for (int i = [historyForPage count]-1; i > 0; i--) {
         HistoryElement *action = [historyForPage objectAtIndex:i];
         if (action.active) {
             [[HistoryManager sharedManager] deactivateAction:action forPage:[self currentPage]];
