@@ -499,14 +499,13 @@
     
     if (IS_IPAD) {
         DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
-        
         if (!layerInfo.offscreenLayerVisible ) {
             return;
         }        
     }
     
-    // Hector: Pan/Zoom is disable
-    if (NO) {
+    /* Hector: Pan/Zoom is disable
+    if (![SettingManager sharedManager].isEnablePanZoom) {
         for (UITouch *touch in touches) {
             GSTouchData *touchData = [[GSTouchData alloc] init];
             touchData.firstTouch = YES;
@@ -518,7 +517,7 @@
         isDrawingStroke = TRUE;
         
         return;
-    }
+    } */
 
 	switch ([touches count]) {
 		case 1: { // Single touch
@@ -538,6 +537,7 @@
             }
            
 		} break;
+        /* Hector: remove Pan/Zoom from OpenGL
 		case 2: { // Double Touch
             numOfFingerOn += 2;
             if (numOfFingerOn > 2) {
@@ -549,7 +549,7 @@
 		} break;
         case 3: {
             
-        }
+        } */
 		default:
             break;
 	}    
@@ -567,15 +567,14 @@
         }
     }
     
-    // Hector: Pan/Zoom is disable
-    if (NO) {
+    /* Hector: Pan/Zoom is disable
+    if (![SettingManager sharedManager].isEnablePanZoom) {
         [self drawWhenTouchMove:touches paintId:self.currentPaintingId];
         return;
-    }
+    } */
 	
     if (numOfFingerOn == 1 && lastPaintingEvent != PaintingEventPan && lastPaintingEvent != PaintingEventZoom) {
         if (!gotMovement) {
-            
             UITouch *touch1 = [[touches allObjects] objectAtIndex:0];
             CGPoint p1 = [touch1 locationInView:self];
             p1 = [self pointWithOutCameraEffect:p1];
@@ -635,7 +634,10 @@
                 [self drawWhenTouchMove:touches paintId:self.currentPaintingId];
             }
         }
-    } else if (numOfFingerOn == 2 && lastPaintingEvent == PaintingEventDrawStart) {
+    }
+    /* Hector: remove Pan/Zoom from OpenGL
+    else if (numOfFingerOn == 2 && lastPaintingEvent == PaintingEventDrawStart)
+     {
         [self releaseRedoStack];
         [self applyLocalDrawingCmd];
         [self drawWhenTouchMove:touches paintId:self.currentPaintingId];
@@ -693,7 +695,7 @@
         float dx = [touch1 locationInView:self].x - [touch1 previousLocationInView:self].x;
         float dy = [touch1 locationInView:self].y - [touch1 previousLocationInView:self].y;        
         [self touchesMovedPan:CGSizeMake(dx, dy)];
-    }
+    } */
 }
 
 // Handles the end of a touch event when the touch is a tap.
@@ -749,6 +751,7 @@
                 firstUITouch = nil;
             }
 		} break;
+        /* Hector: remove Pan/Zoom from OpenGL
         case 2: {
             numOfFingerOn -= 2;
 
@@ -784,7 +787,7 @@
             gotMovement = NO;
             firstUITouch = nil;
         } break;
-
+        */
         default:
             numOfFingerOn = 0;
             gotMovement = NO;
