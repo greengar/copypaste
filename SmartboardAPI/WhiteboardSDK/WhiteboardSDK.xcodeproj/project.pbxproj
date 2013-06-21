@@ -335,7 +335,7 @@
 		7BEA54D917668AE6001BC5FE /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D617668AE6001BC5FE /* FacebookSDK.framework */; };
 		7BEA54DA17668AE6001BC5FE /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D717668AE6001BC5FE /* Firebase.framework */; };
 		7BEA54DB17668AE6001BC5FE /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D817668AE6001BC5FE /* Parse.framework */; };
-		7BEA54DD17668B2E001BC5FE /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54DC17668B2E001BC5FE /* Accounts.framework */; };
+		7BEA54DD17668B2E001BC5FE /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54DC17668B2E001BC5FE /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7BEA54DF17668B38001BC5FE /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54DE17668B38001BC5FE /* AudioToolbox.framework */; };
 		7BEA54E117668BB5001BC5FE /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54E017668BB5001BC5FE /* CFNetwork.framework */; };
 		7BEA54E317668BC1001BC5FE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54E217668BC0001BC5FE /* CoreLocation.framework */; };
@@ -345,8 +345,8 @@
 		7BEA54EB17668BDA001BC5FE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EA17668BDA001BC5FE /* StoreKit.framework */; };
 		7BEA54ED17668BDF001BC5FE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EC17668BDF001BC5FE /* SystemConfiguration.framework */; };
 		7BEA54EF17668C34001BC5FE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EE17668C34001BC5FE /* CoreText.framework */; };
-		7BEA54F117668C61001BC5FE /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F017668C61001BC5FE /* Social.framework */; };
-		7BEA54F317668C73001BC5FE /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F217668C73001BC5FE /* AdSupport.framework */; };
+		7BEA54F117668C61001BC5FE /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F017668C61001BC5FE /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7BEA54F317668C73001BC5FE /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F217668C73001BC5FE /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7BEA54F517668C84001BC5FE /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F417668C84001BC5FE /* libicucore.dylib */; };
 		7BEA54F717668CC1001BC5FE /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F617668CC1001BC5FE /* libsqlite3.dylib */; };
 		7BEB7FE0176A386800F5FE5D /* CGPaintingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEB7FDE176A386800F5FE5D /* CGPaintingView.h */; };
@@ -460,8 +460,8 @@
 		A90CEA1E17736720006DD933 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9BA17736230006DD933 /* WBHistoryButton.m */; };
 		A90CEA2017736720006DD933 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F617668CC1001BC5FE /* libsqlite3.dylib */; };
 		A90CEA2117736720006DD933 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F417668C84001BC5FE /* libicucore.dylib */; };
-		A90CEA2217736720006DD933 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F217668C73001BC5FE /* AdSupport.framework */; };
-		A90CEA2317736720006DD933 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F017668C61001BC5FE /* Social.framework */; };
+		A90CEA2217736720006DD933 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F217668C73001BC5FE /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A90CEA2317736720006DD933 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F017668C61001BC5FE /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A90CEA2417736720006DD933 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EE17668C34001BC5FE /* CoreText.framework */; };
 		A90CEA2517736720006DD933 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EC17668BDF001BC5FE /* SystemConfiguration.framework */; };
 		A90CEA2617736720006DD933 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54EA17668BDA001BC5FE /* StoreKit.framework */; };
@@ -472,7 +472,7 @@
 		A90CEA2B17736720006DD933 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5D5175F9D0C00B063D7 /* CoreGraphics.framework */; };
 		A90CEA2C17736720006DD933 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54E017668BB5001BC5FE /* CFNetwork.framework */; };
 		A90CEA2D17736720006DD933 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54DE17668B38001BC5FE /* AudioToolbox.framework */; };
-		A90CEA2E17736720006DD933 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54DC17668B2E001BC5FE /* Accounts.framework */; };
+		A90CEA2E17736720006DD933 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54DC17668B2E001BC5FE /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A90CEA2F17736720006DD933 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D617668AE6001BC5FE /* FacebookSDK.framework */; };
 		A90CEA3017736720006DD933 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D717668AE6001BC5FE /* Firebase.framework */; };
 		A90CEA3117736720006DD933 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54D817668AE6001BC5FE /* Parse.framework */; };
@@ -781,6 +781,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BEA54DD17668B2E001BC5FE /* Accounts.framework in Frameworks */,
 				7BEA54F717668CC1001BC5FE /* libsqlite3.dylib in Frameworks */,
 				7BEA54F517668C84001BC5FE /* libicucore.dylib in Frameworks */,
 				7BEA54F317668C73001BC5FE /* AdSupport.framework in Frameworks */,
@@ -795,7 +796,6 @@
 				7B82E5D6175F9D0C00B063D7 /* CoreGraphics.framework in Frameworks */,
 				7BEA54E117668BB5001BC5FE /* CFNetwork.framework in Frameworks */,
 				7BEA54DF17668B38001BC5FE /* AudioToolbox.framework in Frameworks */,
-				7BEA54DD17668B2E001BC5FE /* Accounts.framework in Frameworks */,
 				7BEA54D917668AE6001BC5FE /* FacebookSDK.framework in Frameworks */,
 				7BEA54DA17668AE6001BC5FE /* Firebase.framework in Frameworks */,
 				7BEA54DB17668AE6001BC5FE /* Parse.framework in Frameworks */,
@@ -827,6 +827,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A90CEA2E17736720006DD933 /* Accounts.framework in Frameworks */,
 				7BCDC7071774D12F00D851CF /* AssetsLibrary.framework in Frameworks */,
 				A90CEA2017736720006DD933 /* libsqlite3.dylib in Frameworks */,
 				A90CEA2117736720006DD933 /* libicucore.dylib in Frameworks */,
@@ -842,7 +843,6 @@
 				A90CEA2B17736720006DD933 /* CoreGraphics.framework in Frameworks */,
 				A90CEA2C17736720006DD933 /* CFNetwork.framework in Frameworks */,
 				A90CEA2D17736720006DD933 /* AudioToolbox.framework in Frameworks */,
-				A90CEA2E17736720006DD933 /* Accounts.framework in Frameworks */,
 				A90CEA2F17736720006DD933 /* FacebookSDK.framework in Frameworks */,
 				A90CEA3017736720006DD933 /* Firebase.framework in Frameworks */,
 				A90CEA3117736720006DD933 /* Parse.framework in Frameworks */,
@@ -2196,7 +2196,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2222,7 +2222,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
