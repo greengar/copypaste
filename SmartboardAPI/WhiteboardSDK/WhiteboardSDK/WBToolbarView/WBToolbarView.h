@@ -11,6 +11,13 @@
 #import "WBCanvasToolbarView.h"
 #import "WBBottomRightToolbarView.h"
 
+@protocol WBToolbarDelegate
+- (void)canvasButtonTappedFrom:(UIView *)view;
+- (void)selectHistoryColor;
+- (void)addMoreButtonTappedFrom:(UIView *)view;
+- (void)moveButtonTapped;
+@end
+
 @interface WBToolbarView : UIView <WBCanvasToolbarDelegate, WBBottomRightToolbarDelegate>
 
 - (void)updateColor:(UIColor *)color;

@@ -47,46 +47,6 @@
 - (void)exportBoardData:(NSDictionary *)data;
 @end
 
-@class WBPage;
-@class WBBaseElement;
-@protocol WBPageDelegate
-@optional
-- (void)pageSelected:(WBPage *)page;
-- (void)pageUnlocked:(WBPage *)page;
-- (void)elementSelected:(WBBaseElement *)element;
-- (void)elementDeselected:(WBBaseElement *)element;
-@end
-
-@protocol WBAddMoreSelectionDelegate
-- (void)addCameraFrom:(UIView *)view;
-- (void)addPhotoFrom:(UIView *)view;
-- (void)addTextFrom:(UIView *)view;
-- (void)addCanvasFrom:(UIView *)view;
-- (void)addPasteFrom:(UIView *)view;
-@end
-
-@protocol WBToolMonitorDelegate
-- (void)colorPicked:(UIColor *)color;
-- (void)opacityChanged:(float)opacity;
-- (void)pointSizeChanged:(float)pointSize;
-- (void)monitorClosed;
-- (void)selectEraser:(BOOL)select;
-- (void)fontChanged:(NSString *)fontName;
-@end
-
-@protocol WBMenubarDelegate
-- (void)showMenu;
-- (void)performUndo;
-- (void)historyButtonTappedFrom:(UIView *)view;
-@end
-
-@protocol WBToolbarDelegate
-- (void)canvasButtonTappedFrom:(UIView *)view;
-- (void)selectHistoryColor;
-- (void)addMoreButtonTappedFrom:(UIView *)view;
-- (void)moveButtonTapped;
-@end
-
 @interface WBUtils : NSObject
 
 + (int)getBuildVersion;

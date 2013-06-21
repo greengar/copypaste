@@ -114,7 +114,7 @@
 #pragma marl - Screenshot
 - (void)takeScreenshot {
     self.screenshotImageView = [[UIImageView alloc] initWithFrame:self.drawingView.frame];
-    self.screenshotImageView.image = [self.drawingView takeScreenshot];
+    self.screenshotImageView.image = [self.drawingView glToUIImage];
     [self addSubview:self.screenshotImageView];
     [self sendSubviewToBack:self.screenshotImageView];
 }

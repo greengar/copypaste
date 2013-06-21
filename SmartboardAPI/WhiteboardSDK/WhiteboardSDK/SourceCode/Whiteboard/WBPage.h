@@ -16,6 +16,13 @@
 
 @class WBPage;
 @class WBBaseElement;
+@protocol WBPageDelegate
+@optional
+- (void)pageSelected:(WBPage *)page;
+- (void)pageUnlocked:(WBPage *)page;
+- (void)elementSelected:(WBBaseElement *)element;
+- (void)elementDeselected:(WBBaseElement *)element;
+@end
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
 

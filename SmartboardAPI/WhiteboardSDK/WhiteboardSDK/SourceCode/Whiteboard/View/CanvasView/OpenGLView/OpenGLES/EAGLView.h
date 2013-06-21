@@ -31,10 +31,7 @@
 @property (nonatomic, retain) EAGLContext *context;
 @property (nonatomic) GLint framebufferWidth, framebufferHeight;
 
-
 - (void)setFramebuffer;
 - (BOOL)presentFramebuffer;
-
-- (UIImage *)takeScreenshot;
 
 @end

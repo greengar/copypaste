@@ -10,7 +10,7 @@
 #import "WBUtils.h"
 #import "WBPage.h"
 
-@interface WBBoard : UIViewController <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate>
+@interface WBBoard : UIViewController
 
 /*
  Show the board with default animation

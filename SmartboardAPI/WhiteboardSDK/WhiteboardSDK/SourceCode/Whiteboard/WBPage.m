@@ -229,6 +229,14 @@
 
 #pragma mark - Export
 - (UIImage *)exportPageToImage {
+    BOOL oldHidden = self.isHidden;
+    [self setHidden:NO];
+    for (WBBaseElement *element in self.elements) {
+        if ([element isKindOfClass:[GLCanvasElement class]]) {
+            GLCanvasElement *canvasElement = (GLCanvasElement *) element;
+            [canvasElement takeScreenshot];
+        }
+    }
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
         UIGraphicsBeginImageContextWithOptions(self.window.bounds.size, NO, [UIScreen mainScreen].scale);
     else
@@ -236,6 +244,13 @@
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *exportedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    for (WBBaseElement *element in self.elements) {
+        if ([element isKindOfClass:[GLCanvasElement class]]) {
+            GLCanvasElement *canvasElement = (GLCanvasElement *) element;
+            [canvasElement removeScreenshot];
+        }
+    }
+    [self setHidden:oldHidden];
     return exportedImage;
 }
 

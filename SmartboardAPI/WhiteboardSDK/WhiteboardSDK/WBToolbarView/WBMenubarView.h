@@ -11,6 +11,12 @@
 #import <UIKit/UIKit.h>
 #import "WBUtils.h"
 
+@protocol WBMenubarDelegate
+- (void)showMenu;
+- (void)performUndo;
+- (void)historyButtonTappedFrom:(UIView *)view;
+@end
+
 @interface WBMenubarView : UIView
 
 - (void)didShowHistoryView:(BOOL)success;

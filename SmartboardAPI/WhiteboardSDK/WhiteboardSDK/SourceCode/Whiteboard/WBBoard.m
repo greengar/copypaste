@@ -46,7 +46,7 @@
 #define kCurlAnimationShouldStopAfter (IS_IPAD ? 0.6f : 0.7f)
 #define kShowNewPageWithCurlDownDuration 0.7f
 
-@interface WBBoard () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate> {
+@interface WBBoard () <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate> {
     BOOL isPageCurlAnimating;
     BOOL isPageCurled;
     float pageUpSpeed;
@@ -724,7 +724,7 @@
     [self.toolbarView didActivatedMove:NO];
 }
 
-- (void)addCanvas {
+- (void)addCanvasFrom:(UIView *)view {
     [[self currentPage] focusOnCanvas];
     [self.toolbarView didShowAddMoreView:NO];
     [self.toolbarView selectCanvasMode:kCanvasMode];
@@ -875,18 +875,21 @@
 }
 
 - (void)doneEditing {
-    [[HistoryManager sharedManager] clearHistoryPool];
-    if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-        [self.delegate doneEditingBoardWithResult:[self exportBoardToUIImage]];
-    }
-    [self dismissViewControllerAnimated:NO completion:NULL];
-    
-    [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
-    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
-                           forView:[UIApplication sharedApplication].keyWindow
-                             cache:YES];
-    [UIView setAnimationDuration:kWBSessionAnimationDuration];
-    [UIView commitAnimations];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[HistoryManager sharedManager] clearHistoryPool];
+        UIImage *image = [self exportBoardToUIImage];
+        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
+            [self.delegate doneEditingBoardWithResult:image];
+        }
+        [self dismissViewControllerAnimated:NO completion:NULL];
+        
+        [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+                               forView:[UIApplication sharedApplication].keyWindow
+                                 cache:YES];
+        [UIView setAnimationDuration:kWBSessionAnimationDuration];
+        [UIView commitAnimations];
+    });
 }
 
 #pragma mark - Animation Show/Dismiss board
@@ -924,7 +927,7 @@
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
     if (![[self currentPage] isLocked]) {
-        [self addCanvas];
+        [self addCanvasFrom:nil];
     }
     
     [UIView animateWithDuration:0.2f animations:^{

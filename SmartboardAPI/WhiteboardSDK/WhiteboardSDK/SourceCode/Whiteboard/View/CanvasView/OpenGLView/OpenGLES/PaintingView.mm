@@ -190,7 +190,8 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 
     [self drawView];    
 
-    GLuint tempFrameBuffer = [self copyAllLayerContentToFrameBuffer:kTextureOriginalSize height:kTextureOriginalSize];
+    GLuint tempFrameBuffer = [self copyAllLayerContentToFrameBuffer:kTextureOriginalSize
+                                                             height:kTextureOriginalSize];
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, tempFrameBuffer);
     
 	NSInteger myDataLength = backingWidth * backingHeight * 4;
@@ -220,7 +221,12 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 	const int bitsPerPixel = 4 * bitsPerComponent;
 	const int bytesPerRow = 4 * backingWidth;
 	CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-	CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaNoneSkipLast;
+    
+    // render black for every transparent pixel
+	// CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaNoneSkipLast;
+    
+    // render real transparent pixel
+    CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast;
 	
 	CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
 	

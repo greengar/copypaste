@@ -12,6 +12,14 @@
 #define kAddMoreCellHeight 79
 #define kAddMoreViewHeight kAddMoreCellHeight*4
 
+@protocol WBAddMoreSelectionDelegate
+- (void)addCameraFrom:(UIView *)view;
+- (void)addPhotoFrom:(UIView *)view;
+- (void)addTextFrom:(UIView *)view;
+- (void)addCanvasFrom:(UIView *)view;
+- (void)addPasteFrom:(UIView *)view;
+@end
+
 @interface WBAddMoreSelectionView : UIView <UITableViewDelegate, UITableViewDataSource>
 
 - (void)animateUp;
