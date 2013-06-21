@@ -334,4 +334,42 @@
     return  boundAnim;
 }
 
++ (NSObject *)getThingsFromClipboard {
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    NSArray *passboardTypes = [pasteboard pasteboardTypes];
+    if ([passboardTypes count] > 0) {
+        NSString *firstDataType = [passboardTypes objectAtIndex:0];
+        NSData *data = [pasteboard dataForPasteboardType:firstDataType];
+        DLog(@"Data type: %@", firstDataType);
+        
+        if (([firstDataType compare:@"public.text" options:NSCaseInsensitiveSearch] == NSOrderedSame) // Normal text
+            || ([firstDataType compare:@"public.utf8-plain-text" options:NSCaseInsensitiveSearch] == NSOrderedSame) // UTF8 text
+            || ([firstDataType compare:@"com.agilebits.onepassword" options:NSCaseInsensitiveSearch] == NSOrderedSame))  { // 1Password
+            NSString *string = [NSString stringWithUTF8String:[data bytes]];
+            return string;
+            
+        } else if (([firstDataType compare:@"public.jpeg" options:NSCaseInsensitiveSearch] == NSOrderedSame)
+                   || ([firstDataType compare:@"public.jpg" options:NSCaseInsensitiveSearch] == NSOrderedSame)
+                   || ([firstDataType compare:@"public.png" options:NSCaseInsensitiveSearch] == NSOrderedSame)) {
+            UIImage *image = [UIImage imageWithData:data];
+            return image;
+            
+        } else if ([firstDataType compare:@"com.apple.mobileslideshow.asset-object-id-uri" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            UIImage *image = pasteboard.image;
+            return image;
+            
+        } else {
+            @try { // Try to parse all other kinds of object, catch the exception and return nil if not parsable
+                NSString *string = [NSString stringWithUTF8String:[data bytes]];
+                return string;
+            }
+            @catch (NSException *exception) {
+                DLog(@"Object from clipboard is not parsable");
+                return nil;
+            }
+        }
+    }
+    return nil;
+}
+
 @end

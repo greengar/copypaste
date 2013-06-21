@@ -76,7 +76,8 @@
 }
 
 - (void)setText:(NSString *)text {
-    [((UITextView *)[self contentView]) setText:text];
+    [((PlaceHolderTextView *)[self contentView]) setText:text];
+    [((PlaceHolderTextView *)[self contentView]) textChanged];
 }
 
 - (UIView *)contentView {

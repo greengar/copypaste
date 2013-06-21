@@ -160,6 +160,7 @@
                     [self.delegate addTextFrom:self];
                 }
             }
+            break;
         case 3:
             if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addPasteFrom:)]) {
                 [self.delegate addPasteFrom:self];

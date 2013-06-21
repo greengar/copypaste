@@ -781,7 +781,7 @@
                                                   self.view.frame.size.height/2);
                     ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
                                                                                image:image];
-                    [imageElement rotateTo:arc4random()*M_PI_4/RAND_MAX];
+                    [imageElement rotateTo:arc4random()*(M_PI_4/RAND_MAX)/4];
                     [[self currentPage] addElement:imageElement];
                 }
             }
@@ -843,6 +843,35 @@
 
 - (void)addPasteFrom:(UIView *)view {
     [self.toolbarView didShowAddMoreView:NO];
+    NSObject *itemFromClipboard = [WBUtils getThingsFromClipboard];
+    if (itemFromClipboard) {
+        if ([itemFromClipboard isKindOfClass:[NSString class]]) {
+            NSString *text = (NSString *) itemFromClipboard;
+            CGRect textRect = CGRectMake(self.view.frame.size.width/4,
+                                         self.view.frame.size.height/4,
+                                         self.view.frame.size.width/2,
+                                         self.view.frame.size.height/2);
+            TextElement *textElement = [[TextElement alloc] initWithFrame:textRect];
+            [textElement setText:text];
+            [[self currentPage] addElement:textElement];
+            
+        } else if ([itemFromClipboard isKindOfClass:[UIImage class]]) {
+            UIImage *image = (UIImage *) itemFromClipboard;
+            CGRect imageRect = CGRectMake(self.view.frame.size.width/4,
+                                          self.view.frame.size.height/4,
+                                          self.view.frame.size.width/2,
+                                          self.view.frame.size.height/2);
+            ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
+                                                                       image:image];
+            [imageElement rotateTo:arc4random()*(M_PI_4/RAND_MAX)/4];
+            [[self currentPage] addElement:imageElement];
+            [[self currentPage] setIsLocked:YES];
+            [self.toolbarView didActivatedMove:YES];
+        }
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Empty clipboard" message:@"You have not copied anything, please try again" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 
 - (void)doneEditing {
@@ -921,7 +950,7 @@
                                       self.view.frame.size.height/2);
         ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
                                                                    image:image];
-        [imageElement rotateTo:arc4random()*M_PI_4/RAND_MAX];
+        [imageElement rotateTo:arc4random()*(M_PI_4/RAND_MAX)/4];
         [[self currentPage] addElement:imageElement];
         [[self currentPage] setIsLocked:YES];
         [self.toolbarView didActivatedMove:YES];

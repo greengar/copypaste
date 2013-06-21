@@ -112,4 +112,6 @@
                                forKeyPath:(NSString *)keypath
                              withDuration:(CFTimeInterval)duration
                                  delegate:(id)delegate;
++ (NSObject *)getThingsFromClipboard;
+
 @end
