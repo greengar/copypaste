@@ -3,7 +3,7 @@
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 5/30/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import "TextElement.h"
@@ -136,15 +136,15 @@
 
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
     self.myFontName = fontName;
-    self.myFontSize = fontSize;
-    [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:fontSize]];
+    if (fontSize > 0) self.myFontSize = fontSize;
+    [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:self.myFontSize]];
     [self restore];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdateFont" object:self userInfo:@{@"fontName": self.myFontName, @"fontSize": [NSNumber numberWithInt:self.myFontSize]}];
 }
 
 - (void)updateWithFontName:(NSString *)fontName {
-    self.myFontName = fontName;
-    [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:self.myFontSize]];
-    [self restore];
+    [self updateWithFontName:fontName size:-1];
 }
 
 - (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y {

@@ -3,7 +3,7 @@
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 5/30/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import "WBBoard.h"

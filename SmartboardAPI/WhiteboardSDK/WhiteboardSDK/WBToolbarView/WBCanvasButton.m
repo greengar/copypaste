@@ -9,8 +9,13 @@
 #import "WBCanvasButton.h"
 #import "SettingManager.h"
 
+@interface WBCanvasButton ()
+
+@property (nonatomic, copy) NSString *fontName;
+
+@end
+
 @implementation WBCanvasButton
-@synthesize mode = _mode;
 
 static inline int PerceivedBrightness(float red, float green, float blue, float alpha)
 {
@@ -20,31 +25,36 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
     
     red   = ((1-alpha)*red)  +(alpha*bgred);
     green = ((1-alpha)*green)+(alpha*bggreen);
-    blue  = ((1-alpha)*blue)  +(alpha*bgblue);
+    blue  = ((1-alpha)*blue) +(alpha*bgblue);
     
     // convert values from range [0-1] to range [0-255]
-    
     red *= 255.0f;
     green *= 255.0f;
     blue *= 255.0f;
-    
-//    alpha = 1 - alpha;
-//    
-//    //float bgred = 1, bggreen = 1, bgblue = 1;
-//    float bgred = 255, bggreen = 255, bgblue = 255;
-//    
-//    //blue = 255.0f * (alpha * blue + alpha * bgblue);
-//    
-//    red = (alpha * (red / 255) + alpha * (bgred / 255)) * 255;
-//    blue = (alpha * (blue / 255) + alpha * (bgblue / 255)) * 255;
-//    green = (alpha * (green / 255) + alpha * (bggreen / 255)) * 255;
     
     float brightness = sqrtf(red * red * .241 +
                              green * green * .691 +
                              blue * blue * .068);
     
-    return brightness;
     // brightness > 130 ? black : white
+    return brightness;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    if ((self = [super initWithFrame:frame]))
+    {
+        self.fontName = kDefaultFontName;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateFont:) name:@"didUpdateFont" object:nil];
+    }
+    return self;
+}
+
+- (void)didUpdateFont:(NSNotification *)n
+{
+    NSDictionary *d = [n userInfo];
+    self.fontName = d[@"fontName"];
+    [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -120,9 +130,13 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
         }
 
     } else if (self.mode == kTextMode) {
-        // TODO: replace with Text Paint Code
-        // Color Declarations
+        // Text mode
+        
+        //// Color Declarations
         UIColor* selectedButtonOutlineWhite = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+        
+        ///////////////////////////////////
+        // Copied from Canvas mode below //
         
         UIColor* tabColor = [[SettingManager sharedManager] getCurrentColorTab].tabColor;
         float red, green, blue, alpha;
@@ -135,7 +149,7 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
             selectedButtonOutlineWhite = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
         }
         
-        if (self.state == UIControlStateHighlighted)
+        if (self.state & UIControlStateHighlighted)
         {
             CGFloat currentBrushColorRGBA[4];
             [currentBrushColor getRed: &currentBrushColorRGBA[0] green: &currentBrushColorRGBA[1] blue: &currentBrushColorRGBA[2] alpha: &currentBrushColorRGBA[3]];
@@ -144,35 +158,68 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
             
         }
         
-        //// Subframes
-        CGRect canvasButtonFrame = self.bounds;
+        // Copied from Canvas mode above //
+        ///////////////////////////////////
+        
+        //// Frames
+        CGRect canvasButtonFrameText = self.bounds; //CGRectMake(648, 669, 81, 74);
         
         
-        //// Group
+        //// Abstracted Attributes
+        UIFont* abcTextFont = [UIFont fontWithName: self.fontName size: 18.5];
+        
+        
+        //// Canvas Toolbar Group
         {
-            //// Selected Brush Square Background Drawing
-            UIBezierPath* selectedBrushSquareBackgroundPath = [UIBezierPath bezierPathWithRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 0.5, CGRectGetMinY(canvasButtonFrame) + 0.5, 79, 74)];
-            [currentBrushColor setFill];
-            [selectedBrushSquareBackgroundPath fill];
-            
-            //// Selected Brush Circle Button Drawing
-            UIBezierPath* selectedBrushCircleButtonPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 12.5, CGRectGetMinY(canvasButtonFrame) + 9.5, 56, 56)];
-            [selectedButtonOutlineWhite setStroke];
-            selectedBrushCircleButtonPath.lineWidth = 1;
-            [selectedBrushCircleButtonPath stroke];
-            
-            //// Top Arrow Tip Drawing
-            UIBezierPath* topArrowTipPath = [UIBezierPath bezierPath];
-            [topArrowTipPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 44.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 40.5, CGRectGetMinY(canvasButtonFrame) + 2.5)];
-            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-            [topArrowTipPath closePath];
-            [selectedButtonOutlineWhite setFill];
-            [topArrowTipPath fill];
+            //// Canvas Button Group: Text
+            {
+                //// Background Rectangle: Text Drawing
+                UIBezierPath* backgroundRectangleTextPath = [UIBezierPath bezierPathWithRect: CGRectMake(CGRectGetMinX(canvasButtonFrameText), CGRectGetMinY(canvasButtonFrameText), 81, 74)];
+                [currentBrushColor setFill];
+                [backgroundRectangleTextPath fill];
+                
+                
+                //// Selected Brush Circle: Text Drawing
+                UIBezierPath* selectedBrushCircleTextPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(canvasButtonFrameText) + 12.5, CGRectGetMinY(canvasButtonFrameText) + 8.5, 56, 56)];
+                [selectedButtonOutlineWhite setStroke];
+                selectedBrushCircleTextPath.lineWidth = 1.5;
+                [selectedBrushCircleTextPath stroke];
+                
+                
+                //// Top Arrow Tip: Text Drawing
+                UIBezierPath* topArrowTipTextPath = [UIBezierPath bezierPath];
+                [topArrowTipTextPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrameText) + 36.5, CGRectGetMinY(canvasButtonFrameText) + 5.5)];
+                [topArrowTipTextPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrameText) + 44.5, CGRectGetMinY(canvasButtonFrameText) + 5.5)];
+                [topArrowTipTextPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrameText) + 40.5, CGRectGetMinY(canvasButtonFrameText) + 2.5)];
+                [topArrowTipTextPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrameText) + 36.5, CGRectGetMinY(canvasButtonFrameText) + 5.5)];
+                [topArrowTipTextPath closePath];
+                [selectedButtonOutlineWhite setFill];
+                [topArrowTipTextPath fill];
+                
+                
+                //// Abc Text Drawing
+                ////////////////////////////////////////////////////////
+                // This section is custom (not copied from PaintCode) //
+                ////////////////////////////////////////////////////////
+                
+                CGRect abcTextRect = CGRectMake(CGRectGetMinX(canvasButtonFrameText) + 12.5, CGRectGetMinY(canvasButtonFrameText) + 8.5, 56, 56);
+                
+                NSString *text = @"Abc";
+                CGFloat fontHeight = [text sizeWithFont:abcTextFont].height;
+                // this seems to give the same result:
+                //CGFloat fontHeight = [abcTextFont lineHeight];
+                CGFloat yOffset = (abcTextRect.size.height - fontHeight) / 2.0;
+                abcTextRect = CGRectMake(abcTextRect.origin.x, abcTextRect.origin.y + yOffset, abcTextRect.size.width, fontHeight);
+                
+                [selectedButtonOutlineWhite setFill];
+                [text drawInRect: abcTextRect withFont: abcTextFont lineBreakMode: UILineBreakModeClip alignment: UITextAlignmentCenter];
+            }
         }
+        
     } else {
-        // Color Declarations
+        // Canvas (drawing) mode
+        
+        //// Color Declarations
         UIColor* selectedButtonOutlineWhite = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
         
         UIColor* tabColor = [[SettingManager sharedManager] getCurrentColorTab].tabColor;
@@ -186,7 +233,7 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
             selectedButtonOutlineWhite = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
         }
         
-        if (self.state == UIControlStateHighlighted)
+        if (self.state & UIControlStateHighlighted)
         {
             CGFloat currentBrushColorRGBA[4];
             [currentBrushColor getRed: &currentBrushColorRGBA[0] green: &currentBrushColorRGBA[1] blue: &currentBrushColorRGBA[2] alpha: &currentBrushColorRGBA[3]];
@@ -195,71 +242,79 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
             
         }
         
-        //// Subframes
-        CGRect canvasButtonFrame = self.bounds;
+        //// Frames
+        CGRect canvasButtonFrame = self.bounds; //CGRectMake(648, 669, 81, 74);
         
         
-        //// Group
+        //// Canvas Toolbar Group
         {
-            //// Selected Brush Square Background Drawing
-            UIBezierPath* selectedBrushSquareBackgroundPath = [UIBezierPath bezierPathWithRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 0.5, CGRectGetMinY(canvasButtonFrame) + 0.5, 79, 74)];
-            [currentBrushColor setFill];
-            [selectedBrushSquareBackgroundPath fill];
-            
-            
-            //// Selected Brush Circle Button Drawing
-            UIBezierPath* selectedBrushCircleButtonPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 12.5, CGRectGetMinY(canvasButtonFrame) + 9.5, 56, 56)];
-            [selectedButtonOutlineWhite setStroke];
-            selectedBrushCircleButtonPath.lineWidth = 1;
-            [selectedBrushCircleButtonPath stroke];
-            
-            
-            //// Pencil Tip Drawing
-            UIBezierPath* pencilTipPath = [UIBezierPath bezierPath];
-            [pencilTipPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 28, CGRectGetMinY(canvasButtonFrame) + 45)];
-            [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 25, CGRectGetMinY(canvasButtonFrame) + 54)];
-            [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 34, CGRectGetMinY(canvasButtonFrame) + 51)];
-            [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 28, CGRectGetMinY(canvasButtonFrame) + 45)];
-            [pencilTipPath closePath];
-            [selectedButtonOutlineWhite setFill];
-            [pencilTipPath fill];
-            
-            
-            //// Pencil Body Drawing
-            UIBezierPath* pencilBodyPath = [UIBezierPath bezierPath];
-            [pencilBodyPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 30, CGRectGetMinY(canvasButtonFrame) + 44)];
-            [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 35.5, CGRectGetMinY(canvasButtonFrame) + 49.5)];
-            [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 52, CGRectGetMinY(canvasButtonFrame) + 33)];
-            [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 46, CGRectGetMinY(canvasButtonFrame) + 27)];
-            [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 30, CGRectGetMinY(canvasButtonFrame) + 44)];
-            [pencilBodyPath closePath];
-            [selectedButtonOutlineWhite setFill];
-            [pencilBodyPath fill];
-            
-            
-            //// Pencil Eraser Drawing
-            UIBezierPath* pencilEraserPath = [UIBezierPath bezierPath];
-            [pencilEraserPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 47.5, CGRectGetMinY(canvasButtonFrame) + 25.5)];
-            [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 51.5, CGRectGetMinY(canvasButtonFrame) + 21.5)];
-            [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 57.5, CGRectGetMinY(canvasButtonFrame) + 27.5)];
-            [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 53.5, CGRectGetMinY(canvasButtonFrame) + 31.5)];
-            [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 47.5, CGRectGetMinY(canvasButtonFrame) + 25.5)];
-            [pencilEraserPath closePath];
-            [selectedButtonOutlineWhite setFill];
-            [pencilEraserPath fill];
-            
-            
-            //// Top Arrow Tip Drawing
-            UIBezierPath* topArrowTipPath = [UIBezierPath bezierPath];
-            [topArrowTipPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 44.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 40.5, CGRectGetMinY(canvasButtonFrame) + 2.5)];
-            [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
-            [topArrowTipPath closePath];
-            [selectedButtonOutlineWhite setFill];
-            [topArrowTipPath fill];
+            //// Canvas Button Group
+            {
+                //// Selected Brush Square Background Drawing
+                UIBezierPath* selectedBrushSquareBackgroundPath = [UIBezierPath bezierPathWithRect: CGRectMake(CGRectGetMinX(canvasButtonFrame), CGRectGetMinY(canvasButtonFrame), 81, 74)];
+                [currentBrushColor setFill];
+                [selectedBrushSquareBackgroundPath fill];
+                
+                
+                //// Selected Brush Circle Drawing
+                UIBezierPath* selectedBrushCirclePath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(CGRectGetMinX(canvasButtonFrame) + 12.5, CGRectGetMinY(canvasButtonFrame) + 8.5, 56, 56)];
+                [selectedButtonOutlineWhite setStroke];
+                selectedBrushCirclePath.lineWidth = 1.5;
+                [selectedBrushCirclePath stroke];
+                
+                
+                //// Pencil Tip Drawing
+                UIBezierPath* pencilTipPath = [UIBezierPath bezierPath];
+                [pencilTipPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 29.5, CGRectGetMinY(canvasButtonFrame) + 43.5)];
+                [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 26.5, CGRectGetMinY(canvasButtonFrame) + 52)];
+                [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 35, CGRectGetMinY(canvasButtonFrame) + 49)];
+                [pencilTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 29.5, CGRectGetMinY(canvasButtonFrame) + 43.5)];
+                [pencilTipPath closePath];
+                [selectedButtonOutlineWhite setFill];
+                [pencilTipPath fill];
+                
+                
+                //// Pencil Body Drawing
+                UIBezierPath* pencilBodyPath = [UIBezierPath bezierPath];
+                [pencilBodyPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 31, CGRectGetMinY(canvasButtonFrame) + 42)];
+                [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 47.5)];
+                [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 53, CGRectGetMinY(canvasButtonFrame) + 31)];
+                [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 47, CGRectGetMinY(canvasButtonFrame) + 25)];
+                [pencilBodyPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 31, CGRectGetMinY(canvasButtonFrame) + 42)];
+                [pencilBodyPath closePath];
+                [selectedButtonOutlineWhite setFill];
+                [pencilBodyPath fill];
+                
+                
+                //// Pencil Eraser Drawing
+                UIBezierPath* pencilEraserPath = [UIBezierPath bezierPath];
+                [pencilEraserPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 48.5, CGRectGetMinY(canvasButtonFrame) + 23.5)];
+                [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 52.5, CGRectGetMinY(canvasButtonFrame) + 19.5)];
+                [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 58.5, CGRectGetMinY(canvasButtonFrame) + 25.5)];
+                [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 54.5, CGRectGetMinY(canvasButtonFrame) + 29.5)];
+                [pencilEraserPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 48.5, CGRectGetMinY(canvasButtonFrame) + 23.5)];
+                [pencilEraserPath closePath];
+                [selectedButtonOutlineWhite setFill];
+                [pencilEraserPath fill];
+                
+                
+                //// Top Arrow Tip Drawing
+                UIBezierPath* topArrowTipPath = [UIBezierPath bezierPath];
+                [topArrowTipPath moveToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
+                [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 44.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
+                [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 40.5, CGRectGetMinY(canvasButtonFrame) + 2.5)];
+                [topArrowTipPath addLineToPoint: CGPointMake(CGRectGetMinX(canvasButtonFrame) + 36.5, CGRectGetMinY(canvasButtonFrame) + 5.5)];
+                [topArrowTipPath closePath];
+                [selectedButtonOutlineWhite setFill];
+                [topArrowTipPath fill];
+            }
         }
     }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

@@ -3,17 +3,13 @@
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 6/7/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import "HistoryElementTextFontChanged.h"
 #import "TextElement.h"
 
 @implementation HistoryElementTextFontChanged
-@synthesize originalFontName = _originalFontName;
-@synthesize originalFontSize = _originalFontSize;
-@synthesize changedFontName = _changedFontName;
-@synthesize changedFontSize = _changedFontSize;
 
 - (id)init {
     if (self = [super init]) {
