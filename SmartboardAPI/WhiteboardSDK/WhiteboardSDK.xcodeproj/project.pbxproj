@@ -81,6 +81,44 @@
 		7BC34BC7177108C700CF6EBA /* WBMenubarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BC34BC5177108C500CF6EBA /* WBMenubarView.h */; };
 		7BC34BC8177108C700CF6EBA /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC6177108C600CF6EBA /* WBMenubarView.m */; };
 		7BC34BC9177108C700CF6EBA /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC6177108C600CF6EBA /* WBMenubarView.m */; };
+		7BCDC6E21774D10B00D851CF /* AGImagePickerController+Helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6D01774D10B00D851CF /* AGImagePickerController+Helper.h */; };
+		7BCDC6E31774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */; };
+		7BCDC6E41774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */; };
+		7BCDC6E51774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */; };
+		7BCDC6E61774D10B00D851CF /* AGImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */; };
+		7BCDC6E71774D10B00D851CF /* AGImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */; };
+		7BCDC6E81774D10B00D851CF /* AGImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */; };
+		7BCDC6E91774D10B00D851CF /* AGImagePickerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6D31774D10B00D851CF /* AGImagePickerController.h */; };
+		7BCDC6EA1774D10B00D851CF /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */; };
+		7BCDC6EB1774D10B00D851CF /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */; };
+		7BCDC6EC1774D10B00D851CF /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */; };
+		7BCDC6ED1774D10B00D851CF /* AGImagePickerControllerDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6D51774D10B00D851CF /* AGImagePickerControllerDefines.h */; };
+		7BCDC6EE1774D10B00D851CF /* AGIPCAlbumsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6D61774D10B00D851CF /* AGIPCAlbumsController.h */; };
+		7BCDC6EF1774D10B00D851CF /* AGIPCAlbumsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D71774D10B00D851CF /* AGIPCAlbumsController.m */; };
+		7BCDC6F01774D10B00D851CF /* AGIPCAlbumsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D71774D10B00D851CF /* AGIPCAlbumsController.m */; };
+		7BCDC6F11774D10B00D851CF /* AGIPCAlbumsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D71774D10B00D851CF /* AGIPCAlbumsController.m */; };
+		7BCDC6F21774D10B00D851CF /* AGIPCAssetsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6D81774D10B00D851CF /* AGIPCAssetsController.h */; };
+		7BCDC6F31774D10B00D851CF /* AGIPCAssetsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D91774D10B00D851CF /* AGIPCAssetsController.m */; };
+		7BCDC6F41774D10B00D851CF /* AGIPCAssetsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D91774D10B00D851CF /* AGIPCAssetsController.m */; };
+		7BCDC6F51774D10B00D851CF /* AGIPCAssetsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D91774D10B00D851CF /* AGIPCAssetsController.m */; };
+		7BCDC6F61774D10B00D851CF /* AGIPCGridCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6DA1774D10B00D851CF /* AGIPCGridCell.h */; };
+		7BCDC6F71774D10B00D851CF /* AGIPCGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DB1774D10B00D851CF /* AGIPCGridCell.m */; };
+		7BCDC6F81774D10B00D851CF /* AGIPCGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DB1774D10B00D851CF /* AGIPCGridCell.m */; };
+		7BCDC6F91774D10B00D851CF /* AGIPCGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DB1774D10B00D851CF /* AGIPCGridCell.m */; };
+		7BCDC6FA1774D10B00D851CF /* AGIPCGridItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6DC1774D10B00D851CF /* AGIPCGridItem.h */; };
+		7BCDC6FB1774D10B00D851CF /* AGIPCGridItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DD1774D10B00D851CF /* AGIPCGridItem.m */; };
+		7BCDC6FC1774D10B00D851CF /* AGIPCGridItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DD1774D10B00D851CF /* AGIPCGridItem.m */; };
+		7BCDC6FD1774D10B00D851CF /* AGIPCGridItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DD1774D10B00D851CF /* AGIPCGridItem.m */; };
+		7BCDC6FE1774D10B00D851CF /* AGIPCToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6DE1774D10B00D851CF /* AGIPCToolbarItem.h */; };
+		7BCDC6FF1774D10B00D851CF /* AGIPCToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DF1774D10B00D851CF /* AGIPCToolbarItem.m */; };
+		7BCDC7001774D10B00D851CF /* AGIPCToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DF1774D10B00D851CF /* AGIPCToolbarItem.m */; };
+		7BCDC7011774D10B00D851CF /* AGIPCToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6DF1774D10B00D851CF /* AGIPCToolbarItem.m */; };
+		7BCDC7021774D10B00D851CF /* ALAsset+AGIPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6E01774D10B00D851CF /* ALAsset+AGIPC.h */; };
+		7BCDC7031774D10B00D851CF /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */; };
+		7BCDC7041774D10B00D851CF /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */; };
+		7BCDC7051774D10B00D851CF /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */; };
+		7BCDC7071774D12F00D851CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */; };
+		7BCDC7081774D13C00D851CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */; };
 		7BE9D9441773BB2400A2481C /* WBViewControllerDev.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */; };
 		7BEA52DC1766873A001BC5FE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5F3175F9D3200B063D7 /* CoreFoundation.framework */; };
 		7BEA52E21766873A001BC5FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA52E01766873A001BC5FE /* InfoPlist.strings */; };
@@ -524,6 +562,25 @@
 		7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryColorButton.m; sourceTree = "<group>"; };
 		7BC34BC5177108C500CF6EBA /* WBMenubarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenubarView.h; sourceTree = "<group>"; };
 		7BC34BC6177108C600CF6EBA /* WBMenubarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenubarView.m; sourceTree = "<group>"; };
+		7BCDC6D01774D10B00D851CF /* AGImagePickerController+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AGImagePickerController+Helper.h"; sourceTree = "<group>"; };
+		7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AGImagePickerController+Helper.m"; sourceTree = "<group>"; };
+		7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AGImagePickerController.bundle; sourceTree = "<group>"; };
+		7BCDC6D31774D10B00D851CF /* AGImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGImagePickerController.h; sourceTree = "<group>"; };
+		7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGImagePickerController.m; sourceTree = "<group>"; };
+		7BCDC6D51774D10B00D851CF /* AGImagePickerControllerDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGImagePickerControllerDefines.h; sourceTree = "<group>"; };
+		7BCDC6D61774D10B00D851CF /* AGIPCAlbumsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGIPCAlbumsController.h; sourceTree = "<group>"; };
+		7BCDC6D71774D10B00D851CF /* AGIPCAlbumsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGIPCAlbumsController.m; sourceTree = "<group>"; };
+		7BCDC6D81774D10B00D851CF /* AGIPCAssetsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGIPCAssetsController.h; sourceTree = "<group>"; };
+		7BCDC6D91774D10B00D851CF /* AGIPCAssetsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGIPCAssetsController.m; sourceTree = "<group>"; };
+		7BCDC6DA1774D10B00D851CF /* AGIPCGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGIPCGridCell.h; sourceTree = "<group>"; };
+		7BCDC6DB1774D10B00D851CF /* AGIPCGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGIPCGridCell.m; sourceTree = "<group>"; };
+		7BCDC6DC1774D10B00D851CF /* AGIPCGridItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGIPCGridItem.h; sourceTree = "<group>"; };
+		7BCDC6DD1774D10B00D851CF /* AGIPCGridItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGIPCGridItem.m; sourceTree = "<group>"; };
+		7BCDC6DE1774D10B00D851CF /* AGIPCToolbarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGIPCToolbarItem.h; sourceTree = "<group>"; };
+		7BCDC6DF1774D10B00D851CF /* AGIPCToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGIPCToolbarItem.m; sourceTree = "<group>"; };
+		7BCDC6E01774D10B00D851CF /* ALAsset+AGIPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+AGIPC.h"; sourceTree = "<group>"; };
+		7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+AGIPC.m"; sourceTree = "<group>"; };
+		7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WBViewControllerDev.m; path = WhiteboardSDK/WBViewControllerDev.m; sourceTree = SOURCE_ROOT; };
 		7BE9D93C1773B9B100A2481C /* WBViewControllerDev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WBViewControllerDev.h; path = WhiteboardSDK/WBViewControllerDev.h; sourceTree = SOURCE_ROOT; };
 		7BE9D9451773BBD800A2481C /* WhiteboardSDK Dev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WhiteboardSDK Dev-Info.plist"; sourceTree = "<group>"; };
@@ -746,6 +803,7 @@
 				7B4AF57217605AAD0049D77D /* QuartzCore.framework in Frameworks */,
 				7B82E5D2175F9D0C00B063D7 /* UIKit.framework in Frameworks */,
 				7B82E5D4175F9D0C00B063D7 /* Foundation.framework in Frameworks */,
+				7BCDC7081774D13C00D851CF /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,6 +827,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BCDC7071774D12F00D851CF /* AssetsLibrary.framework in Frameworks */,
 				A90CEA2017736720006DD933 /* libsqlite3.dylib in Frameworks */,
 				A90CEA2117736720006DD933 /* libicucore.dylib in Frameworks */,
 				A90CEA2217736720006DD933 /* AdSupport.framework in Frameworks */,
@@ -851,6 +910,7 @@
 		7B82E5D0175F9D0C00B063D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */,
 				7BEA54DC17668B2E001BC5FE /* Accounts.framework */,
 				7BEA54F217668C73001BC5FE /* AdSupport.framework */,
 				7BEA54DE17668B38001BC5FE /* AudioToolbox.framework */,
@@ -924,6 +984,31 @@
 				7B82E5FB175F9D3200B063D7 /* Whiteboard-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7BCDC6CF1774D10B00D851CF /* AGImagePickerController */ = {
+			isa = PBXGroup;
+			children = (
+				7BCDC6D01774D10B00D851CF /* AGImagePickerController+Helper.h */,
+				7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */,
+				7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */,
+				7BCDC6D31774D10B00D851CF /* AGImagePickerController.h */,
+				7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */,
+				7BCDC6D51774D10B00D851CF /* AGImagePickerControllerDefines.h */,
+				7BCDC6D61774D10B00D851CF /* AGIPCAlbumsController.h */,
+				7BCDC6D71774D10B00D851CF /* AGIPCAlbumsController.m */,
+				7BCDC6D81774D10B00D851CF /* AGIPCAssetsController.h */,
+				7BCDC6D91774D10B00D851CF /* AGIPCAssetsController.m */,
+				7BCDC6DA1774D10B00D851CF /* AGIPCGridCell.h */,
+				7BCDC6DB1774D10B00D851CF /* AGIPCGridCell.m */,
+				7BCDC6DC1774D10B00D851CF /* AGIPCGridItem.h */,
+				7BCDC6DD1774D10B00D851CF /* AGIPCGridItem.m */,
+				7BCDC6DE1774D10B00D851CF /* AGIPCToolbarItem.h */,
+				7BCDC6DF1774D10B00D851CF /* AGIPCToolbarItem.m */,
+				7BCDC6E01774D10B00D851CF /* ALAsset+AGIPC.h */,
+				7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */,
+			);
+			path = AGImagePickerController;
 			sourceTree = "<group>";
 		};
 		7BE9D9391773B94A00A2481C /* ReleaseSampleApp */ = {
@@ -1077,6 +1162,7 @@
 		7BEA5307176687F0001BC5FE /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				7BCDC6CF1774D10B00D851CF /* AGImagePickerController */,
 				7BEA5308176687F0001BC5FE /* ccMacros.h */,
 				7BEA5309176687F0001BC5FE /* CGPointExtension.h */,
 				7BEA530A176687F0001BC5FE /* CGPointExtension.m */,
@@ -1492,6 +1578,15 @@
 				A90CE9B117729F4C006DD933 /* WBMenuButton.h in Headers */,
 				A90CE9B61773548C006DD933 /* WBUndoButton.h in Headers */,
 				A90CE9BB17736230006DD933 /* WBHistoryButton.h in Headers */,
+				7BCDC6E21774D10B00D851CF /* AGImagePickerController+Helper.h in Headers */,
+				7BCDC6E91774D10B00D851CF /* AGImagePickerController.h in Headers */,
+				7BCDC6ED1774D10B00D851CF /* AGImagePickerControllerDefines.h in Headers */,
+				7BCDC6EE1774D10B00D851CF /* AGIPCAlbumsController.h in Headers */,
+				7BCDC6F21774D10B00D851CF /* AGIPCAssetsController.h in Headers */,
+				7BCDC6F61774D10B00D851CF /* AGIPCGridCell.h in Headers */,
+				7BCDC6FA1774D10B00D851CF /* AGIPCGridItem.h in Headers */,
+				7BCDC6FE1774D10B00D851CF /* AGIPCToolbarItem.h in Headers */,
+				7BCDC7021774D10B00D851CF /* ALAsset+AGIPC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1644,6 +1739,7 @@
 				7BEA548617668A47001BC5FE /* LICENSE in Resources */,
 				7BEA54A017668A47001BC5FE /* README.md in Resources */,
 				7BEA54A517668A47001BC5FE /* SVProgressHUD.bundle in Resources */,
+				7BCDC6E61774D10B00D851CF /* AGImagePickerController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1653,6 +1749,7 @@
 			files = (
 				7B82E5FA175F9D3200B063D7 /* InfoPlist.strings in Resources */,
 				7B82E791175F9E4C00B063D7 /* Whiteboard.bundle in Resources */,
+				7BCDC6E81774D10B00D851CF /* AGImagePickerController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1680,6 +1777,7 @@
 				A90CEA3F17736720006DD933 /* README.md in Resources */,
 				A90CEA4017736720006DD933 /* SVProgressHUD.bundle in Resources */,
 				A90CEA4117736720006DD933 /* CollaborativeViewController.xib in Resources */,
+				7BCDC6E71774D10B00D851CF /* AGImagePickerController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1811,6 +1909,14 @@
 				A90CE9B217729F4C006DD933 /* WBMenuButton.m in Sources */,
 				A90CE9B71773548C006DD933 /* WBUndoButton.m in Sources */,
 				A90CE9BC17736230006DD933 /* WBHistoryButton.m in Sources */,
+				7BCDC6E31774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */,
+				7BCDC6EA1774D10B00D851CF /* AGImagePickerController.m in Sources */,
+				7BCDC6EF1774D10B00D851CF /* AGIPCAlbumsController.m in Sources */,
+				7BCDC6F31774D10B00D851CF /* AGIPCAssetsController.m in Sources */,
+				7BCDC6F71774D10B00D851CF /* AGIPCGridCell.m in Sources */,
+				7BCDC6FB1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
+				7BCDC6FF1774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
+				7BCDC7031774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1885,6 +1991,14 @@
 				A90CE9B317729F4C006DD933 /* WBMenuButton.m in Sources */,
 				A90CE9B81773548C006DD933 /* WBUndoButton.m in Sources */,
 				A90CE9BD17736230006DD933 /* WBHistoryButton.m in Sources */,
+				7BCDC6E51774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */,
+				7BCDC6EC1774D10B00D851CF /* AGImagePickerController.m in Sources */,
+				7BCDC6F11774D10B00D851CF /* AGIPCAlbumsController.m in Sources */,
+				7BCDC6F51774D10B00D851CF /* AGIPCAssetsController.m in Sources */,
+				7BCDC6F91774D10B00D851CF /* AGIPCGridCell.m in Sources */,
+				7BCDC6FD1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
+				7BCDC7011774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
+				7BCDC7051774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2016,6 +2130,14 @@
 				A90CEA1D17736720006DD933 /* WBUndoButton.m in Sources */,
 				A90CEA1E17736720006DD933 /* WBHistoryButton.m in Sources */,
 				7BE9D9441773BB2400A2481C /* WBViewControllerDev.m in Sources */,
+				7BCDC6E41774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */,
+				7BCDC6EB1774D10B00D851CF /* AGImagePickerController.m in Sources */,
+				7BCDC6F01774D10B00D851CF /* AGIPCAlbumsController.m in Sources */,
+				7BCDC6F41774D10B00D851CF /* AGIPCAssetsController.m in Sources */,
+				7BCDC6F81774D10B00D851CF /* AGIPCGridCell.m in Sources */,
+				7BCDC6FC1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
+				7BCDC7001774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
+				7BCDC7041774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

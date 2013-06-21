@@ -19,6 +19,8 @@
 #import "WBToolbarView.h"
 #import "WBToolMonitorView.h"
 #import "WBAddMoreSelectionView.h"
+#import "AGImagePickerController.h"
+#import "AGIPCToolbarItem.h"
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
@@ -44,7 +46,7 @@
 #define kCurlAnimationShouldStopAfter (IS_IPAD ? 0.6f : 0.7f)
 #define kShowNewPageWithCurlDownDuration 0.7f
 
-@interface WBBoard () {
+@interface WBBoard () <AGImagePickerControllerDelegate> {
     BOOL isPageCurlAnimating;
     BOOL isPageCurled;
     float pageUpSpeed;
@@ -63,6 +65,7 @@
 @property (nonatomic, strong) GSButton                  *pageCurlButton;
 @property (nonatomic, strong) UIView                    *pageHolderView;
 @property (nonatomic, strong) UIView                    *exportControlView;
+@property (nonatomic, strong) UIPopoverController       *addPhotoPopover;
 @end
 
 @implementation WBBoard
@@ -730,6 +733,80 @@
 
 - (void)addPhoto {
     [self.toolbarView didShowAddMoreView:NO];
+    __block WBBoard *blockSelf = self;
+    
+    AGImagePickerController *photoPickerController = [[AGImagePickerController alloc] initWithDelegate:self];
+    photoPickerController.didFailBlock = ^(NSError *error) {
+        if (error == nil) {
+            [blockSelf.addPhotoPopover dismissPopoverAnimated:NO];
+            
+        } else {
+            // We need to wait for the view controller to appear first.
+            double delayInSeconds = 0.5;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [blockSelf.addPhotoPopover dismissPopoverAnimated:NO];
+            });
+        }
+    };
+    photoPickerController.didFinishBlock = ^(NSArray *info) {
+        [blockSelf.addPhotoPopover dismissPopoverAnimated:NO];
+
+        if ([info count] > 0) {
+            for (ALAsset *asset in info) {
+                ALAssetRepresentation *rep = [asset defaultRepresentation];
+                CGImageRef iref = [rep fullResolutionImage];
+                if (iref) {
+                    UIImage *image = [UIImage imageWithCGImage:iref];
+                    CGRect imageRect = CGRectMake(self.view.frame.size.width/4,
+                                                  self.view.frame.size.height/4,
+                                                  self.view.frame.size.width/2,
+                                                  self.view.frame.size.height/2);
+                    ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
+                                                                               image:image];
+                    [imageElement rotateTo:arc4random()/M_PI];
+                    [[self currentPage] addElement:imageElement];
+                }
+            }
+            [[self currentPage] setIsLocked:YES];
+            [self.toolbarView didActivatedMove:YES];
+        }
+    };
+    
+    // Show saved photos on top
+    photoPickerController.shouldShowSavedPhotosOnTop = NO;
+    photoPickerController.shouldChangeStatusBarStyle = NO;
+    
+    // Custom toolbar items
+    UIBarButtonItem *selectAllBtnItem = [[UIBarButtonItem alloc] initWithTitle:@"Select All"
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:nil
+                                                                        action:nil];
+    UIBarButtonItem *flexibleBtnItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                     target:nil
+                                                                                     action:nil];
+    UIBarButtonItem *deselectAllBtnItem = [[UIBarButtonItem alloc] initWithTitle:@"Select All"
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:nil
+                                                                          action:nil];
+    AGIPCToolbarItem *selectAll = [[AGIPCToolbarItem alloc] initWithBarButtonItem:selectAllBtnItem
+                                                                andSelectionBlock:^BOOL(NSUInteger index, ALAsset *asset) {
+                                                                    return YES;
+                                                                }];
+    AGIPCToolbarItem *flexible = [[AGIPCToolbarItem alloc] initWithBarButtonItem:flexibleBtnItem
+                                                               andSelectionBlock:nil];
+    
+    AGIPCToolbarItem *deselectAll = [[AGIPCToolbarItem alloc] initWithBarButtonItem:deselectAllBtnItem
+                                                                  andSelectionBlock:^BOOL(NSUInteger index, ALAsset *asset) {
+                                                                      return NO;
+                                                                  }];
+    photoPickerController.toolbarItemsForManagingTheSelection = @[selectAll, flexible, flexible, deselectAll];
+    self.addPhotoPopover = [[UIPopoverController alloc] initWithContentViewController:photoPickerController];
+    [self.addPhotoPopover presentPopoverFromRect:self.toolbarView.frame
+                                          inView:self.view
+                        permittedArrowDirections:UIPopoverArrowDirectionDown
+                                        animated:YES];
+
 }
 
 - (void)addText {
@@ -809,6 +886,40 @@
         frame.origin.y += kbSize.height;
         ((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]).frame = frame;
     }];
+}
+
+#pragma mark - AGImagePickerControllerDelegate methods
+- (NSUInteger)agImagePickerController:(AGImagePickerController *)picker
+         numberOfItemsPerRowForDevice:(AGDeviceType)deviceType
+              andInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (deviceType == AGDeviceTypeiPad)
+    {
+        if (UIInterfaceOrientationIsLandscape(interfaceOrientation))
+            return 4;
+        else
+            return 4;
+    } else {
+        if (UIInterfaceOrientationIsLandscape(interfaceOrientation))
+            return 4;
+        else
+            return 4;
+    }
+}
+
+- (BOOL)agImagePickerController:(AGImagePickerController *)picker shouldDisplaySelectionInformationInSelectionMode:(AGImagePickerControllerSelectionMode)selectionMode
+{
+    return (selectionMode == AGImagePickerControllerSelectionModeSingle ? NO : NO);
+}
+
+- (BOOL)agImagePickerController:(AGImagePickerController *)picker shouldShowToolbarForManagingTheSelectionInSelectionMode:(AGImagePickerControllerSelectionMode)selectionMode
+{
+    return (selectionMode == AGImagePickerControllerSelectionModeSingle ? NO : NO);
+}
+
+- (AGImagePickerControllerSelectionBehaviorType)selectionBehaviorInSingleSelectionModeForAGImagePickerController:(AGImagePickerController *)picker
+{
+    return AGImagePickerControllerSelectionBehaviorTypeRadio;
 }
 
 #pragma mark - Backup/Restore Save/Load
