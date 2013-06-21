@@ -12,13 +12,14 @@
 #import "WBUtils.h"
 
 @protocol WBMenubarDelegate
-- (void)showMenu;
+- (void)menuButtonTappedFrom:(UIView *)view;
 - (void)performUndo;
 - (void)historyButtonTappedFrom:(UIView *)view;
 @end
 
 @interface WBMenubarView : UIView
 
+- (void)didShowMenuView:(BOOL)success;
 - (void)didShowHistoryView:(BOOL)success;
 
 @property (nonatomic, assign) id<WBMenubarDelegate> delegate;

@@ -13,7 +13,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface WBMenubarView ()
-@property (nonatomic, strong) UIButton *historyButton;
+@property (nonatomic, strong) WBHistoryButton *historyButton;
+@property (nonatomic, strong) WBMenuButton *menuButton;
 @end
 
 @implementation WBMenubarView
@@ -29,9 +30,9 @@
         self.layer.borderColor = [UIColor lightGrayColor].CGColor;
         self.layer.borderWidth = 1;
         
-        WBMenuButton *menuButton = [[WBMenuButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/3, frame.size.height)];
-        [menuButton addTarget:self action:@selector(menuButtonTapped:) forControlEvents:UIControlEventTouchDown];
-        [self addSubview:menuButton];
+        self.menuButton = [[WBMenuButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/3, frame.size.height)];
+        [self.menuButton addTarget:self action:@selector(menuButtonTapped:) forControlEvents:UIControlEventTouchDown];
+        [self addSubview:self.menuButton];
         
         WBUndoButton *undoButton = [[WBUndoButton alloc] initWithFrame:CGRectMake(frame.size.width/3, 0, frame.size.width/3, frame.size.height)];
         [undoButton addTarget:self action:@selector(undoButtonTapped:) forControlEvents:UIControlEventTouchDown];
@@ -45,8 +46,8 @@
 }
 
 - (void)menuButtonTapped:(UIButton *)button {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(showMenu)]) {
-        [self.delegate showMenu];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(menuButtonTappedFrom:)]) {
+        [self.delegate menuButtonTappedFrom:self];
     }
 }
 
@@ -60,6 +61,10 @@
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(historyButtonTappedFrom:)]) {
         [self.delegate historyButtonTappedFrom:self];
     }
+}
+
+- (void)didShowMenuView:(BOOL)success {
+    [self.menuButton setSelected:success];
 }
 
 - (void)didShowHistoryView:(BOOL)success {

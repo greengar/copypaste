@@ -19,6 +19,7 @@
 #import "WBToolbarView.h"
 #import "WBToolMonitorView.h"
 #import "WBAddMoreSelectionView.h"
+#import "WBMenuContentView.h"
 #import "AGImagePickerController.h"
 #import "AGIPCToolbarItem.h"
 
@@ -28,6 +29,7 @@
 #define kHistoryViewTag     888
 #define kToolMonitorTag     kHistoryViewTag+1
 #define kAddMoreTag         kHistoryViewTag+2
+#define kMenuViewTag        kHistoryViewTag+3
 
 #define kPreviousButtonTag  999
 #define kNextButtonTag      kPreviousButtonTag+1
@@ -46,7 +48,7 @@
 #define kCurlAnimationShouldStopAfter (IS_IPAD ? 0.6f : 0.7f)
 #define kShowNewPageWithCurlDownDuration 0.7f
 
-@interface WBBoard () <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate> {
+@interface WBBoard () <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate, WBMenuContentViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate> {
     BOOL isPageCurlAnimating;
     BOOL isPageCurled;
     float pageUpSpeed;
@@ -125,7 +127,7 @@
         
         [[SettingManager sharedManager] setCurrentColorTab:0];
         
-        [self initExportControl];
+        [self initPageCurlControl];
     }
     return self;
 }
@@ -272,29 +274,23 @@
 }
 
 #pragma mark - Export output data
-- (void)initExportControl {
+- (void)initPageCurlControl {
     float exportButtonSize = 79;
     float exportPageLabelHeight = 30;
     float rightMargin = 26;
     float bottomMargin = 26;
-    self.exportControlView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-4*exportButtonSize-rightMargin, self.view.frame.size.height-exportButtonSize-exportPageLabelHeight-bottomMargin, exportButtonSize*4, exportButtonSize+exportPageLabelHeight)];
+    
+    self.exportControlView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-3*exportButtonSize-rightMargin, self.view.frame.size.height-exportButtonSize-exportPageLabelHeight-bottomMargin, exportButtonSize*3, exportButtonSize+exportPageLabelHeight)];
     self.exportControlView.layer.cornerRadius = 5;
     self.exportControlView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.exportControlView.layer.borderWidth = 1;
     self.exportControlView.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9];
     [self.pageHolderView addSubview:self.exportControlView];
-    
-    GSButton *exportButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:BlueButtonStyle];
-    [exportButton setTitle:@"Export" forState:UIControlStateNormal];
-    [exportButton setFrame:CGRectMake(self.exportControlView.frame.size.width-exportButtonSize, exportPageLabelHeight,
-                                      exportButtonSize, exportButtonSize)];
-    [exportButton addTarget:self action:@selector(exportPage) forControlEvents:UIControlEventTouchUpInside];
-    [self.exportControlView addSubview:exportButton];
-    
+        
     GSButton *nextButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GreenButtonStyle];
     [nextButton setTitle:@"Next" forState:UIControlStateNormal];
     [nextButton setTag:kNextButtonTag];
-    [nextButton setFrame:CGRectMake(self.exportControlView.frame.size.width-exportButtonSize*2, exportPageLabelHeight,
+    [nextButton setFrame:CGRectMake(self.exportControlView.frame.size.width-exportButtonSize, exportPageLabelHeight,
                                     exportButtonSize, exportButtonSize)];
     [nextButton addTarget:self action:@selector(nextPage) forControlEvents:UIControlEventTouchUpInside];
     [self.exportControlView addSubview:nextButton];
@@ -302,14 +298,14 @@
     GSButton *previousButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:OrangeButtonStyle];
     [previousButton setTitle:@"Previous" forState:UIControlStateNormal];
     [previousButton setTag:kPreviousButtonTag];
-    [previousButton setFrame:CGRectMake(self.exportControlView.frame.size.width-exportButtonSize*3, exportPageLabelHeight,
+    [previousButton setFrame:CGRectMake(self.exportControlView.frame.size.width-exportButtonSize*2, exportPageLabelHeight,
                                         exportButtonSize, exportButtonSize)];
     [previousButton addTarget:self action:@selector(previousPage) forControlEvents:UIControlEventTouchUpInside];
     [self.exportControlView addSubview:previousButton];
     
     GSButton *cancelButton = [GSButton buttonWithType:UIButtonTypeCustom themeStyle:GrayButtonStyle];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setFrame:CGRectMake(self.exportControlView.frame.size.width-exportButtonSize*4, exportPageLabelHeight,
+    [cancelButton setFrame:CGRectMake(self.exportControlView.frame.size.width-exportButtonSize*3, exportPageLabelHeight,
                                       exportButtonSize, exportButtonSize)];
     [cancelButton addTarget:self action:@selector(performPageCurlDown:) forControlEvents:UIControlEventTouchUpInside];
     [self.exportControlView addSubview:cancelButton];
@@ -524,6 +520,7 @@
 }
 
 - (void)hideAllControl {
+    [self forceHideMenu];
     [self forceHideHistory];
     [self forceHideColorSpectrum];
     [self forceHideAddMore];
@@ -532,18 +529,63 @@
     [[self pageCurlButton] setHidden:YES];
 }
 
-- (void)exportPage {
-    [self doneEditing];
-}
-
 #pragma mark - Export output data
 - (UIImage *)exportBoardToUIImage {
     return [[self currentPage] exportPageToImage];
 }
 
 #pragma mark - Menu Bar Buttons
-- (void)showMenu {
+- (void)menuButtonTappedFrom:(UIView *)menubar {
+    if (![self.view viewWithTag:kMenuViewTag]) {
+        int menuContentHeight = kMenuViewHeight+kOffsetForBouncing;
+        WBMenuContentView *menuContentView = [[WBMenuContentView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width*1.25, menuContentHeight)];
+        [menuContentView setTag:kMenuViewTag];
+        [menuContentView setDelegate:self];
+        [self.view addSubview:menuContentView];
+        [menuContentView animateDown];
+        
+        [self forceHideHistory];
     
+        [self.menubarView didShowMenuView:YES];
+        
+    } else {
+        [self forceHideMenu];
+    }
+}
+
+- (void)forceHideMenu {
+    [((WBMenuContentView *) [self.view viewWithTag:kMenuViewTag]) animateUp];
+    [self.menubarView didShowMenuView:NO];
+}
+
+- (void)exitBoard {
+    [self doneEditing];
+}
+
+- (void)saveACopy {
+    
+}
+
+- (void)saveToPhotosApp {
+    UIImage *image = [[self currentPage] exportPageToImage];
+    if (image) {
+        UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    UIAlertView *alert;
+    if (error)
+        alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                           message:@"Unable to save image to Photos App"
+                                          delegate:nil cancelButtonTitle:@"Ok"
+                                 otherButtonTitles:nil];
+    else // All is well
+        alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                           message:@"Image saved to Photos App"
+                                          delegate:nil cancelButtonTitle:@"Ok"
+                                 otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)performUndo {
@@ -567,6 +609,8 @@
         [historyView setCurrentPage:[self currentPage]];
         [self.view addSubview:historyView];
         [historyView animateDown];
+        
+        [self forceHideMenu];
         
         [[HistoryManager sharedManager] setDelegate:historyView];
         [self.menubarView didShowHistoryView:YES];

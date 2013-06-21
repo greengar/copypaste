@@ -119,6 +119,10 @@
 		7BCDC7051774D10B00D851CF /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */; };
 		7BCDC7071774D12F00D851CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */; };
 		7BCDC7081774D13C00D851CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */; };
+		7BCDC70B1775048000D851CF /* WBMenuContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC7091775047E00D851CF /* WBMenuContentView.h */; };
+		7BCDC70C1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
+		7BCDC70D1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
+		7BCDC70E1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
 		7BE9D9441773BB2400A2481C /* WBViewControllerDev.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */; };
 		7BEA52DC1766873A001BC5FE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5F3175F9D3200B063D7 /* CoreFoundation.framework */; };
 		7BEA52E21766873A001BC5FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA52E01766873A001BC5FE /* InfoPlist.strings */; };
@@ -581,6 +585,8 @@
 		7BCDC6E01774D10B00D851CF /* ALAsset+AGIPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+AGIPC.h"; sourceTree = "<group>"; };
 		7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+AGIPC.m"; sourceTree = "<group>"; };
 		7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		7BCDC7091775047E00D851CF /* WBMenuContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuContentView.h; sourceTree = "<group>"; };
+		7BCDC70A1775047F00D851CF /* WBMenuContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuContentView.m; sourceTree = "<group>"; };
 		7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WBViewControllerDev.m; path = WhiteboardSDK/WBViewControllerDev.m; sourceTree = SOURCE_ROOT; };
 		7BE9D93C1773B9B100A2481C /* WBViewControllerDev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WBViewControllerDev.h; path = WhiteboardSDK/WBViewControllerDev.h; sourceTree = SOURCE_ROOT; };
 		7BE9D9451773BBD800A2481C /* WhiteboardSDK Dev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WhiteboardSDK Dev-Info.plist"; sourceTree = "<group>"; };
@@ -1484,6 +1490,8 @@
 				A9D3B454176F1B5C005574D2 /* WBToolbarView.m */,
 				7BC34BC5177108C500CF6EBA /* WBMenubarView.h */,
 				7BC34BC6177108C600CF6EBA /* WBMenubarView.m */,
+				7BCDC7091775047E00D851CF /* WBMenuContentView.h */,
+				7BCDC70A1775047F00D851CF /* WBMenuContentView.m */,
 				A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */,
 				A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */,
 				7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */,
@@ -1587,6 +1595,7 @@
 				7BCDC6FA1774D10B00D851CF /* AGIPCGridItem.h in Headers */,
 				7BCDC6FE1774D10B00D851CF /* AGIPCToolbarItem.h in Headers */,
 				7BCDC7021774D10B00D851CF /* ALAsset+AGIPC.h in Headers */,
+				7BCDC70B1775048000D851CF /* WBMenuContentView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1917,6 +1926,7 @@
 				7BCDC6FB1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
 				7BCDC6FF1774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
 				7BCDC7031774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
+				7BCDC70C1775048000D851CF /* WBMenuContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1999,6 +2009,7 @@
 				7BCDC6FD1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
 				7BCDC7011774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
 				7BCDC7051774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
+				7BCDC70E1775048000D851CF /* WBMenuContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2138,6 +2149,7 @@
 				7BCDC6FC1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
 				7BCDC7001774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
 				7BCDC7041774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
+				7BCDC70D1775048000D851CF /* WBMenuContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
