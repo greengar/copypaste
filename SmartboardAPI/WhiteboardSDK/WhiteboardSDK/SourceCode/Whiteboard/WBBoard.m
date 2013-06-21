@@ -570,6 +570,12 @@
     UIImage *image = [[self currentPage] exportPageToImage];
     if (image) {
         UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Unable to save image to Photos App"
+                                                       delegate:nil cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
     }
 }
 
@@ -586,6 +592,10 @@
                                           delegate:nil cancelButtonTitle:@"Ok"
                                  otherButtonTitles:nil];
     [alert show];
+}
+
+- (void)shareOnFacebook {
+
 }
 
 - (void)performUndo {

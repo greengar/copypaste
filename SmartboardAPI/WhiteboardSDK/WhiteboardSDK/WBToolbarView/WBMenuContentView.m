@@ -205,6 +205,9 @@
             switch ([indexPath row]) {
                 case 0:
                     // Share on Facebook
+                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(shareOnFacebook)]) {
+                        [self.delegate shareOnFacebook];
+                    }
                     break;
                 case 1:
                     // Share on Twitter

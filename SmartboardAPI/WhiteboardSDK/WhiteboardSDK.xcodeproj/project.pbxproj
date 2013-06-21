@@ -123,6 +123,8 @@
 		7BCDC70C1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
 		7BCDC70D1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
 		7BCDC70E1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
+		7BCDC71017751A7D00D851CF /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC70F17751A7C00D851CF /* Twitter.framework */; };
+		7BCDC71117751A8100D851CF /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC70F17751A7C00D851CF /* Twitter.framework */; };
 		7BE9D9441773BB2400A2481C /* WBViewControllerDev.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */; };
 		7BEA52DC1766873A001BC5FE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B82E5F3175F9D3200B063D7 /* CoreFoundation.framework */; };
 		7BEA52E21766873A001BC5FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA52E01766873A001BC5FE /* InfoPlist.strings */; };
@@ -587,6 +589,7 @@
 		7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		7BCDC7091775047E00D851CF /* WBMenuContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuContentView.h; sourceTree = "<group>"; };
 		7BCDC70A1775047F00D851CF /* WBMenuContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuContentView.m; sourceTree = "<group>"; };
+		7BCDC70F17751A7C00D851CF /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WBViewControllerDev.m; path = WhiteboardSDK/WBViewControllerDev.m; sourceTree = SOURCE_ROOT; };
 		7BE9D93C1773B9B100A2481C /* WBViewControllerDev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WBViewControllerDev.h; path = WhiteboardSDK/WBViewControllerDev.h; sourceTree = SOURCE_ROOT; };
 		7BE9D9451773BBD800A2481C /* WhiteboardSDK Dev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WhiteboardSDK Dev-Info.plist"; sourceTree = "<group>"; };
@@ -810,6 +813,7 @@
 				7B82E5D2175F9D0C00B063D7 /* UIKit.framework in Frameworks */,
 				7B82E5D4175F9D0C00B063D7 /* Foundation.framework in Frameworks */,
 				7BCDC7081774D13C00D851CF /* AssetsLibrary.framework in Frameworks */,
+				7BCDC71117751A8100D851CF /* Twitter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,12 +837,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A90CEA2317736720006DD933 /* Social.framework in Frameworks */,
+				7BCDC71017751A7D00D851CF /* Twitter.framework in Frameworks */,
 				A90CEA2E17736720006DD933 /* Accounts.framework in Frameworks */,
 				7BCDC7071774D12F00D851CF /* AssetsLibrary.framework in Frameworks */,
 				A90CEA2017736720006DD933 /* libsqlite3.dylib in Frameworks */,
 				A90CEA2117736720006DD933 /* libicucore.dylib in Frameworks */,
 				A90CEA2217736720006DD933 /* AdSupport.framework in Frameworks */,
-				A90CEA2317736720006DD933 /* Social.framework in Frameworks */,
 				A90CEA2417736720006DD933 /* CoreText.framework in Frameworks */,
 				A90CEA2517736720006DD933 /* SystemConfiguration.framework in Frameworks */,
 				A90CEA2617736720006DD933 /* StoreKit.framework in Frameworks */,
@@ -916,9 +921,9 @@
 		7B82E5D0175F9D0C00B063D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */,
 				7BEA54DC17668B2E001BC5FE /* Accounts.framework */,
 				7BEA54F217668C73001BC5FE /* AdSupport.framework */,
+				7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */,
 				7BEA54DE17668B38001BC5FE /* AudioToolbox.framework */,
 				7BEA54E017668BB5001BC5FE /* CFNetwork.framework */,
 				7B82E5F3175F9D3200B063D7 /* CoreFoundation.framework */,
@@ -939,6 +944,7 @@
 				7BEA54F017668C61001BC5FE /* Social.framework */,
 				7BEA54EA17668BDA001BC5FE /* StoreKit.framework */,
 				7BEA54EC17668BDF001BC5FE /* SystemConfiguration.framework */,
+				7BCDC70F17751A7C00D851CF /* Twitter.framework */,
 				7B82E5D1175F9D0C00B063D7 /* UIKit.framework */,
 			);
 			name = Frameworks;

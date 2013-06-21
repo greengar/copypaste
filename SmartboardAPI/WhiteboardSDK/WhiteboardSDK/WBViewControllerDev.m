@@ -62,6 +62,10 @@
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
+- (NSString *)facebookId {
+    return @"166165553554902";
+}
+
 - (void)doneEditingBoardWithResult:(UIImage *)image {
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 }

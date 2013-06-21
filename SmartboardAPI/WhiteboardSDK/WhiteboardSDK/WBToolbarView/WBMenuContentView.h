@@ -20,6 +20,7 @@
 - (void)exitBoard;
 - (void)saveACopy;
 - (void)saveToPhotosApp;
+- (void)shareOnFacebook;
 @end
 
 @interface WBMenuContentView : UIView <UITableViewDelegate, UITableViewDataSource>

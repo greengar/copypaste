@@ -43,6 +43,7 @@
 
 @protocol WBBoardDelegate
 @optional
+- (NSString *)facebookId;
 - (void)doneEditingBoardWithResult:(UIImage *)image;
 - (void)exportBoardData:(NSDictionary *)data;
 @end
