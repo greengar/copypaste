@@ -57,6 +57,11 @@
     return self.imageView;
 }
 
+- (void)setIsLocked:(BOOL)isLocked {
+    [super setIsLocked:isLocked];
+    self.alpha = 1.0f;
+}
+
 - (NSDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
     [dict setObject:@"ImageElement" forKey:@"element_type"];

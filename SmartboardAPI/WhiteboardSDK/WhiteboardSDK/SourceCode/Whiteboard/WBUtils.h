@@ -58,11 +58,11 @@
 @end
 
 @protocol WBAddMoreSelectionDelegate
-- (void)addCamera;
-- (void)addPhoto;
-- (void)addText;
-- (void)addCanvas;
-- (void)addPaste;
+- (void)addCameraFrom:(UIView *)view;
+- (void)addPhotoFrom:(UIView *)view;
+- (void)addTextFrom:(UIView *)view;
+- (void)addCanvasFrom:(UIView *)view;
+- (void)addPasteFrom:(UIView *)view;
 @end
 
 @protocol WBToolMonitorDelegate

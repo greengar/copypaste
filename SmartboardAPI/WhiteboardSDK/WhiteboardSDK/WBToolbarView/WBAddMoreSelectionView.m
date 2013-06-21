@@ -141,28 +141,28 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch ([indexPath row]) {
         case 0:
-            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addCamera)]) {
-                [self.delegate addCamera];
+            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addCameraFrom:)]) {
+                [self.delegate addCameraFrom:self];
             }
             break;
         case 1:
-            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addPhoto)]) {
-                [self.delegate addPhoto];
+            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addPhotoFrom:)]) {
+                [self.delegate addPhotoFrom:self];
             }
             break;
         case 2:
             if (!self.isCanvasMode) {
-                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addCanvas)]) {
-                    [self.delegate addCanvas];
+                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addCanvasFrom:)]) {
+                    [self.delegate addCanvasFrom:self];
                 }
             } else {
-                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addText)]) {
-                    [self.delegate addText];
+                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addTextFrom:)]) {
+                    [self.delegate addTextFrom:self];
                 }
             }
         case 3:
-            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addPaste)]) {
-                [self.delegate addPaste];
+            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addPasteFrom:)]) {
+                [self.delegate addPasteFrom:self];
             }
             break;
         default:

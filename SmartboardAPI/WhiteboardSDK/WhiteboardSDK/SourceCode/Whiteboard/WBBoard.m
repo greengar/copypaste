@@ -46,7 +46,7 @@
 #define kCurlAnimationShouldStopAfter (IS_IPAD ? 0.6f : 0.7f)
 #define kShowNewPageWithCurlDownDuration 0.7f
 
-@interface WBBoard () <AGImagePickerControllerDelegate> {
+@interface WBBoard () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate> {
     BOOL isPageCurlAnimating;
     BOOL isPageCurled;
     float pageUpSpeed;
@@ -731,11 +731,24 @@
     [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setTextMode:NO];
 }
 
-- (void)addCamera {
+- (void)addCameraFrom:(UIView *)view {
     [self.toolbarView didShowAddMoreView:NO];
+    UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
+    cameraController.delegate = self;
+    cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
+    cameraController.allowsEditing = NO;
+    self.addPhotoPopover = [[UIPopoverController alloc] initWithContentViewController:cameraController];
+    CGRect showRect = CGRectMake(view.frame.origin.x-3,
+                                 view.frame.origin.y+view.frame.size.height,
+                                 view.frame.size.width,
+                                 view.frame.size.height);
+    [self.addPhotoPopover presentPopoverFromRect:showRect
+                                          inView:self.view
+                        permittedArrowDirections:UIPopoverArrowDirectionDown
+                                        animated:YES];
 }
 
-- (void)addPhoto {
+- (void)addPhotoFrom:(UIView *)view {
     [self.toolbarView didShowAddMoreView:NO];
     __block WBBoard *blockSelf = self;
     
@@ -768,7 +781,7 @@
                                                   self.view.frame.size.height/2);
                     ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
                                                                                image:image];
-                    [imageElement rotateTo:arc4random()/M_PI];
+                    [imageElement rotateTo:arc4random()*M_PI_4/RAND_MAX];
                     [[self currentPage] addElement:imageElement];
                 }
             }
@@ -806,14 +819,18 @@
                                                                   }];
     photoPickerController.toolbarItemsForManagingTheSelection = @[selectAll, flexible, flexible, deselectAll];
     self.addPhotoPopover = [[UIPopoverController alloc] initWithContentViewController:photoPickerController];
-    [self.addPhotoPopover presentPopoverFromRect:self.toolbarView.frame
+    CGRect showRect = CGRectMake(view.frame.origin.x-3,
+                                 view.frame.origin.y+view.frame.size.height,
+                                 view.frame.size.width,
+                                 view.frame.size.height);
+    [self.addPhotoPopover presentPopoverFromRect:showRect
                                           inView:self.view
                         permittedArrowDirections:UIPopoverArrowDirectionDown
                                         animated:YES];
 
 }
 
-- (void)addText {
+- (void)addTextFrom:(UIView *)view {
     // Back to first color, ignore using eraser color for text
     [[SettingManager sharedManager] setCurrentColorTab:0];
     
@@ -824,7 +841,7 @@
     [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) scrollFontTableViewToFont:((TextElement *) [[self currentPage] selectedElementView]).myFontName];
 }
 
-- (void)addPaste {
+- (void)addPasteFrom:(UIView *)view {
     [self.toolbarView didShowAddMoreView:NO];
 }
 
@@ -890,6 +907,29 @@
         frame.origin.y += kbSize.height;
         ((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]).frame = frame;
     }];
+}
+
+#pragma mark - UIImagePickerController Delegate methods
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [self.addPhotoPopover dismissPopoverAnimated:NO];
+    
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    if (image) {
+        CGRect imageRect = CGRectMake(self.view.frame.size.width/4,
+                                      self.view.frame.size.height/4,
+                                      self.view.frame.size.width/2,
+                                      self.view.frame.size.height/2);
+        ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
+                                                                   image:image];
+        [imageElement rotateTo:arc4random()*M_PI_4/RAND_MAX];
+        [[self currentPage] addElement:imageElement];
+        [[self currentPage] setIsLocked:YES];
+        [self.toolbarView didActivatedMove:YES];
+    }
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self.addPhotoPopover dismissPopoverAnimated:NO];
 }
 
 #pragma mark - AGImagePickerControllerDelegate methods
