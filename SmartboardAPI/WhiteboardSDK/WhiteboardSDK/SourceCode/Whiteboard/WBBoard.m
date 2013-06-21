@@ -639,7 +639,11 @@
     if (select) {
         [self.toolbarView selectCanvasMode:kEraserMode];
     } else {
-        [self.toolbarView selectCanvasMode:kCanvasMode];
+        if ([[[self currentPage] selectedElementView] isKindOfClass:[TextElement class]]) {
+            [self.toolbarView selectCanvasMode:kTextMode];
+        } else {
+            [self.toolbarView selectCanvasMode:kCanvasMode];
+        }
     }
 }
 
