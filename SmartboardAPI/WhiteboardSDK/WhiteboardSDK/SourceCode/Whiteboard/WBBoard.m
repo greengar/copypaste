@@ -580,7 +580,9 @@
 
 #pragma mark - Tool Bar Buttons
 - (void)canvasButtonTappedFrom:(UIView *)toolbar {
-    [self forceUnlock];
+    if ([[self currentPage] isLocked]) {
+        [self forceUnlock];
+    }
     
     if (![self.view viewWithTag:kToolMonitorTag]) {
         int monitorHeight = kWBToolMonitorHeight+kOffsetForBouncing;
@@ -614,7 +616,9 @@
 }
 
 - (void)selectHistoryColor {
-    [self forceUnlock];
+    if ([[self currentPage] isLocked]) {
+        [self forceUnlock];
+    }
     
     [(WBToolMonitorView *)[self.view viewWithTag:kToolMonitorTag] enableEraser:NO];
     WBBaseElement *element = [[self currentPage] selectedElementView];
@@ -662,7 +666,9 @@
 }
 
 - (void)addMoreButtonTappedFrom:(UIView *)toolbar {
-    [self forceUnlock];
+    if ([[self currentPage] isLocked]) {
+        [self forceUnlock];
+    }
     
     if (![self.view viewWithTag:kAddMoreTag]) {
         int addMoreHeight = kAddMoreViewHeight+kOffsetForBouncing;
