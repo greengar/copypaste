@@ -48,6 +48,14 @@ static BoardManager *shareManager = nil;
     return [WBBoard loadFromDict:boardDict];
 }
 
++ (NSDictionary *)exportBoardToData:(WBBoard *)board {
+    return nil;
+}
+
++ (WBBoard *)importDataToCreateBoard:(NSDictionary *)dict {
+    return nil;
+}
+
 + (WBBoard *)loadBoardWithUid:(NSString *)uid {
     return [[[BoardManager sharedManager] boardContents] objectForKey:uid];
 }

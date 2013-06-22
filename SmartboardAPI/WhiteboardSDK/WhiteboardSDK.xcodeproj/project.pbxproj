@@ -41,6 +41,70 @@
 		7B23545E1767BECC0055A319 /* GSRoom.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B23545C1767BECB0055A319 /* GSRoom.h */; };
 		7B23545F1767BECC0055A319 /* GSRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B23545D1767BECB0055A319 /* GSRoom.m */; };
 		7B2354601767BECC0055A319 /* GSRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B23545D1767BECB0055A319 /* GSRoom.m */; };
+		7B304CA617756CAB0037A320 /* WBAddMoreButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C8617756CAB0037A320 /* WBAddMoreButton.h */; };
+		7B304CA717756CAB0037A320 /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8717756CAB0037A320 /* WBAddMoreButton.m */; };
+		7B304CA817756CAB0037A320 /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8717756CAB0037A320 /* WBAddMoreButton.m */; };
+		7B304CA917756CAB0037A320 /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8717756CAB0037A320 /* WBAddMoreButton.m */; };
+		7B304CAA17756CAB0037A320 /* WBAddMoreSelectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C8817756CAB0037A320 /* WBAddMoreSelectionView.h */; };
+		7B304CAB17756CAB0037A320 /* WBAddMoreSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8917756CAB0037A320 /* WBAddMoreSelectionView.m */; };
+		7B304CAC17756CAB0037A320 /* WBAddMoreSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8917756CAB0037A320 /* WBAddMoreSelectionView.m */; };
+		7B304CAD17756CAB0037A320 /* WBAddMoreSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8917756CAB0037A320 /* WBAddMoreSelectionView.m */; };
+		7B304CAE17756CAB0037A320 /* WBBottomRightToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C8A17756CAB0037A320 /* WBBottomRightToolbarView.h */; };
+		7B304CAF17756CAB0037A320 /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8B17756CAB0037A320 /* WBBottomRightToolbarView.m */; };
+		7B304CB017756CAB0037A320 /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8B17756CAB0037A320 /* WBBottomRightToolbarView.m */; };
+		7B304CB117756CAB0037A320 /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8B17756CAB0037A320 /* WBBottomRightToolbarView.m */; };
+		7B304CB217756CAB0037A320 /* WBButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C8C17756CAB0037A320 /* WBButton.h */; };
+		7B304CB317756CAB0037A320 /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8D17756CAB0037A320 /* WBButton.m */; };
+		7B304CB417756CAB0037A320 /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8D17756CAB0037A320 /* WBButton.m */; };
+		7B304CB517756CAB0037A320 /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8D17756CAB0037A320 /* WBButton.m */; };
+		7B304CB617756CAB0037A320 /* WBCanvasButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C8E17756CAB0037A320 /* WBCanvasButton.h */; };
+		7B304CB717756CAB0037A320 /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8F17756CAB0037A320 /* WBCanvasButton.m */; };
+		7B304CB817756CAB0037A320 /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8F17756CAB0037A320 /* WBCanvasButton.m */; };
+		7B304CB917756CAB0037A320 /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C8F17756CAB0037A320 /* WBCanvasButton.m */; };
+		7B304CBA17756CAB0037A320 /* WBCanvasToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C9017756CAB0037A320 /* WBCanvasToolbarView.h */; };
+		7B304CBB17756CAB0037A320 /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9117756CAB0037A320 /* WBCanvasToolbarView.m */; };
+		7B304CBC17756CAB0037A320 /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9117756CAB0037A320 /* WBCanvasToolbarView.m */; };
+		7B304CBD17756CAB0037A320 /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9117756CAB0037A320 /* WBCanvasToolbarView.m */; };
+		7B304CBE17756CAB0037A320 /* WBEraserButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C9217756CAB0037A320 /* WBEraserButton.h */; };
+		7B304CBF17756CAB0037A320 /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9317756CAB0037A320 /* WBEraserButton.m */; };
+		7B304CC017756CAB0037A320 /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9317756CAB0037A320 /* WBEraserButton.m */; };
+		7B304CC117756CAB0037A320 /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9317756CAB0037A320 /* WBEraserButton.m */; };
+		7B304CC217756CAB0037A320 /* WBHistoryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C9417756CAB0037A320 /* WBHistoryButton.h */; };
+		7B304CC317756CAB0037A320 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9517756CAB0037A320 /* WBHistoryButton.m */; };
+		7B304CC417756CAB0037A320 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9517756CAB0037A320 /* WBHistoryButton.m */; };
+		7B304CC517756CAB0037A320 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9517756CAB0037A320 /* WBHistoryButton.m */; };
+		7B304CC617756CAB0037A320 /* WBHistoryColorButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C9617756CAB0037A320 /* WBHistoryColorButton.h */; };
+		7B304CC717756CAB0037A320 /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9717756CAB0037A320 /* WBHistoryColorButton.m */; };
+		7B304CC817756CAB0037A320 /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9717756CAB0037A320 /* WBHistoryColorButton.m */; };
+		7B304CC917756CAB0037A320 /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9717756CAB0037A320 /* WBHistoryColorButton.m */; };
+		7B304CCA17756CAB0037A320 /* WBMenubarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C9817756CAB0037A320 /* WBMenubarView.h */; };
+		7B304CCB17756CAB0037A320 /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9917756CAB0037A320 /* WBMenubarView.m */; };
+		7B304CCC17756CAB0037A320 /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9917756CAB0037A320 /* WBMenubarView.m */; };
+		7B304CCD17756CAB0037A320 /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9917756CAB0037A320 /* WBMenubarView.m */; };
+		7B304CCE17756CAB0037A320 /* WBMenuButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C9A17756CAB0037A320 /* WBMenuButton.h */; };
+		7B304CCF17756CAB0037A320 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9B17756CAB0037A320 /* WBMenuButton.m */; };
+		7B304CD017756CAB0037A320 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9B17756CAB0037A320 /* WBMenuButton.m */; };
+		7B304CD117756CAB0037A320 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9B17756CAB0037A320 /* WBMenuButton.m */; };
+		7B304CD217756CAB0037A320 /* WBMenuContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C9C17756CAB0037A320 /* WBMenuContentView.h */; };
+		7B304CD317756CAB0037A320 /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9D17756CAB0037A320 /* WBMenuContentView.m */; };
+		7B304CD417756CAB0037A320 /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9D17756CAB0037A320 /* WBMenuContentView.m */; };
+		7B304CD517756CAB0037A320 /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9D17756CAB0037A320 /* WBMenuContentView.m */; };
+		7B304CD617756CAB0037A320 /* WBMoveButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304C9E17756CAB0037A320 /* WBMoveButton.h */; };
+		7B304CD717756CAB0037A320 /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9F17756CAB0037A320 /* WBMoveButton.m */; };
+		7B304CD817756CAB0037A320 /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9F17756CAB0037A320 /* WBMoveButton.m */; };
+		7B304CD917756CAB0037A320 /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304C9F17756CAB0037A320 /* WBMoveButton.m */; };
+		7B304CDA17756CAB0037A320 /* WBToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304CA017756CAB0037A320 /* WBToolbarView.h */; };
+		7B304CDB17756CAB0037A320 /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA117756CAB0037A320 /* WBToolbarView.m */; };
+		7B304CDC17756CAB0037A320 /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA117756CAB0037A320 /* WBToolbarView.m */; };
+		7B304CDD17756CAB0037A320 /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA117756CAB0037A320 /* WBToolbarView.m */; };
+		7B304CDE17756CAB0037A320 /* WBToolMonitorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304CA217756CAB0037A320 /* WBToolMonitorView.h */; };
+		7B304CDF17756CAB0037A320 /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA317756CAB0037A320 /* WBToolMonitorView.m */; };
+		7B304CE017756CAB0037A320 /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA317756CAB0037A320 /* WBToolMonitorView.m */; };
+		7B304CE117756CAB0037A320 /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA317756CAB0037A320 /* WBToolMonitorView.m */; };
+		7B304CE217756CAB0037A320 /* WBUndoButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B304CA417756CAB0037A320 /* WBUndoButton.h */; };
+		7B304CE317756CAB0037A320 /* WBUndoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA517756CAB0037A320 /* WBUndoButton.m */; };
+		7B304CE417756CAB0037A320 /* WBUndoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA517756CAB0037A320 /* WBUndoButton.m */; };
+		7B304CE517756CAB0037A320 /* WBUndoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B304CA517756CAB0037A320 /* WBUndoButton.m */; };
 		7B4AF56D176059700049D77D /* WBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4AF56B176059700049D77D /* WBViewController.m */; };
 		7B4AF56E176059700049D77D /* WBViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4AF56C176059700049D77D /* WBViewController~iphone.xib */; };
 		7B4AF570176059860049D77D /* WBViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4AF56F176059860049D77D /* WBViewController~ipad.xib */; };
@@ -60,27 +124,9 @@
 		7B82E790175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E791175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E792175F9E4C00B063D7 /* Whiteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B82E78F175F9E4C00B063D7 /* Whiteboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7B931E0D1771645B005500AB /* WBAddMoreButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B931E091771645A005500AB /* WBAddMoreButton.h */; };
-		7B931E0E1771645B005500AB /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0A1771645B005500AB /* WBAddMoreButton.m */; };
-		7B931E0F1771645B005500AB /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0A1771645B005500AB /* WBAddMoreButton.m */; };
-		7B931E101771645B005500AB /* WBMoveButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B931E0B1771645B005500AB /* WBMoveButton.h */; };
-		7B931E111771645B005500AB /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0C1771645B005500AB /* WBMoveButton.m */; };
-		7B931E121771645B005500AB /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0C1771645B005500AB /* WBMoveButton.m */; };
-		7B931E1517716A80005500AB /* WBAddMoreSelectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B931E1317716A7F005500AB /* WBAddMoreSelectionView.h */; };
-		7B931E1617716A80005500AB /* WBAddMoreSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E1417716A80005500AB /* WBAddMoreSelectionView.m */; };
-		7B931E1717716A80005500AB /* WBAddMoreSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E1417716A80005500AB /* WBAddMoreSelectionView.m */; };
 		7BBCAC9E176F7CB000950ABA /* HistoryElementCanvasDraw.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */; };
 		7BBCAC9F176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
 		7BBCACA0176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
-		7BBCACA3176FBA5600950ABA /* WBToolMonitorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */; };
-		7BBCACA4176FBA5600950ABA /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */; };
-		7BBCACA5176FBA5600950ABA /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */; };
-		7BC34BC21770E3A200CF6EBA /* WBHistoryColorButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BC34BC01770E3A100CF6EBA /* WBHistoryColorButton.h */; };
-		7BC34BC31770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */; };
-		7BC34BC41770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */; };
-		7BC34BC7177108C700CF6EBA /* WBMenubarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BC34BC5177108C500CF6EBA /* WBMenubarView.h */; };
-		7BC34BC8177108C700CF6EBA /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC6177108C600CF6EBA /* WBMenubarView.m */; };
-		7BC34BC9177108C700CF6EBA /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC6177108C600CF6EBA /* WBMenubarView.m */; };
 		7BCDC6E21774D10B00D851CF /* AGImagePickerController+Helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6D01774D10B00D851CF /* AGImagePickerController+Helper.h */; };
 		7BCDC6E31774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */; };
 		7BCDC6E41774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */; };
@@ -119,10 +165,6 @@
 		7BCDC7051774D10B00D851CF /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */; };
 		7BCDC7071774D12F00D851CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */; };
 		7BCDC7081774D13C00D851CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */; };
-		7BCDC70B1775048000D851CF /* WBMenuContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC7091775047E00D851CF /* WBMenuContentView.h */; };
-		7BCDC70C1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
-		7BCDC70D1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
-		7BCDC70E1775048000D851CF /* WBMenuContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC70A1775047F00D851CF /* WBMenuContentView.m */; };
 		7BCDC71017751A7D00D851CF /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC70F17751A7C00D851CF /* Twitter.framework */; };
 		7BCDC71117751A8100D851CF /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCDC70F17751A7C00D851CF /* Twitter.framework */; };
 		7BE9D9441773BB2400A2481C /* WBViewControllerDev.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */; };
@@ -361,15 +403,6 @@
 		7BEB7FE5176A39D800F5FE5D /* CGCanvasElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEB7FE3176A39D700F5FE5D /* CGCanvasElement.h */; };
 		7BEB7FE6176A39D800F5FE5D /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
 		7BEB7FE7176A39D800F5FE5D /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
-		A90CE9B117729F4C006DD933 /* WBMenuButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A90CE9AF17729F4C006DD933 /* WBMenuButton.h */; };
-		A90CE9B217729F4C006DD933 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B017729F4C006DD933 /* WBMenuButton.m */; };
-		A90CE9B317729F4C006DD933 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B017729F4C006DD933 /* WBMenuButton.m */; };
-		A90CE9B61773548C006DD933 /* WBUndoButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A90CE9B41773548C006DD933 /* WBUndoButton.h */; };
-		A90CE9B71773548C006DD933 /* WBUndoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B51773548C006DD933 /* WBUndoButton.m */; };
-		A90CE9B81773548C006DD933 /* WBUndoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B51773548C006DD933 /* WBUndoButton.m */; };
-		A90CE9BB17736230006DD933 /* WBHistoryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A90CE9B917736230006DD933 /* WBHistoryButton.h */; };
-		A90CE9BC17736230006DD933 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9BA17736230006DD933 /* WBHistoryButton.m */; };
-		A90CE9BD17736230006DD933 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9BA17736230006DD933 /* WBHistoryButton.m */; };
 		A90CE9C017736720006DD933 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B82E5DD175F9D0C00B063D7 /* main.m */; };
 		A90CE9C117736720006DD933 /* WAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B82E5E1175F9D0C00B063D7 /* WAppDelegate.m */; };
 		A90CE9C317736720006DD933 /* HistoryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52EE176687F0001BC5FE /* HistoryElement.m */; };
@@ -448,22 +481,7 @@
 		A90CEA0C17736720006DD933 /* RoomDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */; };
 		A90CEA0D17736720006DD933 /* CGPaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FDF176A386800F5FE5D /* CGPaintingView.m */; };
 		A90CEA0E17736720006DD933 /* CGCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEB7FE4176A39D700F5FE5D /* CGCanvasElement.m */; };
-		A90CEA0F17736720006DD933 /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */; };
-		A90CEA1017736720006DD933 /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */; };
-		A90CEA1117736720006DD933 /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B454176F1B5C005574D2 /* WBToolbarView.m */; };
 		A90CEA1217736720006DD933 /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
-		A90CEA1317736720006DD933 /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */; };
-		A90CEA1417736720006DD933 /* WBToolMonitorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */; };
-		A90CEA1517736720006DD933 /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9717701F4900B180BA /* WBButton.m */; };
-		A90CEA1617736720006DD933 /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9C17701F5F00B180BA /* WBEraserButton.m */; };
-		A90CEA1717736720006DD933 /* WBHistoryColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */; };
-		A90CEA1817736720006DD933 /* WBMenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC34BC6177108C600CF6EBA /* WBMenubarView.m */; };
-		A90CEA1917736720006DD933 /* WBAddMoreButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0A1771645B005500AB /* WBAddMoreButton.m */; };
-		A90CEA1A17736720006DD933 /* WBMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E0C1771645B005500AB /* WBMoveButton.m */; };
-		A90CEA1B17736720006DD933 /* WBAddMoreSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B931E1417716A80005500AB /* WBAddMoreSelectionView.m */; };
-		A90CEA1C17736720006DD933 /* WBMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B017729F4C006DD933 /* WBMenuButton.m */; };
-		A90CEA1D17736720006DD933 /* WBUndoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9B51773548C006DD933 /* WBUndoButton.m */; };
-		A90CEA1E17736720006DD933 /* WBHistoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A90CE9BA17736230006DD933 /* WBHistoryButton.m */; };
 		A90CEA2017736720006DD933 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F617668CC1001BC5FE /* libsqlite3.dylib */; };
 		A90CEA2117736720006DD933 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F417668C84001BC5FE /* libicucore.dylib */; };
 		A90CEA2217736720006DD933 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEA54F217668C73001BC5FE /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -497,24 +515,6 @@
 		A90CEA3F17736720006DD933 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA547517668A47001BC5FE /* README.md */; };
 		A90CEA4017736720006DD933 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA547917668A47001BC5FE /* SVProgressHUD.bundle */; };
 		A90CEA4117736720006DD933 /* CollaborativeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */; };
-		A9520C8D176FB5ED00B180BA /* WBBottomRightToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */; };
-		A9520C8E176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */; };
-		A9520C8F176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */; };
-		A9520C90176FB87E00B180BA /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */; };
-		A9520C91176FB87E00B180BA /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */; };
-		A9520C92176FB87E00B180BA /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B454176F1B5C005574D2 /* WBToolbarView.m */; };
-		A9520C93176FB8AD00B180BA /* WBCanvasButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A9D3B44F176F1B5C005574D2 /* WBCanvasButton.h */; };
-		A9520C94176FB8AD00B180BA /* WBCanvasToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */; };
-		A9520C95176FB8AD00B180BA /* WBToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = A9D3B453176F1B5C005574D2 /* WBToolbarView.h */; };
-		A9520C9817701F4900B180BA /* WBButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A9520C9617701F4900B180BA /* WBButton.h */; };
-		A9520C9917701F4900B180BA /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9717701F4900B180BA /* WBButton.m */; };
-		A9520C9A17701F4900B180BA /* WBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9717701F4900B180BA /* WBButton.m */; };
-		A9520C9D17701F5F00B180BA /* WBEraserButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A9520C9B17701F5F00B180BA /* WBEraserButton.h */; };
-		A9520C9E17701F5F00B180BA /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9C17701F5F00B180BA /* WBEraserButton.m */; };
-		A9520C9F17701F5F00B180BA /* WBEraserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9520C9C17701F5F00B180BA /* WBEraserButton.m */; };
-		A9D3B455176F1B5C005574D2 /* WBCanvasButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */; };
-		A9D3B456176F1B5C005574D2 /* WBCanvasToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */; };
-		A9D3B457176F1B5C005574D2 /* WBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D3B454176F1B5C005574D2 /* WBToolbarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -527,6 +527,38 @@
 		7B2354551767AFBF0055A319 /* GSSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSignUpViewController.m; sourceTree = "<group>"; };
 		7B23545C1767BECB0055A319 /* GSRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSRoom.h; sourceTree = "<group>"; };
 		7B23545D1767BECB0055A319 /* GSRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSRoom.m; sourceTree = "<group>"; };
+		7B304C8617756CAB0037A320 /* WBAddMoreButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBAddMoreButton.h; sourceTree = "<group>"; };
+		7B304C8717756CAB0037A320 /* WBAddMoreButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBAddMoreButton.m; sourceTree = "<group>"; };
+		7B304C8817756CAB0037A320 /* WBAddMoreSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBAddMoreSelectionView.h; sourceTree = "<group>"; };
+		7B304C8917756CAB0037A320 /* WBAddMoreSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBAddMoreSelectionView.m; sourceTree = "<group>"; };
+		7B304C8A17756CAB0037A320 /* WBBottomRightToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBBottomRightToolbarView.h; sourceTree = "<group>"; };
+		7B304C8B17756CAB0037A320 /* WBBottomRightToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBBottomRightToolbarView.m; sourceTree = "<group>"; };
+		7B304C8C17756CAB0037A320 /* WBButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBButton.h; sourceTree = "<group>"; };
+		7B304C8D17756CAB0037A320 /* WBButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBButton.m; sourceTree = "<group>"; };
+		7B304C8E17756CAB0037A320 /* WBCanvasButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBCanvasButton.h; sourceTree = "<group>"; };
+		7B304C8F17756CAB0037A320 /* WBCanvasButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBCanvasButton.m; sourceTree = "<group>"; };
+		7B304C9017756CAB0037A320 /* WBCanvasToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBCanvasToolbarView.h; sourceTree = "<group>"; };
+		7B304C9117756CAB0037A320 /* WBCanvasToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBCanvasToolbarView.m; sourceTree = "<group>"; };
+		7B304C9217756CAB0037A320 /* WBEraserButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBEraserButton.h; sourceTree = "<group>"; };
+		7B304C9317756CAB0037A320 /* WBEraserButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBEraserButton.m; sourceTree = "<group>"; };
+		7B304C9417756CAB0037A320 /* WBHistoryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBHistoryButton.h; sourceTree = "<group>"; };
+		7B304C9517756CAB0037A320 /* WBHistoryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryButton.m; sourceTree = "<group>"; };
+		7B304C9617756CAB0037A320 /* WBHistoryColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBHistoryColorButton.h; sourceTree = "<group>"; };
+		7B304C9717756CAB0037A320 /* WBHistoryColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryColorButton.m; sourceTree = "<group>"; };
+		7B304C9817756CAB0037A320 /* WBMenubarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenubarView.h; sourceTree = "<group>"; };
+		7B304C9917756CAB0037A320 /* WBMenubarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenubarView.m; sourceTree = "<group>"; };
+		7B304C9A17756CAB0037A320 /* WBMenuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuButton.h; sourceTree = "<group>"; };
+		7B304C9B17756CAB0037A320 /* WBMenuButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuButton.m; sourceTree = "<group>"; };
+		7B304C9C17756CAB0037A320 /* WBMenuContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuContentView.h; sourceTree = "<group>"; };
+		7B304C9D17756CAB0037A320 /* WBMenuContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuContentView.m; sourceTree = "<group>"; };
+		7B304C9E17756CAB0037A320 /* WBMoveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMoveButton.h; sourceTree = "<group>"; };
+		7B304C9F17756CAB0037A320 /* WBMoveButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMoveButton.m; sourceTree = "<group>"; };
+		7B304CA017756CAB0037A320 /* WBToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBToolbarView.h; sourceTree = "<group>"; };
+		7B304CA117756CAB0037A320 /* WBToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBToolbarView.m; sourceTree = "<group>"; };
+		7B304CA217756CAB0037A320 /* WBToolMonitorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBToolMonitorView.h; sourceTree = "<group>"; };
+		7B304CA317756CAB0037A320 /* WBToolMonitorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBToolMonitorView.m; sourceTree = "<group>"; };
+		7B304CA417756CAB0037A320 /* WBUndoButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUndoButton.h; sourceTree = "<group>"; };
+		7B304CA517756CAB0037A320 /* WBUndoButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUndoButton.m; sourceTree = "<group>"; };
 		7B4AF56A176059700049D77D /* WBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBViewController.h; sourceTree = "<group>"; };
 		7B4AF56B176059700049D77D /* WBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBViewController.m; sourceTree = "<group>"; };
 		7B4AF56C176059700049D77D /* WBViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WBViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -554,20 +586,8 @@
 		7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Whiteboard.bundle; sourceTree = "<group>"; };
 		7B82E78F175F9E4C00B063D7 /* Whiteboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Whiteboard.h; sourceTree = "<group>"; };
 		7B82E8EA175FBA0700B063D7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		7B931E091771645A005500AB /* WBAddMoreButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBAddMoreButton.h; sourceTree = "<group>"; };
-		7B931E0A1771645B005500AB /* WBAddMoreButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBAddMoreButton.m; sourceTree = "<group>"; };
-		7B931E0B1771645B005500AB /* WBMoveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMoveButton.h; sourceTree = "<group>"; };
-		7B931E0C1771645B005500AB /* WBMoveButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMoveButton.m; sourceTree = "<group>"; };
-		7B931E1317716A7F005500AB /* WBAddMoreSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBAddMoreSelectionView.h; sourceTree = "<group>"; };
-		7B931E1417716A80005500AB /* WBAddMoreSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBAddMoreSelectionView.m; sourceTree = "<group>"; };
 		7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElementCanvasDraw.h; sourceTree = "<group>"; };
 		7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementCanvasDraw.m; sourceTree = "<group>"; };
-		7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBToolMonitorView.h; sourceTree = "<group>"; };
-		7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBToolMonitorView.m; sourceTree = "<group>"; };
-		7BC34BC01770E3A100CF6EBA /* WBHistoryColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBHistoryColorButton.h; sourceTree = "<group>"; };
-		7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryColorButton.m; sourceTree = "<group>"; };
-		7BC34BC5177108C500CF6EBA /* WBMenubarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenubarView.h; sourceTree = "<group>"; };
-		7BC34BC6177108C600CF6EBA /* WBMenubarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenubarView.m; sourceTree = "<group>"; };
 		7BCDC6D01774D10B00D851CF /* AGImagePickerController+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AGImagePickerController+Helper.h"; sourceTree = "<group>"; };
 		7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AGImagePickerController+Helper.m"; sourceTree = "<group>"; };
 		7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AGImagePickerController.bundle; sourceTree = "<group>"; };
@@ -587,8 +607,6 @@
 		7BCDC6E01774D10B00D851CF /* ALAsset+AGIPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+AGIPC.h"; sourceTree = "<group>"; };
 		7BCDC6E11774D10B00D851CF /* ALAsset+AGIPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+AGIPC.m"; sourceTree = "<group>"; };
 		7BCDC7061774D12F00D851CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		7BCDC7091775047E00D851CF /* WBMenuContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuContentView.h; sourceTree = "<group>"; };
-		7BCDC70A1775047F00D851CF /* WBMenuContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuContentView.m; sourceTree = "<group>"; };
 		7BCDC70F17751A7C00D851CF /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		7BE9D93B1773B9B100A2481C /* WBViewControllerDev.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WBViewControllerDev.m; path = WhiteboardSDK/WBViewControllerDev.m; sourceTree = SOURCE_ROOT; };
 		7BE9D93C1773B9B100A2481C /* WBViewControllerDev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WBViewControllerDev.h; path = WhiteboardSDK/WBViewControllerDev.h; sourceTree = SOURCE_ROOT; };
@@ -764,25 +782,7 @@
 		7BEE0CC71769256800BD8C27 /* RoomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomListViewController.m; sourceTree = "<group>"; };
 		7BEE0CC9176927BF00BD8C27 /* RoomDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataViewController.h; sourceTree = "<group>"; };
 		7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataViewController.m; sourceTree = "<group>"; };
-		A90CE9AF17729F4C006DD933 /* WBMenuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuButton.h; sourceTree = "<group>"; };
-		A90CE9B017729F4C006DD933 /* WBMenuButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuButton.m; sourceTree = "<group>"; };
-		A90CE9B41773548C006DD933 /* WBUndoButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUndoButton.h; sourceTree = "<group>"; };
-		A90CE9B51773548C006DD933 /* WBUndoButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUndoButton.m; sourceTree = "<group>"; };
-		A90CE9B917736230006DD933 /* WBHistoryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBHistoryButton.h; sourceTree = "<group>"; };
-		A90CE9BA17736230006DD933 /* WBHistoryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBHistoryButton.m; sourceTree = "<group>"; };
 		A90CEA4517736720006DD933 /* WhiteboardSDK Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WhiteboardSDK Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBBottomRightToolbarView.h; sourceTree = "<group>"; };
-		A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBBottomRightToolbarView.m; sourceTree = "<group>"; };
-		A9520C9617701F4900B180BA /* WBButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBButton.h; sourceTree = "<group>"; };
-		A9520C9717701F4900B180BA /* WBButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBButton.m; sourceTree = "<group>"; };
-		A9520C9B17701F5F00B180BA /* WBEraserButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBEraserButton.h; sourceTree = "<group>"; };
-		A9520C9C17701F5F00B180BA /* WBEraserButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBEraserButton.m; sourceTree = "<group>"; };
-		A9D3B44F176F1B5C005574D2 /* WBCanvasButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBCanvasButton.h; sourceTree = "<group>"; };
-		A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBCanvasButton.m; sourceTree = "<group>"; };
-		A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBCanvasToolbarView.h; sourceTree = "<group>"; };
-		A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBCanvasToolbarView.m; sourceTree = "<group>"; };
-		A9D3B453176F1B5C005574D2 /* WBToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBToolbarView.h; sourceTree = "<group>"; };
-		A9D3B454176F1B5C005574D2 /* WBToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBToolbarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -892,6 +892,45 @@
 				7B2354551767AFBF0055A319 /* GSSignUpViewController.m */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7B304C8517756CAB0037A320 /* WBToolbarView */ = {
+			isa = PBXGroup;
+			children = (
+				7B304C8617756CAB0037A320 /* WBAddMoreButton.h */,
+				7B304C8717756CAB0037A320 /* WBAddMoreButton.m */,
+				7B304C8817756CAB0037A320 /* WBAddMoreSelectionView.h */,
+				7B304C8917756CAB0037A320 /* WBAddMoreSelectionView.m */,
+				7B304C8A17756CAB0037A320 /* WBBottomRightToolbarView.h */,
+				7B304C8B17756CAB0037A320 /* WBBottomRightToolbarView.m */,
+				7B304C8C17756CAB0037A320 /* WBButton.h */,
+				7B304C8D17756CAB0037A320 /* WBButton.m */,
+				7B304C8E17756CAB0037A320 /* WBCanvasButton.h */,
+				7B304C8F17756CAB0037A320 /* WBCanvasButton.m */,
+				7B304C9017756CAB0037A320 /* WBCanvasToolbarView.h */,
+				7B304C9117756CAB0037A320 /* WBCanvasToolbarView.m */,
+				7B304C9217756CAB0037A320 /* WBEraserButton.h */,
+				7B304C9317756CAB0037A320 /* WBEraserButton.m */,
+				7B304C9417756CAB0037A320 /* WBHistoryButton.h */,
+				7B304C9517756CAB0037A320 /* WBHistoryButton.m */,
+				7B304C9617756CAB0037A320 /* WBHistoryColorButton.h */,
+				7B304C9717756CAB0037A320 /* WBHistoryColorButton.m */,
+				7B304C9817756CAB0037A320 /* WBMenubarView.h */,
+				7B304C9917756CAB0037A320 /* WBMenubarView.m */,
+				7B304C9A17756CAB0037A320 /* WBMenuButton.h */,
+				7B304C9B17756CAB0037A320 /* WBMenuButton.m */,
+				7B304C9C17756CAB0037A320 /* WBMenuContentView.h */,
+				7B304C9D17756CAB0037A320 /* WBMenuContentView.m */,
+				7B304C9E17756CAB0037A320 /* WBMoveButton.h */,
+				7B304C9F17756CAB0037A320 /* WBMoveButton.m */,
+				7B304CA017756CAB0037A320 /* WBToolbarView.h */,
+				7B304CA117756CAB0037A320 /* WBToolbarView.m */,
+				7B304CA217756CAB0037A320 /* WBToolMonitorView.h */,
+				7B304CA317756CAB0037A320 /* WBToolMonitorView.m */,
+				7B304CA417756CAB0037A320 /* WBUndoButton.h */,
+				7B304CA517756CAB0037A320 /* WBUndoButton.m */,
+			);
+			path = WBToolbarView;
 			sourceTree = "<group>";
 		};
 		7B82E5C5175F9D0C00B063D7 = {
@@ -1200,8 +1239,8 @@
 				7BEA534F176687F1001BC5FE /* StickersView */,
 				7BEA5354176687F1001BC5FE /* TextView */,
 				7BEA5360176687F1001BC5FE /* WebView */,
-				A9D3B44E176F1B5C005574D2 /* WBToolbarView */,
 				7BEA534C176687F0001BC5FE /* GreengarThemeView */,
+				7B304C8517756CAB0037A320 /* WBToolbarView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1475,46 +1514,6 @@
 			path = BezierPathView;
 			sourceTree = "<group>";
 		};
-		A9D3B44E176F1B5C005574D2 /* WBToolbarView */ = {
-			isa = PBXGroup;
-			children = (
-				A9520C9617701F4900B180BA /* WBButton.h */,
-				A9520C9717701F4900B180BA /* WBButton.m */,
-				A9D3B44F176F1B5C005574D2 /* WBCanvasButton.h */,
-				A9D3B450176F1B5C005574D2 /* WBCanvasButton.m */,
-				A9520C9B17701F5F00B180BA /* WBEraserButton.h */,
-				A9520C9C17701F5F00B180BA /* WBEraserButton.m */,
-				7BC34BC01770E3A100CF6EBA /* WBHistoryColorButton.h */,
-				7BC34BC11770E3A200CF6EBA /* WBHistoryColorButton.m */,
-				7B931E091771645A005500AB /* WBAddMoreButton.h */,
-				7B931E0A1771645B005500AB /* WBAddMoreButton.m */,
-				7B931E0B1771645B005500AB /* WBMoveButton.h */,
-				7B931E0C1771645B005500AB /* WBMoveButton.m */,
-				A9D3B451176F1B5C005574D2 /* WBCanvasToolbarView.h */,
-				A9D3B452176F1B5C005574D2 /* WBCanvasToolbarView.m */,
-				A9D3B453176F1B5C005574D2 /* WBToolbarView.h */,
-				A9D3B454176F1B5C005574D2 /* WBToolbarView.m */,
-				7BC34BC5177108C500CF6EBA /* WBMenubarView.h */,
-				7BC34BC6177108C600CF6EBA /* WBMenubarView.m */,
-				7BCDC7091775047E00D851CF /* WBMenuContentView.h */,
-				7BCDC70A1775047F00D851CF /* WBMenuContentView.m */,
-				A9520C8B176FB5ED00B180BA /* WBBottomRightToolbarView.h */,
-				A9520C8C176FB5ED00B180BA /* WBBottomRightToolbarView.m */,
-				7BBCACA1176FBA5500950ABA /* WBToolMonitorView.h */,
-				7BBCACA2176FBA5500950ABA /* WBToolMonitorView.m */,
-				7B931E1317716A7F005500AB /* WBAddMoreSelectionView.h */,
-				7B931E1417716A80005500AB /* WBAddMoreSelectionView.m */,
-				A90CE9AF17729F4C006DD933 /* WBMenuButton.h */,
-				A90CE9B017729F4C006DD933 /* WBMenuButton.m */,
-				A90CE9B41773548C006DD933 /* WBUndoButton.h */,
-				A90CE9B51773548C006DD933 /* WBUndoButton.m */,
-				A90CE9B917736230006DD933 /* WBHistoryButton.h */,
-				A90CE9BA17736230006DD933 /* WBHistoryButton.m */,
-			);
-			name = WBToolbarView;
-			path = ../../../WBToolbarView;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1577,21 +1576,6 @@
 				7BEB7FE0176A386800F5FE5D /* CGPaintingView.h in Headers */,
 				7BEB7FE5176A39D800F5FE5D /* CGCanvasElement.h in Headers */,
 				7BBCAC9E176F7CB000950ABA /* HistoryElementCanvasDraw.h in Headers */,
-				A9520C8D176FB5ED00B180BA /* WBBottomRightToolbarView.h in Headers */,
-				A9520C93176FB8AD00B180BA /* WBCanvasButton.h in Headers */,
-				A9520C94176FB8AD00B180BA /* WBCanvasToolbarView.h in Headers */,
-				A9520C95176FB8AD00B180BA /* WBToolbarView.h in Headers */,
-				7BBCACA3176FBA5600950ABA /* WBToolMonitorView.h in Headers */,
-				A9520C9817701F4900B180BA /* WBButton.h in Headers */,
-				A9520C9D17701F5F00B180BA /* WBEraserButton.h in Headers */,
-				7BC34BC21770E3A200CF6EBA /* WBHistoryColorButton.h in Headers */,
-				7BC34BC7177108C700CF6EBA /* WBMenubarView.h in Headers */,
-				7B931E0D1771645B005500AB /* WBAddMoreButton.h in Headers */,
-				7B931E101771645B005500AB /* WBMoveButton.h in Headers */,
-				7B931E1517716A80005500AB /* WBAddMoreSelectionView.h in Headers */,
-				A90CE9B117729F4C006DD933 /* WBMenuButton.h in Headers */,
-				A90CE9B61773548C006DD933 /* WBUndoButton.h in Headers */,
-				A90CE9BB17736230006DD933 /* WBHistoryButton.h in Headers */,
 				7BCDC6E21774D10B00D851CF /* AGImagePickerController+Helper.h in Headers */,
 				7BCDC6E91774D10B00D851CF /* AGImagePickerController.h in Headers */,
 				7BCDC6ED1774D10B00D851CF /* AGImagePickerControllerDefines.h in Headers */,
@@ -1601,7 +1585,22 @@
 				7BCDC6FA1774D10B00D851CF /* AGIPCGridItem.h in Headers */,
 				7BCDC6FE1774D10B00D851CF /* AGIPCToolbarItem.h in Headers */,
 				7BCDC7021774D10B00D851CF /* ALAsset+AGIPC.h in Headers */,
-				7BCDC70B1775048000D851CF /* WBMenuContentView.h in Headers */,
+				7B304CA617756CAB0037A320 /* WBAddMoreButton.h in Headers */,
+				7B304CAA17756CAB0037A320 /* WBAddMoreSelectionView.h in Headers */,
+				7B304CAE17756CAB0037A320 /* WBBottomRightToolbarView.h in Headers */,
+				7B304CB217756CAB0037A320 /* WBButton.h in Headers */,
+				7B304CB617756CAB0037A320 /* WBCanvasButton.h in Headers */,
+				7B304CBA17756CAB0037A320 /* WBCanvasToolbarView.h in Headers */,
+				7B304CBE17756CAB0037A320 /* WBEraserButton.h in Headers */,
+				7B304CC217756CAB0037A320 /* WBHistoryButton.h in Headers */,
+				7B304CC617756CAB0037A320 /* WBHistoryColorButton.h in Headers */,
+				7B304CCA17756CAB0037A320 /* WBMenubarView.h in Headers */,
+				7B304CCE17756CAB0037A320 /* WBMenuButton.h in Headers */,
+				7B304CD217756CAB0037A320 /* WBMenuContentView.h in Headers */,
+				7B304CD617756CAB0037A320 /* WBMoveButton.h in Headers */,
+				7B304CDA17756CAB0037A320 /* WBToolbarView.h in Headers */,
+				7B304CDE17756CAB0037A320 /* WBToolMonitorView.h in Headers */,
+				7B304CE217756CAB0037A320 /* WBUndoButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1908,22 +1907,7 @@
 				7B23545F1767BECC0055A319 /* GSRoom.m in Sources */,
 				7BEB7FE1176A386800F5FE5D /* CGPaintingView.m in Sources */,
 				7BEB7FE6176A39D800F5FE5D /* CGCanvasElement.m in Sources */,
-				A9D3B455176F1B5C005574D2 /* WBCanvasButton.m in Sources */,
-				A9D3B456176F1B5C005574D2 /* WBCanvasToolbarView.m in Sources */,
-				A9D3B457176F1B5C005574D2 /* WBToolbarView.m in Sources */,
 				7BBCAC9F176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */,
-				A9520C8E176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */,
-				7BBCACA4176FBA5600950ABA /* WBToolMonitorView.m in Sources */,
-				A9520C9917701F4900B180BA /* WBButton.m in Sources */,
-				A9520C9E17701F5F00B180BA /* WBEraserButton.m in Sources */,
-				7BC34BC31770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */,
-				7BC34BC8177108C700CF6EBA /* WBMenubarView.m in Sources */,
-				7B931E0E1771645B005500AB /* WBAddMoreButton.m in Sources */,
-				7B931E111771645B005500AB /* WBMoveButton.m in Sources */,
-				7B931E1617716A80005500AB /* WBAddMoreSelectionView.m in Sources */,
-				A90CE9B217729F4C006DD933 /* WBMenuButton.m in Sources */,
-				A90CE9B71773548C006DD933 /* WBUndoButton.m in Sources */,
-				A90CE9BC17736230006DD933 /* WBHistoryButton.m in Sources */,
 				7BCDC6E31774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */,
 				7BCDC6EA1774D10B00D851CF /* AGImagePickerController.m in Sources */,
 				7BCDC6EF1774D10B00D851CF /* AGIPCAlbumsController.m in Sources */,
@@ -1932,7 +1916,22 @@
 				7BCDC6FB1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
 				7BCDC6FF1774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
 				7BCDC7031774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
-				7BCDC70C1775048000D851CF /* WBMenuContentView.m in Sources */,
+				7B304CA717756CAB0037A320 /* WBAddMoreButton.m in Sources */,
+				7B304CAB17756CAB0037A320 /* WBAddMoreSelectionView.m in Sources */,
+				7B304CAF17756CAB0037A320 /* WBBottomRightToolbarView.m in Sources */,
+				7B304CB317756CAB0037A320 /* WBButton.m in Sources */,
+				7B304CB717756CAB0037A320 /* WBCanvasButton.m in Sources */,
+				7B304CBB17756CAB0037A320 /* WBCanvasToolbarView.m in Sources */,
+				7B304CBF17756CAB0037A320 /* WBEraserButton.m in Sources */,
+				7B304CC317756CAB0037A320 /* WBHistoryButton.m in Sources */,
+				7B304CC717756CAB0037A320 /* WBHistoryColorButton.m in Sources */,
+				7B304CCB17756CAB0037A320 /* WBMenubarView.m in Sources */,
+				7B304CCF17756CAB0037A320 /* WBMenuButton.m in Sources */,
+				7B304CD317756CAB0037A320 /* WBMenuContentView.m in Sources */,
+				7B304CD717756CAB0037A320 /* WBMoveButton.m in Sources */,
+				7B304CDB17756CAB0037A320 /* WBToolbarView.m in Sources */,
+				7B304CDF17756CAB0037A320 /* WBToolMonitorView.m in Sources */,
+				7B304CE317756CAB0037A320 /* WBUndoButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1992,21 +1991,6 @@
 				7BEB7FE2176A386800F5FE5D /* CGPaintingView.m in Sources */,
 				7BEB7FE7176A39D800F5FE5D /* CGCanvasElement.m in Sources */,
 				7BBCACA0176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */,
-				A9520C8F176FB5ED00B180BA /* WBBottomRightToolbarView.m in Sources */,
-				A9520C90176FB87E00B180BA /* WBCanvasButton.m in Sources */,
-				A9520C91176FB87E00B180BA /* WBCanvasToolbarView.m in Sources */,
-				A9520C92176FB87E00B180BA /* WBToolbarView.m in Sources */,
-				7BBCACA5176FBA5600950ABA /* WBToolMonitorView.m in Sources */,
-				A9520C9A17701F4900B180BA /* WBButton.m in Sources */,
-				A9520C9F17701F5F00B180BA /* WBEraserButton.m in Sources */,
-				7BC34BC41770E3A200CF6EBA /* WBHistoryColorButton.m in Sources */,
-				7BC34BC9177108C700CF6EBA /* WBMenubarView.m in Sources */,
-				7B931E0F1771645B005500AB /* WBAddMoreButton.m in Sources */,
-				7B931E121771645B005500AB /* WBMoveButton.m in Sources */,
-				7B931E1717716A80005500AB /* WBAddMoreSelectionView.m in Sources */,
-				A90CE9B317729F4C006DD933 /* WBMenuButton.m in Sources */,
-				A90CE9B81773548C006DD933 /* WBUndoButton.m in Sources */,
-				A90CE9BD17736230006DD933 /* WBHistoryButton.m in Sources */,
 				7BCDC6E51774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */,
 				7BCDC6EC1774D10B00D851CF /* AGImagePickerController.m in Sources */,
 				7BCDC6F11774D10B00D851CF /* AGIPCAlbumsController.m in Sources */,
@@ -2015,7 +1999,22 @@
 				7BCDC6FD1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
 				7BCDC7011774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
 				7BCDC7051774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
-				7BCDC70E1775048000D851CF /* WBMenuContentView.m in Sources */,
+				7B304CA917756CAB0037A320 /* WBAddMoreButton.m in Sources */,
+				7B304CAD17756CAB0037A320 /* WBAddMoreSelectionView.m in Sources */,
+				7B304CB117756CAB0037A320 /* WBBottomRightToolbarView.m in Sources */,
+				7B304CB517756CAB0037A320 /* WBButton.m in Sources */,
+				7B304CB917756CAB0037A320 /* WBCanvasButton.m in Sources */,
+				7B304CBD17756CAB0037A320 /* WBCanvasToolbarView.m in Sources */,
+				7B304CC117756CAB0037A320 /* WBEraserButton.m in Sources */,
+				7B304CC517756CAB0037A320 /* WBHistoryButton.m in Sources */,
+				7B304CC917756CAB0037A320 /* WBHistoryColorButton.m in Sources */,
+				7B304CCD17756CAB0037A320 /* WBMenubarView.m in Sources */,
+				7B304CD117756CAB0037A320 /* WBMenuButton.m in Sources */,
+				7B304CD517756CAB0037A320 /* WBMenuContentView.m in Sources */,
+				7B304CD917756CAB0037A320 /* WBMoveButton.m in Sources */,
+				7B304CDD17756CAB0037A320 /* WBToolbarView.m in Sources */,
+				7B304CE117756CAB0037A320 /* WBToolMonitorView.m in Sources */,
+				7B304CE517756CAB0037A320 /* WBUndoButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2130,22 +2129,7 @@
 				A90CEA0C17736720006DD933 /* RoomDataViewController.m in Sources */,
 				A90CEA0D17736720006DD933 /* CGPaintingView.m in Sources */,
 				A90CEA0E17736720006DD933 /* CGCanvasElement.m in Sources */,
-				A90CEA0F17736720006DD933 /* WBCanvasButton.m in Sources */,
-				A90CEA1017736720006DD933 /* WBCanvasToolbarView.m in Sources */,
-				A90CEA1117736720006DD933 /* WBToolbarView.m in Sources */,
 				A90CEA1217736720006DD933 /* HistoryElementCanvasDraw.m in Sources */,
-				A90CEA1317736720006DD933 /* WBBottomRightToolbarView.m in Sources */,
-				A90CEA1417736720006DD933 /* WBToolMonitorView.m in Sources */,
-				A90CEA1517736720006DD933 /* WBButton.m in Sources */,
-				A90CEA1617736720006DD933 /* WBEraserButton.m in Sources */,
-				A90CEA1717736720006DD933 /* WBHistoryColorButton.m in Sources */,
-				A90CEA1817736720006DD933 /* WBMenubarView.m in Sources */,
-				A90CEA1917736720006DD933 /* WBAddMoreButton.m in Sources */,
-				A90CEA1A17736720006DD933 /* WBMoveButton.m in Sources */,
-				A90CEA1B17736720006DD933 /* WBAddMoreSelectionView.m in Sources */,
-				A90CEA1C17736720006DD933 /* WBMenuButton.m in Sources */,
-				A90CEA1D17736720006DD933 /* WBUndoButton.m in Sources */,
-				A90CEA1E17736720006DD933 /* WBHistoryButton.m in Sources */,
 				7BE9D9441773BB2400A2481C /* WBViewControllerDev.m in Sources */,
 				7BCDC6E41774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */,
 				7BCDC6EB1774D10B00D851CF /* AGImagePickerController.m in Sources */,
@@ -2155,7 +2139,22 @@
 				7BCDC6FC1774D10B00D851CF /* AGIPCGridItem.m in Sources */,
 				7BCDC7001774D10B00D851CF /* AGIPCToolbarItem.m in Sources */,
 				7BCDC7041774D10B00D851CF /* ALAsset+AGIPC.m in Sources */,
-				7BCDC70D1775048000D851CF /* WBMenuContentView.m in Sources */,
+				7B304CA817756CAB0037A320 /* WBAddMoreButton.m in Sources */,
+				7B304CAC17756CAB0037A320 /* WBAddMoreSelectionView.m in Sources */,
+				7B304CB017756CAB0037A320 /* WBBottomRightToolbarView.m in Sources */,
+				7B304CB417756CAB0037A320 /* WBButton.m in Sources */,
+				7B304CB817756CAB0037A320 /* WBCanvasButton.m in Sources */,
+				7B304CBC17756CAB0037A320 /* WBCanvasToolbarView.m in Sources */,
+				7B304CC017756CAB0037A320 /* WBEraserButton.m in Sources */,
+				7B304CC417756CAB0037A320 /* WBHistoryButton.m in Sources */,
+				7B304CC817756CAB0037A320 /* WBHistoryColorButton.m in Sources */,
+				7B304CCC17756CAB0037A320 /* WBMenubarView.m in Sources */,
+				7B304CD017756CAB0037A320 /* WBMenuButton.m in Sources */,
+				7B304CD417756CAB0037A320 /* WBMenuContentView.m in Sources */,
+				7B304CD817756CAB0037A320 /* WBMoveButton.m in Sources */,
+				7B304CDC17756CAB0037A320 /* WBToolbarView.m in Sources */,
+				7B304CE017756CAB0037A320 /* WBToolMonitorView.m in Sources */,
+				7B304CE417756CAB0037A320 /* WBUndoButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
