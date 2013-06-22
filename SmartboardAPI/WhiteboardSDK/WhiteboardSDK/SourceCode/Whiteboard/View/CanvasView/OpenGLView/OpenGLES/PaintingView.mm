@@ -278,11 +278,6 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 	return image;
 }
 
-- (void)saveToPhotosApp:(CGImageRef)cgImage {
-    UIImage *image = [UIImage imageWithCGImage:cgImage];
-    UIImageWriteToSavedPhotosAlbum(image, self, nil, nil);
-}
-
 - (void)captureToWhiteboardTempFile {
     UIImage *image = [self glToUIImage];
 	NSData *data = [NSData dataWithData:UIImagePNGRepresentation(image)];

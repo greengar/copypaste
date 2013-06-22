@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WBUtils.h"
 #import "WBPage.h"
+#import "WBMenuItem.h"
 
 @interface WBBoard : UIViewController
 
@@ -34,5 +35,8 @@
 @property (nonatomic, strong) UIImage               *previewImage;
 @property (nonatomic, strong) NSMutableArray        *tags;
 @property (nonatomic, assign) id<WBBoardDelegate>   delegate;
+
+- (void)addMenuItem:(WBMenuItem *)item;
+- (void)doneEditing;
 
 @end

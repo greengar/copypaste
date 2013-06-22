@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WBMenuItem.h"
 
 #define MENU_ARRAY @[@"Exit", @"Saving", @"Sharing", @"Delete Page", @"Credits", @"Help/FAQs", @"Contact Us"]
 #define SAVING_ARRAY @[@"Save a Copy (Duplicate)", @"Save to Photos App", @"Save to Evernote", @"Save to Google Drive"]
@@ -17,16 +18,18 @@
 #define kMenuViewHeight kMenuCellHeight*([SAVING_ARRAY count]+[SHARING_ARRAY count]+[MENU_ARRAY count]-4)+kMenuHeaderHeight*3
 
 @protocol WBMenuContentViewDelegate
-- (void)exitBoard;
 - (void)saveACopy;
-- (void)saveToPhotosApp;
 - (void)shareOnFacebook;
+
+@required
+- (UIImage *)image;
 @end
 
 @interface WBMenuContentView : UIView <UITableViewDelegate, UITableViewDataSource>
 
 - (void)animateUp;
 - (void)animateDown;
+- (void)addMenuItem:(WBMenuItem *)item;
 
 @property (nonatomic, assign) id<WBMenuContentViewDelegate> delegate;
 

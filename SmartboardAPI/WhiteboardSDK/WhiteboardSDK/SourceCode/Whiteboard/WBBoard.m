@@ -29,7 +29,6 @@
 #define kHistoryViewTag     888
 #define kToolMonitorTag     kHistoryViewTag+1
 #define kAddMoreTag         kHistoryViewTag+2
-#define kMenuViewTag        kHistoryViewTag+3
 
 #define kPreviousButtonTag  999
 #define kNextButtonTag      kPreviousButtonTag+1
@@ -48,12 +47,14 @@
 #define kCurlAnimationShouldStopAfter (IS_IPAD ? 0.6f : 0.7f)
 #define kShowNewPageWithCurlDownDuration 0.7f
 
-@interface WBBoard () <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate, WBMenuContentViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate> {
+@interface WBBoard () <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate, WBMenuContentViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate>
+{
     BOOL isPageCurlAnimating;
     BOOL isPageCurled;
     float pageUpSpeed;
     float pageUpTime;
     BOOL wantToTurnToPreviousPage;
+    WBMenuContentView *menuContentView;
 }
 
 - (void)selectPage:(WBPage *)page;
@@ -86,33 +87,34 @@
 
 // TODO: why doesn't this call -initWithNibName:...?
 // This is a test, this method is not used
-- (id)initWithDict:(NSDictionary *)dictionary {
-    self = [super init];
-    if (self) {
-        self.view.frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
-        self.view.backgroundColor = [UIColor clearColor];
-        self.uid = [dictionary objectForKey:@"board_uid"];
-        self.name = [dictionary objectForKey:@"board_name"];
-        self.pages = [NSMutableArray new];
-        
-        NSMutableArray *pages = [dictionary objectForKey:@"board_pages"];
-        for (NSDictionary *pageDict in pages) {
-            WBPage *page = [WBPage loadFromDict:pageDict];
-            [page setPageDelegate:self];
-            [self selectPage:page];
-            [self.pages addObject:page];
-        }
-        
-        // There's always at least 1 page
-        if ([self.pages count]) {
-            [self selectPage:[self.pages objectAtIndex:self.currentPageIndex]]; // Select first page
-        } else {
-            [self addNewPage];
-        }
-    }
-    return self;
-}
+//- (id)initWithDict:(NSDictionary *)dictionary {
+//    self = [super init];
+//    if (self) {
+//        self.view.frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
+//        self.view.backgroundColor = [UIColor clearColor];
+//        self.uid = [dictionary objectForKey:@"board_uid"];
+//        self.name = [dictionary objectForKey:@"board_name"];
+//        self.pages = [NSMutableArray new];
+//        
+//        NSMutableArray *pages = [dictionary objectForKey:@"board_pages"];
+//        for (NSDictionary *pageDict in pages) {
+//            WBPage *page = [WBPage loadFromDict:pageDict];
+//            [page setPageDelegate:self];
+//            [self selectPage:page];
+//            [self.pages addObject:page];
+//        }
+//        
+//        // There's always at least 1 page
+//        if ([self.pages count]) {
+//            [self selectPage:[self.pages objectAtIndex:self.currentPageIndex]]; // Select first page
+//        } else {
+//            [self addNewPage];
+//        }
+//    }
+//    return self;
+//}
 
+// Designated initalizer - this method should always be called when creating a WBBoard
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -122,12 +124,17 @@
         self.name = [NSString stringWithFormat:@"Whiteboard %@", [WBUtils getCurrentTime]];
         self.pages = [NSMutableArray new];
         
-        [self initLayersWithFrame:self.view.frame];
+        [self initLayersWithFrame:self.view.frame]; // initializes self.menubarView
         [self addNewPage];
         
         [[SettingManager sharedManager] setCurrentColorTab:0];
         
         [self initPageCurlControl];
+        
+        int menuContentHeight = kMenuViewHeight+kOffsetForBouncing;
+        WBMenubarView *menubar = self.menubarView;
+        menuContentView = [[WBMenuContentView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width*1.25, menuContentHeight)];
+        [menuContentView setDelegate:self];
     }
     return self;
 }
@@ -143,6 +150,11 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+}
+
+- (void)addMenuItem:(WBMenuItem *)item
+{
+    [menuContentView addMenuItem:item];
 }
 
 - (int)numOfPages {
@@ -535,63 +547,40 @@
 }
 
 #pragma mark - Menu Bar Buttons
-- (void)menuButtonTappedFrom:(UIView *)menubar {
-    if (![self.view viewWithTag:kMenuViewTag]) {
-        int menuContentHeight = kMenuViewHeight+kOffsetForBouncing;
-        WBMenuContentView *menuContentView = [[WBMenuContentView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width*1.25, menuContentHeight)];
-        [menuContentView setTag:kMenuViewTag];
-        [menuContentView setDelegate:self];
+- (void)menuButtonTappedFrom:(UIView *)menubar
+{
+    // TODO: How did this work before?
+    // I can't find any place in the code where `menuContentView` is removed from its superview.
+    
+    if (menuContentView.superview == nil)
+    {
+        // menuContentView is not visible at all
         [self.view addSubview:menuContentView];
         [menuContentView animateDown];
         
         [self forceHideHistory];
-    
-        [self.menubarView didShowMenuView:YES];
         
-    } else {
+        [self.menubarView didShowMenuView:YES];
+    }
+    else
+    {
+        // menuContentView may be animating down; visible; or animating up
         [self forceHideMenu];
     }
 }
 
 - (void)forceHideMenu {
-    [((WBMenuContentView *) [self.view viewWithTag:kMenuViewTag]) animateUp];
+    [menuContentView animateUp];
     [self.menubarView didShowMenuView:NO];
-}
-
-- (void)exitBoard {
-    [self doneEditing];
 }
 
 - (void)saveACopy {
     
 }
 
-- (void)saveToPhotosApp {
-    UIImage *image = [[self currentPage] exportPageToImage];
-    if (image) {
-        UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Unable to save image to Photos App"
-                                                       delegate:nil cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
-    UIAlertView *alert;
-    if (error)
-        alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                           message:@"Unable to save image to Photos App"
-                                          delegate:nil cancelButtonTitle:@"Ok"
-                                 otherButtonTitles:nil];
-    else // All is well
-        alert = [[UIAlertView alloc] initWithTitle:@"Success"
-                                           message:@"Image saved to Photos App"
-                                          delegate:nil cancelButtonTitle:@"Ok"
-                                 otherButtonTitles:nil];
-    [alert show];
+- (UIImage *)image
+{
+    return [[self currentPage] exportPageToImage];
 }
 
 - (void)shareOnFacebook {
@@ -928,7 +917,8 @@
     }
 }
 
-- (void)doneEditing {
+- (void)doneEditing
+{
     dispatch_async(dispatch_get_main_queue(), ^{
         [[HistoryManager sharedManager] clearHistoryPool];
         UIImage *image = [self exportBoardToUIImage];

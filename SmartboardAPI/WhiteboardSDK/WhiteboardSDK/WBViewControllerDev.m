@@ -3,14 +3,17 @@
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 6/5/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import "WBViewControllerDev.h"
 #import "CollaborativeViewController.h"
 #import "GSButton.h"
+#import "WBMenuItem.h" // TODO: This header file SHOULD be visible to developers using the SDK
 
 @interface WBViewControllerDev ()
+
+@property (copy) WBCompletionBlock saveToPhotoLibraryCompletionBlock;
 
 @end
 
@@ -52,7 +55,91 @@
 - (void)useWhiteboardSDK {
     WBBoard *board = [[WBBoard alloc] init];
     [board setDelegate:self];
+    
+    __block __weak WBViewControllerDev *blockSafeSelf = self;
+    
+    [board addMenuItem:[WBMenuItem itemWithSection:@"Navigation" name:@"Close drawing editor"/*@"Back to Organizer"*/ progressString:nil usingBlock:^(UIImage *image, WBCompletionBlock completionBlock) {
+        
+        [board doneEditing];
+        
+    }]];
+    
+    // PicCollage: "Save to Library"
+    // Penultimate: "Save to Camera Roll"
+    // Sketches: "Photo Library"
+    // Smartboard: "Save to Photo Library"
+    
+    // TODO: `progressString` and the parameter to completionBlock() are currently not used.
+    [board addMenuItem:[WBMenuItem itemWithSection:@"Saving" name:@"Save to Photo Library" progressString:@"Saving to Library..." usingBlock:^(UIImage *image, WBCompletionBlock completionBlock) {
+        
+        self.saveToPhotoLibraryCompletionBlock = completionBlock;
+        
+        if (image) {
+            UIImageWriteToSavedPhotosAlbum(image, blockSafeSelf, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Unable to save image to Photos App"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+                [alert show];
+        }
+        
+    }]];
+    
+    // Exit Board (Close drawing editor)
+    
+    // ## Saving
+    
+    // Save a Copy
+    
+    // Save to Photos App
+    
+    // Save to Evernote
+    
+    // Save to Google Drive
+    
+    // ## Sharing
+    
+    // Share on Facebook
+    
+    // Share on Twitter
+    
+    // Upload to Online Gallery
+    
+    // Send in Email
+    
+    // Send in iMessage/MMS
+    
+    // ## <blank section header>
+    
+    // Delete Page
+    
+    // Credits
+    
+    // Help/FAQs
+    
+    // Contact Us
+    
+    
     [board showMeWithAnimationFromController:self];
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    UIAlertView *alert;
+    if (error)
+        alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                           message:@"Unable to save image to Photos App"
+                                          delegate:nil cancelButtonTitle:@"Ok"
+                                 otherButtonTitles:nil];
+    else // All is well
+        alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                           message:@"Image saved to Photos App"
+                                          delegate:nil cancelButtonTitle:@"Ok"
+                                 otherButtonTitles:nil];
+    [alert show];
+    
+    self.saveToPhotoLibraryCompletionBlock(@"Saved to Library!");
 }
 
 - (void)useCollaborativeSDK {

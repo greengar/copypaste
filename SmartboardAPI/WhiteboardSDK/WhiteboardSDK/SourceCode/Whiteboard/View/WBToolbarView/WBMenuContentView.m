@@ -3,24 +3,23 @@
 //  WhiteboardSDK
 //
 //  Created by Hector Zhao on 6/21/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import "WBMenuContentView.h"
 #import "SettingManager.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface WBMenuContentView() {
-    UIView                 *menuView;
-    UITableView            *menuTableView;
-    BOOL                   isAnimationUp;
-    BOOL                   isAnimationDown;
+@interface WBMenuContentView () {
+    UIView         *menuView;
+    UITableView    *menuTableView;
+    BOOL            isAnimationUp;
+    BOOL            isAnimationDown;
+    NSMutableArray *menuSections;
 }
 @end
 
-
 @implementation WBMenuContentView
-@synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -29,6 +28,8 @@
         self.clipsToBounds = YES;
         self.layer.cornerRadius = 5;
         self.backgroundColor = [UIColor clearColor];
+        
+        menuSections = [NSMutableArray new];
         
         menuView = [[UIView alloc] initWithFrame:CGRectMake(0, kOffsetForBouncing, frame.size.width, frame.size.height-kOffsetForBouncing)];
         [menuView setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9]];
@@ -106,37 +107,27 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [MENU_ARRAY count];
+    return menuSections.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section > 0 && section < 4) {
-        return kMenuHeaderHeight;
-    }
-    return 0;
+    return kMenuHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return kMenuCellHeight;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case 1:
-            return [SAVING_ARRAY count];
-        case 2:
-            return [SHARING_ARRAY count];
-        default:
-            return 1;
-    }
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
+    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+    return rowsArray.count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section > 0 && section < 3) {
-        return [MENU_ARRAY objectAtIndex:section];
-    }
-    return @"";
-    
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
+    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+    if (rowsArray.count <= 0) return @"";
+    WBMenuItem *item = rowsArray[0];
+    return item.section;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -155,90 +146,54 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
-    switch ([indexPath section]) {
-        case 1:
-            cell.textLabel.text = [SAVING_ARRAY objectAtIndex:[indexPath row]];
-            break;
-        case 2:
-            cell.textLabel.text = [SHARING_ARRAY objectAtIndex:[indexPath row]];
-            break;
-        default:
-            cell.textLabel.text = [MENU_ARRAY objectAtIndex:[indexPath section]];
-            break;
-    }
+    int sectionIndex = [indexPath section];
+    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+    int rowIndex = [indexPath row];
+    WBMenuItem *item = rowsArray[rowIndex];
+    cell.textLabel.text = item.name;
+    
     return cell;
 }
 
 #pragma mark - UITableView Delegate methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch ([indexPath section]) {
-        case 0:
-            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(exitBoard)]) {
-                [self.delegate exitBoard];
-            }
+    int sectionIndex = [indexPath section];
+    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+    int rowIndex = [indexPath row];
+    WBMenuItem *item = rowsArray[rowIndex];
+    
+    // TODO: is this fast enough that we can just do it every time, regardless of the item chosen? (e.g. Penultimate is able to do this super fast)
+    UIImage *image = [self.delegate image];
+    
+    // TODO: use completion message (set as cell text, like PicCollage)
+    WBCompletionBlock completionBlock = ^(NSString *message) {
+        NSLog(@"completion message: %@", message);
+    };
+    
+    // block should check validity of `image`
+    item.block(image, completionBlock);
+}
+
+- (void)addMenuItem:(WBMenuItem *)item
+{
+    BOOL didAddItem = NO;
+    for (NSMutableArray *a in menuSections)
+    {
+        if (a.count <= 0) continue;
+        WBMenuItem *currentItem = [a objectAtIndex:0];
+        if ([currentItem.section isEqualToString:item.section])
+        {
+            // `item` belongs in this section
+            [a addObject:item];
+            didAddItem = YES;
             break;
-        case 1:
-            switch ([indexPath row]) {
-                case 0:
-                    // Save a Copy
-                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(saveACopy)]) {
-                        [self.delegate saveACopy];
-                    }
-                    break;
-                case 1:
-                    // Save to Photos App
-                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(saveToPhotosApp)]) {
-                        [self.delegate saveToPhotosApp];
-                    }
-                    break;
-                case 2:
-                    // Save to Evernote
-                    break;
-                case 3:
-                    // Save to Google Drive
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 2:
-            switch ([indexPath row]) {
-                case 0:
-                    // Share on Facebook
-                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(shareOnFacebook)]) {
-                        [self.delegate shareOnFacebook];
-                    }
-                    break;
-                case 1:
-                    // Share on Twitter
-                    break;
-                case 2:
-                    // Upload to Online Gallery
-                    break;
-                case 3:
-                    // Send in Email
-                    break;
-                case 4:
-                    // Send in iMessage/MMS
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 3:
-            // Delete Page
-            break;
-        case 4:
-            // Credits
-            break;
-        case 5:
-            // Help/FAQs
-            break;
-        case 6:
-            // Contact Us
-            break;
-        default:
-            break;
+        }
+    }
+    if (didAddItem == NO)
+    {
+        // Create new section for `item`
+        NSMutableArray *a = [NSMutableArray arrayWithObject:item];
+        [menuSections addObject:a];
     }
 }
 

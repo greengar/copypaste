@@ -515,6 +515,10 @@
 		A90CEA3F17736720006DD933 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA547517668A47001BC5FE /* README.md */; };
 		A90CEA4017736720006DD933 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA547917668A47001BC5FE /* SVProgressHUD.bundle */; };
 		A90CEA4117736720006DD933 /* CollaborativeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */; };
+		A9AEAB181775A86B0038FDCA /* WBMenuItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A9AEAB161775A86B0038FDCA /* WBMenuItem.h */; };
+		A9AEAB191775A86B0038FDCA /* WBMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AEAB171775A86B0038FDCA /* WBMenuItem.m */; };
+		A9AEAB1A1775A86B0038FDCA /* WBMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AEAB171775A86B0038FDCA /* WBMenuItem.m */; };
+		A9AEAB1B1775A86B0038FDCA /* WBMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AEAB171775A86B0038FDCA /* WBMenuItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -783,6 +787,8 @@
 		7BEE0CC9176927BF00BD8C27 /* RoomDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataViewController.h; sourceTree = "<group>"; };
 		7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataViewController.m; sourceTree = "<group>"; };
 		A90CEA4517736720006DD933 /* WhiteboardSDK Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WhiteboardSDK Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9AEAB161775A86B0038FDCA /* WBMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuItem.h; sourceTree = "<group>"; };
+		A9AEAB171775A86B0038FDCA /* WBMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -929,6 +935,8 @@
 				7B304CA317756CAB0037A320 /* WBToolMonitorView.m */,
 				7B304CA417756CAB0037A320 /* WBUndoButton.h */,
 				7B304CA517756CAB0037A320 /* WBUndoButton.m */,
+				A9AEAB161775A86B0038FDCA /* WBMenuItem.h */,
+				A9AEAB171775A86B0038FDCA /* WBMenuItem.m */,
 			);
 			path = WBToolbarView;
 			sourceTree = "<group>";
@@ -1601,6 +1609,7 @@
 				7B304CDA17756CAB0037A320 /* WBToolbarView.h in Headers */,
 				7B304CDE17756CAB0037A320 /* WBToolMonitorView.h in Headers */,
 				7B304CE217756CAB0037A320 /* WBUndoButton.h in Headers */,
+				A9AEAB181775A86B0038FDCA /* WBMenuItem.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1714,7 +1723,7 @@
 			attributes = {
 				CLASSPREFIX = W;
 				LastUpgradeCheck = 0460;
-				ORGANIZATIONNAME = Greengar;
+				ORGANIZATIONNAME = GreenGar;
 			};
 			buildConfigurationList = 7B82E5C9175F9D0C00B063D7 /* Build configuration list for PBXProject "WhiteboardSDK" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1932,6 +1941,7 @@
 				7B304CDB17756CAB0037A320 /* WBToolbarView.m in Sources */,
 				7B304CDF17756CAB0037A320 /* WBToolMonitorView.m in Sources */,
 				7B304CE317756CAB0037A320 /* WBUndoButton.m in Sources */,
+				A9AEAB191775A86B0038FDCA /* WBMenuItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2015,6 +2025,7 @@
 				7B304CDD17756CAB0037A320 /* WBToolbarView.m in Sources */,
 				7B304CE117756CAB0037A320 /* WBToolMonitorView.m in Sources */,
 				7B304CE517756CAB0037A320 /* WBUndoButton.m in Sources */,
+				A9AEAB1B1775A86B0038FDCA /* WBMenuItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2155,6 +2166,7 @@
 				7B304CDC17756CAB0037A320 /* WBToolbarView.m in Sources */,
 				7B304CE017756CAB0037A320 /* WBToolMonitorView.m in Sources */,
 				7B304CE417756CAB0037A320 /* WBUndoButton.m in Sources */,
+				A9AEAB1A1775A86B0038FDCA /* WBMenuItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
