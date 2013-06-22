@@ -163,14 +163,24 @@
     WBMenuItem *item = rowsArray[rowIndex];
     
     // TODO: is this fast enough that we can just do it every time, regardless of the item chosen? (e.g. Penultimate is able to do this super fast)
+    // The more OpenGLES Views it has, the slower the function takes
+    // More Texts or Images do not effect it much
+    // This contains:
+    //  - Export all OpenGLES Views into UIImage then add the UIImage as subview of OpenGLES View (it's called screenshot)
+    //  - Render the current context of the current WBPage into the final UIImage
+    //  - Remove all UIImages (screenshots) from all OpenGLES Views
+    // TODO: I usually check if delegate is not nil and response to select first
+    // likes if (self.delegate && self.delegate responseToSelector:@selector(image))
     UIImage *image = [self.delegate image];
     
     // TODO: use completion message (set as cell text, like PicCollage)
     WBCompletionBlock completionBlock = ^(NSString *message) {
+        // TODO: should use DLog, should not use NSLog
         NSLog(@"completion message: %@", message);
     };
     
     // block should check validity of `image`
+    // TODO: should check if block is set or not (developers may create WBMenuItem and set block as NULL)
     item.block(image, completionBlock);
 }
 

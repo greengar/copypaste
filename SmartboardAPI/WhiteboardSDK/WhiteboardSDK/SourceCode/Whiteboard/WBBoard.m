@@ -551,7 +551,8 @@
 {
     // TODO: How did this work before?
     // I can't find any place in the code where `menuContentView` is removed from its superview.
-    
+    // TODO: inside animationDidStop:finished: of WBMenuContent, when the animation up is done
+    // it is removed from its superview
     if (menuContentView.superview == nil)
     {
         // menuContentView is not visible at all
