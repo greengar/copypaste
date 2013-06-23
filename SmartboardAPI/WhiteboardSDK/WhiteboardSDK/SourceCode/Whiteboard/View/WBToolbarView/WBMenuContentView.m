@@ -31,6 +31,13 @@
         
         menuSections = [NSMutableArray new];
         
+        // default menu item
+        [self addMenuItem:[WBMenuItem itemInSection:@"Navigation" name:@"Close drawing editor"/*@"Back to Organizer"*/ progressString:@"Closing editor..." blockWithoutImage:^(WBCompletionBlock completionBlock) {
+            // this is kind of slow because it exports the page to an image before returning. that's ok for now.
+            [self.delegate doneEditing]; // @required delegate method!
+            completionBlock(@"Closing...");
+        }]];
+        
         menuView = [[UIView alloc] initWithFrame:CGRectMake(0, kOffsetForBouncing, frame.size.width, frame.size.height-kOffsetForBouncing)];
         [menuView setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9]];
         [menuView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
@@ -143,8 +150,11 @@
         cell.textLabel.font = [UIFont systemFontOfSize:25.0f];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:20.0f];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
+    
+    // do this out here to ensure we reset the cell's state if it was temporarily completed before
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    cell.textLabel.enabled = YES;
     
     int sectionIndex = [indexPath section];
     NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
@@ -156,32 +166,81 @@
 }
 
 #pragma mark - UITableView Delegate methods
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.selectionStyle == UITableViewCellSelectionStyleNone)
+    {
+        return nil;
+    }
+    return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(cell.selectionStyle == UITableViewCellSelectionStyleNone) {
+        return;
+    }
+    
+    // Change the selected background view of the cell.
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     int sectionIndex = [indexPath section];
     NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
     int rowIndex = [indexPath row];
     WBMenuItem *item = rowsArray[rowIndex];
     
-    // TODO: is this fast enough that we can just do it every time, regardless of the item chosen? (e.g. Penultimate is able to do this super fast)
-    // The more OpenGLES Views it has, the slower the function takes
-    // More Texts or Images do not effect it much
-    // This contains:
-    //  - Export all OpenGLES Views into UIImage then add the UIImage as subview of OpenGLES View (it's called screenshot)
-    //  - Render the current context of the current WBPage into the final UIImage
-    //  - Remove all UIImages (screenshots) from all OpenGLES Views
-    // TODO: I usually check if delegate is not nil and response to select first
-    // likes if (self.delegate && self.delegate responseToSelector:@selector(image))
-    UIImage *image = [self.delegate image];
-    
-    // TODO: use completion message (set as cell text, like PicCollage)
+    // use completion message (set as cell text, like PicCollage)
     WBCompletionBlock completionBlock = ^(NSString *message) {
-        // TODO: should use DLog, should not use NSLog
-        NSLog(@"completion message: %@", message);
+        // update the cell's text
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        cell.textLabel.text = message;
+        // note: we are intentionally NOT updating the data source so that when this table is refreshed, this message will go away
+        // (it is a temporary message)
+        
+        // similarly, we want to temporarily disable selection for this row.
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        // grey out the item
+        cell.textLabel.enabled = NO;
     };
     
-    // block should check validity of `image`
-    // TODO: should check if block is set or not (developers may create WBMenuItem and set block as NULL)
-    item.block(image, completionBlock);
+    if (item.blockWithImage) {
+        
+        // Re: -image - Penultimate is able to do this super fast
+        // The more OpenGLES Views it has, the slower the function takes
+        // More Texts or Images do not effect it much
+        // This contains:
+        //  - Export all OpenGLES Views into UIImage then add the UIImage as subview of OpenGLES View (it's called screenshot)
+        //  - Render the current context of the current WBPage into the final UIImage
+        //  - Remove all UIImages (screenshots) from all OpenGLES Views
+        
+        // If the delegate method is not @required, check if delegate is not nil and responds to selector first.
+        // e.g. if ([self.delegate respondsToSelector:@selector(image)])
+        // In this case, the delegate method is @required
+        
+        // This is actually kind of slow so let's try running it in the background
+        // Cool, this seems to work well.
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            UIImage *image = [self.delegate image];
+            
+            // block should check validity of `image` and `completionBlock`
+            // note: block execution doesn't take much time (and, at least in the case of "Save to Photo Library", is mostly asynchronous anyway)
+            // so let's try running it on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                item.blockWithImage(image, completionBlock);
+            });
+        });
+    }
+    
+    if (item.blockWithoutImage) {
+        // by using dispatch_async we can allow the cell selection background to fade out
+        dispatch_async(dispatch_get_main_queue(), ^{
+            item.blockWithoutImage(completionBlock);
+        });
+    }
 }
 
 - (void)addMenuItem:(WBMenuItem *)item
@@ -205,6 +264,11 @@
         NSMutableArray *a = [NSMutableArray arrayWithObject:item];
         [menuSections addObject:a];
     }
+}
+
+- (void)removeAllMenuItems
+{
+    [menuSections removeAllObjects];
 }
 
 @end

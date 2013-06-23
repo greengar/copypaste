@@ -16,7 +16,7 @@
 + (NSString *)getBaseDocumentFolder;
 
 + (NSDictionary *)writeBoardToFile:(WBBoard *)board;
-+ (WBBoard *)readBoardFromFileWithUid:(NSString *)uid;
+//+ (WBBoard *)readBoardFromFileWithUid:(NSString *)uid;
 
 + (NSDictionary *)exportBoardToData:(WBBoard *)board;
 + (WBBoard *)importDataToCreateBoard:(NSDictionary *)dict;

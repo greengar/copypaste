@@ -1061,10 +1061,10 @@
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 
-+ (WBBoard *)loadFromDict:(NSDictionary *)dict {
-    WBBoard *board = [[WBBoard alloc] initWithDict:dict];
-    return board;
-}
+//+ (WBBoard *)loadFromDict:(NSDictionary *)dict {
+//    WBBoard *board = [[WBBoard alloc] initWithDict:dict];
+//    return board;
+//}
 
 #pragma mark - Orientation
 // pre-iOS 6 support

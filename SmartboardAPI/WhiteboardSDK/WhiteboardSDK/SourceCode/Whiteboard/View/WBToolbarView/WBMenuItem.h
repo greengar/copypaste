@@ -9,15 +9,18 @@
 #import <Foundation/Foundation.h>
 
 typedef void (^WBCompletionBlock)(NSString *message);
-typedef void (^WBMenuItemBlock)(UIImage *image, WBCompletionBlock completionBlock);
+typedef void (^WBMenuItemBlockWithImage)(UIImage *image, WBCompletionBlock completionBlock);
+typedef void (^WBMenuItemBlockWithoutImage)(WBCompletionBlock completionBlock);
 
 @interface WBMenuItem : NSObject
 
 @property (copy) NSString *section;
 @property (copy) NSString *name;
 @property (copy) NSString *progressString;
-@property (strong) WBMenuItemBlock block;
+@property (strong) WBMenuItemBlockWithImage blockWithImage;
+@property (strong) WBMenuItemBlockWithoutImage blockWithoutImage;
 
-+ (id)itemWithSection:(NSString *)section name:(NSString *)name progressString:(NSString *)progressString usingBlock:(WBMenuItemBlock)block;
++ (id)itemInSection:(NSString *)section name:(NSString *)name progressString:(NSString *)progressString blockWithImage:(WBMenuItemBlockWithImage)block;
++ (id)itemInSection:(NSString *)section name:(NSString *)name progressString:(NSString *)progressString blockWithoutImage:(WBMenuItemBlockWithoutImage)block;
 
 @end

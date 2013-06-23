@@ -10,13 +10,23 @@
 
 @implementation WBMenuItem
 
-+ (id)itemWithSection:(NSString *)section name:(NSString *)name progressString:(NSString *)progressString usingBlock:(WBMenuItemBlock)block
++ (id)itemInSection:(NSString *)section name:(NSString *)name progressString:(NSString *)progressString blockWithImage:(WBMenuItemBlockWithImage)block
 {
     WBMenuItem *menuItem = [[WBMenuItem alloc] init];
     menuItem.section = section;
     menuItem.name = name;
     menuItem.progressString = progressString;
-    menuItem.block = block;
+    menuItem.blockWithImage = block;
+    return menuItem;
+}
+
++ (id)itemInSection:(NSString *)section name:(NSString *)name progressString:(NSString *)progressString blockWithoutImage:(WBMenuItemBlockWithoutImage)block
+{
+    WBMenuItem *menuItem = [[WBMenuItem alloc] init];
+    menuItem.section = section;
+    menuItem.name = name;
+    menuItem.progressString = progressString;
+    menuItem.blockWithoutImage = block;
     return menuItem;
 }
 

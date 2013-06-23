@@ -26,9 +26,9 @@
  */
 - (int)numOfPages;
 
-- (id)initWithDict:(NSDictionary *)dictionary;
+//- (id)initWithDict:(NSDictionary *)dictionary;
 - (NSDictionary *)saveToDict;
-+ (WBBoard *)loadFromDict:(NSDictionary *)dict;
+//+ (WBBoard *)loadFromDict:(NSDictionary *)dict;
 
 @property (nonatomic, strong) NSString              *uid;
 @property (nonatomic, strong) NSString              *name;

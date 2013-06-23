@@ -40,13 +40,13 @@ static BoardManager *shareManager = nil;
     return boardDict;
 }
 
-+ (WBBoard *)readBoardFromFileWithUid:(NSString *)uid {
-    THROW_EXCEPTION_TYPE(UnimplementedException);
-    NSString *folderPath = [BoardManager getBaseDocumentFolder];
-    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", uid]];
-    NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    return [WBBoard loadFromDict:boardDict];
-}
+//+ (WBBoard *)readBoardFromFileWithUid:(NSString *)uid {
+//    THROW_EXCEPTION_TYPE(UnimplementedException);
+//    NSString *folderPath = [BoardManager getBaseDocumentFolder];
+//    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", uid]];
+//    NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+//    return [WBBoard loadFromDict:boardDict];
+//}
 
 + (NSDictionary *)exportBoardToData:(WBBoard *)board {
     return nil;

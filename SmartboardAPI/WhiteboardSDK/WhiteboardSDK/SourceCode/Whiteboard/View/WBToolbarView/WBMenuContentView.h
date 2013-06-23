@@ -23,6 +23,7 @@
 
 @required
 - (UIImage *)image;
+- (void)doneEditing;
 @end
 
 @interface WBMenuContentView : UIView <UITableViewDelegate, UITableViewDataSource>
@@ -30,6 +31,7 @@
 - (void)animateUp;
 - (void)animateDown;
 - (void)addMenuItem:(WBMenuItem *)item;
+- (void)removeAllMenuItems;
 
 @property (nonatomic, assign) id<WBMenuContentViewDelegate> delegate;
 

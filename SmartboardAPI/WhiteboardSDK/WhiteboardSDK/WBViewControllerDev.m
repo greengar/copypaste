@@ -56,36 +56,36 @@
     WBBoard *board = [[WBBoard alloc] init];
     [board setDelegate:self];
     
-    __block __weak WBViewControllerDev *blockSafeSelf = self;
-    
-    [board addMenuItem:[WBMenuItem itemWithSection:@"Navigation" name:@"Close drawing editor"/*@"Back to Organizer"*/ progressString:nil usingBlock:^(UIImage *image, WBCompletionBlock completionBlock) {
-        
-        [board doneEditing];
-        
-    }]];
-    
-    // PicCollage: "Save to Library"
-    // Penultimate: "Save to Camera Roll"
-    // Sketches: "Photo Library"
-    // Smartboard: "Save to Photo Library"
-    
-    // TODO: `progressString` and the parameter to completionBlock() are currently not used.
-    [board addMenuItem:[WBMenuItem itemWithSection:@"Saving" name:@"Save to Photo Library" progressString:@"Saving to Library..." usingBlock:^(UIImage *image, WBCompletionBlock completionBlock) {
-        
-        self.saveToPhotoLibraryCompletionBlock = completionBlock;
-        
-        if (image) {
-            UIImageWriteToSavedPhotosAlbum(image, blockSafeSelf, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Unable to save image to Photos App"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
-                [alert show];
-        }
-        
-    }]];
+//    __block __weak WBViewControllerDev *blockSafeSelf = self;
+//    
+//    [board addMenuItem:[WBMenuItem itemInSection:@"Navigation" name:@"Close drawing editor"/*@"Back to Organizer"*/ progressString:nil blockWithImage:^(UIImage *image, WBCompletionBlock completionBlock) {
+//        
+//        [board doneEditing];
+//        
+//    }]];
+//    
+//    // PicCollage: "Save to Library"
+//    // Penultimate: "Save to Camera Roll"
+//    // Sketches: "Photo Library"
+//    // Smartboard: "Save to Photo Library"
+//    
+//    // TODO: `progressString` and the parameter to completionBlock() are currently not used.
+//    [board addMenuItem:[WBMenuItem itemInSection:@"Saving" name:@"Save to Photo Library" progressString:@"Saving to Library..." blockWithImage:^(UIImage *image, WBCompletionBlock completionBlock) {
+//        
+//        self.saveToPhotoLibraryCompletionBlock = completionBlock;
+//        
+//        if (image) {
+//            UIImageWriteToSavedPhotosAlbum(image, blockSafeSelf, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                            message:@"Unable to save image to Photos App"
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"Ok"
+//                                                  otherButtonTitles:nil];
+//                [alert show];
+//        }
+//        
+//    }]];
     
     // Exit Board (Close drawing editor)
     

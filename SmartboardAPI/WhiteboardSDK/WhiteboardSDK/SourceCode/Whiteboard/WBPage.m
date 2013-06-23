@@ -229,6 +229,8 @@
 
 #pragma mark - Export
 - (UIImage *)exportPageToImage {
+    // TODO: cache image so we don't re-export an image if it hasn't changed since the last export?
+    
     BOOL oldHidden = self.isHidden;
     [self setHidden:NO];
     for (WBBaseElement *element in self.elements) {
