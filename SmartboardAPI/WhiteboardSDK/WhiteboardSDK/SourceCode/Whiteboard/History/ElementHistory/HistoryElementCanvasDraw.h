@@ -11,4 +11,6 @@
 
 @interface HistoryElementCanvasDraw : HistoryElement
 
+@property (nonatomic, strong) PaintingCmd *paintingCommand;
+
 @end

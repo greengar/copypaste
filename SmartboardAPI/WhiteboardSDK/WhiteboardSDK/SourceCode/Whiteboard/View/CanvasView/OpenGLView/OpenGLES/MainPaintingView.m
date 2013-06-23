@@ -46,6 +46,7 @@
 @synthesize _zoomOffsetFromTop;
 @synthesize topLeftBounding;
 @synthesize bottomRightBounding;
+@synthesize undoSequenceArray = _undoSequenceArray;
 
 #pragma mark - Initialize
 - (id)initWithDict:(NSDictionary *)dict {
@@ -60,8 +61,7 @@
 		
 		isReceivingStroke = NO;
 		isDrawingStroke = NO;
-		undoSequenceArray = [[NSMutableArray alloc] init];
-		redoSequenceArray = [[NSMutableArray alloc] init];
+		self.undoSequenceArray = [NSMutableArray new];
         
         extRotation = 90;
         
@@ -84,8 +84,7 @@
 		
 		isReceivingStroke = NO;
 		isDrawingStroke = NO;
-		undoSequenceArray = [[NSMutableArray alloc] init];
-		redoSequenceArray = [[NSMutableArray alloc] init];
+		self.undoSequenceArray = [NSMutableArray new];
     }
     return self;
 }
@@ -102,8 +101,7 @@
 		
 		isReceivingStroke = NO;
 		isDrawingStroke = NO;
-		undoSequenceArray = [[NSMutableArray alloc] init];
-		redoSequenceArray = [[NSMutableArray alloc] init];
+		self.undoSequenceArray = [NSMutableArray new];
         
         extRotation = 90;
         
@@ -252,11 +250,15 @@
     } else {
         BOOL paintingIdExisted = NO;
         if (paintId) {
-            for (PaintingCmd *cmd in undoSequenceArray) {
+            for (PaintingCmd *cmd in self.undoSequenceArray) {
                 if ([[cmd uid] isEqualToString:paintId] && [cmd isKindOfClass:[MultiStrokePaintingCmd class]]) {
                     MultiStrokePaintingCmd *multiCmd = (MultiStrokePaintingCmd *)cmd;
                     [multiCmd.strokeArray addObject:newCmd];
                     paintingIdExisted = YES;
+                    
+                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updatedCommandOnUndoStack:)]) {
+                        [self.delegate updatedCommandOnUndoStack:cmd];
+                    }
                     break;
                 }
             }
@@ -325,7 +327,6 @@
     [cmd setDrawingView:self];
     [cmd setCGIImage:[self glToCGImageCreate]];
     [self pushCommandToUndoStack:cmd];
-    currentCmd = nil;
 }
 
 - (void)drawWhenTouchMove:(NSSet *)touches paintId:(NSString *)paintId {
@@ -364,7 +365,7 @@
 			// a single point was touched
             CGPoint location = [touch locationInView:self];
             
-            [self releaseRedoStack];
+            // [self releaseRedoStack];
 			[[SettingManager sharedManager] setupRenderPoint];
             [self applyLocalDrawingCmd];
             
@@ -591,7 +592,7 @@
         // First Touch, draw the first point
         if (!firstDrawingPoint) {
             firstDrawingPoint = YES;
-            [self releaseRedoStack];
+            // [self releaseRedoStack];
             
             if ([touches count] == 1) {
                 [self processTouch:[touches anyObject]];
@@ -629,7 +630,7 @@
             
         } else {            
             if (lastPaintingEvent == PaintingEventDrawStart) {
-                [self releaseRedoStack];
+                // [self releaseRedoStack];
                 [self applyLocalDrawingCmd];
                 [self drawWhenTouchMove:touches paintId:self.currentPaintingId];
             }
@@ -849,7 +850,7 @@
     
     NSMutableArray * cmdToBeRemovedArray = [NSMutableArray array];
     
-    for (PaintingCmd * cmd in undoSequenceArray) {
+    for (PaintingCmd * cmd in self.undoSequenceArray) {
         if (cmd.layerIndex == index) {
             [cmdToBeRemovedArray addObject:cmd];
         }
@@ -858,9 +859,10 @@
             cmd.layerIndex--;
         }
     }
-    [undoSequenceArray removeObjectsInArray:cmdToBeRemovedArray];
+    [self.undoSequenceArray removeObjectsInArray:cmdToBeRemovedArray];
     [cmdToBeRemovedArray removeAllObjects];
     
+    /* Hector: Redo is removed due to the use of History
     for (PaintingCmd * cmd in redoSequenceArray) {
         if (cmd.layerIndex == index) {
             [cmdToBeRemovedArray addObject:cmd];
@@ -872,7 +874,7 @@
     }
     [redoSequenceArray removeObjectsInArray:cmdToBeRemovedArray];
     [cmdToBeRemovedArray removeAllObjects];
-
+     */
     return [super removeLayer:index];
 }
 
@@ -881,8 +883,8 @@
     // TODO: adjust undo commands here
     if (index1 < index2) {
         
-        for (int i = 0; i < [undoSequenceArray count]; i++) {
-            PaintingCmd * cmd = [undoSequenceArray objectAtIndex:i];
+        for (int i = 0; i < [self.undoSequenceArray count]; i++) {
+            PaintingCmd * cmd = [self.undoSequenceArray objectAtIndex:i];
             if (cmd.layerIndex == index1) {
                 cmd.layerIndex = index2;
             } else if (cmd.layerIndex > index1 && cmd.layerIndex <= index2) {
@@ -890,6 +892,7 @@
             }
         }
         
+        /* Hector: Redo is removed due to the use of History
         for (int i = 0; i < [redoSequenceArray count]; i++) {
             PaintingCmd * cmd = [redoSequenceArray objectAtIndex:i];
             if (cmd.layerIndex == index1) {
@@ -898,10 +901,11 @@
                 cmd.layerIndex--;
             }
         }
+         */
         
     } else if (index1 > index2) {
-        for (int i = 0; i < [undoSequenceArray count]; i++) {
-            PaintingCmd * cmd = [undoSequenceArray objectAtIndex:i];
+        for (int i = 0; i < [self.undoSequenceArray count]; i++) {
+            PaintingCmd * cmd = [self.undoSequenceArray objectAtIndex:i];
             if (cmd.layerIndex == index1) {
                 cmd.layerIndex = index2;
             } else if (cmd.layerIndex >= index2 && cmd.layerIndex < index1) {
@@ -909,6 +913,7 @@
             }
         }
         
+        /* Hector: Redo is removed due to the use of History
         for (int i = 0; i < [redoSequenceArray count]; i++) {
             PaintingCmd * cmd = [redoSequenceArray objectAtIndex:i];
             if (cmd.layerIndex == index1) {
@@ -917,6 +922,7 @@
                 cmd.layerIndex++;
             }
         }
+         */
     }
 }
 
@@ -952,8 +958,8 @@
 #if SAVE_CLEAR
     [self addClearUndoCommand:currentLayerIndex];
 #else
-    [undoSequenceArray removeAllObjects];
-    [redoSequenceArray removeAllObjects];
+    [self.undoSequenceArray removeAllObjects];
+    // [redoSequenceArray removeAllObjects];
     
     glPushMatrix();
     glLoadIdentity();
@@ -965,91 +971,69 @@
     ClearPaintingCmd * cmd = [[ClearPaintingCmd alloc] init];
     cmd.layerIndex = layer;
     [self pushCommandToUndoStack:cmd];
-    currentCmd = nil;
 }
 
 #pragma mark - Undo Stroke
-- (BOOL)checkUndo {
-    return [undoSequenceArray count] > 0;
-}
-
-- (BOOL)undoStroke {
-    BOOL status = [self performUndo];
-    
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(doneUndo:)]) {
-        [self.delegate doneUndo:[undoSequenceArray count]];
+- (void)undoStroke {
+    if ([self.undoSequenceArray count]) {
+        [EAGLContext setCurrentContext:self.context];
+        
+        int tempCurrentLayerIndex = currentLayerIndex;
+        
+        glLoadIdentity();
+        glViewport(0, 0, kTextureOriginalSize, kTextureOriginalSize);
+        glOrthof(0, kTextureOriginalSize, 0, kTextureOriginalSize, -1, 1); // the cocos2d way
+        
+        // Clear the current offscreen buffer
+        for (int i = 0; i < self.numOfLayers; i++) {
+            currentLayerIndex = i;
+            
+            DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
+            glBindFramebufferOES(GL_FRAMEBUFFER_OES, layerInfo.offscreenLayerFrameBuffer);
+            
+            glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            
+            // Then load the backing undo redo buffer
+            [self renderBackingUndoRedoTexture];
+        }
+        
+        // Check the undo sequence array, load all painting command except the last command - the one which is removed
+        // due to undo action
+        for (int i = 0; i < [self.undoSequenceArray count]-1; i++) {
+            PaintingCmd * cmd = [self.undoSequenceArray objectAtIndex:i];
+            currentLayerIndex = cmd.layerIndex;
+            
+            DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
+            glBindFramebufferOES(GL_FRAMEBUFFER_OES, layerInfo.offscreenLayerFrameBuffer);
+            
+            [cmd doPaintingAction];
+        }
+        
+        currentLayerIndex = tempCurrentLayerIndex;
+        
+        /* Hector: remove Redo due to the use of History
+        PaintingCmd * lastUndoCmd = [self.undoSequenceArray lastObject];
+        [self pushCommandToRedoStack:lastUndoCmd];
+         */
+        
+        [self setFramebuffer];
+        [self drawView];
+        [self transferToPaintingView:self.extDrawingView];
+        
+        [self.undoSequenceArray removeLastObject];
+        [self applyLocalDrawingCmd];
     }
-    
-    return status;
-}
-
-- (BOOL)performUndo {
-    if ([self checkUndo] == NO) {
-        return NO;
-    } 
-
-    [EAGLContext setCurrentContext:self.context];
-    
-    int tempCurrentLayerIndex = currentLayerIndex;
-    
-    glLoadIdentity();
-    glViewport(0, 0, kTextureOriginalSize, kTextureOriginalSize);
-    glOrthof(0, kTextureOriginalSize, 0, kTextureOriginalSize, -1, 1); // the cocos2d way
-    
-    // Clear the current offscreen buffer
-    for (int i = 0; i < self.numOfLayers; i++) {
-        currentLayerIndex = i;
-        
-        DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
-        glBindFramebufferOES(GL_FRAMEBUFFER_OES, layerInfo.offscreenLayerFrameBuffer);    
-        
-        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        // Then load the backing undo redo buffer
-        [self renderBackingUndoRedoTexture];
-    }
-    
-    // Check the undo sequence array, load all painting command except the last command - the one which is removed
-    // due to undo action
-    for (int i = 0; i < [undoSequenceArray count]-1; i++) {
-        PaintingCmd * cmd = [undoSequenceArray objectAtIndex:i];
-        currentLayerIndex = cmd.layerIndex;
-        
-        DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
-        glBindFramebufferOES(GL_FRAMEBUFFER_OES, layerInfo.offscreenLayerFrameBuffer);    
-        
-        [cmd doPaintingAction];
-    }
-        
-    currentLayerIndex = tempCurrentLayerIndex;
-    
-    PaintingCmd * lastUndoCmd = [undoSequenceArray lastObject];
-    
-    [self setFramebuffer];    
-    [self drawView];
-    
-    [self transferToPaintingView:self.extDrawingView];
-    
-	// Push to redo stack
-	[self pushCommandToRedoStack:lastUndoCmd];
-	
-	[undoSequenceArray removeLastObject];
-    [self applyLocalDrawingCmd];
-
- 	return [self checkUndo];
 }
 
 // Undo procedure for drawing across layers
 // 1. each stroke keeps info of: color, brush size, points, layer index the stroke belongs to
 // 2. back undo redo buffer (BUR buffer) keeps an index that refers to the current layer index
 - (void)pushCommandToUndoStack:(PaintingCmd *)cmd {
-    currentCmd = cmd;
-	[undoSequenceArray addObject:cmd];
+	[self.undoSequenceArray addObject:cmd];
     
-	if ([undoSequenceArray count] > kUndoMaxBuffer) {
-        
-        PaintingCmd * cmd = [undoSequenceArray objectAtIndex:0];
+	if ([self.undoSequenceArray count] > kUndoMaxBuffer) {
+        PaintingCmd * cmd = [self.undoSequenceArray objectAtIndex:0];
         int tempCurrentLayer = currentLayerIndex;
         
         glPushMatrix();
@@ -1063,19 +1047,16 @@
         
         currentLayerIndex = tempCurrentLayer;
         
-        [undoSequenceArray removeObjectAtIndex:0];
+        [self.undoSequenceArray removeObjectAtIndex:0];
 	}
     
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(checkUndo:)]) {
-        [self.delegate checkUndo:[undoSequenceArray count]];
-    }
-    
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addedCommandToUndoPool)]) {
-        [self.delegate addedCommandToUndoPool];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pushedCommandToUndoStack:)]) {
+        [self.delegate pushedCommandToUndoStack:cmd];
     }
 }
 
 #pragma mark - Redo Stroke
+/* Hector: Redo is removed due to the use of History
 - (BOOL)checkRedo {
     return [redoSequenceArray count] > 0;
 }
@@ -1167,6 +1148,7 @@
         [self.delegate checkRedo:[redoSequenceArray count]];
     }
 }
+ */
 
 #pragma mark - Swipe Gesture
 #define kEnableSwipeGesture 0
@@ -1619,10 +1601,10 @@ void CGAffineToGL2(const CGAffineTransform *t, GLfloat *m)
 - (NSDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:NSStringFromCGRect(self.frame) forKey:@"opengl_frame"];
-    if ([undoSequenceArray count]) {
-        NSMutableArray *cmdDicts = [NSMutableArray arrayWithCapacity:[undoSequenceArray count]];
-        for (int i = 0; i < [undoSequenceArray count]; i++) {
-            PaintingCmd *cmd = [undoSequenceArray objectAtIndex:i];
+    if ([self.undoSequenceArray count]) {
+        NSMutableArray *cmdDicts = [NSMutableArray arrayWithCapacity:[self.undoSequenceArray count]];
+        for (int i = 0; i < [self.undoSequenceArray count]; i++) {
+            PaintingCmd *cmd = [self.undoSequenceArray objectAtIndex:i];
             NSDictionary *cmdDict = [cmd saveToDict];
             [cmdDicts addObject:cmdDict];
         }
@@ -1666,9 +1648,9 @@ void CGAffineToGL2(const CGAffineTransform *t, GLfloat *m)
         [self renderBackingUndoRedoTexture];
     }
     
-    // Check the undo sequence array, load all painting command
-    for (int i = 0; i < [undoSequenceArray count]; i++) {
-        PaintingCmd * cmd = [undoSequenceArray objectAtIndex:i];
+    // Check the undo sequence array, load all painting commands
+    for (int i = 0; i < [self.undoSequenceArray count]; i++) {
+        PaintingCmd * cmd = [self.undoSequenceArray objectAtIndex:i];
         currentLayerIndex = cmd.layerIndex;
         
         DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];

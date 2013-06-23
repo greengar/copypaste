@@ -186,11 +186,36 @@ static HistoryManager *shareManager = nil;
     block(historyToUpdates, nil);
 }
 
-- (void)addActionBrushElement:(WBBaseElement *)element forPage:(WBPage *)page withBlock:(WBSingleResultBlock)block {
+- (NSString *)addActionBrushElement:(WBBaseElement *)element
+                            forPage:(WBPage *)page
+                withPaintingCommand:(PaintingCmd *)paintingCmd
+                          withBlock:(WBSingleResultBlock)block {
     HistoryElementCanvasDraw *action = [[HistoryElementCanvasDraw alloc] init];
     [action setElement:element];
+    [action setPaintingCommand:paintingCmd];
     [self addAction:action forPage:page];
     block(action, nil);
+    return [action uid];
+}
+
+- (void)updateActionBrushElementWithId:(NSString *)uid
+                   withPaintingCommand:(PaintingCmd *)paintingCmd
+                               forPage:(WBPage *)page
+                             withBlock:(WBSingleResultBlock)block {
+    // Get the history for that page
+    NSMutableArray *historyForPage = [self.historyPool objectForKey:page.uid];
+    
+    HistoryElementCanvasDraw *actionToUpdate = nil;
+    // Update the desired transform action
+    for (HistoryElement *action in historyForPage) {
+        if ([action.uid isEqualToString:uid]
+            && [action isKindOfClass:[HistoryElementCanvasDraw class]]) {
+            [((HistoryElementCanvasDraw *) action) setPaintingCommand:paintingCmd];
+            actionToUpdate = (HistoryElementCanvasDraw *) action;
+            break;
+        }
+    }
+    block(actionToUpdate, nil);
 }
 
 - (void)addActionTextContentChangedElement:(TextElement *)element

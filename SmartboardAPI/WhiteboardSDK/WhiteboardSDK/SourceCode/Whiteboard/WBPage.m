@@ -230,13 +230,6 @@
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"page_uid"];
     [dict setObject:NSStringFromCGRect(self.frame) forKey:@"page_frame"];
-    
-    NSMutableDictionary *elementPages = [NSMutableDictionary new];
-    for (WBBaseElement *element in self.elements) {
-        [elementPages setObject:[element saveToDict] forKey:element.uid];
-    }
-    [dict setObject:elementPages forKey:@"page_elements"];
-    
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 

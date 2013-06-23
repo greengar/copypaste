@@ -9,6 +9,7 @@
 #import "HistoryElementCanvasDraw.h"
 
 @implementation HistoryElementCanvasDraw
+@synthesize paintingCommand = _paintingCommand;
 
 - (id)init {
     if (self = [super init]) {
@@ -22,10 +23,18 @@
     GLCanvasElement *canvasElement = (GLCanvasElement *) self.element;
     MainPaintingView *paintingView = (MainPaintingView *) [canvasElement contentView];
     if (active) {
-        [paintingView redoStroke];
+        [[paintingView undoSequenceArray] addObject:self.paintingCommand];
+        [paintingView reloadView];
     } else {
         [paintingView undoStroke];
     }
+}
+
+- (NSDictionary *)backupToData {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super backupToData]];
+    [dict setObject:@"HistoryElementCanvasDraw" forKey:@"history_type"];
+    [dict setObject:[self.paintingCommand saveToDict] forKey:@"history_painting"];
+    return dict;
 }
 
 

@@ -12,6 +12,7 @@
 @class WBBaseElement;
 @class TextElement;
 @class WBPage;
+@class PaintingCmd;
 
 @protocol HistoryManagerDelegate
 - (void)updateHistoryView;
@@ -41,9 +42,15 @@
                              forPage:(WBPage *)page
                            withBlock:(WBArrayResultBlock)block;
 
-- (void)addActionBrushElement:(WBBaseElement *)element
-                      forPage:(WBPage *)page
-                    withBlock:(WBSingleResultBlock)block;
+- (NSString *)addActionBrushElement:(WBBaseElement *)element
+                            forPage:(WBPage *)page
+                withPaintingCommand:(PaintingCmd *)paintingCmd
+                          withBlock:(WBSingleResultBlock)block;
+
+- (void)updateActionBrushElementWithId:(NSString *)uid
+                   withPaintingCommand:(PaintingCmd *)paintingCmd
+                               forPage:(WBPage *)page
+                             withBlock:(WBSingleResultBlock)block;
 
 - (void)addActionTextContentChangedElement:(TextElement *)element
                             withOriginText:(NSString *)text1

@@ -44,11 +44,10 @@
     [dict setObject:@"MultiStrokePaintingCmd" forKey:@"paint_cmd_type"];
     
     if ([self.strokeArray count]) {
-        NSMutableArray *strokeDicts = [NSMutableArray arrayWithCapacity:[self.strokeArray count]];
+        NSMutableDictionary *strokeDicts = [NSMutableDictionary dictionaryWithCapacity:[self.strokeArray count]];
         for (int i = 0; i < [self.strokeArray count]; i++) {
             StrokePaintingCmd *cmd = [self.strokeArray objectAtIndex:i];
-            NSDictionary *cmdDict = [cmd saveToDict];
-            [strokeDicts addObject:cmdDict];
+            [strokeDicts setObject:[cmd saveToDict] forKey:cmd.uid];
         }
         [dict setObject:strokeDicts forKey:@"paint_multi_stroke_array"];
     }

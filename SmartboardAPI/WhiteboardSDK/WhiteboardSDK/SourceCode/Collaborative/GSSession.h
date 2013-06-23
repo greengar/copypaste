@@ -134,13 +134,12 @@
  */
 - (void)sendRoomDataToServer:(GSRoom *)room;
 
-
-- (NSString *)getURLOfRoom:(GSRoom *)room;
 /*
  Send dictionary to server
  Send data directly to the URL under the hierarchy
  Make sure you specify the correct URL
  @param dict NSDictionary: data dictionary
+ @param room GSRoom: the room that contains the data to send
  @param urlString NSString: URL string to store the data under the hierarchy
  */
 - (void)sendData:(NSDictionary *)dict ofRoom:(GSRoom *)room atURL:(NSString *)urlString;

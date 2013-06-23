@@ -27,7 +27,7 @@
 }
 - (id)init {
     if (self = [super init]) {
-        self.uid = [WBUtils stringFromDate:[NSDate date]];
+        self.uid = [WBUtils generateUniqueIdWithPrefix:@"CO_"];
     }
     return self;
 }

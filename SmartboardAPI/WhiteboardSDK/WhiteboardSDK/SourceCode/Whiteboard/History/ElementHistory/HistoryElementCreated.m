@@ -37,6 +37,9 @@
 - (NSDictionary *)backupToData {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super backupToData]];
     [dict setObject:@"HistoryElementCreated" forKey:@"history_type"];
+    [dict setObject:NSStringFromCGRect(self.element.defaultFrame) forKey:@"history_default_frame"];
+    [dict setObject:NSStringFromCGAffineTransform(self.element.defaultTransform) forKey:@"history_default_transform"];
+    [dict setObject:NSStringFromCGAffineTransform(self.element.currentTransform) forKey:@"history_current_transform"];
     return dict;
 }
 

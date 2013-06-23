@@ -148,6 +148,15 @@
     }
 }
 
+- (void)loadDataWithBlock:(GSResultBlock)block {
+    [[GSSession activeSession] registerRoomDataChanged:self withBlock:^(id object) {
+        if (block) {
+            block((object != nil), nil);
+        }
+        [[GSSession activeSession] unregisterRoomDataChanged:self];
+    }];
+}
+
 - (NSString *)uid {
     return self.firebaseUid;
 }

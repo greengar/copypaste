@@ -15,12 +15,14 @@
 @property (nonatomic, strong) MainPaintingView *drawingView;
 @property (nonatomic) UIView *previewAreaView;
 @property (nonatomic, strong) UIImageView *screenshotImageView;
+@property (nonatomic, strong) NSString *currentBrushId;
 @end
 
 @implementation GLCanvasElement
 @synthesize drawingView = _drawingView;
 @synthesize previewAreaView = _previewAreaView;
 @synthesize screenshotImageView = _screenshotImageView;
+@synthesize currentBrushId = _currentBrushId;
 
 - (id)initWithDict:(NSDictionary *)dictionary {
     self = [super initWithDict:dictionary];
@@ -137,22 +139,26 @@
 }
 
 #pragma mark - Undo/Redo
-- (void)addedCommandToUndoPool {
-    [[HistoryManager sharedManager] addActionBrushElement:self
-                                                  forPage:(WBPage *)self.superview
+- (void)pushedCommandToUndoStack:(PaintingCmd *)cmd {
+    self.currentBrushId = [[HistoryManager sharedManager] addActionBrushElement:self
+                                                                        forPage:(WBPage *)self.superview
+                                                            withPaintingCommand:cmd
+                                                                      withBlock:^(HistoryAction *history, NSError *error) {
+                                                                        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                            [self.delegate pageHistoryCreated:history];
+                                                                        }
+                                                                    }];
+}
+
+- (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd {
+    [[HistoryManager sharedManager] updateActionBrushElementWithId:self.currentBrushId
+                                               withPaintingCommand:cmd
+                                                           forPage:(WBPage *)self.superview
                                                 withBlock:^(HistoryAction *history, NSError *error) {
                                                     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
                                                         [self.delegate pageHistoryCreated:history];
                                                     }
                                                 }];
-}
-
-- (void)checkUndo:(int)undoCount {
-    
-}
-
-- (void)checkRedo:(int)redoCount {
-    
 }
 
 - (BOOL)canBecomeFirstResponder {

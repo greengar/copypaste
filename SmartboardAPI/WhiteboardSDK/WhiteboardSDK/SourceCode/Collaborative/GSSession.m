@@ -437,10 +437,6 @@ static GSSession *activeSession = nil;
     [[self generateFirebaseForRoom:room] setValue:room.data];
 }
 
-- (NSString *)getURLOfRoom:(GSRoom *)room {
-    return [[self generateFirebaseForRoom:room] name];
-}
-
 - (void)sendData:(NSDictionary *)dict ofRoom:(GSRoom *)room atURL:(NSString *)urlString {
     NSArray *parseURL = [urlString componentsSeparatedByString:@"/"];
     Firebase *firebase = [self generateFirebaseForRoom:room];
