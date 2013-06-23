@@ -11,11 +11,12 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface WBMenuContentView () {
-    UIView         *menuView;
-    UITableView    *menuTableView;
+    UIView          *menuView;
+    UITableView     *menuTableView;
     BOOL            isAnimationUp;
     BOOL            isAnimationDown;
-    NSMutableArray *menuSections;
+    NSMutableArray  *menuSections;
+    BOOL            useCustomizedMenu;
 }
 @end
 
@@ -107,11 +108,22 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return menuSections.count;
+    if (useCustomizedMenu) {
+        return menuSections.count;
+    } else {
+        return [MENU_ARRAY count];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return kMenuHeaderHeight;
+    if (useCustomizedMenu) {
+        return kMenuHeaderHeight;
+    } else {
+        if (section > 0 && section < 4) {
+            return kMenuHeaderHeight;
+        }
+        return 0;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -119,15 +131,33 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
-    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
-    return rowsArray.count;
+    if (useCustomizedMenu) {
+        NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+        return rowsArray.count;
+    } else {
+        switch (sectionIndex) {
+            case 1:
+                return [SAVING_ARRAY count];
+            case 2:
+                return [SHARING_ARRAY count];
+            default:
+                return 1;
+        }
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
-    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
-    if (rowsArray.count <= 0) return @"";
-    WBMenuItem *item = rowsArray[0];
-    return item.section;
+    if (useCustomizedMenu) {
+        NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+        if (rowsArray.count <= 0) return @"";
+        WBMenuItem *item = rowsArray[0];
+        return item.section;
+    } else {
+        if (sectionIndex > 0 && sectionIndex < 3) {
+            return [MENU_ARRAY objectAtIndex:sectionIndex];
+        }
+        return @"";
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -146,46 +176,135 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
-    int sectionIndex = [indexPath section];
-    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
-    int rowIndex = [indexPath row];
-    WBMenuItem *item = rowsArray[rowIndex];
-    cell.textLabel.text = item.name;
+    if (useCustomizedMenu) {
+        int sectionIndex = [indexPath section];
+        NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+        int rowIndex = [indexPath row];
+        WBMenuItem *item = rowsArray[rowIndex];
+        cell.textLabel.text = item.name;
+    } else {
+        switch ([indexPath section]) {
+            case 1:
+                cell.textLabel.text = [SAVING_ARRAY objectAtIndex:[indexPath row]];
+                break;
+            case 2:
+                cell.textLabel.text = [SHARING_ARRAY objectAtIndex:[indexPath row]];
+                break;
+            default:
+                cell.textLabel.text = [MENU_ARRAY objectAtIndex:[indexPath section]];
+                break;
+        }
+    }
     
     return cell;
 }
 
 #pragma mark - UITableView Delegate methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    int sectionIndex = [indexPath section];
-    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
-    int rowIndex = [indexPath row];
-    WBMenuItem *item = rowsArray[rowIndex];
-    
-    // TODO: is this fast enough that we can just do it every time, regardless of the item chosen? (e.g. Penultimate is able to do this super fast)
-    // The more OpenGLES Views it has, the slower the function takes
-    // More Texts or Images do not effect it much
-    // This contains:
-    //  - Export all OpenGLES Views into UIImage then add the UIImage as subview of OpenGLES View (it's called screenshot)
-    //  - Render the current context of the current WBPage into the final UIImage
-    //  - Remove all UIImages (screenshots) from all OpenGLES Views
-    // TODO: I usually check if delegate is not nil and response to select first
-    // likes if (self.delegate && self.delegate responseToSelector:@selector(image))
-    UIImage *image = [self.delegate image];
-    
-    // TODO: use completion message (set as cell text, like PicCollage)
-    WBCompletionBlock completionBlock = ^(NSString *message) {
-        // TODO: should use DLog, should not use NSLog
-        NSLog(@"completion message: %@", message);
-    };
-    
-    // block should check validity of `image`
-    // TODO: should check if block is set or not (developers may create WBMenuItem and set block as NULL)
-    item.block(image, completionBlock);
+    if (useCustomizedMenu) {
+        int sectionIndex = [indexPath section];
+        NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+        int rowIndex = [indexPath row];
+        WBMenuItem *item = rowsArray[rowIndex];
+        
+        // TODO: is this fast enough that we can just do it every time, regardless of the item chosen? (e.g. Penultimate is able to do this super fast)
+        // The more OpenGLES Views it has, the slower the function takes
+        // More Texts or Images do not effect it much
+        // This contains:
+        //  - Export all OpenGLES Views into UIImage then add the UIImage as subview of OpenGLES View (it's called screenshot)
+        //  - Render the current context of the current WBPage into the final UIImage
+        //  - Remove all UIImages (screenshots) from all OpenGLES Views
+        // TODO: I usually check if delegate is not nil and response to select first
+        // likes if (self.delegate && self.delegate responseToSelector:@selector(image))
+        UIImage *image = [self.delegate image];
+        
+        // TODO: use completion message (set as cell text, like PicCollage)
+        WBCompletionBlock completionBlock = ^(NSString *message) {
+            // TODO: should use DLog, should not use NSLog
+            NSLog(@"completion message: %@", message);
+        };
+        
+        // block should check validity of `image`
+        // TODO: should check if block is set or not (developers may create WBMenuItem and set block as NULL)
+        item.block(image, completionBlock);
+        
+    } else {
+        switch ([indexPath section]) {
+            case 0:
+                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(exitBoard)]) {
+                    [self.delegate exitBoard];
+                }
+                break;
+            case 1:
+                switch ([indexPath row]) {
+                    case 0:
+                        // Save a Copy
+                        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(saveACopy)]) {
+                            [self.delegate saveACopy];
+                        }
+                        break;
+                    case 1:
+                        // Save to Photos App
+                        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(saveToPhotosApp)]) {
+                            [self.delegate saveToPhotosApp];
+                        }
+                        break;
+                    case 2:
+                        // Save to Evernote
+                        break;
+                    case 3:
+                        // Save to Google Drive
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 2:
+                switch ([indexPath row]) {
+                    case 0:
+                        // Share on Facebook
+                        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(shareOnFacebook)]) {
+                            [self.delegate shareOnFacebook];
+                        }
+                        break;
+                    case 1:
+                        // Share on Twitter
+                        break;
+                    case 2:
+                        // Upload to Online Gallery
+                        break;
+                    case 3:
+                        // Send in Email
+                        break;
+                    case 4:
+                        // Send in iMessage/MMS
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 3:
+                // Delete Page
+                break;
+            case 4:
+                // Credits
+                break;
+            case 5:
+                // Help/FAQs
+                break;
+            case 6:
+                // Contact Us
+                break;
+            default:
+                break;
+        }
+
+    }
 }
 
 - (void)addMenuItem:(WBMenuItem *)item
 {
+    useCustomizedMenu = YES;
     BOOL didAddItem = NO;
     for (NSMutableArray *a in menuSections)
     {

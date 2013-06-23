@@ -437,8 +437,17 @@ static GSSession *activeSession = nil;
     [[self generateFirebaseForRoom:room] setValue:room.data];
 }
 
-- (void)sendDataToServer:(NSDictionary *)dict atURL:(NSString *)urlString {
-    [[self.firebase childByAppendingPath:urlString] setValue:dict];
+- (NSString *)getURLOfRoom:(GSRoom *)room {
+    return [[self generateFirebaseForRoom:room] name];
+}
+
+- (void)sendData:(NSDictionary *)dict ofRoom:(GSRoom *)room atURL:(NSString *)urlString {
+    NSArray *parseURL = [urlString componentsSeparatedByString:@"/"];
+    Firebase *firebase = [self generateFirebaseForRoom:room];
+    for (int i = 0; i < [parseURL count]; i++) {
+        firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
+    }
+    [firebase setValue:dict];
 }
 
 #pragma mark - Access and Update Database

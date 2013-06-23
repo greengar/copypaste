@@ -134,6 +134,8 @@
  */
 - (void)sendRoomDataToServer:(GSRoom *)room;
 
+
+- (NSString *)getURLOfRoom:(GSRoom *)room;
 /*
  Send dictionary to server
  Send data directly to the URL under the hierarchy
@@ -141,7 +143,7 @@
  @param dict NSDictionary: data dictionary
  @param urlString NSString: URL string to store the data under the hierarchy
  */
-- (void)sendDataToServer:(NSDictionary *)dict atURL:(NSString *)urlString;
+- (void)sendData:(NSDictionary *)dict ofRoom:(GSRoom *)room atURL:(NSString *)urlString;
 
 #pragma mark - Access and Update Database
 /*

@@ -15,6 +15,7 @@
 #import "GSButton.h"
 #import "HistoryView.h"
 #import "HistoryManager.h"
+#import "HistoryElementCreated.h"
 
 #define kUndoPickerWidth 69
 #define kURButtonWidthHeight 64
@@ -103,8 +104,14 @@
     [self.elements addObject:element];
     [element setDelegate:self];
     [element select];
-    
-    [[HistoryManager sharedManager] addActionCreateElement:element forPage:self];
+
+    [[HistoryManager sharedManager] addActionCreateElement:element
+                                                   forPage:self
+                                                 withBlock:^(HistoryElementCreated *history, NSError *error) {
+         if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+             [self.pageDelegate pageHistoryCreated:history];
+         }
+    }];
 }
 
 - (void)restoreElement:(WBBaseElement *)element {
@@ -195,7 +202,8 @@
 
 - (void)elementCreated:(WBBaseElement *)element successful:(BOOL)successful {
     if (successful) {
-        [[HistoryManager sharedManager] addActionCreateElement:element forPage:self];
+        [[HistoryManager sharedManager] addActionCreateElement:element forPage:self
+                                                     withBlock:^(id object, NSError *error) {}];
     } else {
         [element removeFromSuperview];
         [self.elements removeObject:element];
@@ -203,7 +211,18 @@
 }
 
 - (void)elementDeleted:(WBBaseElement *)element {
-    [[HistoryManager sharedManager] addActionDeleteElement:element forPage:self];
+    [[HistoryManager sharedManager] addActionDeleteElement:element forPage:self
+                                                 withBlock:^(HistoryAction *history, NSError *error) {
+        if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+            [self.pageDelegate pageHistoryCreated:history];
+        }
+    }];
+}
+
+- (void)pageHistoryCreated:(HistoryAction *)history {
+    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+        [self.pageDelegate pageHistoryCreated:history];
+    }
 }
 
 #pragma mark - Backup/Restore Save/Load
@@ -212,13 +231,12 @@
     [dict setObject:self.uid forKey:@"page_uid"];
     [dict setObject:NSStringFromCGRect(self.frame) forKey:@"page_frame"];
     
-    NSMutableArray *elementArray = [NSMutableArray arrayWithCapacity:[self.elements count]];
+    NSMutableDictionary *elementPages = [NSMutableDictionary new];
     for (WBBaseElement *element in self.elements) {
-        NSDictionary *elementDict = [element saveToDict];
-        [elementArray addObject:elementDict];
+        [elementPages setObject:[element saveToDict] forKey:element.uid];
     }
+    [dict setObject:elementPages forKey:@"page_elements"];
     
-    [dict setObject:elementArray forKey:@"page_elements"];
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 

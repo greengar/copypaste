@@ -116,27 +116,33 @@ static HistoryManager *shareManager = nil;
 }
 
 #pragma mark - Helpers
-- (void)addActionCreateElement:(WBBaseElement *)element forPage:(WBPage *)page {
+- (void)addActionCreateElement:(WBBaseElement *)element forPage:(WBPage *)page withBlock:(WBSingleResultBlock)block {
     HistoryElementCreated *action = [[HistoryElementCreated alloc] init];
     [action setPage:page];
     [action setElement:element];
     [self addAction:action forPage:page];
+    block(action, nil);
 }
 
-- (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page {
+- (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page withBlock:(WBSingleResultBlock)block {
     HistoryElementDeleted *action = [[HistoryElementDeleted alloc] init];
     [action setPage:page];
     [action setElement:element];
     [self addAction:action forPage:page];
     [self activateAction:action forPage:page];
+    block(action, nil);
 }
 
 - (NSString *)addActionTransformElement:(WBBaseElement *)element
                                withName:(NSString *)name
                     withOriginTransform:(CGAffineTransform)transform
-                                forPage:(WBPage *)page {
+                                forPage:(WBPage *)page
+                              withBlock:(WBArrayResultBlock)block {
     // Get the history for that page
     NSMutableArray *historyForPage = [self.historyPool objectForKey:page.uid];
+    
+    // To expose the data outside for the Collaboration
+    NSMutableArray *historyToUpdates = [NSMutableArray new];
     
     // Update all transform actions that are not completed before this action
     for (HistoryElement *action in historyForPage) {
@@ -144,6 +150,7 @@ static HistoryManager *shareManager = nil;
             && [action.element.uid isEqualToString:element.uid]
             && !((HistoryElementTransform *) action).isFinished) {
             [((HistoryElementTransform *) action) setChangedTransform:transform];
+            [historyToUpdates addObject:action];
         }
     }
     
@@ -151,14 +158,21 @@ static HistoryManager *shareManager = nil;
     [action setElement:element];
     [action setOriginalTransform:transform];
     [self addAction:action forPage:page];
+    [historyToUpdates addObject:action];
+    block(historyToUpdates, nil);
     return [action uid];
 }
 
 - (void)updateTransformElementWithId:(NSString *)uid
                 withChangedTransform:(CGAffineTransform)transform
-                             forPage:(WBPage *)page {
+                             forPage:(WBPage *)page
+                           withBlock:(WBArrayResultBlock)block {
+    
     // Get the history for that page
     NSMutableArray *historyForPage = [self.historyPool objectForKey:page.uid];
+    
+    // To expose the data outside for the Collaboration
+    NSMutableArray *historyToUpdates = [NSMutableArray new];
     
     // Update the desired transform action
     for (HistoryElement *action in historyForPage) {
@@ -166,33 +180,41 @@ static HistoryManager *shareManager = nil;
             && [action isKindOfClass:[HistoryElementTransform class]]
             && !((HistoryElementTransform *) action).isFinished) {
             [((HistoryElementTransform *) action) setChangedTransform:transform];
+            [historyToUpdates addObject:action];
         }
     }
+    block(historyToUpdates, nil);
 }
 
-- (void)addActionBrushElement:(WBBaseElement *)element forPage:(WBPage *)page {
+- (void)addActionBrushElement:(WBBaseElement *)element forPage:(WBPage *)page withBlock:(WBSingleResultBlock)block {
     HistoryElementCanvasDraw *action = [[HistoryElementCanvasDraw alloc] init];
     [action setElement:element];
     [self addAction:action forPage:page];
+    block(action, nil);
 }
 
 - (void)addActionTextContentChangedElement:(TextElement *)element
                             withOriginText:(NSString *)text1
                            withChangedText:(NSString *)text2
-                                   forPage:(WBPage *)page {
+                                   forPage:(WBPage *)page
+                                 withBlock:(WBSingleResultBlock)block {
     if (![text1 isEqualToString:text2]) {
         HistoryElementTextChanged *action = [[HistoryElementTextChanged alloc] init];
         [action setElement:element];
         [action setOriginalText:text1];
         [action setChangedText:text2];
         [self addAction:action forPage:page];
+        block(action, nil);
+    } else {
+        block(nil, nil);
     }
 }
 
 - (void)addActionTextFontChangedElement:(TextElement *)element
                      withOriginFontName:(NSString *)name1 fontSize:(int)size1
                     withChangedFontName:(NSString *)name2 fontSize:(int)size2
-                                forPage:(WBPage *)page {
+                                forPage:(WBPage *)page
+                              withBlock:(WBSingleResultBlock)block {
     if (![name1 isEqualToString:name2] || size1 != size2) {
         HistoryElementTextFontChanged *action = [[HistoryElementTextFontChanged alloc] init];
         [action setElement:element];
@@ -201,13 +223,17 @@ static HistoryManager *shareManager = nil;
         [action setChangedFontName:name2];
         [action setChangedFontSize:size2];
         [self addAction:action forPage:page];
+        block(action, nil);
+    } else {
+        block(nil, nil);
     }
 }
 
 - (void)addActionTextColorChangedElement:(TextElement *)element
                          withOriginColor:(UIColor *)color1 x:(float)x1 y:(float)y1
                         withChangedColor:(UIColor *)color2 x:(float)x2 y:(float)y2
-                                 forPage:(WBPage *)page {
+                                 forPage:(WBPage *)page
+                               withBlock:(WBSingleResultBlock)block {
     if (x1 != x2 || y1 != y2) {
         HistoryElementTextColorChanged *action = [[HistoryElementTextColorChanged alloc] init];
         [action setElement:element];
@@ -218,6 +244,9 @@ static HistoryManager *shareManager = nil;
         [action setChangedColorX:x2];
         [action setChangedColorY:y2];
         [self addAction:action forPage:page];
+        block(action, nil);
+    } else {
+        block(nil, nil);
     }
 }
 

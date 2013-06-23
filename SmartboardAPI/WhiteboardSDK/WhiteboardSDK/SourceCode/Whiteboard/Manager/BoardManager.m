@@ -35,7 +35,7 @@ static BoardManager *shareManager = nil;
 + (NSDictionary *)writeBoardToFile:(WBBoard *)board {
     NSString *folderPath = [BoardManager getBaseDocumentFolder];
     NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", board.uid]];
-    NSDictionary *boardDict = [board saveToDict];
+    NSDictionary *boardDict = [board exportBoardData];
 	[boardDict writeToFile:filePath atomically:NO];
     return boardDict;
 }
@@ -45,7 +45,9 @@ static BoardManager *shareManager = nil;
     NSString *folderPath = [BoardManager getBaseDocumentFolder];
     NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", uid]];
     NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    return [WBBoard loadFromDict:boardDict];
+    WBBoard *board = [[WBBoard alloc] init];
+    [board updateWithDataForBoard:boardDict];
+    return board;
 }
 
 + (NSDictionary *)exportBoardToData:(WBBoard *)board {

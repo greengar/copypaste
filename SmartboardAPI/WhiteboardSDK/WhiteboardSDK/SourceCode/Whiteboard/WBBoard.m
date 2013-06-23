@@ -85,35 +85,6 @@
 @synthesize pageCurlButton = _pageCurlButton;
 @synthesize exportControlView = _exportControlView;
 
-// TODO: why doesn't this call -initWithNibName:...?
-// This is a test, this method is not used
-//- (id)initWithDict:(NSDictionary *)dictionary {
-//    self = [super init];
-//    if (self) {
-//        self.view.frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
-//        self.view.backgroundColor = [UIColor clearColor];
-//        self.uid = [dictionary objectForKey:@"board_uid"];
-//        self.name = [dictionary objectForKey:@"board_name"];
-//        self.pages = [NSMutableArray new];
-//        
-//        NSMutableArray *pages = [dictionary objectForKey:@"board_pages"];
-//        for (NSDictionary *pageDict in pages) {
-//            WBPage *page = [WBPage loadFromDict:pageDict];
-//            [page setPageDelegate:self];
-//            [self selectPage:page];
-//            [self.pages addObject:page];
-//        }
-//        
-//        // There's always at least 1 page
-//        if ([self.pages count]) {
-//            [self selectPage:[self.pages objectAtIndex:self.currentPageIndex]]; // Select first page
-//        } else {
-//            [self addNewPage];
-//        }
-//    }
-//    return self;
-//}
-
 // Designated initalizer - this method should always be called when creating a WBBoard
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -214,6 +185,10 @@
     [self.pageHolderView addSubview:page];
     [self.pages addObject:page];
     [self setCurrentPageIndex:([self.pages count]-1)];
+    
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:dataUpdate:)]) {
+        [self.delegate pageOfBoard:self dataUpdate:[page saveToDict]];
+    }
 }
 
 - (void)removePageWithId:(NSString *)uid {
@@ -575,7 +550,15 @@
     [self.menubarView didShowMenuView:NO];
 }
 
+- (void)exitBoard {
+    [self exitBoardWithResult:NO];
+}
+
 - (void)saveACopy {
+    
+}
+
+- (void)saveToPhotosApp {
     
 }
 
@@ -918,23 +901,37 @@
     }
 }
 
-- (void)doneEditing
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[HistoryManager sharedManager] clearHistoryPool];
-        UIImage *image = [self exportBoardToUIImage];
-        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-            [self.delegate doneEditingBoardWithResult:image];
-        }
+- (void)exitBoardWithResult:(BOOL)showResult {
+    if (showResult) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[HistoryManager sharedManager] clearHistoryPool];
+            UIImage *image = [self exportBoardToUIImage];
+            
+            [self dismissViewControllerAnimated:NO completion:NULL];
+            [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
+            [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+                                   forView:[UIApplication sharedApplication].keyWindow
+                                     cache:YES];
+            [UIView setAnimationDuration:kWBSessionAnimationDuration];
+            [UIView commitAnimations];
+            
+            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
+                [self.delegate doneEditingBoardWithResult:image];
+            }
+        });
+    } else {
         [self dismissViewControllerAnimated:NO completion:NULL];
-        
         [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
                                forView:[UIApplication sharedApplication].keyWindow
                                  cache:YES];
         [UIView setAnimationDuration:kWBSessionAnimationDuration];
         [UIView commitAnimations];
-    });
+        
+        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
+            [self.delegate doneEditingBoardWithResult:nil];
+        }
+    }
 }
 
 #pragma mark - Animation Show/Dismiss board
@@ -1061,11 +1058,6 @@
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 
-+ (WBBoard *)loadFromDict:(NSDictionary *)dict {
-    WBBoard *board = [[WBBoard alloc] initWithDict:dict];
-    return board;
-}
-
 #pragma mark - Orientation
 // pre-iOS 6 support
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -1088,4 +1080,49 @@
     return NO;
 }
 
+#pragma mark - Collaboration
+- (void)pageHistoryCreated:(HistoryAction *)history {
+    NSMutableString *historyURL = [NSMutableString new];
+    [historyURL appendString:@"board_pages"];
+    [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
+    [historyURL appendFormat:@"/page_history/%@", [history uid]];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:addNewHistory:atURL:)]) {
+        [self.delegate pageOfBoard:self addNewHistory:[history backupToData] atURL:historyURL];
+    }
+}
+
+- (NSDictionary *)exportBoardMetadata {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:self.uid forKey:@"board_uid"];
+    [dict setObject:self.name forKey:@"board_name"];
+    [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
+    return dict;
+}
+
+- (NSDictionary *)exportBoardData {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:self.uid forKey:@"board_uid"];
+    [dict setObject:self.name forKey:@"board_name"];
+    [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
+    
+    NSMutableDictionary *boardPages = [NSMutableDictionary new];
+    for (WBPage *page in self.pages) {
+        [boardPages setObject:[page saveToDict] forKey:page.uid];
+    }
+    [dict setObject:boardPages forKey:@"board_pages"];
+    
+    return dict;
+}
+
+- (void)updateWithDataForBoard:(NSDictionary *)data {
+    self.uid = [data objectForKey:@"board_uid"];
+}
+
+- (void)updateWithDataForPage:(NSDictionary *)data {
+    
+}
+
+- (void)updateWithDataForElement:(NSDictionary *)data {
+    
+}
 @end

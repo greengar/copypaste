@@ -13,15 +13,18 @@
 #import "CGCanvasElement.h"
 #import "ColorTabView.h"
 #import "ColorPickerView.h"
+#import "HistoryAction.h"
 
 @class WBPage;
 @class WBBaseElement;
+@class HistoryAction;
 @protocol WBPageDelegate
 @optional
 - (void)pageSelected:(WBPage *)page;
 - (void)pageUnlocked:(WBPage *)page;
 - (void)elementSelected:(WBBaseElement *)element;
 - (void)elementDeselected:(WBBaseElement *)element;
+- (void)pageHistoryCreated:(HistoryAction *)history;
 @end
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>

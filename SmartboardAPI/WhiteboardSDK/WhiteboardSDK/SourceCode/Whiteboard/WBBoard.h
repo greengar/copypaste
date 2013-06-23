@@ -11,6 +11,17 @@
 #import "WBPage.h"
 #import "WBMenuItem.h"
 
+@class WBBoard;
+@protocol WBBoardDelegate
+@optional
+- (NSString *)facebookId;
+- (void)doneEditingBoardWithResult:(UIImage *)image;
+- (void)board:(WBBoard *)board dataUpdate:(NSDictionary *)data;
+- (void)pageOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data;
+- (void)pageOfBoard:(WBBoard *)board addNewHistory:(NSDictionary *)data atURL:(NSString *)URLString;
+- (void)elementOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data;
+@end
+
 @interface WBBoard : UIViewController
 
 /*
@@ -26,9 +37,32 @@
  */
 - (int)numOfPages;
 
-- (id)initWithDict:(NSDictionary *)dictionary;
-- (NSDictionary *)saveToDict;
-+ (WBBoard *)loadFromDict:(NSDictionary *)dict;
+- (void)updateWithDataForBoard:(NSDictionary *)data;
+- (void)updateWithHistoryDataForBoard:(NSDictionary *)data;
+- (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data;
+
+- (void)updateWithDataForPage:(NSDictionary *)data;
+- (void)updateWithHistoryDataForPage:(NSDictionary *)data;
+- (void)updateWithNewHistoryDataForPage:(NSDictionary *)data;
+
+- (void)updateWithDataForElement:(NSDictionary *)data;
+- (void)updateWithHistoryDataForElement:(NSDictionary *)data;
+- (void)updateWithNewHistoryDataForElement:(NSDictionary *)data;
+
+- (NSDictionary *)exportBoardMetadata;
+- (NSDictionary *)exportBoardData;
+- (NSDictionary *)exportHistoryForBoard;
+- (NSDictionary *)exportNewHistoryActionForBoard;
+
+- (NSDictionary *)exportPageMetadata;
+- (NSDictionary *)exportPageData;
+- (NSDictionary *)exportHistoryForPage;
+- (NSDictionary *)exportNewHistoryActionForPage;
+
+- (NSDictionary *)exportElementMetadata;
+- (NSDictionary *)exportElementData;
+- (NSDictionary *)exportHistoryForElement;
+- (NSDictionary *)exportNewHistoryActionForElement;
 
 @property (nonatomic, strong) NSString              *uid;
 @property (nonatomic, strong) NSString              *name;

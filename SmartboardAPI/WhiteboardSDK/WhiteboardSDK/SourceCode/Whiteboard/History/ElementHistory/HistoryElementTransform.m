@@ -47,4 +47,12 @@
     }
 }
 
+- (NSDictionary *)backupToData {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super backupToData]];
+    [dict setObject:@"HistoryElementTransform" forKey:@"history_type"];
+    [dict setObject:NSStringFromCGAffineTransform(self.originalTransform) forKey:@"history_origin_transform"];
+    [dict setObject:NSStringFromCGAffineTransform(self.changedTransform) forKey:@"history_changed_transform"];
+    return dict;
+}
+
 @end

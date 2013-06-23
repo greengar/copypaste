@@ -7,11 +7,14 @@
 //
 
 #import "HistoryAction.h"
+#import "WBUtils.h"
 
 @implementation HistoryAction
 @synthesize uid = _uid;
 @synthesize name = _name;
 @synthesize active = _active;
+@synthesize date = _date;
+@synthesize board = _board;
 
 - (id)init {
     if (self = [super init]) {
@@ -31,6 +34,18 @@
         self.date = [NSDate date];
     }
     return self;
+}
+
+- (NSDictionary *)backupToData {
+    return @{@"history_name" : self.name,
+             @"history_active" : [NSNumber numberWithBool:self.active],
+             @"history_date" : [WBUtils stringFromDate:self.date]};
+}
+
+- (void)restoreFromData:(NSDictionary *)data {
+    self.name = [data objectForKey:@"history_name"];
+    self.active = [[data objectForKey:@"history_active"] boolValue];
+    self.date = [WBUtils dateFromString:[data objectForKey:@"history_date"]];
 }
 
 @end

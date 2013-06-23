@@ -27,35 +27,41 @@
 - (void)finishAction;
 
 // Helper
-- (void)addActionCreateElement:(WBBaseElement *)element forPage:(WBPage *)page;
-- (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page;
+- (void)addActionCreateElement:(WBBaseElement *)element forPage:(WBPage *)page withBlock:(WBSingleResultBlock)block;
+- (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page withBlock:(WBSingleResultBlock)block;
 
 - (NSString *)addActionTransformElement:(WBBaseElement *)element
                                withName:(NSString *)name
                     withOriginTransform:(CGAffineTransform)transform
-                                forPage:(WBPage *)page;
+                                forPage:(WBPage *)page
+                              withBlock:(WBArrayResultBlock)block;
 
 - (void)updateTransformElementWithId:(NSString *)uid
                 withChangedTransform:(CGAffineTransform)transform
-                             forPage:(WBPage *)page;
+                             forPage:(WBPage *)page
+                           withBlock:(WBArrayResultBlock)block;
 
 - (void)addActionBrushElement:(WBBaseElement *)element
-                      forPage:(WBPage *)page;
+                      forPage:(WBPage *)page
+                    withBlock:(WBSingleResultBlock)block;
 
 - (void)addActionTextContentChangedElement:(TextElement *)element
                             withOriginText:(NSString *)text1
                            withChangedText:(NSString *)text2
-                                   forPage:(WBPage *)page;
+                                   forPage:(WBPage *)page
+                                 withBlock:(WBSingleResultBlock)block;
 
 - (void)addActionTextFontChangedElement:(TextElement *)element
                      withOriginFontName:(NSString *)name1 fontSize:(int)size1
                     withChangedFontName:(NSString *)name2 fontSize:(int)size2
-                                forPage:(WBPage *)page;
+                                forPage:(WBPage *)page
+                              withBlock:(WBSingleResultBlock)block;
 
 - (void)addActionTextColorChangedElement:(TextElement *)element
                          withOriginColor:(UIColor *)color1 x:(float)x1 y:(float)y1
                         withChangedColor:(UIColor *)color2 x:(float)x2 y:(float)y2
-                                 forPage:(WBPage *)page;
+                                 forPage:(WBPage *)page
+                               withBlock:(WBSingleResultBlock)block;
 
 - (void)clearHistoryPool;
 

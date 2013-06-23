@@ -34,4 +34,10 @@
     }
 }
 
+- (NSDictionary *)backupToData {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super backupToData]];
+    [dict setObject:@"HistoryElementCreated" forKey:@"history_type"];
+    return dict;
+}
+
 @end

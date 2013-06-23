@@ -12,9 +12,10 @@
 #import "WBHistoryButton.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface WBMenubarView ()
-@property (nonatomic, strong) WBHistoryButton *historyButton;
-@property (nonatomic, strong) WBMenuButton *menuButton;
+@interface WBMenubarView () {
+    WBHistoryButton *historyButton;
+    WBMenuButton *menuButton;
+}
 @end
 
 @implementation WBMenubarView
@@ -30,17 +31,17 @@
         self.layer.borderColor = [UIColor lightGrayColor].CGColor;
         self.layer.borderWidth = 1;
         
-        self.menuButton = [[WBMenuButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/3, frame.size.height)];
-        [self.menuButton addTarget:self action:@selector(menuButtonTapped:) forControlEvents:UIControlEventTouchDown];
-        [self addSubview:self.menuButton];
+        menuButton = [[WBMenuButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/3, frame.size.height)];
+        [menuButton addTarget:self action:@selector(menuButtonTapped:) forControlEvents:UIControlEventTouchDown];
+        [self addSubview:menuButton];
         
         WBUndoButton *undoButton = [[WBUndoButton alloc] initWithFrame:CGRectMake(frame.size.width/3, 0, frame.size.width/3, frame.size.height)];
         [undoButton addTarget:self action:@selector(undoButtonTapped:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:undoButton];
         
-        self.historyButton = [[WBHistoryButton alloc] initWithFrame:CGRectMake(frame.size.width*2/3, 0, frame.size.width/3, frame.size.height)];
-        [self.historyButton addTarget:self action:@selector(historyButtonTapped:) forControlEvents:UIControlEventTouchDown];
-        [self addSubview:self.historyButton];
+        historyButton = [[WBHistoryButton alloc] initWithFrame:CGRectMake(frame.size.width*2/3, 0, frame.size.width/3, frame.size.height)];
+        [historyButton addTarget:self action:@selector(historyButtonTapped:) forControlEvents:UIControlEventTouchDown];
+        [self addSubview:historyButton];
     }
     return self;
 }
@@ -64,11 +65,11 @@
 }
 
 - (void)didShowMenuView:(BOOL)success {
-    [self.menuButton setSelected:success];
+    [menuButton setSelected:success];
 }
 
 - (void)didShowHistoryView:(BOOL)success {
-    [self.historyButton setSelected:success];
+    [historyButton setSelected:success];
 }
 
 @end

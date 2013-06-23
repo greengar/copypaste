@@ -11,6 +11,7 @@
 
 @class WBPage;
 @class WBBaseElement;
+@class HistoryAction;
 
 @protocol WBBaseViewDelegate
 @optional
@@ -19,6 +20,7 @@
 - (void)elementDeselected:(WBBaseElement *)element;
 - (void)elementDeleted:(WBBaseElement *)element;
 - (void)elementUnlocked:(WBBaseElement *)element;
+- (void)pageHistoryCreated:(HistoryAction *)history;
 @end
 
 @interface WBBaseElement : UIView <UIGestureRecognizerDelegate>

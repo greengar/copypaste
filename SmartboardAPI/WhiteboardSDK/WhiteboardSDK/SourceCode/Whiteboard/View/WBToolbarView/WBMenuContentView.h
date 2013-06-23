@@ -18,7 +18,9 @@
 #define kMenuViewHeight kMenuCellHeight*([SAVING_ARRAY count]+[SHARING_ARRAY count]+[MENU_ARRAY count]-4)+kMenuHeaderHeight*3
 
 @protocol WBMenuContentViewDelegate
+- (void)exitBoard;
 - (void)saveACopy;
+- (void)saveToPhotosApp;
 - (void)shareOnFacebook;
 
 @required

@@ -12,6 +12,7 @@
 #import "UIColor+GSString.h"
 #import "KxMenu.h"
 #import "HistoryManager.h"
+#import "HistoryElementTextChanged.h"
 
 @interface TextElement()
 @property (nonatomic, strong) PlaceHolderTextView *placeHolderTextView;
@@ -104,7 +105,14 @@
                                                                fontSize:self.oldFontSize
                                                     withChangedFontName:self.myFontName
                                                                fontSize:self.myFontSize
-                                                                forPage:(WBPage *)self.superview];
+                                                                forPage:(WBPage *)self.superview
+                                                              withBlock:^(HistoryAction *history, NSError *error) {
+                                                                  if (history) {
+                                                                      if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                          [self.delegate pageHistoryCreated:history];
+                                                                      }
+                                                                  }
+                                                              }];
         
         [[HistoryManager sharedManager] addActionTextColorChangedElement:self
                                                          withOriginColor:self.oldColor
@@ -113,12 +121,26 @@
                                                         withChangedColor:self.myColor
                                                                        x:self.myColorLocX
                                                                        y:self.myColorLocY
-                                                                 forPage:(WBPage *)self.superview];
+                                                                 forPage:(WBPage *)self.superview
+                                                               withBlock:^(HistoryAction *history, NSError *error) {
+                                                                   if (history) {
+                                                                       if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                           [self.delegate pageHistoryCreated:history];
+                                                                       }
+                                                                   }
+                                                               }];
 
         [[HistoryManager sharedManager] addActionTextContentChangedElement:self
                                                             withOriginText:self.oldText
                                                            withChangedText:((UITextView *)[self contentView]).text
-                                                                   forPage:(WBPage *)self.superview];
+                                                                   forPage:(WBPage *)self.superview
+                                                                 withBlock:^(HistoryElementTextChanged *history, NSError *error) {
+                                                                     if (history) {
+                                                                         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                             [self.delegate pageHistoryCreated:history];
+                                                                         }
+                                                                     }
+                                                                 }];
     }
     [self checkHistory];
     self.elementCreated = YES;

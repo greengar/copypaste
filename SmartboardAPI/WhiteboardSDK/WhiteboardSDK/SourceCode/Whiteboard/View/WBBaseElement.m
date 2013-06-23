@@ -236,13 +236,29 @@
         self.currentPanId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                              withName:@"Move"
                                                                   withOriginTransform:self.transform
-                                                                              forPage:(WBPage *)self.superview];
+                                                                              forPage:(WBPage *)self.superview
+                                                                            withBlock:^(NSArray *objects, NSError *error) {
+                                                                                for (HistoryAction *action in objects) {
+                                                                                    if (self.delegate &&
+                                                                                        [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                                        [self.delegate pageHistoryCreated:action];
+                                                                                    }
+                                                                                }
+                                                                            }];
     }
     
     if ([panGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentPanId
                                                 withChangedTransform:self.transform
-                                                             forPage:(WBPage *)self.superview];
+                                                             forPage:(WBPage *)self.superview
+                                                           withBlock:^(NSArray *objects, NSError *error) {
+                                                               for (HistoryAction *action in objects) {
+                                                                   if (self.delegate &&
+                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                       [self.delegate pageHistoryCreated:action];
+                                                                   }
+                                                               }
+                                                           }];
     }
     
     if ([panGesture state] == UIGestureRecognizerStateBegan
@@ -259,13 +275,29 @@
         self.currentRotateId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                                 withName:@"Rotate"
                                                                      withOriginTransform:self.transform
-                                                                                 forPage:(WBPage *)self.superview];
+                                                                                 forPage:(WBPage *)self.superview
+                                                                               withBlock:^(NSArray *objects, NSError *error) {
+                                                                                   for (HistoryAction *action in objects) {
+                                                                                       if (self.delegate &&
+                                                                                           [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                                           [self.delegate pageHistoryCreated:action];
+                                                                                       }
+                                                                                   }
+                                                                               }];
     }
     
     if ([rotationGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentRotateId
                                                 withChangedTransform:self.transform
-                                                             forPage:(WBPage *)self.superview];
+                                                             forPage:(WBPage *)self.superview
+                                                           withBlock:^(NSArray *objects, NSError *error) {
+                                                               for (HistoryAction *action in objects) {
+                                                                   if (self.delegate &&
+                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                       [self.delegate pageHistoryCreated:action];
+                                                                   }
+                                                               }
+                                                           }];
     }
     
     if ([rotationGesture state] == UIGestureRecognizerStateBegan
@@ -282,13 +314,29 @@
         self.currentScaleId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                                withName:@"Zoom"
                                                                     withOriginTransform:self.transform
-                                                                                forPage:(WBPage *)self.superview];
+                                                                                forPage:(WBPage *)self.superview
+                                                                              withBlock:^(NSArray *objects, NSError *error) {
+                                                                                  for (HistoryAction *action in objects) {
+                                                                                      if (self.delegate &&
+                                                                                          [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                                          [self.delegate pageHistoryCreated:action];
+                                                                                      }
+                                                                                  }
+                                                                              }];
     }
     
     if ([pinchGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentScaleId
                                                 withChangedTransform:self.transform
-                                                             forPage:(WBPage *)self.superview];
+                                                             forPage:(WBPage *)self.superview
+                                                           withBlock:^(NSArray *objects, NSError *error) {
+                                                               for (HistoryAction *action in objects) {
+                                                                   if (self.delegate &&
+                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                       [self.delegate pageHistoryCreated:action];
+                                                                   }
+                                                               }
+                                                           }];
     }
     
     if ([pinchGesture state] == UIGestureRecognizerStateBegan
