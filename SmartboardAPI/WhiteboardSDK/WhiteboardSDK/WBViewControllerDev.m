@@ -56,36 +56,34 @@
     WBBoard *board = [[WBBoard alloc] init];
     [board setDelegate:self];
     
-//    __block __weak WBViewControllerDev *blockSafeSelf = self;
-//    
-//    [board addMenuItem:[WBMenuItem itemInSection:@"Navigation" name:@"Close drawing editor"/*@"Back to Organizer"*/ progressString:nil blockWithImage:^(UIImage *image, WBCompletionBlock completionBlock) {
-//        
+    __block __weak WBViewControllerDev *blockSafeSelf = self;
+    
+    // This is now a default menu item in WBMenuContentView.m
+//    [board addMenuItem:[WBMenuItem itemInSection:@"Navigation" name:@"Close drawing editor"/*@"Back to Organizer"*/ progressString:nil blockWithoutImage:^(WBCompletionBlock completionBlock) {
 //        [board doneEditing];
-//        
 //    }]];
-//    
-//    // PicCollage: "Save to Library"
-//    // Penultimate: "Save to Camera Roll"
-//    // Sketches: "Photo Library"
-//    // Smartboard: "Save to Photo Library"
-//    
-//    // TODO: `progressString` and the parameter to completionBlock() are currently not used.
-//    [board addMenuItem:[WBMenuItem itemInSection:@"Saving" name:@"Save to Photo Library" progressString:@"Saving to Library..." blockWithImage:^(UIImage *image, WBCompletionBlock completionBlock) {
-//        
-//        self.saveToPhotoLibraryCompletionBlock = completionBlock;
-//        
-//        if (image) {
-//            UIImageWriteToSavedPhotosAlbum(image, blockSafeSelf, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-//        } else {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-//                                                            message:@"Unable to save image to Photos App"
-//                                                           delegate:nil
-//                                                  cancelButtonTitle:@"Ok"
-//                                                  otherButtonTitles:nil];
-//                [alert show];
-//        }
-//        
-//    }]];
+    
+    
+    // PicCollage: "Save to Library"
+    // Penultimate: "Save to Camera Roll"
+    // Sketches: "Photo Library"
+    // Smartboard: "Save to Photo Library"
+    [board addMenuItem:[WBMenuItem itemInSection:@"Saving" name:@"Save to Photo Library" progressString:@"Saving to Library..." blockWithImage:^(UIImage *image, WBCompletionBlock completionBlock) {
+        
+        self.saveToPhotoLibraryCompletionBlock = completionBlock;
+        
+        if (image) {
+            UIImageWriteToSavedPhotosAlbum(image, blockSafeSelf, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Unable to save image to Photos App"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+                [alert show];
+        }
+        
+    }]];
     
     // Exit Board (Close drawing editor)
     
@@ -125,19 +123,15 @@
     [board showMeWithAnimationFromController:self];
 }
 
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
-    UIAlertView *alert;
-    if (error)
-        alert = [[UIAlertView alloc] initWithTitle:@"Error"
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    if (error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                            message:@"Unable to save image to Photos App"
-                                          delegate:nil cancelButtonTitle:@"Ok"
+                                          delegate:nil cancelButtonTitle:@"OK"
                                  otherButtonTitles:nil];
-    else // All is well
-        alert = [[UIAlertView alloc] initWithTitle:@"Success"
-                                           message:@"Image saved to Photos App"
-                                          delegate:nil cancelButtonTitle:@"Ok"
-                                 otherButtonTitles:nil];
-    [alert show];
+        [alert show];
+    }
     
     self.saveToPhotoLibraryCompletionBlock(@"Saved to Library!");
 }

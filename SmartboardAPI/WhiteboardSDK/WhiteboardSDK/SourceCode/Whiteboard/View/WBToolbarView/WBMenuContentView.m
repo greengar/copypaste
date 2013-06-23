@@ -74,6 +74,7 @@
 }
 
 - (void)animateDown {
+    [menuTableView reloadData]; // resets "completed" menu items
     NSValue * from = [NSNumber numberWithFloat:0];
     NSValue * to = [NSNumber numberWithFloat:(self.frame.size.height-kOffsetForBouncing)/2];
     NSString * keypath = @"position.y";
@@ -184,18 +185,28 @@
         return;
     }
     
-    // Change the selected background view of the cell.
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     int sectionIndex = [indexPath section];
     NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
     int rowIndex = [indexPath row];
     WBMenuItem *item = rowsArray[rowIndex];
     
+    // set progressString
+    cell.textLabel.text = item.progressString;
+    // note: we are intentionally NOT updating the data source so that when this table is refreshed, this message will go away
+    // (it is a temporary message)
+    
+    // similarly, we want to temporarily disable selection for this row.
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    // grey out the item
+    cell.textLabel.enabled = NO;
+    
+    // Change the selected background view of the cell.
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     // use completion message (set as cell text, like PicCollage)
     WBCompletionBlock completionBlock = ^(NSString *message) {
         // update the cell's text
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         cell.textLabel.text = message;
         // note: we are intentionally NOT updating the data source so that when this table is refreshed, this message will go away
         // (it is a temporary message)
