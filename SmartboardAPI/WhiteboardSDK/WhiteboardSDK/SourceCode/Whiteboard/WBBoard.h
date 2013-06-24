@@ -19,6 +19,7 @@
 - (void)board:(WBBoard *)board dataUpdate:(NSDictionary *)data;
 - (void)pageOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data;
 - (void)pageOfBoard:(WBBoard *)board addNewHistory:(NSDictionary *)data atURL:(NSString *)URLString;
+- (void)pageOfBoard:(WBBoard *)board updateHistoryCanvasDraw:(NSDictionary *)data atURL:(NSString *)URLString;
 - (void)elementOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data;
 @end
 
@@ -37,7 +38,7 @@
  */
 - (int)numOfPages;
 
-- (void)updateWithDataForBoard:(NSDictionary *)data;
+- (void)updateWithDataForBoard:(NSDictionary *)data withBlock:(WBResultBlock)block;
 - (void)updateWithHistoryDataForBoard:(NSDictionary *)data;
 - (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data;
 

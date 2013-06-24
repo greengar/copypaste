@@ -444,6 +444,7 @@ static GSSession *activeSession = nil;
         firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
     }
     [firebase setValue:dict];
+    firebase = nil;
 }
 
 #pragma mark - Access and Update Database

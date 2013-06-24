@@ -155,8 +155,9 @@
                                                withPaintingCommand:cmd
                                                            forPage:(WBPage *)self.superview
                                                 withBlock:^(HistoryAction *history, NSError *error) {
-                                                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                        [self.delegate pageHistoryCreated:history];
+                                                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryElementCanvasUpdated:withNewPaintingCmd:)]) {
+                                                        [self.delegate pageHistoryElementCanvasUpdated:history
+                                                                                    withNewPaintingCmd:cmd];
                                                     }
                                                 }];
 }

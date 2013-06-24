@@ -36,7 +36,7 @@
 }
 
 - (NSDictionary *)backupToData {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super backupToData]];
+    NSMutableDictionary *dict = [super backupToData];
     [dict setObject:@"HistoryElementDeleted" forKey:@"history_type"];
     return dict;
 }

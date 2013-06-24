@@ -24,6 +24,8 @@
 #import "AGIPCToolbarItem.h"
 #import "HistoryElementCanvasDraw.h"
 #import "MultiStrokePaintingCmd.h"
+#import "GSSVProgressHUD.h"
+#import <dispatch/dispatch.h>
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
@@ -71,6 +73,7 @@
 @property (nonatomic, strong) UIView                    *pageHolderView;
 @property (nonatomic, strong) UIView                    *exportControlView;
 @property (nonatomic, strong) UIPopoverController       *addPhotoPopover;
+@property (nonatomic, strong) dispatch_queue_t          backgroundQueue;
 @end
 
 @implementation WBBoard
@@ -86,6 +89,7 @@
 @synthesize pageHolderView = _pageHolderView;
 @synthesize pageCurlButton = _pageCurlButton;
 @synthesize exportControlView = _exportControlView;
+@synthesize backgroundQueue = _backgroundQueue;
 
 // Designated initalizer - this method should always be called when creating a WBBoard
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -108,6 +112,8 @@
         WBMenubarView *menubar = self.menubarView;
         menuContentView = [[WBMenuContentView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width*1.25, menuContentHeight)];
         [menuContentView setDelegate:self];
+        
+        self.backgroundQueue = dispatch_queue_create("com.greengar.WhiteboardSDK", NULL);
     }
     return self;
 }
@@ -1082,15 +1088,36 @@
     return NO;
 }
 
+#pragma mark - Memory warning
+
 #pragma mark - Collaboration
 - (void)pageHistoryCreated:(HistoryAction *)history {
-    NSMutableString *historyURL = [NSMutableString new];
-    [historyURL appendString:@"board_pages"];
-    [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
-    [historyURL appendFormat:@"/page_history/%@", [history uid]];
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:addNewHistory:atURL:)]) {
-        [self.delegate pageOfBoard:self addNewHistory:[history backupToData] atURL:historyURL];
-    }
+    dispatch_async(self.backgroundQueue, ^{
+        NSMutableString *historyURL = [NSMutableString new];
+        [historyURL appendString:@"board_pages"];
+        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
+        [historyURL appendFormat:@"/page_history/%@", [history uid]];
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:addNewHistory:atURL:)]) {
+            [self.delegate pageOfBoard:self addNewHistory:[history backupToData] atURL:historyURL];
+        }
+    });
+}
+
+- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withPaintingCmd:(PaintingCmd *)cmd {
+    dispatch_async(self.backgroundQueue, ^{
+        NSMutableString *historyURL = [NSMutableString new];
+        [historyURL appendString:@"board_pages"];
+        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
+        [historyURL appendFormat:@"/page_history/%@", [history uid]];
+        [historyURL appendFormat:@"/history_painting/paint_multi_stroke_array/%@", [cmd uid]];
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:updateHistoryCanvasDraw:atURL:)]) {
+            [self.delegate pageOfBoard:self updateHistoryCanvasDraw:[cmd saveToDict] atURL:historyURL];
+        }
+    });
+}
+
+- (void)pageHistoryElementTransformUpdated:(HistoryAction *)history {
+    [self pageHistoryCreated:history];
 }
 
 - (NSDictionary *)exportBoardMetadata {
@@ -1116,69 +1143,82 @@
     return dict;
 }
 
-- (void)updateWithDataForBoard:(NSDictionary *)data {
-    self.uid = [data objectForKey:@"board_uid"];
-    self.name = [data objectForKey:@"board_name"];
-    self.view.frame = CGRectFromString([data objectForKey:@"board_frame"]);
+- (void)updateWithDataForBoard:(NSDictionary *)data withBlock:(WBResultBlock)block {
+    [GSSVProgressHUD showWithStatus:@"Loading..."];
     
-    NSDictionary *boardPages = [data objectForKey:@"board_pages"];
-    for (NSString *pageUid in boardPages) {
-        NSDictionary *pageData = [boardPages objectForKey:pageUid];
-        CGRect pageFrame = CGRectFromString([pageData objectForKey:@"page_frame"]);
-        WBPage *page = [[WBPage alloc] initWithFrame:pageFrame];
-        [page setUid:pageUid];
-        [page setPageDelegate:self];
-        [page select];
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        self.uid = [data objectForKey:@"board_uid"];
+        self.name = [data objectForKey:@"board_name"];
+        self.view.frame = CGRectFromString([data objectForKey:@"board_frame"]);
         
-        [self.pageHolderView addSubview:page];
-        [self.pages addObject:page];
-        [self setCurrentPageIndex:([self.pages count]-1)];
-        
-        NSDictionary *pageHistoryData = [pageData objectForKey:@"page_history"];
-        for (NSString *historyUid in pageHistoryData) {
-            NSDictionary *historyData = [pageHistoryData objectForKey:historyUid];
-            NSString *historyType = [historyData objectForKey:@"history_type"];
-            if ([historyType isEqualToString:@"HistoryElementCreate"]) {
-
-            } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
-                HistoryElementCanvasDraw *history = [[HistoryElementCanvasDraw alloc] init];
-                [history setElement:[page selectedElementView]];
-                [history setUid:historyUid];
-                [history setName:[historyData objectForKey:@"history_name"]];
-                [history setDate:[WBUtils dateFromString:[historyData objectForKey:@"history_date"]]];
-                NSDictionary *paintingCmdData = [historyData objectForKey:@"history_painting"];
-                
-                NSString *paintingType = [paintingCmdData objectForKey:@"paint_cmd_type"];
-                if ([paintingType isEqualToString:@"MultiStrokePaintingCmd"]) {
-                    MultiStrokePaintingCmd *paintCmd = [[MultiStrokePaintingCmd alloc] init];
-                    [paintCmd setUid:[paintingCmdData objectForKey:@"paint_cmd_uid"]];
-                    [paintCmd setLayerIndex:[[paintingCmdData objectForKey:@"paint_cmd_layer"] intValue]];
-                    [paintCmd setDrawingView:((MainPaintingView *) [[page selectedElementView] contentView])];
+        NSDictionary *boardPages = [data objectForKey:@"board_pages"];
+        NSArray *pageKeys = [boardPages allKeys];
+        pageKeys = [pageKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        for (int i = 0; i < [pageKeys count]; i++) {
+            NSString *pageUid = [pageKeys objectAtIndex:i];
+            NSDictionary *pageData = [boardPages objectForKey:pageUid];
+            CGRect pageFrame = CGRectFromString([pageData objectForKey:@"page_frame"]);
+            WBPage *page = [[WBPage alloc] initWithFrame:pageFrame];
+            [page setUid:pageUid];
+            [page setPageDelegate:self];
+            [page select];
+            
+            [self.pageHolderView addSubview:page];
+            [self.pages addObject:page];
+            [self setCurrentPageIndex:([self.pages count]-1)];
+            
+            NSDictionary *pageHistoryData = [pageData objectForKey:@"page_history"];
+            NSArray *allKeys = [pageHistoryData allKeys];
+            allKeys = [allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+            for (int j = 0; j < [allKeys count]; j++) {
+                NSString *historyUid = [allKeys objectAtIndex:j];
+                NSDictionary *historyData = [pageHistoryData objectForKey:historyUid];
+                NSString *historyType = [historyData objectForKey:@"history_type"];
+                if ([historyType isEqualToString:@"HistoryElementCreate"]) {
                     
-                    NSDictionary *multiStrokesData = [paintingCmdData objectForKey:@"paint_multi_stroke_array"];
-                    for (NSString *singlePaintUid in multiStrokesData) {
-                        NSDictionary *singlePaintCmdData = [multiStrokesData objectForKey:singlePaintUid];
-                        StrokePaintingCmd *singlePaintCmd = [[StrokePaintingCmd alloc] init];
-                        [singlePaintCmd setUid:singlePaintUid];
-                        [singlePaintCmd setLayerIndex:[[singlePaintCmdData objectForKey:@"paint_cmd_layer"] intValue]];
-                        [singlePaintCmd pointSizeWithSize:[[singlePaintCmdData objectForKey:@"paint_stroke_point_size"] floatValue]];
-                        CGRect colorRect = CGRectFromString([singlePaintCmdData objectForKey:@"paint_stroke_color"]);
-                        [singlePaintCmd colorWithRed:colorRect.origin.x green:colorRect.origin.y blue:colorRect.size.width alpha:colorRect.size.height];
-                        CGPoint start = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_start"]);
-                        CGPoint end = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_end"]);
-                        [singlePaintCmd strokeFromPoint:start toPoint:end];
-                        [singlePaintCmd setDrawingView:((MainPaintingView *) [[page selectedElementView] contentView])];
+                } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
+                    HistoryElementCanvasDraw *history = [[HistoryElementCanvasDraw alloc] init];
+                    [history setElement:[page selectedElementView]];
+                    [history setUid:historyUid];
+                    [history setName:[historyData objectForKey:@"history_name"]];
+                    [history setDate:[WBUtils dateFromString:[historyData objectForKey:@"history_date"]]];
+                    NSDictionary *paintingCmdData = [historyData objectForKey:@"history_painting"];
+                    
+                    NSString *paintingType = [paintingCmdData objectForKey:@"paint_cmd_type"];
+                    if ([paintingType isEqualToString:@"MultiStrokePaintingCmd"]) {
+                        MultiStrokePaintingCmd *paintCmd = [[MultiStrokePaintingCmd alloc] init];
+                        [paintCmd setUid:[paintingCmdData objectForKey:@"paint_cmd_uid"]];
+                        [paintCmd setLayerIndex:[[paintingCmdData objectForKey:@"paint_cmd_layer"] intValue]];
+                        [paintCmd setDrawingView:((MainPaintingView *) [[page selectedElementView] contentView])];
                         
-                        [paintCmd.strokeArray addObject:singlePaintCmd];
+                        NSDictionary *multiStrokesData = [paintingCmdData objectForKey:@"paint_multi_stroke_array"];
+                        for (NSString *singlePaintUid in multiStrokesData) {
+                            NSDictionary *singlePaintCmdData = [multiStrokesData objectForKey:singlePaintUid];
+                            StrokePaintingCmd *singlePaintCmd = [[StrokePaintingCmd alloc] init];
+                            [singlePaintCmd setUid:singlePaintUid];
+                            [singlePaintCmd setLayerIndex:[[singlePaintCmdData objectForKey:@"paint_cmd_layer"] intValue]];
+                            [singlePaintCmd pointSizeWithSize:[[singlePaintCmdData objectForKey:@"paint_stroke_point_size"] floatValue]];
+                            CGRect colorRect = CGRectFromString([singlePaintCmdData objectForKey:@"paint_stroke_color"]);
+                            [singlePaintCmd colorWithRed:colorRect.origin.x green:colorRect.origin.y blue:colorRect.size.width alpha:colorRect.size.height];
+                            CGPoint start = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_start"]);
+                            CGPoint end = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_end"]);
+                            [singlePaintCmd strokeFromPoint:start toPoint:end];
+                            [singlePaintCmd setDrawingView:((MainPaintingView *) [[page selectedElementView] contentView])];
+                            
+                            [paintCmd.strokeArray addObject:singlePaintCmd];
+                        }
+                        [history setPaintingCommand:paintCmd];
+                        [history setActive:[[historyData objectForKey:@"history_active"] boolValue]];
                     }
-                    [history setPaintingCommand:paintCmd];
+                    [[HistoryManager sharedManager] addAction:history forPage:page];
                 }
-                [history setActive:[[historyData objectForKey:@"history_active"] boolValue]];
-                
-                [[HistoryManager sharedManager] addAction:history forPage:page];
             }
         }
-    }
+        [GSSVProgressHUD dismiss];
+        if (block) { block(YES, nil); }
+    });
 }
 
 - (void)updateWithDataForPage:(NSDictionary *)data {

@@ -14,6 +14,7 @@
 #import "HistoryElementTextColorChanged.h"
 #import "HistoryElementCanvasDraw.h"
 #import "HistoryElementTransform.h"
+#import "MultiStrokePaintingCmd.h"
 
 #define kHistoryMaxBuffer 50
 
@@ -210,7 +211,8 @@ static HistoryManager *shareManager = nil;
     for (HistoryElement *action in historyForPage) {
         if ([action.uid isEqualToString:uid]
             && [action isKindOfClass:[HistoryElementCanvasDraw class]]) {
-            [((HistoryElementCanvasDraw *) action) setPaintingCommand:paintingCmd];
+            HistoryElementCanvasDraw *canvasAction = (HistoryElementCanvasDraw *) action;
+            [((MultiStrokePaintingCmd *) [canvasAction paintingCommand]).strokeArray addObject:paintingCmd];
             actionToUpdate = (HistoryElementCanvasDraw *) action;
             break;
         }

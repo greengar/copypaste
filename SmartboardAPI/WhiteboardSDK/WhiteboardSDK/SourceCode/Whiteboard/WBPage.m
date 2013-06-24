@@ -225,6 +225,12 @@
     }
 }
 
+- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history withNewPaintingCmd:(PaintingCmd *)cmd {
+    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryElementCanvasDrawUpdated:withPaintingCmd:)]) {
+        [self.pageDelegate pageHistoryElementCanvasDrawUpdated:history withPaintingCmd:cmd];
+    }
+}
+
 #pragma mark - Backup/Restore Save/Load
 - (NSDictionary *)saveToDict {
     NSMutableDictionary *dict = [NSMutableDictionary new];

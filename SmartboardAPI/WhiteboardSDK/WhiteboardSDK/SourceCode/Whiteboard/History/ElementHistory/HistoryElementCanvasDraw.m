@@ -31,7 +31,7 @@
 }
 
 - (NSDictionary *)backupToData {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super backupToData]];
+    NSMutableDictionary *dict = [super backupToData];
     [dict setObject:@"HistoryElementCanvasDraw" forKey:@"history_type"];
     [dict setObject:[self.paintingCommand saveToDict] forKey:@"history_painting"];
     return dict;

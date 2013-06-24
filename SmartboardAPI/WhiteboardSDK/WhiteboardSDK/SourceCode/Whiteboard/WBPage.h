@@ -18,6 +18,7 @@
 @class WBPage;
 @class WBBaseElement;
 @class HistoryAction;
+@class PaintingCmd;
 @protocol WBPageDelegate
 @optional
 - (void)pageSelected:(WBPage *)page;
@@ -25,6 +26,8 @@
 - (void)elementSelected:(WBBaseElement *)element;
 - (void)elementDeselected:(WBBaseElement *)element;
 - (void)pageHistoryCreated:(HistoryAction *)history;
+- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withPaintingCmd:(PaintingCmd *)cmd;
+- (void)pageHistoryElementTransformUpdated:(HistoryAction *)history;
 @end
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>

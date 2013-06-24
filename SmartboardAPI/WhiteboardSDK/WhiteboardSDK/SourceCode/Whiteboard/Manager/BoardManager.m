@@ -46,7 +46,7 @@ static BoardManager *shareManager = nil;
     NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", uid]];
     NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
     WBBoard *board = [[WBBoard alloc] init];
-    [board updateWithDataForBoard:boardDict];
+    [board updateWithDataForBoard:boardDict withBlock:^(BOOL succeed, NSError *error) {}];
     return board;
 }
 

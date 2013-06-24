@@ -39,7 +39,7 @@
 }
 
 - (NSDictionary *)backupToData {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super backupToData]];
+    NSMutableDictionary *dict = [super backupToData];
     [dict setObject:@"HistoryElementTextColorChanged" forKey:@"history_type"];
     [dict setObject:[self.originalColor gsString] forKey:@"history_origin_color"];
     [dict setObject:[self.changedColor gsString] forKey:@"history_changed_color"];

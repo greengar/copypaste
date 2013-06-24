@@ -21,7 +21,7 @@
 
 - (id)initWithName:(NSString *)name;
 
-- (NSDictionary *)backupToData;
+- (NSMutableDictionary *)backupToData;
 - (void)restoreFromData:(NSDictionary *)data;
 
 @end

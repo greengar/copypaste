@@ -257,7 +257,7 @@
                     paintingIdExisted = YES;
                     
                     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updatedCommandOnUndoStack:)]) {
-                        [self.delegate updatedCommandOnUndoStack:cmd];
+                        [self.delegate updatedCommandOnUndoStack:newCmd];
                     }
                     break;
                 }

@@ -10,6 +10,7 @@
 #import "GSSession.h"
 #import <Parse/Parse.h>
 #import <Firebase/Firebase.h>
+#import "GSSVProgressHUD.h"
 
 @interface GSRoom()
 @property (nonatomic, strong) NSString *firebaseUid;
@@ -149,7 +150,9 @@
 }
 
 - (void)loadDataWithBlock:(GSResultBlock)block {
+    [GSSVProgressHUD showWithStatus:@"Loading..."];
     [[GSSession activeSession] registerRoomDataChanged:self withBlock:^(id object) {
+        [GSSVProgressHUD dismiss];
         if (block) {
             block((object != nil), nil);
         }

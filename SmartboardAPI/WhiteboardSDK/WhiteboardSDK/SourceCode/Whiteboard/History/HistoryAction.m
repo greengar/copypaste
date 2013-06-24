@@ -36,10 +36,10 @@
     return self;
 }
 
-- (NSDictionary *)backupToData {
-    return @{@"history_name" : self.name,
-             @"history_active" : [NSNumber numberWithBool:self.active],
-             @"history_date" : [WBUtils stringFromDate:self.date]};
+- (NSMutableDictionary *)backupToData {
+    return [NSMutableDictionary dictionaryWithDictionary:@{@"history_name" : self.name,
+                                                         @"history_active" : [NSNumber numberWithBool:self.active],
+                                                           @"history_date" : [WBUtils stringFromDate:self.date]}];
 }
 
 - (void)restoreFromData:(NSDictionary *)data {

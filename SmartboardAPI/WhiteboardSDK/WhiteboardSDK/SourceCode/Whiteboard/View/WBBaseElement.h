@@ -12,6 +12,7 @@
 @class WBPage;
 @class WBBaseElement;
 @class HistoryAction;
+@class PaintingCmd;
 
 @protocol WBBaseViewDelegate
 @optional
@@ -21,6 +22,7 @@
 - (void)elementDeleted:(WBBaseElement *)element;
 - (void)elementUnlocked:(WBBaseElement *)element;
 - (void)pageHistoryCreated:(HistoryAction *)history;
+- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history withNewPaintingCmd:(PaintingCmd *)cmd;
 @end
 
 @interface WBBaseElement : UIView <UIGestureRecognizerDelegate>
