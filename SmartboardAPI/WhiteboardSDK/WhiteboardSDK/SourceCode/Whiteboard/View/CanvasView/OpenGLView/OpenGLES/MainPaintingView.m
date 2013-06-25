@@ -23,6 +23,7 @@
 #define kUndoMaxBuffer 50
 
 @interface MainPaintingView () {
+    BOOL isReal;
     Transforms viewTransform;
 }
 @property (nonatomic) BOOL shouldCreateNewElement;
@@ -49,29 +50,6 @@
 @synthesize undoSequenceArray = _undoSequenceArray;
 
 #pragma mark - Initialize
-- (id)initWithDict:(NSDictionary *)dict {
-    CGRect frame = CGRectFromString([dict objectForKey:@"opengl_frame"]);
-    if (self = [super initWithFrame:frame]) {
-        self.multipleTouchEnabled = YES;
-        
-        touchDictionary = [[GSMutableDictionary alloc] initWithCapacity:3];
-		
-		gestureStartX = kInvalidCoord;
-		gestureStartY = kInvalidCoord;
-		
-		isReceivingStroke = NO;
-		isDrawingStroke = NO;
-		self.undoSequenceArray = [NSMutableArray new];
-        
-        extRotation = 90;
-        
-        if (IS_IPAD) {
-            _zoomOffsetFromTop = kOffsetForZoomLabelWhenIPadPickerIsShown;
-        }
-    }
-    return self;
-}
-
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView {
     if ((self = [super initWithFrame:frame sharegroupView:glView])) {
         // You might think this is necessary for showing the tools, but it's not.
@@ -110,10 +88,6 @@
         }
 	}
 	return self;
-}
-
-- (BOOL)shouldCreateElement {
-    return self.shouldCreateNewElement;
 }
 
 - (void)initialDrawing {
@@ -496,7 +470,12 @@
 
 #pragma mark - Touch Handlers
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    self.shouldCreateNewElement = YES;
+    if (!self.shouldCreateNewElement) {
+        self.shouldCreateNewElement = YES;
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(fakeCanvasShouldBeReal:)]) {
+            [self.delegate fakeCanvasShouldBeReal:self];
+        }
+    }
     
     if (IS_IPAD) {
         DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
@@ -1597,34 +1576,7 @@ void CGAffineToGL2(const CGAffineTransform *t, GLfloat *m)
     m[1] = t->b; m[5] = t->d; m[13] = t->ty;
 }
 
-#pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary new];
-    [dict setObject:NSStringFromCGRect(self.frame) forKey:@"opengl_frame"];
-    if ([self.undoSequenceArray count]) {
-        NSMutableArray *cmdDicts = [NSMutableArray arrayWithCapacity:[self.undoSequenceArray count]];
-        for (int i = 0; i < [self.undoSequenceArray count]; i++) {
-            PaintingCmd *cmd = [self.undoSequenceArray objectAtIndex:i];
-            NSDictionary *cmdDict = [cmd saveToDict];
-            [cmdDicts addObject:cmdDict];
-        }
-        [dict setObject:cmdDicts forKey:@"opengl_undo_array"];
-    }
-    return [NSDictionary dictionaryWithDictionary:dict];
-}
-
-+ (MainPaintingView *)loadFromDict:(NSDictionary *)dict {
-    MainPaintingView *drawingView = [[MainPaintingView alloc] initWithDict:dict];
-    NSArray *cmdDicts = [dict objectForKey:@"opengl_undo_array"];
-    for (int i = 0; i < [cmdDicts count]; i++) {
-        NSDictionary *cmdDict = [cmdDicts objectAtIndex:i];
-        PaintingCmd *cmd = [PaintingCmd loadFromDict:cmdDict];
-        [drawingView pushCommandToUndoStack:cmd];
-        drawingView.currentPaintingId = cmd.uid;
-    }
-    return drawingView;
-}
-
+#pragma mark - Reload View
 - (void)reloadView {	
     [EAGLContext setCurrentContext:self.context];
     

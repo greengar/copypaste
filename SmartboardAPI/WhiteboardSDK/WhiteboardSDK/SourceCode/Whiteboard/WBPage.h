@@ -32,11 +32,9 @@
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
 
-- (id)initWithDict:(NSDictionary *)dictionary;
 - (void)select;
 - (UIImage *)exportPageToImage;
-- (NSDictionary *)saveToDict;
-+ (WBPage *)loadFromDict:(NSDictionary *)dict;
+- (NSDictionary *)saveToData;
 
 - (void)focusOnCanvas;
 - (void)focusOnText;
@@ -45,6 +43,8 @@
 - (void)removeElement:(WBBaseElement *)element;
 
 - (void)focusOnTopElement;
+
+- (void)addFakeCanvas;
 
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSMutableArray *elements;

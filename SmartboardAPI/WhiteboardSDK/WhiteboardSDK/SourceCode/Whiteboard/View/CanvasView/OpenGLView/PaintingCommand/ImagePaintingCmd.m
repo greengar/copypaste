@@ -13,17 +13,6 @@
 
 @implementation ImagePaintingCmd
 
-- (id)initWithDict:(NSDictionary *)dict {
-    if (self = [super initWithDict:dict]) {
-        NSString *imageString = [dict objectForKey:@"paint_image"];
-        if (imageString) {
-            NSData *imageData = [NSData wbDataFromBase64String:imageString];
-            image = [[UIImage imageWithData:imageData] CGImage];
-        }
-    }
-    return self;
-}
-
 - (id)init {
     self = [super init];
     if (self) {
@@ -105,22 +94,6 @@
 - (void)dealloc {
     CGImageRelease(image);
     image = nil;
-}
-
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
-    [dict setObject:@"ImagePaintingCmd" forKey:@"paint_cmd_type"];
-    if (image) {
-        NSData *imageData = UIImagePNGRepresentation([UIImage imageWithCGImage:image]);
-        NSString *imageString = [imageData wbBase64EncodedString];
-        [dict setObject:imageString forKey:@"paint_image"];
-    }
-    return [NSDictionary dictionaryWithDictionary:dict];
-}
-
-+ (PaintingCmd *)loadFromDict:(NSDictionary *)dictionary {
-    ImagePaintingCmd *imageCmd = [[ImagePaintingCmd alloc] initWithDict:dictionary];
-    return imageCmd;
 }
 
 @end

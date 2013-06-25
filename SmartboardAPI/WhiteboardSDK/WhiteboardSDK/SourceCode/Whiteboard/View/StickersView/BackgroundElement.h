@@ -10,6 +10,4 @@
 
 @interface BackgroundElement : WBBaseElement
 
-- (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
-
 @end

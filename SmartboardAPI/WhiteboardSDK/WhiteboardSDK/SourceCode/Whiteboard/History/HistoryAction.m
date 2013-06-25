@@ -36,17 +36,27 @@
     return self;
 }
 
-- (NSMutableDictionary *)backupToData {
+- (NSMutableDictionary *)saveToData {
     return [NSMutableDictionary dictionaryWithDictionary:@{@"history_uid" : self.uid,
                                                           @"history_name" : self.name,
                                                         @"history_active" : [NSNumber numberWithBool:self.active],
                                                           @"history_date" : [WBUtils stringFromDate:self.date]}];
 }
 
-- (void)restoreFromData:(NSDictionary *)data {
+// Remember the active will be loaded last
+// Because it activates the action and it requires all data be loaded first
+- (void)loadFromData:(NSDictionary *)data {
+    self.uid = [data objectForKey:@"history_uid"];
     self.name = [data objectForKey:@"history_name"];
-    self.active = [[data objectForKey:@"history_active"] boolValue];
     self.date = [WBUtils dateFromString:[data objectForKey:@"history_date"]];
+}
+
+- (void)loadFromData:(NSDictionary *)data forBoard:(WBBoard *)board {
+    [self loadFromData:data];
+}
+
+- (void)loadFromData:(NSDictionary *)data forPage:(WBPage *)page {
+    [self loadFromData:data];
 }
 
 @end

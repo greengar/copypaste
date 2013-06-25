@@ -31,8 +31,8 @@
     }
 }
 
-- (NSDictionary *)backupToData {
-    NSMutableDictionary *dict = [super backupToData];
+- (NSDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"HistoryElementTextChanged" forKey:@"history_type"];
     [dict setObject:self.originalText forKey:@"history_origin_text"];
     [dict setObject:self.changedText forKey:@"history_changed_text"];

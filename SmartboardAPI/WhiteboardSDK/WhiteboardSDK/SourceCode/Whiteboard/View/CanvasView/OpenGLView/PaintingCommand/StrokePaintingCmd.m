@@ -9,22 +9,9 @@
 #import "StrokePaintingCmd.h"
 #import "MainPaintingView.h"
 #import "WBUtils.h"
+#import "WBBaseElement.h"
 
 @implementation StrokePaintingCmd
-
-- (id)initWithDict:(NSDictionary *)dict {
-    if (self = [super initWithDict:dict]) {
-        startPoint = CGPointFromString([dict objectForKey:@"paint_stroke_start"]);
-        endPoint = CGPointFromString([dict objectForKey:@"paint_stroke_end"]);
-        pointSize = [[dict objectForKey:@"paint_stroke_point_size"] floatValue];
-        CGRect colorRect = CGRectFromString([dict objectForKey:@"paint_stroke_color"]);
-        components[0] = colorRect.origin.x;
-        components[1] = colorRect.origin.y;
-        components[2] = colorRect.size.width;
-        components[3] = colorRect.size.height;
-    }
-    return self;
-}
 
 - (void)strokeFromPoint:(CGPoint)start toPoint:(CGPoint)end {
     startPoint = CGPointMake(start.x, start.y);
@@ -95,21 +82,26 @@
     glEnable(GL_TEXTURE_2D);
 }
 
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
+- (NSMutableDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"StrokePaintingCmd" forKey:@"paint_cmd_type"];
     [dict setObject:NSStringFromCGPoint(startPoint) forKey:@"paint_stroke_start"];
     [dict setObject:NSStringFromCGPoint(endPoint) forKey:@"paint_stroke_end"];
     [dict setObject:[NSNumber numberWithFloat:pointSize] forKey:@"paint_stroke_point_size"];
     CGRect colorRect = CGRectMake(components[0], components[1], components[2], components[3]);
     [dict setObject:NSStringFromCGRect(colorRect) forKey:@"paint_stroke_color"];
-    return [NSDictionary dictionaryWithDictionary:dict];
+    return dict;
 }
 
-+ (PaintingCmd *)loadFromDict:(NSDictionary *)dict {
-    StrokePaintingCmd *strokePaintCmd = [[StrokePaintingCmd alloc] initWithDict:dict];
-    return strokePaintCmd;
+- (void)loadFromData:(NSDictionary *)singlePaintCmdData forElement:(WBBaseElement *)element {
+    [super loadFromData:singlePaintCmdData forElement:element];
+    [self pointSizeWithSize:[[singlePaintCmdData objectForKey:@"paint_stroke_point_size"] floatValue]];
+    CGRect colorRect = CGRectFromString([singlePaintCmdData objectForKey:@"paint_stroke_color"]);
+    [self colorWithRed:colorRect.origin.x green:colorRect.origin.y blue:colorRect.size.width alpha:colorRect.size.height];
+    CGPoint start = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_start"]);
+    CGPoint end = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_end"]);
+    [self strokeFromPoint:start toPoint:end];
+    [self setDrawingView:((MainPaintingView *) [element contentView])];
 }
-
 
 @end

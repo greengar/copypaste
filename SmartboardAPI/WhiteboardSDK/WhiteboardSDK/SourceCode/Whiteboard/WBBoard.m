@@ -202,7 +202,7 @@
     [self setCurrentPageIndex:([self.pages count]-1)];
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:dataUpdate:)]) {
-        [self.delegate pageOfBoard:self dataUpdate:[page saveToDict]];
+        [self.delegate pageOfBoard:self dataUpdate:[page saveToData]];
     }
 }
 
@@ -1056,7 +1056,7 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
+- (NSDictionary *)saveToData {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"board_uid"];
     [dict setObject:self.name forKey:@"board_name"];
@@ -1064,7 +1064,7 @@
     
     NSMutableArray *pageArray = [NSMutableArray arrayWithCapacity:[self.pages count]];
     for (WBPage *page in self.pages) {
-        NSDictionary *pageDict = [page saveToDict];
+        NSDictionary *pageDict = [page saveToData];
         [pageArray addObject:pageDict];
     }
     
@@ -1105,7 +1105,7 @@
         [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
         [historyURL appendFormat:@"/page_history/%@", [history uid]];
         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:addNewHistory:atURL:)]) {
-            [self.delegate pageOfBoard:self addNewHistory:[history backupToData] atURL:historyURL];
+            [self.delegate pageOfBoard:self addNewHistory:[history saveToData] atURL:historyURL];
         }
     });
 }
@@ -1118,7 +1118,7 @@
         [historyURL appendFormat:@"/page_history/%@", [history uid]];
         [historyURL appendFormat:@"/history_painting/paint_multi_stroke_array/%@", [cmd uid]];
         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:updateHistoryCanvasDraw:atURL:)]) {
-            [self.delegate pageOfBoard:self updateHistoryCanvasDraw:[cmd saveToDict] atURL:historyURL];
+            [self.delegate pageOfBoard:self updateHistoryCanvasDraw:[cmd saveToData] atURL:historyURL];
         }
     });
 }
@@ -1143,7 +1143,7 @@
     
     NSMutableDictionary *boardPages = [NSMutableDictionary new];
     for (WBPage *page in self.pages) {
-        [boardPages setObject:[page saveToDict] forKey:page.uid];
+        [boardPages setObject:[page saveToData] forKey:page.uid];
     }
     [dict setObject:boardPages forKey:@"board_pages"];
     
@@ -1160,12 +1160,21 @@
         self.name = [data objectForKey:@"board_name"];
         self.view.frame = CGRectFromString([data objectForKey:@"board_frame"]);
         
+        // Remove all pages
+        for (WBPage *existedPage in self.pages) {
+            [existedPage removeFromSuperview];
+        }
+        [self.pages removeAllObjects];
+        
+        // Start to reconstruct all pages
         NSDictionary *boardPages = [data objectForKey:@"board_pages"];
         NSArray *pageKeys = [boardPages allKeys];
         pageKeys = [pageKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         for (int i = 0; i < [pageKeys count]; i++) {
             NSString *pageUid = [pageKeys objectAtIndex:i];
             NSDictionary *pageData = [boardPages objectForKey:pageUid];
+            
+            // Reconstruct this page
             [self updateWithDataForPage:pageData pageUid:pageUid];
         }
         [GSSVProgressHUD dismiss];
@@ -1194,6 +1203,13 @@
         [self setCurrentPageIndex:([self.pages count]-1)];
     }
     
+    // Remove all elements
+    for (WBBaseElement *existedElement in page.elements) {
+        [existedElement removeFromSuperview];
+    }
+    [page.elements removeAllObjects];
+    
+    // Page is finally recreated, now we need to apply all history to this page
     NSDictionary *pageHistoryData = [pageData objectForKey:@"page_history"];
     NSArray *allKeys = [pageHistoryData allKeys];
     allKeys = [allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
@@ -1215,77 +1231,30 @@
     
     if (page != nil) {
         NSString *historyType = [historyData objectForKey:@"history_type"];
+        
+        // History create element: now create it again
         if ([historyType isEqualToString:@"HistoryElementCreated"]) {
-            NSString *elementType = [historyData objectForKey:@"element_type"];
-            CGRect elementRect = CGRectFromString([historyData objectForKey:@"history_default_frame"]);
-            CGAffineTransform elementTransform = CGAffineTransformFromString([historyData objectForKey:@"history_default_transform"]);
-            WBBaseElement *element;
-            if ([elementType isEqualToString:@"TextElement"]) {
-                element = [[TextElement alloc] initWithFrame:elementRect];
-                ((UITextView *)[element contentView]).text = [historyData objectForKey:@"element_text"];
-                ((TextElement *) element).myFontName = [historyData objectForKey:@"element_font_name"];
-                ((TextElement *) element).myFontSize = [[historyData objectForKey:@"element_font_size"] floatValue];
-                NSString *colorString = [historyData objectForKey:@"element_font_color"];
-                ((TextElement *) element).myColor = [UIColor gsColorFromString:colorString];
-            } else if ([elementType isEqualToString:@"GLCanvasElement"]) {
-                element = [[GLCanvasElement alloc] initWithFrame:elementRect];
-            } else if ([elementType isEqualToString:@"ImageElement"]) {
-                element = [[ImageElement alloc] initWithFrame:elementRect];
-            } else {
-                element = [[WBBaseElement alloc] initWithFrame:elementRect];
-            }
-            
-            element.defaultFrame = elementRect;
-            element.defaultTransform = elementTransform;
-            [page addSubview:element];
-            [page.elements addObject:element];
-            [element setDelegate:page];
-            
             HistoryElementCreated *history = [[HistoryElementCreated alloc] init];
-            [history setElement:element];
-            [history setUid:[historyData objectForKey:@"history_uid"]];
-            [history setName:[historyData objectForKey:@"history_name"]];
-            [history setDate:[WBUtils dateFromString:[historyData objectForKey:@"history_date"]]];
-            [history setActive:[[historyData objectForKey:@"history_active"] boolValue]];
+            [history loadFromData:historyData forPage:page];
             [[HistoryManager sharedManager] addAction:history forPage:page];
         
         } else if ([historyType isEqualToString:@""]) {
             
         } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
-            HistoryElementCanvasDraw *history = [[HistoryElementCanvasDraw alloc] init];
-            [history setElement:[page selectedElementView]];
-            [history setUid:[historyData objectForKey:@"history_uid"]];
-            [history setName:[historyData objectForKey:@"history_name"]];
-            [history setDate:[WBUtils dateFromString:[historyData objectForKey:@"history_date"]]];
-            NSDictionary *paintingCmdData = [historyData objectForKey:@"history_painting"];
-            
-            NSString *paintingType = [paintingCmdData objectForKey:@"paint_cmd_type"];
-            if ([paintingType isEqualToString:@"MultiStrokePaintingCmd"]) {
-                MultiStrokePaintingCmd *paintCmd = [[MultiStrokePaintingCmd alloc] init];
-                [paintCmd setUid:[paintingCmdData objectForKey:@"paint_cmd_uid"]];
-                [paintCmd setLayerIndex:[[paintingCmdData objectForKey:@"paint_cmd_layer"] intValue]];
-                [paintCmd setDrawingView:((MainPaintingView *) [[page selectedElementView] contentView])];
-                
-                NSDictionary *multiStrokesData = [paintingCmdData objectForKey:@"paint_multi_stroke_array"];
-                for (NSString *singlePaintUid in multiStrokesData) {
-                    NSDictionary *singlePaintCmdData = [multiStrokesData objectForKey:singlePaintUid];
-                    StrokePaintingCmd *singlePaintCmd = [[StrokePaintingCmd alloc] init];
-                    [singlePaintCmd setUid:singlePaintUid];
-                    [singlePaintCmd setLayerIndex:[[singlePaintCmdData objectForKey:@"paint_cmd_layer"] intValue]];
-                    [singlePaintCmd pointSizeWithSize:[[singlePaintCmdData objectForKey:@"paint_stroke_point_size"] floatValue]];
-                    CGRect colorRect = CGRectFromString([singlePaintCmdData objectForKey:@"paint_stroke_color"]);
-                    [singlePaintCmd colorWithRed:colorRect.origin.x green:colorRect.origin.y blue:colorRect.size.width alpha:colorRect.size.height];
-                    CGPoint start = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_start"]);
-                    CGPoint end = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_end"]);
-                    [singlePaintCmd strokeFromPoint:start toPoint:end];
-                    [singlePaintCmd setDrawingView:((MainPaintingView *) [[page selectedElementView] contentView])];
-                    
-                    [paintCmd.strokeArray addObject:singlePaintCmd];
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            WBBaseElement *historyElement = nil;
+            for (WBBaseElement *element in [page elements]) {
+                if ([element.uid isEqualToString:elementUid]) {
+                    historyElement = element;
+                    break;
                 }
-                [history setPaintingCommand:paintCmd];
-                [history setActive:[[historyData objectForKey:@"history_active"] boolValue]];
             }
-            [[HistoryManager sharedManager] addAction:history forPage:page];
+            if (historyElement) {
+                HistoryElementCanvasDraw *history = [[HistoryElementCanvasDraw alloc] init];
+                [history setElement:historyElement];
+                [history loadFromData:historyData forPage:page];
+                [[HistoryManager sharedManager] addAction:history forPage:page];
+            }
         }
     }
 }

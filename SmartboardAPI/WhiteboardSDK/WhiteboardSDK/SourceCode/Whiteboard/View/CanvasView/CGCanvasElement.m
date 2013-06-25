@@ -17,14 +17,6 @@
 @implementation CGCanvasElement
 @synthesize drawingView = _drawingView;
 
-- (id)initWithDict:(NSDictionary *)dictionary {
-    self = [super initWithDict:dictionary];
-    if (self) {
-        
-    }
-    return self;
-}
-
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -44,30 +36,15 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
+- (NSMutableDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"CGCanvasElement" forKey:@"element_type"];
-//    [dict setObject:[self.drawingView saveToDict] forKey:@"element_drawing"];
-    return [NSDictionary dictionaryWithDictionary:dict];
+    return dict;
 }
 
-+ (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {
-    CGCanvasElement *canvasElement = [[CGCanvasElement alloc] initWithDict:dictionary];
-    return canvasElement;
-    return nil;
-}
-
-#pragma mark - Undo/Redo
-- (void)checkUndo:(int)undoCount {
-    
-}
-
-- (void)checkRedo:(int)redoCount {
-    
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
+- (void)loadFromData:(NSDictionary *)elementData {
+    [super loadFromData:elementData];
+    // Nothing to do honestly
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "WBUtils.h"
 
 @class WBBoard;
+@class WBPage;
 
 @interface HistoryAction : NSObject
 
@@ -21,7 +22,9 @@
 
 - (id)initWithName:(NSString *)name;
 
-- (NSMutableDictionary *)backupToData;
-- (void)restoreFromData:(NSDictionary *)data;
+- (NSMutableDictionary *)saveToData;
+- (void)loadFromData:(NSDictionary *)data;
+- (void)loadFromData:(NSDictionary *)data forBoard:(WBBoard *)board;
+- (void)loadFromData:(NSDictionary *)data forPage:(WBPage *)page;
 
 @end

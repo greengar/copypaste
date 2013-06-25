@@ -45,28 +45,6 @@
 @synthesize pageDelegate = _pageDelegate;
 @synthesize isLocked = _isLocked;
 
-#pragma mark - Init Views
-- (id)initWithDict:(NSDictionary *)dictionary {
-    CGRect frame = CGRectFromString([dictionary objectForKey:@"page_frame"]);
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-        self.uid = [dictionary objectForKey:@"page_uid"];
-        
-        self.elements = [NSMutableArray new];
-        
-        NSMutableArray *elements = [dictionary objectForKey:@"page_elements"];
-        for (NSDictionary *elementDict in elements) {
-            WBBaseElement *element = [WBBaseElement loadFromDict:elementDict];
-            [element setDelegate:self];
-            [element deselect];
-            [self addSubview:element];
-            [self.elements addObject:element];
-        }
-    }
-    return self;
-}
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -76,9 +54,7 @@
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"P_"];
         self.elements = [NSMutableArray new];
         
-        // Default has a Canvas Element
-        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self addElement:canvasElement];
+        [self addFakeCanvas];
     }
     return self;
 }
@@ -231,17 +207,23 @@
     }
 }
 
+#pragma mark - Fake/Real Canvas
+- (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element {
+    [self addElement:element];
+}
+
+- (void)addFakeCanvas {
+    GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    [self addSubview:canvasElement];
+    [canvasElement setDelegate:self];
+}
+
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
+- (NSDictionary *)saveToData {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"page_uid"];
     [dict setObject:NSStringFromCGRect(self.frame) forKey:@"page_frame"];
     return [NSDictionary dictionaryWithDictionary:dict];
-}
-
-+ (WBPage *)loadFromDict:(NSDictionary *)dict {
-    WBPage *page = [[WBPage alloc] initWithDict:dict];
-    return page;
 }
 
 #pragma mark - Export

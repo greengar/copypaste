@@ -38,6 +38,7 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)pushedCommandToUndoStack:(PaintingCmd *)cmd;
 - (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd;
 - (void)updateBoundingRect:(CGRect)boundingRect;
+- (void)fakeCanvasShouldBeReal:(UIView *)paintingView;
 @end
 
 @interface MainPaintingView : PaintingView <UIGestureRecognizerDelegate> {
@@ -85,7 +86,6 @@ static const CGFloat kZoomMinScale = 0.8;
 @property (nonatomic) CGPoint                         bottomRightBounding;
 @property (nonatomic, strong) NSMutableArray          *undoSequenceArray;
 
-- (id)initWithDict:(NSDictionary *)dict;
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView;
 - (void)initialDrawing;
 - (void)reset;
@@ -114,8 +114,6 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)showZoomingLabel;
 - (int)roundUpPercent:(CGFloat)number;
 
-- (BOOL)shouldCreateElement;
-
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 - (void)addPointToUndoRedoSpaceFromPoint:(CGPoint)start toPoint:(CGPoint)end
                                 colorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
@@ -130,9 +128,6 @@ static const CGFloat kZoomMinScale = 0.8;
 - (BOOL)removeLayer:(int)index;
 - (void)clearLayer:(int)layerIndex;
 - (void)moveLayerAtIndex:(NSInteger)index1 toIndex:(NSInteger)index2;
-
-- (NSDictionary *)saveToDict;
-+ (MainPaintingView *)loadFromDict:(NSDictionary *)dict;
 
 @end
 

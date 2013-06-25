@@ -35,8 +35,8 @@
     }
 }
 
-- (NSDictionary *)backupToData {
-    NSMutableDictionary *dict = [super backupToData];
+- (NSDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"HistoryElementCreated" forKey:@"history_type"];
     [dict setObject:NSStringFromCGRect(self.element.defaultFrame) forKey:@"history_default_frame"];
     [dict setObject:NSStringFromCGAffineTransform(self.element.defaultTransform) forKey:@"history_default_transform"];
@@ -56,6 +56,30 @@
     }
     
     return dict;
+}
+
+- (void)loadFromData:(NSDictionary *)historyData forPage:(WBPage *)page {
+    [super loadFromData:historyData];
+    NSString *elementType = [historyData objectForKey:@"element_type"];
+    CGRect elementRect = CGRectFromString([historyData objectForKey:@"history_default_frame"]);
+    WBBaseElement *element;
+    if ([elementType isEqualToString:@"TextElement"]) {
+        element = [[TextElement alloc] initWithFrame:elementRect];
+    } else if ([elementType isEqualToString:@"GLCanvasElement"]) {
+        element = [[GLCanvasElement alloc] initWithFrame:elementRect];
+    } else if ([elementType isEqualToString:@"ImageElement"]) {
+        element = [[ImageElement alloc] initWithFrame:elementRect];
+    } else {
+        element = [[WBBaseElement alloc] initWithFrame:elementRect];
+    }
+    
+    [element loadFromData:historyData];
+    [page addSubview:element];
+    [page.elements addObject:element];
+    [element setDelegate:page];
+    
+    [self setElement:element];
+    [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
 }
 
 @end
