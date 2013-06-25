@@ -22,6 +22,7 @@
 #import "WBMenuContentView.h"
 #import "AGImagePickerController.h"
 #import "AGIPCToolbarItem.h"
+#import "WBPopoverView.h"
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
@@ -47,7 +48,7 @@
 #define kCurlAnimationShouldStopAfter (IS_IPAD ? 0.6f : 0.7f)
 #define kShowNewPageWithCurlDownDuration 0.7f
 
-@interface WBBoard () <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate, WBMenuContentViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate>
+@interface WBBoard () <WBPageDelegate, WBToolbarDelegate, WBToolMonitorDelegate, WBMenubarDelegate, WBAddMoreSelectionDelegate, WBMenuContentViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AGImagePickerControllerDelegate, WBPopoverViewDelegate>
 {
     BOOL isPageCurlAnimating;
     BOOL isPageCurled;
@@ -131,6 +132,7 @@
         
         [self initPageCurlControl];
         
+        float kMenuViewHeight = self.view.frame.size.height / 2;
         int menuContentHeight = kMenuViewHeight+kOffsetForBouncing;
         WBMenubarView *menubar = self.menubarView;
         menuContentView = [[WBMenuContentView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width*1.25, menuContentHeight)];
@@ -547,8 +549,16 @@
 }
 
 #pragma mark - Menu Bar Buttons
+
 - (void)menuButtonTappedFrom:(UIView *)menubar
 {
+    float centerOfMenuButton = menubar.frame.origin.x + menubar.frame.size.width / 6;
+    float bottom = menubar.frame.origin.y + menubar.frame.size.height;
+    CGPoint point = CGPointMake(centerOfMenuButton - 1, bottom - 9);
+    [WBPopoverView showPopoverAtPoint:point inView:self.view withContentView:menuContentView delegate:self];
+    return;
+    
+    
     // TODO: How did this work before?
     // I can't find any place in the code where `menuContentView` is removed from its superview.
     // TODO: inside animationDidStop:finished: of WBMenuContent, when the animation up is done
@@ -570,9 +580,19 @@
     }
 }
 
-- (void)forceHideMenu {
+- (void)forceHideMenu
+{
+    return;
+    
+    
     [menuContentView animateUp];
     [self.menubarView didShowMenuView:NO];
+}
+
+//Delegate receives this call once the popover has begun the dismissal animation
+- (void)popoverViewDidDismiss:(WBPopoverView *)popoverView
+{
+    DLog();
 }
 
 - (void)saveACopy {

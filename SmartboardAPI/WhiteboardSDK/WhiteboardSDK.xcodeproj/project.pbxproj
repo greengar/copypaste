@@ -515,6 +515,11 @@
 		A90CEA3F17736720006DD933 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA547517668A47001BC5FE /* README.md */; };
 		A90CEA4017736720006DD933 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA547917668A47001BC5FE /* SVProgressHUD.bundle */; };
 		A90CEA4117736720006DD933 /* CollaborativeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B23544E1767A9B30055A319 /* CollaborativeViewController.xib */; };
+		A96ECCA41779BF3600A023FE /* WBPopoverView.h in Headers */ = {isa = PBXBuildFile; fileRef = A96ECCA11779BF3600A023FE /* WBPopoverView.h */; };
+		A96ECCA51779BF3600A023FE /* WBPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = A96ECCA21779BF3600A023FE /* WBPopoverView.m */; };
+		A96ECCA61779BF3600A023FE /* WBPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = A96ECCA21779BF3600A023FE /* WBPopoverView.m */; };
+		A96ECCA71779BF3600A023FE /* WBPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = A96ECCA21779BF3600A023FE /* WBPopoverView.m */; };
+		A96ECCA81779BF3600A023FE /* WBPopoverView_Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = A96ECCA31779BF3600A023FE /* WBPopoverView_Configuration.h */; };
 		A9AEAB181775A86B0038FDCA /* WBMenuItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A9AEAB161775A86B0038FDCA /* WBMenuItem.h */; };
 		A9AEAB191775A86B0038FDCA /* WBMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AEAB171775A86B0038FDCA /* WBMenuItem.m */; };
 		A9AEAB1A1775A86B0038FDCA /* WBMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AEAB171775A86B0038FDCA /* WBMenuItem.m */; };
@@ -787,6 +792,9 @@
 		7BEE0CC9176927BF00BD8C27 /* RoomDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataViewController.h; sourceTree = "<group>"; };
 		7BEE0CCA176927BF00BD8C27 /* RoomDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataViewController.m; sourceTree = "<group>"; };
 		A90CEA4517736720006DD933 /* WhiteboardSDK Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WhiteboardSDK Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A96ECCA11779BF3600A023FE /* WBPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBPopoverView.h; sourceTree = "<group>"; };
+		A96ECCA21779BF3600A023FE /* WBPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBPopoverView.m; sourceTree = "<group>"; };
+		A96ECCA31779BF3600A023FE /* WBPopoverView_Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBPopoverView_Configuration.h; sourceTree = "<group>"; };
 		A9AEAB161775A86B0038FDCA /* WBMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBMenuItem.h; sourceTree = "<group>"; };
 		A9AEAB171775A86B0038FDCA /* WBMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBMenuItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1241,6 +1249,7 @@
 		7BEA5316176687F0001BC5FE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A96ECCA01779BF3600A023FE /* WBPopoverView */,
 				7BEA535E176687F1001BC5FE /* WBBaseElement.h */,
 				7BEA535F176687F1001BC5FE /* WBBaseElement.m */,
 				7BEA5317176687F0001BC5FE /* CanvasView */,
@@ -1522,6 +1531,16 @@
 			path = BezierPathView;
 			sourceTree = "<group>";
 		};
+		A96ECCA01779BF3600A023FE /* WBPopoverView */ = {
+			isa = PBXGroup;
+			children = (
+				A96ECCA11779BF3600A023FE /* WBPopoverView.h */,
+				A96ECCA21779BF3600A023FE /* WBPopoverView.m */,
+				A96ECCA31779BF3600A023FE /* WBPopoverView_Configuration.h */,
+			);
+			path = WBPopoverView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1610,6 +1629,8 @@
 				7B304CDE17756CAB0037A320 /* WBToolMonitorView.h in Headers */,
 				7B304CE217756CAB0037A320 /* WBUndoButton.h in Headers */,
 				A9AEAB181775A86B0038FDCA /* WBMenuItem.h in Headers */,
+				A96ECCA41779BF3600A023FE /* WBPopoverView.h in Headers */,
+				A96ECCA81779BF3600A023FE /* WBPopoverView_Configuration.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1942,6 +1963,7 @@
 				7B304CDF17756CAB0037A320 /* WBToolMonitorView.m in Sources */,
 				7B304CE317756CAB0037A320 /* WBUndoButton.m in Sources */,
 				A9AEAB191775A86B0038FDCA /* WBMenuItem.m in Sources */,
+				A96ECCA51779BF3600A023FE /* WBPopoverView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2026,6 +2048,7 @@
 				7B304CE117756CAB0037A320 /* WBToolMonitorView.m in Sources */,
 				7B304CE517756CAB0037A320 /* WBUndoButton.m in Sources */,
 				A9AEAB1B1775A86B0038FDCA /* WBMenuItem.m in Sources */,
+				A96ECCA71779BF3600A023FE /* WBPopoverView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2167,6 +2190,7 @@
 				7B304CE017756CAB0037A320 /* WBToolMonitorView.m in Sources */,
 				7B304CE417756CAB0037A320 /* WBUndoButton.m in Sources */,
 				A9AEAB1A1775A86B0038FDCA /* WBMenuItem.m in Sources */,
+				A96ECCA61779BF3600A023FE /* WBPopoverView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
