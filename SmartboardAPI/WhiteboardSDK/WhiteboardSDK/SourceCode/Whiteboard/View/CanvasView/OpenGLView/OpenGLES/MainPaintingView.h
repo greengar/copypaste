@@ -35,12 +35,10 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)startLineAtPoint:(CGPoint)start;
 - (void)drawLineFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 - (void)endLineAtPoint:(CGPoint)end;
-- (void)addedCommandToUndoPool;
-- (void)doneUndo:(int)undoCount;
-- (void)doneRedo:(int)redoCount;
-- (void)checkUndo:(int)undoCount;
-- (void)checkRedo:(int)redoCount;
+- (void)pushedCommandToUndoStack:(PaintingCmd *)cmd;
+- (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd;
 - (void)updateBoundingRect:(CGRect)boundingRect;
+- (void)fakeCanvasShouldBeReal:(UIView *)paintingView;
 @end
 
 @interface MainPaintingView : PaintingView <UIGestureRecognizerDelegate> {
@@ -51,10 +49,6 @@ static const CGFloat kZoomMinScale = 0.8;
 	CGFloat gestureStartX;
 	CGFloat gestureStartY;
 	BOOL isPegged;
-    
-	NSMutableArray      * undoSequenceArray;
-	NSMutableArray      * redoSequenceArray;
-	PaintingCmd         * currentCmd;
     
 	BOOL isReceivingStroke;
 	BOOL isDrawingStroke;
@@ -81,7 +75,7 @@ static const CGFloat kZoomMinScale = 0.8;
     Transforms _transforms;    
 }
 
-@property (nonatomic, retain) PaintingView          * extDrawingView;
+@property (nonatomic, retain) PaintingView            *extDrawingView;
 @property (nonatomic) Transforms                      _actualTransform;
 @property (nonatomic) Transforms                      transforms;
 @property (nonatomic) BOOL                            isDrawingStroke;
@@ -90,8 +84,8 @@ static const CGFloat kZoomMinScale = 0.8;
 @property (nonatomic, assign) id<MainPaintViewDelegate> delegate;
 @property (nonatomic) CGPoint                         topLeftBounding;
 @property (nonatomic) CGPoint                         bottomRightBounding;
+@property (nonatomic, strong) NSMutableArray          *undoSequenceArray;
 
-- (id)initWithDict:(NSDictionary *)dict;
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView;
 - (void)initialDrawing;
 - (void)reset;
@@ -100,13 +94,13 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)loadAutosavedImg:(CGImageRef)image;
 - (BOOL)saveAndOpenImage;
 
-- (BOOL)undoStroke;
-- (BOOL)checkUndo;
+- (void)undoStroke;
 - (void)pushCommandToUndoStack:(PaintingCmd *)cmd;
 
-- (BOOL)redoStroke;
-- (BOOL)checkRedo;
-- (void)pushCommandToRedoStack:(PaintingCmd *)cmd;
+- (void)reloadView;
+// - (BOOL)redoStroke;
+// - (BOOL)checkRedo;
+// - (void)pushCommandToRedoStack:(PaintingCmd *)cmd;
 
 - (void)touchesMovedZoomAtCenter:(CGPoint)center
                      newDistance:(CGFloat)dist
@@ -119,8 +113,6 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)setZoomWithScale:(CGFloat)scale;
 - (void)showZoomingLabel;
 - (int)roundUpPercent:(CGFloat)number;
-
-- (BOOL)shouldCreateElement;
 
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 - (void)addPointToUndoRedoSpaceFromPoint:(CGPoint)start toPoint:(CGPoint)end
@@ -137,9 +129,5 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)clearLayer:(int)layerIndex;
 - (void)moveLayerAtIndex:(NSInteger)index1 toIndex:(NSInteger)index2;
 
-- (NSDictionary *)saveToDict;
-+ (MainPaintingView *)loadFromDict:(NSDictionary *)dict;
-
-- (void)reloadView;
 @end
 

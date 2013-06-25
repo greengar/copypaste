@@ -22,6 +22,8 @@
 @property (nonatomic, strong) NSString *codeToEnter;
 @property (nonatomic, strong) NSArray *sharedEmails;
 @property (nonatomic, strong) NSMutableDictionary *data;
+@property (nonatomic, strong) UIImage *thumbnailImage;
+@property (nonatomic)         BOOL autoUpload;
 @property (nonatomic, assign) id<GSRoomDelegate> delegate;
 
 - (id)initWithName:(NSString *)name
@@ -29,5 +31,8 @@
          isPrivate:(BOOL)isPrivate
        codeToEnter:(NSString *)codeToEnter
       sharedEmails:(NSArray *)sharedEmails;
+
+- (void)saveDataInBackground;
+- (void)loadDataWithBlock:(GSResultBlock)block;
 
 @end

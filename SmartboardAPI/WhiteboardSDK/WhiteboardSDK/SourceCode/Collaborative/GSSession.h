@@ -85,7 +85,7 @@
  Register room data changed, from now on every time data of a room is changed on server
  the data inside this room in client will be changed
  */
-- (void)registerRoomDataChanged:(GSRoom *)room withBlock:(GSEmptyBlock)block;
+- (void)registerRoomDataChanged:(GSRoom *)room withBlock:(GSResultBlock)block;
 
 /*
  Unregister room data changed, from now on data won't be pulled from server anymore
@@ -129,19 +129,21 @@
  Send whole room data to the server
  It contains everything about a room which may be too large and complicated
  For better performance, should send only the new data within the suitable scope
- See [sendDataToServer:] for more information
+ See [sendData:ofRoom:atURL:] for more information
  @param room GSRoom: the room that contain the data
  */
-- (void)sendRoomDataToServer:(GSRoom *)room;
+- (void)sendRoomData:(GSRoom *)room;
 
 /*
- Send dictionary to server
  Send data directly to the URL under the hierarchy
  Make sure you specify the correct URL
  @param dict NSDictionary: data dictionary
+ @param room GSRoom: the room that contains the data to send
  @param urlString NSString: URL string to store the data under the hierarchy
  */
-- (void)sendDataToServer:(NSDictionary *)dict atURL:(NSString *)urlString;
+- (void)sendData:(NSDictionary *)dict ofRoom:(GSRoom *)room atURL:(NSString *)urlString;
+
+- (void)registerRoomDataChanged:(GSRoom *)room atURL:(NSString *)urlString withBlock:(GSSingleResultBlock)block;
 
 #pragma mark - Access and Update Database
 /*

@@ -18,34 +18,6 @@
 @implementation BackgroundElement
 @synthesize backgroundView = _backgroundView;
 
-- (id)initWithDict:(NSDictionary *)dictionary {
-    self = [super initWithDict:dictionary];
-    if (self) {
-        self.userInteractionEnabled = YES;
-        
-        UIImage *image = nil;
-        NSObject *imageContent = [dictionary objectForKey:@"element_background"];
-        if (imageContent) {
-            if ([imageContent isKindOfClass:[NSArray class]]) {
-                NSMutableString *messageString = [NSMutableString new];
-                for (int i = 0; i < [((NSArray *) imageContent) count]; i++) {
-                    [messageString appendString:[((NSArray *) imageContent) objectAtIndex:i]];
-                }
-                NSData *imageData = [NSData wbDataFromBase64String:messageString];
-                image = [UIImage imageWithData:imageData];
-                
-            } else {
-                NSData *imageData = [NSData wbDataFromBase64String:((NSString *)imageContent)];
-                image = [UIImage imageWithData:imageData];
-            }            
-        }
-        
-        [self initBackgroundViewWithFrame:self.defaultFrame
-                                    image:image];
-    }
-    return self;
-}
-
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
     self = [super initWithFrame:frame];
@@ -73,8 +45,8 @@
     return self.backgroundView;
 }
 
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
+- (NSMutableDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"BackgroundElement" forKey:@"element_type"];
     if (self.backgroundView && self.backgroundView.image) {
         NSData *data = UIImagePNGRepresentation(self.backgroundView.image);
@@ -94,16 +66,33 @@
             
         } else {
             [dict setObject:dataString forKey:@"element_background"];
-        }
-
-    
+        }    
     }
-    return [NSDictionary dictionaryWithDictionary:dict];
+    return dict;
 }
 
-+ (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {
-    BackgroundElement *bgElement = [[BackgroundElement alloc] initWithDict:dictionary];
-    return bgElement;
+- (void)loadFromData:(NSDictionary *)elementData {
+    [super loadFromData:elementData];
+    
+    UIImage *image = nil;
+    NSObject *imageContent = [elementData objectForKey:@"element_background"];
+    if (imageContent) {
+        if ([imageContent isKindOfClass:[NSArray class]]) {
+            NSMutableString *messageString = [NSMutableString new];
+            for (int i = 0; i < [((NSArray *) imageContent) count]; i++) {
+                [messageString appendString:[((NSArray *) imageContent) objectAtIndex:i]];
+            }
+            NSData *imageData = [NSData wbDataFromBase64String:messageString];
+            image = [UIImage imageWithData:imageData];
+            
+        } else {
+            NSData *imageData = [NSData wbDataFromBase64String:((NSString *)imageContent)];
+            image = [UIImage imageWithData:imageData];
+        }
+    }
+    
+    [self initBackgroundViewWithFrame:self.defaultFrame
+                                image:image];
 }
 
 @end

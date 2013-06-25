@@ -15,6 +15,7 @@
 #import "GSButton.h"
 #import "HistoryView.h"
 #import "HistoryManager.h"
+#import "HistoryElementCreated.h"
 
 #define kUndoPickerWidth 69
 #define kURButtonWidthHeight 64
@@ -44,28 +45,6 @@
 @synthesize pageDelegate = _pageDelegate;
 @synthesize isLocked = _isLocked;
 
-#pragma mark - Init Views
-- (id)initWithDict:(NSDictionary *)dictionary {
-    CGRect frame = CGRectFromString([dictionary objectForKey:@"page_frame"]);
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-        self.uid = [dictionary objectForKey:@"page_uid"];
-        
-        self.elements = [NSMutableArray new];
-        
-        NSMutableArray *elements = [dictionary objectForKey:@"page_elements"];
-        for (NSDictionary *elementDict in elements) {
-            WBBaseElement *element = [WBBaseElement loadFromDict:elementDict];
-            [element setDelegate:self];
-            [element deselect];
-            [self addSubview:element];
-            [self.elements addObject:element];
-        }
-    }
-    return self;
-}
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -75,9 +54,7 @@
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"P_"];
         self.elements = [NSMutableArray new];
         
-        // Default has a Canvas Element
-        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self addElement:canvasElement];
+        [self addFakeCanvas];
     }
     return self;
 }
@@ -103,8 +80,14 @@
     [self.elements addObject:element];
     [element setDelegate:self];
     [element select];
-    
-    [[HistoryManager sharedManager] addActionCreateElement:element forPage:self];
+
+    [[HistoryManager sharedManager] addActionCreateElement:element
+                                                   forPage:self
+                                                 withBlock:^(HistoryElementCreated *history, NSError *error) {
+         if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+             [self.pageDelegate pageHistoryCreated:history];
+         }
+    }];
 }
 
 - (void)restoreElement:(WBBaseElement *)element {
@@ -195,7 +178,8 @@
 
 - (void)elementCreated:(WBBaseElement *)element successful:(BOOL)successful {
     if (successful) {
-        [[HistoryManager sharedManager] addActionCreateElement:element forPage:self];
+        [[HistoryManager sharedManager] addActionCreateElement:element forPage:self
+                                                     withBlock:^(id object, NSError *error) {}];
     } else {
         [element removeFromSuperview];
         [self.elements removeObject:element];
@@ -203,28 +187,43 @@
 }
 
 - (void)elementDeleted:(WBBaseElement *)element {
-    [[HistoryManager sharedManager] addActionDeleteElement:element forPage:self];
+    [[HistoryManager sharedManager] addActionDeleteElement:element forPage:self
+                                                 withBlock:^(HistoryAction *history, NSError *error) {
+        if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+            [self.pageDelegate pageHistoryCreated:history];
+        }
+    }];
+}
+
+- (void)pageHistoryCreated:(HistoryAction *)history {
+    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+        [self.pageDelegate pageHistoryCreated:history];
+    }
+}
+
+- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history withNewPaintingCmd:(PaintingCmd *)cmd {
+    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryElementCanvasDrawUpdated:withPaintingCmd:)]) {
+        [self.pageDelegate pageHistoryElementCanvasDrawUpdated:history withPaintingCmd:cmd];
+    }
+}
+
+#pragma mark - Fake/Real Canvas
+- (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element {
+    [self addElement:element];
+}
+
+- (void)addFakeCanvas {
+    GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    [self addSubview:canvasElement];
+    [canvasElement setDelegate:self];
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
+- (NSDictionary *)saveToData {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"page_uid"];
     [dict setObject:NSStringFromCGRect(self.frame) forKey:@"page_frame"];
-    
-    NSMutableArray *elementArray = [NSMutableArray arrayWithCapacity:[self.elements count]];
-    for (WBBaseElement *element in self.elements) {
-        NSDictionary *elementDict = [element saveToDict];
-        [elementArray addObject:elementDict];
-    }
-    
-    [dict setObject:elementArray forKey:@"page_elements"];
     return [NSDictionary dictionaryWithDictionary:dict];
-}
-
-+ (WBPage *)loadFromDict:(NSDictionary *)dict {
-    WBPage *page = [[WBPage alloc] initWithDict:dict];
-    return page;
 }
 
 #pragma mark - Export

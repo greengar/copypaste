@@ -12,6 +12,7 @@
 #import "UIColor+GSString.h"
 #import "KxMenu.h"
 #import "HistoryManager.h"
+#import "HistoryElementTextChanged.h"
 
 @interface TextElement()
 @property (nonatomic, strong) PlaceHolderTextView *placeHolderTextView;
@@ -41,14 +42,6 @@
 @synthesize oldColorX = _oldColorX;
 @synthesize oldColorY = _oldColorY;
 @synthesize oldText = _oldText;
-
-- (id)initWithDict:(NSDictionary *)dictionary {
-    self = [super initWithDict:dictionary];
-    if (self) {
-        [self initPlaceHolderWithFrame:self.defaultFrame];
-    }
-    return self;
-}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -104,7 +97,14 @@
                                                                fontSize:self.oldFontSize
                                                     withChangedFontName:self.myFontName
                                                                fontSize:self.myFontSize
-                                                                forPage:(WBPage *)self.superview];
+                                                                forPage:(WBPage *)self.superview
+                                                              withBlock:^(HistoryAction *history, NSError *error) {
+                                                                  if (history) {
+                                                                      if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                          [self.delegate pageHistoryCreated:history];
+                                                                      }
+                                                                  }
+                                                              }];
         
         [[HistoryManager sharedManager] addActionTextColorChangedElement:self
                                                          withOriginColor:self.oldColor
@@ -113,12 +113,26 @@
                                                         withChangedColor:self.myColor
                                                                        x:self.myColorLocX
                                                                        y:self.myColorLocY
-                                                                 forPage:(WBPage *)self.superview];
+                                                                 forPage:(WBPage *)self.superview
+                                                               withBlock:^(HistoryAction *history, NSError *error) {
+                                                                   if (history) {
+                                                                       if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                           [self.delegate pageHistoryCreated:history];
+                                                                       }
+                                                                   }
+                                                               }];
 
         [[HistoryManager sharedManager] addActionTextContentChangedElement:self
                                                             withOriginText:self.oldText
                                                            withChangedText:((UITextView *)[self contentView]).text
-                                                                   forPage:(WBPage *)self.superview];
+                                                                   forPage:(WBPage *)self.superview
+                                                                 withBlock:^(HistoryElementTextChanged *history, NSError *error) {
+                                                                     if (history) {
+                                                                         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                             [self.delegate pageHistoryCreated:history];
+                                                                         }
+                                                                     }
+                                                                 }];
     }
     [self checkHistory];
     self.elementCreated = YES;
@@ -185,8 +199,8 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
+- (NSMutableDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"TextElement" forKey:@"element_type"];
     [dict setObject:self.placeHolderTextView.text forKey:@"element_text"];
     [dict setObject:self.myFontName forKey:@"element_font_name"];
@@ -194,25 +208,23 @@
     [dict setObject:[self.myColor gsString] forKey:@"element_font_color"];
     [dict setObject:[NSNumber numberWithFloat:self.myColorLocX] forKey:@"element_font_color_x"];
     [dict setObject:[NSNumber numberWithFloat:self.myColorLocY] forKey:@"element_font_color_y"];
-    return [NSDictionary dictionaryWithDictionary:dict];
+    return dict;
 }
 
-+ (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {
-    TextElement *textElement = [[TextElement alloc] initWithDict:dictionary];
-        
-    NSString *text = [dictionary objectForKey:@"element_text"];
-    [textElement setText:text];
+- (void)loadFromData:(NSDictionary *)elementData {
+    [super loadFromData:elementData];
     
-    NSString *fontName = [dictionary objectForKey:@"element_font_name"];
-    int fontSize = [[dictionary objectForKey:@"element_font_size"] intValue];
-    [textElement updateWithFontName:fontName size:fontSize];
+    NSString *text = [elementData objectForKey:@"element_text"];
+    [self setText:text];
     
-    UIColor *fontColor = [UIColor gsColorFromString:[dictionary objectForKey:@"element_font_color"]];
-    float fontColorX = [[dictionary objectForKey:@"element_font_color_x"] floatValue];
-    float fontColorY = [[dictionary objectForKey:@"element_font_color_y"] floatValue];
-    [textElement updateWithColor:fontColor x:fontColorX y:fontColorY];
+    NSString *fontName = [elementData objectForKey:@"element_font_name"];
+    int fontSize = [[elementData objectForKey:@"element_font_size"] intValue];
+    [self updateWithFontName:fontName size:fontSize];
     
-    return textElement;
+    UIColor *fontColor = [UIColor gsColorFromString:[elementData objectForKey:@"element_font_color"]];
+    float fontColorX = [[elementData objectForKey:@"element_font_color_x"] floatValue];
+    float fontColorY = [[elementData objectForKey:@"element_font_color_y"] floatValue];
+    [self updateWithColor:fontColor x:fontColorX y:fontColorY];
 }
 
 @end

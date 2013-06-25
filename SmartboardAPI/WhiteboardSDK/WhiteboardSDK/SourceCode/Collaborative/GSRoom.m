@@ -10,6 +10,7 @@
 #import "GSSession.h"
 #import <Parse/Parse.h>
 #import <Firebase/Firebase.h>
+#import "GSSVProgressHUD.h"
 
 @interface GSRoom()
 @property (nonatomic, strong) NSString *firebaseUid;
@@ -23,6 +24,8 @@
 @synthesize codeToEnter = _codeToEnter;
 @synthesize sharedEmails = _sharedEmails;
 @synthesize data = _data;
+@synthesize thumbnailImage = _thumbnailImage;
+@synthesize autoUpload = _autoUpload;
 @synthesize delegate = _delegate;
 
 - (id)init {
@@ -100,6 +103,8 @@
     } else {
         [super saveInBackground];
     }
+    
+    [self saveInBackground];
 }
 
 - (void)saveInBackgroundWithBlock:(GSResultBlock)block {
@@ -122,14 +127,35 @@
     } else {
         [super saveInBackgroundWithBlock:block];
     }
+    
+    [self saveDataInBackground];
+}
+
+- (void)saveDataInBackground {
+    if (self.data) {
+        [[GSSession activeSession] sendRoomData:self];
+    }
 }
 
 - (void)setData:(NSMutableDictionary *)data {
     _data = data;
     
+    if (self.autoUpload) {
+        [self saveDataInBackground];
+    }
+    
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(dataDidChanged:)]) {
         [self.delegate dataDidChanged:self];
     }
+}
+
+- (void)loadDataWithBlock:(GSResultBlock)block {
+    [GSSVProgressHUD showWithStatus:@"Loading..."];
+    [[GSSession activeSession] registerRoomDataChanged:self withBlock:^(BOOL succeed, NSError *error) {
+        [GSSVProgressHUD dismiss];
+        if (block) { block(succeed, nil); }
+        [[GSSession activeSession] unregisterRoomDataChanged:self];
+    }];
 }
 
 - (NSString *)uid {
@@ -143,5 +169,40 @@
 + (NSString *)classname {
     return @"Room";
 }
+
+/* Board on Firebase:
+    board_uid
+        board_frame
+        board_name
+        board_pages
+            page_uid
+                page_elements
+                page_frame
+ 
+                    element_uid
+                        element_current_transform
+                        element_default_frame
+                        element_default_transform
+                        element_type
+                        element_uid
+                    ...
+                page_history
+                    history_uid
+                        history_active
+                        history_date
+                        history_name
+                        history_type
+                        history_uid
+                page_uid
+            ...
+        board_history
+            history_uid
+            history_active
+            history_date
+            history_name
+            history_type
+            history_uid
+        board_uid
+ */
 
 @end

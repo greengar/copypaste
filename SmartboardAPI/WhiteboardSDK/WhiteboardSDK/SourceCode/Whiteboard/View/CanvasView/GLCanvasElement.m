@@ -15,37 +15,14 @@
 @property (nonatomic, strong) MainPaintingView *drawingView;
 @property (nonatomic) UIView *previewAreaView;
 @property (nonatomic, strong) UIImageView *screenshotImageView;
+@property (nonatomic, strong) NSString *currentBrushId;
 @end
 
 @implementation GLCanvasElement
 @synthesize drawingView = _drawingView;
 @synthesize previewAreaView = _previewAreaView;
 @synthesize screenshotImageView = _screenshotImageView;
-
-- (id)initWithDict:(NSDictionary *)dictionary {
-    self = [super initWithDict:dictionary];
-    if (self) {        
-        self.backgroundColor = [UIColor clearColor];
-        
-        // OpenGL Dict
-        NSDictionary *drawingDict = [dictionary objectForKey:@"element_drawing"];
-        
-        // OpenGL View
-        self.drawingView = [MainPaintingView loadFromDict:drawingDict];
-        [self addSubview:self.drawingView];
-        UIImage *image = nil;
-        [self.drawingView initialDrawing];
-        if (image) {
-            [self.drawingView loadFromSavedPhotoAlbum:image];
-            [self.drawingView addCurrentImageToUndoRedoSpace];
-        }
-        [self.drawingView reloadView];
-        
-        [self initControlWithFrame:self.defaultFrame];
-    }
-    return self;
-}
-
+@synthesize currentBrushId = _currentBrushId;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -124,29 +101,46 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
+- (NSMutableDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"GLCanvasElement" forKey:@"element_type"];
-    [dict setObject:[self.drawingView saveToDict] forKey:@"element_drawing"];
-    return [NSDictionary dictionaryWithDictionary:dict];
+    return dict;
 }
 
-+ (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {
-    GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithDict:dictionary];
-    return canvasElement;
+- (void)loadFromData:(NSDictionary *)elementData {
+    [super loadFromData:elementData];
+    // Nothing to do honestly
+}
+
+#pragma mark - Fake/Real Canvas
+- (void)fakeCanvasShouldBeReal:(UIView *)paintingView {
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(fakeCanvasFromElementShouldBeReal:)]) {
+        [self.delegate fakeCanvasFromElementShouldBeReal:self];
+    }
 }
 
 #pragma mark - Undo/Redo
-- (void)addedCommandToUndoPool {
-    [[HistoryManager sharedManager] addActionBrushElement:self forPage:(WBPage *)self.superview];
+- (void)pushedCommandToUndoStack:(PaintingCmd *)cmd {
+    self.currentBrushId = [[HistoryManager sharedManager] addActionBrushElement:self
+                                                                        forPage:(WBPage *)self.superview
+                                                            withPaintingCommand:cmd
+                                                                      withBlock:^(HistoryAction *history, NSError *error) {
+                                                                        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                            [self.delegate pageHistoryCreated:history];
+                                                                        }
+                                                                    }];
 }
 
-- (void)checkUndo:(int)undoCount {
-    
-}
-
-- (void)checkRedo:(int)redoCount {
-    
+- (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd {
+    [[HistoryManager sharedManager] updateActionBrushElementWithId:self.currentBrushId
+                                               withPaintingCommand:cmd
+                                                           forPage:(WBPage *)self.superview
+                                                withBlock:^(HistoryAction *history, NSError *error) {
+                                                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryElementCanvasUpdated:withNewPaintingCmd:)]) {
+                                                        [self.delegate pageHistoryElementCanvasUpdated:history
+                                                                                    withNewPaintingCmd:cmd];
+                                                    }
+                                                }];
 }
 
 - (BOOL)canBecomeFirstResponder {

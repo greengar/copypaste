@@ -23,6 +23,17 @@
 #import "AGImagePickerController.h"
 #import "AGIPCToolbarItem.h"
 #import "WBPopoverView.h"
+#import "HistoryElementCreated.h"
+#import "HistoryElementDeleted.h"
+#import "HistoryElementTransform.h"
+#import "HistoryElementTextChanged.h"
+#import "HistoryElementTextColorChanged.h"
+#import "HistoryElementTextFontChanged.h"
+#import "HistoryElementCanvasDraw.h"
+#import "MultiStrokePaintingCmd.h"
+#import "GSSVProgressHUD.h"
+#import "UIColor+GSString.h"
+#import <dispatch/dispatch.h>
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
@@ -70,6 +81,7 @@
 @property (nonatomic, strong) UIView                    *pageHolderView;
 @property (nonatomic, strong) UIView                    *exportControlView;
 @property (nonatomic, strong) UIPopoverController       *addPhotoPopover;
+@property (nonatomic)         dispatch_queue_t          backgroundQueue;
 @end
 
 @implementation WBBoard
@@ -85,35 +97,7 @@
 @synthesize pageHolderView = _pageHolderView;
 @synthesize pageCurlButton = _pageCurlButton;
 @synthesize exportControlView = _exportControlView;
-
-// TODO: why doesn't this call -initWithNibName:...?
-// This is a test, this method is not used
-//- (id)initWithDict:(NSDictionary *)dictionary {
-//    self = [super init];
-//    if (self) {
-//        self.view.frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
-//        self.view.backgroundColor = [UIColor clearColor];
-//        self.uid = [dictionary objectForKey:@"board_uid"];
-//        self.name = [dictionary objectForKey:@"board_name"];
-//        self.pages = [NSMutableArray new];
-//        
-//        NSMutableArray *pages = [dictionary objectForKey:@"board_pages"];
-//        for (NSDictionary *pageDict in pages) {
-//            WBPage *page = [WBPage loadFromDict:pageDict];
-//            [page setPageDelegate:self];
-//            [self selectPage:page];
-//            [self.pages addObject:page];
-//        }
-//        
-//        // There's always at least 1 page
-//        if ([self.pages count]) {
-//            [self selectPage:[self.pages objectAtIndex:self.currentPageIndex]]; // Select first page
-//        } else {
-//            [self addNewPage];
-//        }
-//    }
-//    return self;
-//}
+@synthesize backgroundQueue = _backgroundQueue;
 
 // Designated initalizer - this method should always be called when creating a WBBoard
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -137,6 +121,8 @@
         WBMenubarView *menubar = self.menubarView;
         menuContentView = [[WBMenuContentView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width*1.25, menuContentHeight)];
         [menuContentView setDelegate:self];
+        
+        self.backgroundQueue = dispatch_queue_create("com.greengar.WhiteboardSDK", NULL);
     }
     return self;
 }
@@ -216,6 +202,10 @@
     [self.pageHolderView addSubview:page];
     [self.pages addObject:page];
     [self setCurrentPageIndex:([self.pages count]-1)];
+    
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:dataUpdate:)]) {
+        [self.delegate pageOfBoard:self dataUpdate:[page saveToData]];
+    }
 }
 
 - (void)removePageWithId:(NSString *)uid {
@@ -595,7 +585,15 @@
     DLog();
 }
 
+- (void)exitBoard {
+    [self exitBoardWithResult:NO];
+}
+
 - (void)saveACopy {
+    
+}
+
+- (void)saveToPhotosApp {
     
 }
 
@@ -938,23 +936,37 @@
     }
 }
 
-- (void)doneEditing
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[HistoryManager sharedManager] clearHistoryPool];
-        UIImage *image = [self exportBoardToUIImage];
-        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-            [self.delegate doneEditingBoardWithResult:image];
-        }
+- (void)exitBoardWithResult:(BOOL)showResult {
+    if (showResult) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[HistoryManager sharedManager] clearHistoryPool];
+            UIImage *image = [self exportBoardToUIImage];
+            
+            [self dismissViewControllerAnimated:NO completion:NULL];
+            [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
+            [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+                                   forView:[UIApplication sharedApplication].keyWindow
+                                     cache:YES];
+            [UIView setAnimationDuration:kWBSessionAnimationDuration];
+            [UIView commitAnimations];
+            
+            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
+                [self.delegate doneEditingBoardWithResult:image];
+            }
+        });
+    } else {
         [self dismissViewControllerAnimated:NO completion:NULL];
-        
         [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
                                forView:[UIApplication sharedApplication].keyWindow
                                  cache:YES];
         [UIView setAnimationDuration:kWBSessionAnimationDuration];
         [UIView commitAnimations];
-    });
+        
+        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
+            [self.delegate doneEditingBoardWithResult:nil];
+        }
+    }
 }
 
 #pragma mark - Animation Show/Dismiss board
@@ -1064,7 +1076,7 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
+- (NSDictionary *)saveToData {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"board_uid"];
     [dict setObject:self.name forKey:@"board_name"];
@@ -1072,7 +1084,7 @@
     
     NSMutableArray *pageArray = [NSMutableArray arrayWithCapacity:[self.pages count]];
     for (WBPage *page in self.pages) {
-        NSDictionary *pageDict = [page saveToDict];
+        NSDictionary *pageDict = [page saveToData];
         [pageArray addObject:pageDict];
     }
     
@@ -1080,11 +1092,6 @@
     
     return [NSDictionary dictionaryWithDictionary:dict];
 }
-
-//+ (WBBoard *)loadFromDict:(NSDictionary *)dict {
-//    WBBoard *board = [[WBBoard alloc] initWithDict:dict];
-//    return board;
-//}
 
 #pragma mark - Orientation
 // pre-iOS 6 support
@@ -1106,6 +1113,170 @@
 
 - (BOOL)shouldAutorotate {
     return NO;
+}
+
+#pragma mark - Memory warning
+
+#pragma mark - Collaboration
+- (void)pageHistoryCreated:(HistoryAction *)history {
+    dispatch_async(self.backgroundQueue, ^{
+        NSMutableString *historyURL = [NSMutableString new];
+        [historyURL appendString:@"board_pages"];
+        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
+        [historyURL appendFormat:@"/page_history/%@", [history uid]];
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:addNewHistory:atURL:)]) {
+            [self.delegate pageOfBoard:self addNewHistory:[history saveToData] atURL:historyURL];
+        }
+    });
+}
+
+- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withPaintingCmd:(PaintingCmd *)cmd {
+    dispatch_async(self.backgroundQueue, ^{
+        NSMutableString *historyURL = [NSMutableString new];
+        [historyURL appendString:@"board_pages"];
+        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
+        [historyURL appendFormat:@"/page_history/%@", [history uid]];
+        [historyURL appendFormat:@"/history_painting/paint_multi_stroke_array/%@", [cmd uid]];
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:updateHistoryCanvasDraw:atURL:)]) {
+            [self.delegate pageOfBoard:self updateHistoryCanvasDraw:[cmd saveToData] atURL:historyURL];
+        }
+    });
+}
+
+- (void)pageHistoryElementTransformUpdated:(HistoryAction *)history {
+    [self pageHistoryCreated:history];
+}
+
+- (NSDictionary *)exportBoardMetadata {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:self.uid forKey:@"board_uid"];
+    [dict setObject:self.name forKey:@"board_name"];
+    [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
+    return dict;
+}
+
+- (NSDictionary *)exportBoardData {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:self.uid forKey:@"board_uid"];
+    [dict setObject:self.name forKey:@"board_name"];
+    [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
+    
+    NSMutableDictionary *boardPages = [NSMutableDictionary new];
+    for (WBPage *page in self.pages) {
+        [boardPages setObject:[page saveToData] forKey:page.uid];
+    }
+    [dict setObject:boardPages forKey:@"board_pages"];
+    
+    return dict;
+}
+
+- (void)updateWithDataForBoard:(NSDictionary *)data withBlock:(WBResultBlock)block {
+    [GSSVProgressHUD showWithStatus:@"Loading..."];
+    
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        self.uid = [data objectForKey:@"board_uid"];
+        self.name = [data objectForKey:@"board_name"];
+        self.view.frame = CGRectFromString([data objectForKey:@"board_frame"]);
+        
+        // Remove all pages
+        for (WBPage *existedPage in self.pages) {
+            [existedPage removeFromSuperview];
+        }
+        [self.pages removeAllObjects];
+        
+        // Start to reconstruct all pages
+        NSDictionary *boardPages = [data objectForKey:@"board_pages"];
+        NSArray *pageKeys = [boardPages allKeys];
+        pageKeys = [pageKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        for (int i = 0; i < [pageKeys count]; i++) {
+            NSString *pageUid = [pageKeys objectAtIndex:i];
+            NSDictionary *pageData = [boardPages objectForKey:pageUid];
+            
+            // Reconstruct this page
+            [self updateWithDataForPage:pageData pageUid:pageUid];
+        }
+        [GSSVProgressHUD dismiss];
+        if (block) { block(YES, nil); }
+    });
+}
+
+- (void)updateWithDataForPage:(NSDictionary *)pageData pageUid:(NSString *)pageUid {
+    WBPage *page = nil;
+    for (WBPage *existedPage in self.pages) {
+        if ([existedPage.uid isEqualToString:pageUid]) {
+            page = existedPage;
+            break;
+        }
+    }
+    
+    if (page == nil) {
+        CGRect pageFrame = CGRectFromString([pageData objectForKey:@"page_frame"]);
+        page = [[WBPage alloc] initWithFrame:pageFrame];
+        [page setUid:pageUid];
+        [page setPageDelegate:self];
+        [page select];
+        
+        [self.pageHolderView addSubview:page];
+        [self.pages addObject:page];
+        [self setCurrentPageIndex:([self.pages count]-1)];
+    }
+    
+    // Remove all elements
+    for (WBBaseElement *existedElement in page.elements) {
+        [existedElement removeFromSuperview];
+    }
+    [page.elements removeAllObjects];
+    
+    // Page is finally recreated, now we need to apply all history to this page
+    NSDictionary *pageHistoryData = [pageData objectForKey:@"page_history"];
+    NSArray *allKeys = [pageHistoryData allKeys];
+    allKeys = [allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    for (int j = 0; j < [allKeys count]; j++) {
+        NSString *historyUid = [allKeys objectAtIndex:j];
+        NSDictionary *historyData = [pageHistoryData objectForKey:historyUid];
+        [self updateWithNewHistoryDataForPage:historyData pageUid:pageUid];
+    }
+}
+
+- (void)updateWithNewHistoryDataForPage:(NSDictionary *)historyData pageUid:(NSString *)pageUid {
+    WBPage *page = nil;
+    for (WBPage *existedPage in self.pages) {
+        if ([existedPage.uid isEqualToString:pageUid]) {
+            page = existedPage;
+            break;
+        }
+    }
+    
+    if (page != nil) {
+        NSString *historyType = [historyData objectForKey:@"history_type"];
+        
+        // History create element: now create it again
+        if ([historyType isEqualToString:@"HistoryElementCreated"]) {
+            HistoryElementCreated *history = [[HistoryElementCreated alloc] init];
+            [history loadFromData:historyData forPage:page];
+            [[HistoryManager sharedManager] addAction:history forPage:page];
+        
+        } else if ([historyType isEqualToString:@""]) {
+            
+        } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            WBBaseElement *historyElement = nil;
+            for (WBBaseElement *element in [page elements]) {
+                if ([element.uid isEqualToString:elementUid]) {
+                    historyElement = element;
+                    break;
+                }
+            }
+            if (historyElement) {
+                HistoryElementCanvasDraw *history = [[HistoryElementCanvasDraw alloc] init];
+                [history setElement:historyElement];
+                [history loadFromData:historyData forPage:page];
+                [[HistoryManager sharedManager] addAction:history forPage:page];
+            }
+        }
+    }
 }
 
 @end

@@ -41,13 +41,6 @@
 
 #define THROW_EXCEPTION_TYPE(type) [NSException raise:type format:@"%s Line %d", __PRETTY_FUNCTION__, __LINE__];
 
-@protocol WBBoardDelegate
-@optional
-- (NSString *)facebookId;
-- (void)doneEditingBoardWithResult:(UIImage *)image;
-- (void)exportBoardData:(NSDictionary *)data;
-@end
-
 @interface WBUtils : NSObject
 
 + (int)getBuildVersion;
@@ -74,5 +67,10 @@
                              withDuration:(CFTimeInterval)duration
                                  delegate:(id)delegate;
 + (NSObject *)getThingsFromClipboard;
+
+typedef void (^WBSingleResultBlock)(id object, NSError *error);
+typedef void (^WBArrayResultBlock)(NSArray *objects, NSError *error);
+typedef void (^WBResultBlock)(BOOL succeed, NSError *error);
+typedef void (^WBEmptyBlock)(id object);
 
 @end

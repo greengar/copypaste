@@ -11,6 +11,8 @@
 
 @class WBPage;
 @class WBBaseElement;
+@class HistoryAction;
+@class PaintingCmd;
 
 @protocol WBBaseViewDelegate
 @optional
@@ -19,11 +21,13 @@
 - (void)elementDeselected:(WBBaseElement *)element;
 - (void)elementDeleted:(WBBaseElement *)element;
 - (void)elementUnlocked:(WBBaseElement *)element;
+- (void)pageHistoryCreated:(HistoryAction *)history;
+- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history withNewPaintingCmd:(PaintingCmd *)cmd;
+- (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element;
 @end
 
 @interface WBBaseElement : UIView <UIGestureRecognizerDelegate>
 
-- (id)initWithDict:(NSDictionary *)dictionary;
 - (UIView *)contentView;
 
 - (void)moveTo:(CGPoint)dest;
@@ -38,8 +42,9 @@
 
 - (void)resetTransform;
 - (CGRect)focusFrame;
-- (NSDictionary *)saveToDict;
-+ (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary;
+
+- (NSMutableDictionary *)saveToData;
+- (void)loadFromData:(NSDictionary *)elementData;
 
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic) BOOL isLocked;

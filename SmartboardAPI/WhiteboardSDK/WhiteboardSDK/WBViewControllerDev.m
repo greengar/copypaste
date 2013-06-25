@@ -167,7 +167,7 @@
         } else {
             GSRoom *room = (GSRoom *)object;
             [room setData:[NSMutableDictionary dictionaryWithDictionary:data]];
-            [[GSSession activeSession] sendRoomDataToServer:room];
+            [[GSSession activeSession] sendRoomData:room];
         }
     }];
 }

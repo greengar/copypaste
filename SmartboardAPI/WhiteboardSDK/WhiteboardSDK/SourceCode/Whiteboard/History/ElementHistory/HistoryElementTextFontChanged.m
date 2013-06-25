@@ -29,4 +29,14 @@
     }
 }
 
+- (NSDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
+    [dict setObject:@"HistoryElementTextFontChanged" forKey:@"history_type"];
+    [dict setObject:self.originalFontName forKey:@"history_origin_font_name"];
+    [dict setObject:[NSNumber numberWithFloat:self.originalFontSize] forKey:@"history_origin_font_size"];
+    [dict setObject:self.changedFontName forKey:@"history_changed_font_name"];
+    [dict setObject:[NSNumber numberWithFloat:self.changedFontSize] forKey:@"history_changed_font_size"];
+    return dict;
+}
+
 @end

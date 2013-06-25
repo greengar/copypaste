@@ -55,4 +55,4 @@
 typedef void (^GSSingleResultBlock)(id object, NSError *error);
 typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);
 typedef void (^GSResultBlock)(BOOL succeed, NSError *error);
-typedef void (^GSEmptyBlock)(id object);
+typedef void (^GSEmptyBlock)();

@@ -11,11 +11,12 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface WBMenuContentView () {
-    UIView         *menuView;
-    UITableView    *menuTableView;
+    UIView          *menuView;
+    UITableView     *menuTableView;
     BOOL            isAnimationUp;
     BOOL            isAnimationDown;
-    NSMutableArray *menuSections;
+    NSMutableArray  *menuSections;
+    BOOL            useCustomizedMenu;
 }
 @end
 
@@ -120,7 +121,14 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return kMenuHeaderHeight;
+    if (useCustomizedMenu) {
+        return kMenuHeaderHeight;
+    } else {
+        if (section > 0 && section < 4) {
+            return kMenuHeaderHeight;
+        }
+        return 0;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -128,18 +136,30 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
-    NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
-    return rowsArray.count;
+    if (useCustomizedMenu) {
+        NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
+        return rowsArray.count;
+    } else {
+        switch (sectionIndex) {
+            case 1:
+                return [SAVING_ARRAY count];
+            case 2:
+                return [SHARING_ARRAY count];
+            default:
+                return 1;
+        }
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
     NSMutableArray *rowsArray = menuSections[sectionIndex]; // all rows in section
     if (rowsArray.count <= 0) return @"";
     WBMenuItem *item = rowsArray[0];
-    return item.section;
+    return item.section ? item.section : @"";
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *cellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -257,6 +277,7 @@
 
 - (void)addMenuItem:(WBMenuItem *)item
 {
+    useCustomizedMenu = YES;
     BOOL didAddItem = NO;
     for (NSMutableArray *a in menuSections)
     {

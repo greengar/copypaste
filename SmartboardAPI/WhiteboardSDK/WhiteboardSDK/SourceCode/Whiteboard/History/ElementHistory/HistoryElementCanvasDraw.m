@@ -7,8 +7,10 @@
 //
 
 #import "HistoryElementCanvasDraw.h"
+#import "MultiStrokePaintingCmd.h"
 
 @implementation HistoryElementCanvasDraw
+@synthesize paintingCommand = _paintingCommand;
 
 - (id)init {
     if (self = [super init]) {
@@ -22,11 +24,37 @@
     GLCanvasElement *canvasElement = (GLCanvasElement *) self.element;
     MainPaintingView *paintingView = (MainPaintingView *) [canvasElement contentView];
     if (active) {
-        [paintingView redoStroke];
+        [[paintingView undoSequenceArray] addObject:self.paintingCommand];
+        [paintingView reloadView];
     } else {
         [paintingView undoStroke];
     }
 }
 
+- (NSDictionary *)saveToData {
+    NSMutableDictionary *dict = [super saveToData];
+    [dict setObject:@"HistoryElementCanvasDraw" forKey:@"history_type"];
+    [dict setObject:[self.paintingCommand saveToData] forKey:@"history_painting"];
+    return dict;
+}
+
+- (void)loadFromData:(NSDictionary *)historyData forPage:(WBPage *)page {
+    [super loadFromData:historyData];
+    
+    NSDictionary *paintingCmdData = [historyData objectForKey:@"history_painting"];
+    
+    NSString *paintingType = [paintingCmdData objectForKey:@"paint_cmd_type"];
+    if ([paintingType isEqualToString:@"MultiStrokePaintingCmd"]) {
+        MultiStrokePaintingCmd *paintCmd = [[MultiStrokePaintingCmd alloc] init];
+        [paintCmd loadFromData:paintingCmdData forElement:self.element];
+        [self setPaintingCommand:paintCmd];
+        [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
+    } else if ([paintingType isEqualToString:@"StrokePaintingCmd"]) {
+        StrokePaintingCmd *paintCmd = [[StrokePaintingCmd alloc] init];
+        [paintCmd loadFromData:paintingCmdData forElement:self.element];
+        [self setPaintingCommand:paintCmd];
+        [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
+    }
+}
 
 @end

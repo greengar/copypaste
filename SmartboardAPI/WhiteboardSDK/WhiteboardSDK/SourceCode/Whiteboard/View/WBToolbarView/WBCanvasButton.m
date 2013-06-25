@@ -212,7 +212,7 @@ static inline int PerceivedBrightness(float red, float green, float blue, float 
                 abcTextRect = CGRectMake(abcTextRect.origin.x, abcTextRect.origin.y + yOffset, abcTextRect.size.width, fontHeight);
                 
                 [selectedButtonOutlineWhite setFill];
-                [text drawInRect: abcTextRect withFont: abcTextFont lineBreakMode: UILineBreakModeClip alignment: NSTextAlignmentCenter];
+                [text drawInRect: abcTextRect withFont: abcTextFont lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
             }
         }
         

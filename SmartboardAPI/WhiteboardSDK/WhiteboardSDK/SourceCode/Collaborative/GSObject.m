@@ -15,6 +15,7 @@
 // It does include things like username and ACL.
 @property (nonatomic, strong) NSString *parseUid;
 @property (nonatomic, strong) NSMutableDictionary *innerDict;
+@property (nonatomic, strong) PFObject *parseObject;
 @end
 
 @implementation GSObject
@@ -26,8 +27,8 @@
 
 - (id)init {
     if (self = [super init]) {
-        PFObject *object = [PFObject objectWithClassName:[self classname]];
-        [self loadWithPFObject:object];
+        self.parseObject = [PFObject objectWithClassName:[self classname]];
+        [self loadWithPFObject:self.parseObject];
     }
     return self;
 }
@@ -80,19 +81,17 @@
 }
 
 - (void)saveInBackground {
-    PFObject *object = [PFObject objectWithClassName:[self classname]];
     for (NSString *key in self.allKeys) {
-        [object setObject:[self objectForKey:key] forKey:key];
+        [self.parseObject setObject:[self objectForKey:key] forKey:key];
     }
-    [object saveInBackground];
+    [self.parseObject saveInBackground];
 }
 
 - (void)saveInBackgroundWithBlock:(GSResultBlock)block {
-    PFObject *object = [PFObject objectWithClassName:[self classname]];
     for (NSString *key in self.allKeys) {
-        [object setObject:[self objectForKey:key] forKey:key];
+        [self.parseObject setObject:[self objectForKey:key] forKey:key];
     }
-    [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    [self.parseObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (block) {
             block(succeeded, error);
         }

@@ -36,19 +36,6 @@
 @synthesize currentRotateId = _currentRotateId;
 @synthesize currentScaleId = _currentScaleId;
 
-- (id)initWithDict:(NSDictionary *)dictionary {
-    CGRect frame = CGRectFromString([dictionary objectForKey:@"element_default_frame"]);
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.uid = [dictionary objectForKey:@"element_uid"];
-        self.defaultTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_default_transform"]);
-        self.currentTransform = CGAffineTransformFromString([dictionary objectForKey:@"element_current_transform"]);
-        self.defaultFrame = frame;        
-        self.transform = self.currentTransform;
-    }
-    return self;
-}
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -236,13 +223,29 @@
         self.currentPanId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                              withName:@"Move"
                                                                   withOriginTransform:self.transform
-                                                                              forPage:(WBPage *)self.superview];
+                                                                              forPage:(WBPage *)self.superview
+                                                                            withBlock:^(NSArray *objects, NSError *error) {
+                                                                                for (HistoryAction *action in objects) {
+                                                                                    if (self.delegate &&
+                                                                                        [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                                        [self.delegate pageHistoryCreated:action];
+                                                                                    }
+                                                                                }
+                                                                            }];
     }
     
     if ([panGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentPanId
                                                 withChangedTransform:self.transform
-                                                             forPage:(WBPage *)self.superview];
+                                                             forPage:(WBPage *)self.superview
+                                                           withBlock:^(NSArray *objects, NSError *error) {
+                                                               for (HistoryAction *action in objects) {
+                                                                   if (self.delegate &&
+                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                       [self.delegate pageHistoryCreated:action];
+                                                                   }
+                                                               }
+                                                           }];
     }
     
     if ([panGesture state] == UIGestureRecognizerStateBegan
@@ -259,13 +262,29 @@
         self.currentRotateId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                                 withName:@"Rotate"
                                                                      withOriginTransform:self.transform
-                                                                                 forPage:(WBPage *)self.superview];
+                                                                                 forPage:(WBPage *)self.superview
+                                                                               withBlock:^(NSArray *objects, NSError *error) {
+                                                                                   for (HistoryAction *action in objects) {
+                                                                                       if (self.delegate &&
+                                                                                           [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                                           [self.delegate pageHistoryCreated:action];
+                                                                                       }
+                                                                                   }
+                                                                               }];
     }
     
     if ([rotationGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentRotateId
                                                 withChangedTransform:self.transform
-                                                             forPage:(WBPage *)self.superview];
+                                                             forPage:(WBPage *)self.superview
+                                                           withBlock:^(NSArray *objects, NSError *error) {
+                                                               for (HistoryAction *action in objects) {
+                                                                   if (self.delegate &&
+                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                       [self.delegate pageHistoryCreated:action];
+                                                                   }
+                                                               }
+                                                           }];
     }
     
     if ([rotationGesture state] == UIGestureRecognizerStateBegan
@@ -282,13 +301,29 @@
         self.currentScaleId = [[HistoryManager sharedManager] addActionTransformElement:self
                                                                                withName:@"Zoom"
                                                                     withOriginTransform:self.transform
-                                                                                forPage:(WBPage *)self.superview];
+                                                                                forPage:(WBPage *)self.superview
+                                                                              withBlock:^(NSArray *objects, NSError *error) {
+                                                                                  for (HistoryAction *action in objects) {
+                                                                                      if (self.delegate &&
+                                                                                          [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                                          [self.delegate pageHistoryCreated:action];
+                                                                                      }
+                                                                                  }
+                                                                              }];
     }
     
     if ([pinchGesture state] == UIGestureRecognizerStateEnded) {
         [[HistoryManager sharedManager] updateTransformElementWithId:self.currentScaleId
                                                 withChangedTransform:self.transform
-                                                             forPage:(WBPage *)self.superview];
+                                                             forPage:(WBPage *)self.superview
+                                                           withBlock:^(NSArray *objects, NSError *error) {
+                                                               for (HistoryAction *action in objects) {
+                                                                   if (self.delegate &&
+                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                       [self.delegate pageHistoryCreated:action];
+                                                                   }
+                                                               }
+                                                           }];
     }
     
     if ([pinchGesture state] == UIGestureRecognizerStateBegan
@@ -311,30 +346,22 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToDict {
+- (NSDictionary *)saveToData {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"element_uid"];
     [dict setObject:NSStringFromCGAffineTransform(self.defaultTransform) forKey:@"element_default_transform"];
     [dict setObject:NSStringFromCGAffineTransform(self.currentTransform) forKey:@"element_current_transform"];
     [dict setObject:NSStringFromCGRect(self.defaultFrame) forKey:@"element_default_frame"];
-    return [NSDictionary dictionaryWithDictionary:dict];
+    return dict;
 }
 
-+ (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {
-    WBBaseElement *element = nil;
-    
-    NSString *elementType = [dictionary objectForKey:@"element_type"];
-    if ([elementType isEqualToString:@"TextElement"]) {
-        element = [TextElement loadFromDict:dictionary];
-    } else if ([elementType isEqualToString:@"CanvasElement"]) {
-        element = [GLCanvasElement loadFromDict:dictionary];
-    } else if ([elementType isEqualToString:@"ImageElement"]) {
-        element = [ImageElement loadFromDict:dictionary];
-    } else if ([elementType isEqualToString:@"BackgroundElement"]) {
-        element = [BackgroundElement loadFromDict:dictionary];
-    }
-    
-    return element;
+- (void)loadFromData:(NSDictionary *)elementData {
+    self.uid = [elementData objectForKey:@"element_uid"];
+    self.defaultFrame = CGRectFromString([elementData objectForKey:@"element_default_frame"]);
+    self.frame = self.defaultFrame;
+    self.defaultTransform = CGAffineTransformFromString([elementData objectForKey:@"element_default_transform"]);
+    self.currentTransform =CGAffineTransformFromString([elementData objectForKey:@"element_current_transform"]);
+    self.transform = self.currentTransform;
 }
 
 @end

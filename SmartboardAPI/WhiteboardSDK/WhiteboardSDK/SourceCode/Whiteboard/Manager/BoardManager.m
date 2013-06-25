@@ -32,20 +32,22 @@ static BoardManager *shareManager = nil;
     return [baseDir stringByAppendingPathComponent:@"Whiteboard/"];
 }
 
-+ (NSDictionary *)writeBoardToFile:(WBBoard *)board {
-    NSString *folderPath = [BoardManager getBaseDocumentFolder];
-    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", board.uid]];
-    NSDictionary *boardDict = [board saveToDict];
-	[boardDict writeToFile:filePath atomically:NO];
-    return boardDict;
-}
-
+//+ (NSDictionary *)writeBoardToFile:(WBBoard *)board {
+//    NSString *folderPath = [BoardManager getBaseDocumentFolder];
+//    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", board.uid]];
+//    NSDictionary *boardDict = [board exportBoardData];
+//	[boardDict writeToFile:filePath atomically:NO];
+//    return boardDict;
+//}
+//
 //+ (WBBoard *)readBoardFromFileWithUid:(NSString *)uid {
 //    THROW_EXCEPTION_TYPE(UnimplementedException);
 //    NSString *folderPath = [BoardManager getBaseDocumentFolder];
 //    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", uid]];
 //    NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
-//    return [WBBoard loadFromDict:boardDict];
+//    WBBoard *board = [[WBBoard alloc] init];
+//    [board updateWithDataForBoard:boardDict withBlock:^(BOOL succeed, NSError *error) {}];
+//    return board;
 //}
 
 + (NSDictionary *)exportBoardToData:(WBBoard *)board {

@@ -7,22 +7,11 @@
 //
 
 #import "MultiStrokePaintingCmd.h"
+#import "MainPaintingView.h"
+#import "WBBaseElement.h"
 
 @implementation MultiStrokePaintingCmd
 @synthesize strokeArray = _strokeArray;
-
-- (id)initWithDict:(NSDictionary *)dict {
-    if (self = [super initWithDict:dict]) {
-        self.strokeArray = [NSMutableArray new];
-        NSArray *strokeDicts = [dict objectForKey:@"paint_multi_stroke_array"];
-        for (int i = 0; i < [strokeDicts count]; i++) {
-            NSDictionary *strokeDict = [strokeDicts objectAtIndex:i];
-            StrokePaintingCmd *cmd = (StrokePaintingCmd *) [StrokePaintingCmd loadFromDict:strokeDict];
-            [self.strokeArray addObject:cmd];
-        }
-    }
-    return self;
-}
 
 - (id)init {
     self = [super init];
@@ -39,16 +28,15 @@
     }
 }
 
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
+- (NSMutableDictionary *)saveToData {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToData]];
     [dict setObject:@"MultiStrokePaintingCmd" forKey:@"paint_cmd_type"];
     
     if ([self.strokeArray count]) {
-        NSMutableArray *strokeDicts = [NSMutableArray arrayWithCapacity:[self.strokeArray count]];
+        NSMutableDictionary *strokeDicts = [NSMutableDictionary dictionaryWithCapacity:[self.strokeArray count]];
         for (int i = 0; i < [self.strokeArray count]; i++) {
             StrokePaintingCmd *cmd = [self.strokeArray objectAtIndex:i];
-            NSDictionary *cmdDict = [cmd saveToDict];
-            [strokeDicts addObject:cmdDict];
+            [strokeDicts setObject:[cmd saveToData] forKey:cmd.uid];
         }
         [dict setObject:strokeDicts forKey:@"paint_multi_stroke_array"];
     }
@@ -56,9 +44,17 @@
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 
-+ (PaintingCmd *)loadFromDict:(NSDictionary *)dict {
-    MultiStrokePaintingCmd *strokePaintCmd = [[MultiStrokePaintingCmd alloc] initWithDict:dict];
-    return strokePaintCmd;
+- (void)loadFromData:(NSDictionary *)paintingCmdData forElement:(WBBaseElement *)element {
+    [super loadFromData:paintingCmdData forElement:element];
+    [self setDrawingView:((MainPaintingView *) [element contentView])];
+    
+    NSDictionary *multiStrokesData = [paintingCmdData objectForKey:@"paint_multi_stroke_array"];
+    for (NSString *singlePaintUid in multiStrokesData) {
+        NSDictionary *singlePaintCmdData = [multiStrokesData objectForKey:singlePaintUid];
+        StrokePaintingCmd *singlePaintCmd = [[StrokePaintingCmd alloc] init];
+        [singlePaintCmd loadFromData:singlePaintCmdData forElement:element];
+        [self.strokeArray addObject:singlePaintCmd];
+    }
 }
 
 @end

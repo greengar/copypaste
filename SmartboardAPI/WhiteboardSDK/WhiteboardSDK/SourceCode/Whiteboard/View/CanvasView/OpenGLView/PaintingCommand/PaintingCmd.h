@@ -12,15 +12,15 @@
 #import <OpenGLES/ES1/glext.h>
 
 @class MainPaintingView;
+@class WBBaseElement;
 @interface PaintingCmd : NSObject
 
 @property (nonatomic, strong) NSString              *uid;
 @property (nonatomic)         int                   layerIndex;
 @property (nonatomic, assign) MainPaintingView      *drawingView;
 
-- (id)initWithDict:(NSDictionary *)dict;
 - (void)doPaintingAction;
-- (NSDictionary *)saveToDict;
-+ (PaintingCmd *)loadFromDict:(NSDictionary *)dict;
+- (NSMutableDictionary *)saveToData;
+- (void)loadFromData:(NSDictionary *)paintingData forElement:(WBBaseElement *)element;
 
 @end

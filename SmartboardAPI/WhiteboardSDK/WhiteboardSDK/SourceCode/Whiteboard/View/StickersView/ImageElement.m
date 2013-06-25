@@ -8,6 +8,7 @@
 
 #import "ImageElement.h"
 #import "NSData+WBBase64.h"
+#import "WBUtils.h"
 
 @interface ImageElement()
 @property (nonatomic, strong) UIImageView *imageView;
@@ -15,23 +16,6 @@
 
 @implementation ImageElement
 @synthesize imageView = _imageView;
-
-- (id)initWithDict:(NSDictionary *)dictionary {
-    self = [super initWithDict:dictionary];
-    if (self) {
-        self.userInteractionEnabled = YES;
-        
-        UIImage *image = nil;
-        NSString *imageString = [dictionary objectForKey:@"element_background"];
-        if (imageString) {
-            NSData *imageData = [NSData wbDataFromBase64String:imageString];
-            image = [UIImage imageWithData:imageData];
-        }
-        [self initImageViewWithFrame:self.defaultFrame
-                               image:image];
-    }
-    return self;
-}
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
@@ -62,19 +46,55 @@
     self.alpha = 1.0f;
 }
 
-- (NSDictionary *)saveToDict {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToDict]];
+- (NSMutableDictionary *)saveToData {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToData]];
     [dict setObject:@"ImageElement" forKey:@"element_type"];
     if (self.imageView && self.imageView.image) {
         NSData *data = UIImagePNGRepresentation(self.imageView.image);
-        [dict setObject:[data wbBase64EncodedString] forKey:@"element_image"];
+        NSString *dataString = [data wbBase64EncodedString];
+        int numOfElement = round((float)[dataString length]/(float)[WBUtils maxValueSize]);
+        if (numOfElement > 1) { // More than 1 element
+            NSMutableArray *elementArray = [NSMutableArray arrayWithCapacity:numOfElement];
+            for (int i = 0; i < numOfElement; i++) {
+                int location = [WBUtils maxValueSize]*i;
+                int length = ([WBUtils maxValueSize] > ([dataString length]-location)
+                              ? ([dataString length]-location)
+                              : [WBUtils maxValueSize]);
+                NSString *element = [dataString substringWithRange:NSMakeRange(location, length)];
+                [elementArray addObject:element];
+            }
+            [dict setObject:elementArray forKey:@"element_background"];
+            
+        } else {
+            [dict setObject:dataString forKey:@"element_background"];
+        }
     }
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 
-+ (WBBaseElement *)loadFromDict:(NSDictionary *)dictionary {
-    ImageElement *imageElement = [[ImageElement alloc] initWithDict:dictionary];
-    return imageElement;
+- (void)loadFromData:(NSDictionary *)elementData {
+    [super loadFromData:elementData];
+    
+    UIImage *image = nil;
+    NSObject *imageContent = [elementData objectForKey:@"element_background"];
+    if (imageContent) {
+        if ([imageContent isKindOfClass:[NSArray class]]) {
+            NSMutableString *messageString = [NSMutableString new];
+            for (int i = 0; i < [((NSArray *) imageContent) count]; i++) {
+                [messageString appendString:[((NSArray *) imageContent) objectAtIndex:i]];
+            }
+            NSData *imageData = [NSData wbDataFromBase64String:messageString];
+            image = [UIImage imageWithData:imageData];
+            
+        } else {
+            NSData *imageData = [NSData wbDataFromBase64String:((NSString *)imageContent)];
+            image = [UIImage imageWithData:imageData];
+        }
+    }
+    
+    [self initImageViewWithFrame:self.defaultFrame
+                           image:image];
+
 }
 
 @end

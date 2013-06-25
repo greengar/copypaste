@@ -13,24 +13,28 @@
 #import "CGCanvasElement.h"
 #import "ColorTabView.h"
 #import "ColorPickerView.h"
+#import "HistoryAction.h"
 
 @class WBPage;
 @class WBBaseElement;
+@class HistoryAction;
+@class PaintingCmd;
 @protocol WBPageDelegate
 @optional
 - (void)pageSelected:(WBPage *)page;
 - (void)pageUnlocked:(WBPage *)page;
 - (void)elementSelected:(WBBaseElement *)element;
 - (void)elementDeselected:(WBBaseElement *)element;
+- (void)pageHistoryCreated:(HistoryAction *)history;
+- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withPaintingCmd:(PaintingCmd *)cmd;
+- (void)pageHistoryElementTransformUpdated:(HistoryAction *)history;
 @end
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
 
-- (id)initWithDict:(NSDictionary *)dictionary;
 - (void)select;
 - (UIImage *)exportPageToImage;
-- (NSDictionary *)saveToDict;
-+ (WBPage *)loadFromDict:(NSDictionary *)dict;
+- (NSDictionary *)saveToData;
 
 - (void)focusOnCanvas;
 - (void)focusOnText;
@@ -39,6 +43,8 @@
 - (void)removeElement:(WBBaseElement *)element;
 
 - (void)focusOnTopElement;
+
+- (void)addFakeCanvas;
 
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSMutableArray *elements;
