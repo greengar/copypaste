@@ -520,7 +520,7 @@
 		A96ECCA61779BF3600A023FE /* WBPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = A96ECCA21779BF3600A023FE /* WBPopoverView.m */; };
 		A96ECCA71779BF3600A023FE /* WBPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = A96ECCA21779BF3600A023FE /* WBPopoverView.m */; };
 		A96ECCA81779BF3600A023FE /* WBPopoverView_Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = A96ECCA31779BF3600A023FE /* WBPopoverView_Configuration.h */; };
-		A9AEAB181775A86B0038FDCA /* WBMenuItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A9AEAB161775A86B0038FDCA /* WBMenuItem.h */; };
+		A9AEAB181775A86B0038FDCA /* WBMenuItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A9AEAB161775A86B0038FDCA /* WBMenuItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A9AEAB191775A86B0038FDCA /* WBMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AEAB171775A86B0038FDCA /* WBMenuItem.m */; };
 		A9AEAB1A1775A86B0038FDCA /* WBMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AEAB171775A86B0038FDCA /* WBMenuItem.m */; };
 		A9AEAB1B1775A86B0038FDCA /* WBMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AEAB171775A86B0038FDCA /* WBMenuItem.m */; };

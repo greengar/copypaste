@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "WBUtils.h"
-#import "WBPage.h"
 #import "WBMenuItem.h"
 
 @interface WBBoard : UIViewController

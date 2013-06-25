@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <UIKit/UIKit.h>
 
 typedef BOOL (^AGIPCAssetIsSelectedBlock)(NSUInteger index, ALAsset *asset);
 
