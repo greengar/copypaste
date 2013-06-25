@@ -42,13 +42,9 @@
 - (void)updateWithHistoryDataForBoard:(NSDictionary *)data;
 - (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data;
 
-- (void)updateWithDataForPage:(NSDictionary *)data;
-- (void)updateWithHistoryDataForPage:(NSDictionary *)data;
-- (void)updateWithNewHistoryDataForPage:(NSDictionary *)data;
-
-- (void)updateWithDataForElement:(NSDictionary *)data;
-- (void)updateWithHistoryDataForElement:(NSDictionary *)data;
-- (void)updateWithNewHistoryDataForElement:(NSDictionary *)data;
+- (void)updateWithDataForPage:(NSDictionary *)data pageUid:(NSString *)pageUid;
+- (void)updateWithNewHistoryDataForPage:(NSDictionary *)data pageUid:(NSString *)pageUid;
+- (void)updateWithNewHistoryElementCanvasDrawDataForPage:(NSDictionary *)data pageUid:(NSString *)pageUid;
 
 - (NSDictionary *)exportBoardMetadata;
 - (NSDictionary *)exportBoardData;

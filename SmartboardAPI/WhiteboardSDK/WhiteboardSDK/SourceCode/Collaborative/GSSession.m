@@ -353,11 +353,15 @@ static GSSession *activeSession = nil;
 }
 
 #pragma mark - Request Rooms
-- (void)registerRoomDataChanged:(GSRoom *)room withBlock:(GSEmptyBlock)block {
+- (void)registerRoomDataChanged:(GSRoom *)room withBlock:(GSResultBlock)block {
     [[self generateFirebaseForRoom:room] observeEventType:FEventTypeValue
                                                 withBlock:^(FDataSnapshot *snapshot) {
-        [room setData:[snapshot value]];
-        if (block) { block(room); }
+        if (snapshot) {
+            [room setData:[snapshot value]];
+            if (block) { block(YES, nil); }
+        } else {
+            if (block) { block(NO, nil); }
+        }
     }];
 }
 
@@ -433,7 +437,7 @@ static GSSession *activeSession = nil;
 }
 
 #pragma mark - Update Rooms
-- (void)sendRoomDataToServer:(GSRoom *)room {
+- (void)sendRoomData:(GSRoom *)room {
     [[self generateFirebaseForRoom:room] setValue:room.data];
 }
 
@@ -444,6 +448,20 @@ static GSSession *activeSession = nil;
         firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
     }
     [firebase setValue:dict];
+    firebase = nil;
+}
+
+- (void)registerRoomDataChanged:(GSRoom *)room atURL:(NSString *)urlString withBlock:(GSSingleResultBlock)block {
+    NSArray *parseURL = [urlString componentsSeparatedByString:@"/"];
+    Firebase *firebase = [self generateFirebaseForRoom:room];
+    for (int i = 0; i < [parseURL count]; i++) {
+        firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
+    }
+    [firebase observeEventType:FEventTypeValue
+                     withBlock:^(FDataSnapshot *snapshot) {
+                         NSDictionary *dataChangedAtURL = [snapshot value];
+                         if (block) { block(dataChangedAtURL, nil); }
+                     }];
     firebase = nil;
 }
 

@@ -133,7 +133,7 @@
 
 - (void)saveDataInBackground {
     if (self.data) {
-        [[GSSession activeSession] sendRoomDataToServer:self];
+        [[GSSession activeSession] sendRoomData:self];
     }
 }
 
@@ -151,11 +151,9 @@
 
 - (void)loadDataWithBlock:(GSResultBlock)block {
     [GSSVProgressHUD showWithStatus:@"Loading..."];
-    [[GSSession activeSession] registerRoomDataChanged:self withBlock:^(id object) {
+    [[GSSession activeSession] registerRoomDataChanged:self withBlock:^(BOOL succeed, NSError *error) {
         [GSSVProgressHUD dismiss];
-        if (block) {
-            block((object != nil), nil);
-        }
+        if (block) { block(succeed, nil); }
         [[GSSession activeSession] unregisterRoomDataChanged:self];
     }];
 }
