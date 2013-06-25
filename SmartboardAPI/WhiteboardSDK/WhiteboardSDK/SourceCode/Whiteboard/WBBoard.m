@@ -554,7 +554,7 @@
 {
     float centerOfMenuButton = menubar.frame.origin.x + menubar.frame.size.width / 6;
     float bottom = menubar.frame.origin.y + menubar.frame.size.height;
-    CGPoint point = CGPointMake(centerOfMenuButton - 1, bottom - 9);
+    CGPoint point = CGPointMake(centerOfMenuButton - 1, bottom);
     [WBPopoverView showPopoverAtPoint:point inView:self.view withContentView:menuContentView delegate:self];
     return;
     
