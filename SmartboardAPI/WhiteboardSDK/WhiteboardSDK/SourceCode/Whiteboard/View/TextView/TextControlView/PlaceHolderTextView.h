@@ -14,6 +14,6 @@
 @interface PlaceHolderTextView : UITextView <UITextInput>
 - (void)setPlaceHolderText:(NSString *)placeHolderText;
 - (void)textChanged;
-- (void)select;
-- (void)deselect;
+- (void)revive;
+- (void)rest;
 @end

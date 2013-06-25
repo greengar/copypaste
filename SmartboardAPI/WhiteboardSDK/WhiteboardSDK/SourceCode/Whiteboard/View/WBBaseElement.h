@@ -16,38 +16,41 @@
 
 @protocol WBBaseViewDelegate
 @optional
-- (void)elementCreated:(WBBaseElement *)element successful:(BOOL)successful;
-- (void)elementSelected:(WBBaseElement *)element;
-- (void)elementDeselected:(WBBaseElement *)element;
-- (void)elementDeleted:(WBBaseElement *)element;
-- (void)elementUnlocked:(WBBaseElement *)element;
 - (void)pageHistoryCreated:(HistoryAction *)history;
 - (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history withNewPaintingCmd:(PaintingCmd *)cmd;
 - (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element;
+- (void)elementRevive:(WBBaseElement *)element;
+- (void)element:(WBBaseElement *)element nowBringToFront:(BOOL)bringFront;
+- (void)element:(WBBaseElement *)element nowSendToBack:(BOOL)sendBack;
+- (void)element:(WBBaseElement *)element nowDeleted:(BOOL)deleted;
+- (void)element:(WBBaseElement *)element hideKeyboard:(BOOL)hidden;
 @end
 
 @interface WBBaseElement : UIView <UIGestureRecognizerDelegate>
 
 - (UIView *)contentView;
 
+#pragma mark - Transform
 - (void)moveTo:(CGPoint)dest;
 - (void)rotateTo:(float)rotation;
 - (void)scaleTo:(float)scale;
-
-- (void)select;
-- (void)deselect;
 - (void)restore;
-
 - (BOOL)isTransformed;
-
 - (void)resetTransform;
 - (CGRect)focusFrame;
 
+- (void)revive;
+- (void)rest;
+- (BOOL)isAlive;
+- (void)move;
+- (void)stay;
+- (BOOL)isMovable;
+
+#pragma mark - Backup/Restore
 - (NSMutableDictionary *)saveToData;
 - (void)loadFromData:(NSDictionary *)elementData;
 
 @property (nonatomic, strong) NSString *uid;
-@property (nonatomic) BOOL isLocked;
 @property (nonatomic, assign) id<WBBaseViewDelegate> delegate;
 @property (nonatomic) CGRect defaultFrame;
 @property (nonatomic) CGAffineTransform defaultTransform;
@@ -56,5 +59,6 @@
 
 // For History Created
 @property (nonatomic) BOOL elementCreated;
+@property (nonatomic) BOOL isFake;
 
 @end

@@ -17,7 +17,10 @@
 #import "HistoryElementTransform.h"
 #import "KxMenu.h"
 
-@interface WBBaseElement()
+@interface WBBaseElement() {
+    BOOL isAlive;
+    BOOL isMovable;
+}
 @property (nonatomic, strong) NSString *currentPanId;
 @property (nonatomic, strong) NSString *currentRotateId;
 @property (nonatomic, strong) NSString *currentScaleId;
@@ -26,7 +29,6 @@
 @implementation WBBaseElement
 @synthesize uid = _uid;
 @synthesize delegate = _delegate;
-@synthesize isLocked = _isLocked;
 @synthesize defaultFrame = _defaultFrame;
 @synthesize defaultTransform = _defaultTransform;
 @synthesize currentTransform = _currentTransform;
@@ -35,6 +37,7 @@
 @synthesize currentPanId = _currentPanId;
 @synthesize currentRotateId = _currentRotateId;
 @synthesize currentScaleId = _currentScaleId;
+@synthesize isFake = _isFake;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -51,6 +54,8 @@
         self.border.lineDashPattern = @[@4, @2];
         [self.layer addSublayer:self.border];
         [self.border setHidden:YES];
+        
+        self.isFake = NO;
     }
     return self;
 }
@@ -60,52 +65,66 @@
     self.border.frame = self.bounds;
 }
 
-- (void)setIsLocked:(BOOL)isLocked {
-    _isLocked = isLocked;
-    if (isLocked) {
-        UITapGestureRecognizer *tapGesture;
-        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(elementTap:)];
-        tapGesture.delegate = self;
-        
-        UIPanGestureRecognizer *panGesture;
-        panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(elementPan:)];
-        panGesture.maximumNumberOfTouches = 2;
-        panGesture.delegate = self;
-        
-        UIRotationGestureRecognizer *rotateGesture;
-        rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(elementRotate:)];
-        rotateGesture.delegate = self;
-        
-        UIPinchGestureRecognizer *pinchGesture;
-        pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(elementScale:)];
-        pinchGesture.delegate = self;
-        
-        UILongPressGestureRecognizer *pressGesture;
-        pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(elementPress:)];
-        pressGesture.delegate = self;
-        
-        [self addGestureRecognizer:tapGesture];
-        [self addGestureRecognizer:panGesture];
-        [self addGestureRecognizer:rotateGesture];
-        [self addGestureRecognizer:pinchGesture];
-        [self addGestureRecognizer:pressGesture];
-        
-        [[self contentView] setUserInteractionEnabled:NO];
-        [self setAlpha:0.7f];
-        [self setBackgroundColor:[UIColor whiteColor]];
-        [self.border setHidden:NO];
-        
-    } else {
-        for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
-            [self removeGestureRecognizer:gesture];
-        }
-        
-        [[self contentView] setUserInteractionEnabled:YES];
-        [self setAlpha:1.0f];
-        [self setBackgroundColor:[UIColor clearColor]];
-        [self.border setHidden:YES];
+- (void)revive {
+    [[self contentView] setUserInteractionEnabled:YES];
+    isAlive = YES;
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementRevive:)]) {
+        [self.delegate elementRevive:self];
     }
-    [self deselect];
+}
+
+- (void)rest {
+    [[self contentView] setUserInteractionEnabled:NO];
+    isAlive = NO;
+}
+
+- (BOOL)isAlive {
+    return isAlive;
+}
+
+- (void)move {
+    UITapGestureRecognizer *tapGesture;
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(elementTap:)];
+    tapGesture.delegate = self;
+    
+    UIPanGestureRecognizer *panGesture;
+    panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(elementPan:)];
+    panGesture.maximumNumberOfTouches = 2;
+    panGesture.delegate = self;
+    
+    UIRotationGestureRecognizer *rotateGesture;
+    rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(elementRotate:)];
+    rotateGesture.delegate = self;
+    
+    UIPinchGestureRecognizer *pinchGesture;
+    pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(elementScale:)];
+    pinchGesture.delegate = self;
+    
+    UILongPressGestureRecognizer *pressGesture;
+    pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(elementPress:)];
+    pressGesture.delegate = self;
+    
+    [self addGestureRecognizer:tapGesture];
+    [self addGestureRecognizer:panGesture];
+    [self addGestureRecognizer:rotateGesture];
+    [self addGestureRecognizer:pinchGesture];
+    [self addGestureRecognizer:pressGesture];
+    
+    [[self contentView] setUserInteractionEnabled:NO];
+    [self.border setHidden:NO];
+}
+
+- (void)stay {
+    for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
+        [self removeGestureRecognizer:gesture];
+    }
+    
+    [[self contentView] setUserInteractionEnabled:YES];
+    [self.border setHidden:YES];
+}
+
+- (BOOL)isMovable {
+    return isMovable;
 }
 
 - (UIView *)contentView {
@@ -136,36 +155,7 @@
     [super setTransform:transform];
 }
 
-#pragma mark - Actions on Content View 
-- (void)unlock {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementUnlocked:)]) {
-        [self.delegate elementUnlocked:self];
-    }
-    [self select];
-}
-
-- (void)select {
-    if ([self contentView]) {
-        [[self contentView] setUserInteractionEnabled:YES];
-        [[self contentView] becomeFirstResponder];
-    };
-    
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementSelected:)]) {
-        [self.delegate elementSelected:self];
-    }
-}
-
-- (void)deselect {
-    if ([self contentView]) {
-        [[self contentView] setUserInteractionEnabled:NO];
-        [[self contentView] resignFirstResponder];
-    };
-    
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementDeselected:)]) {
-        [self.delegate elementDeselected:self];
-    }
-}
-
+#pragma mark - Actions on Content View
 - (void)restore {
     
 }
@@ -187,22 +177,28 @@
                                           image:nil
                                          target:self
                                          action:@selector(delete)], ];
-    [KxMenu showMenuInView:[self superview]
+    [KxMenu showMenuInView:self.superview.superview
                   fromRect:self.bounds
                  menuItems:menuItems];
 }
 
 - (void)bringFront {
     [[self superview] bringSubviewToFront:self];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(element:nowBringToFront:)]) {
+        [self.delegate element:self nowBringToFront:YES];
+    }
 }
 
 - (void)sendBack {
     [[self superview] sendSubviewToBack:self];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(element:nowSendToBack:)]) {
+        [self.delegate element:self nowSendToBack:YES];
+    }
 }
 
 - (void)delete {
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementDeleted:)]) {
-        [self.delegate elementDeleted:self];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(element:nowDeleted:)]) {
+        [self.delegate element:self nowDeleted:YES];
     }
 }
 
@@ -212,8 +208,9 @@
 }
 
 - (void)elementTap:(UITapGestureRecognizer *)tapGesture {
-    if ([tapGesture state] == UIGestureRecognizerStateEnded) {
-        [self unlock];
+    if ([self isKindOfClass:[TextElement class]] && [tapGesture state] == UIGestureRecognizerStateEnded) {
+        [self stay];
+        [self revive];
     }
 }
 
@@ -343,6 +340,11 @@
 
 - (CGRect)focusFrame {
     return [[self contentView] frame];
+}
+
+#pragma mark - Machine State
+- (void)create {
+    
 }
 
 #pragma mark - Backup/Restore Save/Load

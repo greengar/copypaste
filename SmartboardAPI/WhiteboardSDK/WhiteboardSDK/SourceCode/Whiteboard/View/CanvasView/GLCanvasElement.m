@@ -40,6 +40,8 @@
         [self.drawingView initialDrawing];
         [self initControlWithFrame:frame];
         
+        self.isFake = YES;
+        
     }
     return self;
 }
@@ -58,10 +60,6 @@
 
 - (UIView *)contentView {
     return self.drawingView;
-}
-
-- (void)finishCanvasView {
-    [self deselect];
 }
 
 //- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
@@ -114,6 +112,7 @@
 
 #pragma mark - Fake/Real Canvas
 - (void)fakeCanvasShouldBeReal:(UIView *)paintingView {
+    self.isFake = NO;
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(fakeCanvasFromElementShouldBeReal:)]) {
         [self.delegate fakeCanvasFromElementShouldBeReal:self];
     }

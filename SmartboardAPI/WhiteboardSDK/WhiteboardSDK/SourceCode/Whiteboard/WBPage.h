@@ -21,35 +21,31 @@
 @class PaintingCmd;
 @protocol WBPageDelegate
 @optional
-- (void)pageSelected:(WBPage *)page;
-- (void)pageUnlocked:(WBPage *)page;
-- (void)elementSelected:(WBBaseElement *)element;
-- (void)elementDeselected:(WBBaseElement *)element;
 - (void)pageHistoryCreated:(HistoryAction *)history;
 - (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withPaintingCmd:(PaintingCmd *)cmd;
 - (void)pageHistoryElementTransformUpdated:(HistoryAction *)history;
+- (void)elementHideKeyboard;
+- (void)elementRevived;
 @end
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
 
-- (void)select;
 - (UIImage *)exportPageToImage;
 - (NSDictionary *)saveToData;
 
-- (void)focusOnCanvas;
-- (void)focusOnText;
 - (void)addElement:(WBBaseElement *)element;
 - (void)restoreElement:(WBBaseElement *)element;
 - (void)removeElement:(WBBaseElement *)element;
 
-- (void)focusOnTopElement;
-
 - (void)addFakeCanvas;
+- (void)removeFakeCanvas;
+- (void)addText;
+- (void)startToMove;
+- (void)stopToMove;
 
 @property (nonatomic, strong) NSString *uid;
-@property (nonatomic, strong) NSMutableArray *elements;
-@property (nonatomic) BOOL isLocked;
-@property (nonatomic, strong) WBBaseElement *selectedElementView;
+@property (nonatomic, strong) WBBaseElement *currentElement;
 @property (nonatomic, assign) id<WBPageDelegate> pageDelegate;
+@property (nonatomic) BOOL isMovable;
 
 @end
