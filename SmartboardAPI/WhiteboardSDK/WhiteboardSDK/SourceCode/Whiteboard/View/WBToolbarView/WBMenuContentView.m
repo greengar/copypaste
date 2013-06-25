@@ -38,7 +38,8 @@
             completionBlock(@"Closing...");
         }]];
         
-        menuView = [[UIView alloc] initWithFrame:CGRectMake(0, kOffsetForBouncing, frame.size.width, frame.size.height-kOffsetForBouncing)];
+        //menuView = [[UIView alloc] initWithFrame:CGRectMake(0, kOffsetForBouncing, frame.size.width, frame.size.height-kOffsetForBouncing)];
+        menuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [menuView setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9]];
         [menuView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
         [menuView.layer setBorderWidth:1];

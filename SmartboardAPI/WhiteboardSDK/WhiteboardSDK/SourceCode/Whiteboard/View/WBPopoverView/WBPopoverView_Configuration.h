@@ -14,7 +14,7 @@
 #define kArrowHeight 12.f
 
 //padding within the box for the contentView
-#define kBoxPadding 10.f
+#define kBoxPadding 0.f //10.f
 
 //control point offset for rounding corners of the main popover box
 #define kCPOffset 1.8f

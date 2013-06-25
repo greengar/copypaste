@@ -598,6 +598,11 @@
     tap.cancelsTouchesInView = NO; // Allow touches through to a UITableView or other touchable view, as suggested by Dimajp.
     [self addGestureRecognizer:tap];
     [tap RELEASE];
+    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+    pan.cancelsTouchesInView = NO;
+    [self addGestureRecognizer:pan];
+    [pan RELEASE];
 
     self.userInteractionEnabled = YES;
 }
