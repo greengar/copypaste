@@ -40,10 +40,8 @@
 
 @implementation WBPage
 @synthesize uid = _uid;
-@synthesize elements = _elementViews;
-@synthesize selectedElementView = _selectedElementView;
+@synthesize currentElement = _currentElement;
 @synthesize pageDelegate = _pageDelegate;
-@synthesize isLocked = _isLocked;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -52,34 +50,17 @@
         self.backgroundColor = [UIColor whiteColor];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"P_"];
-        self.elements = [NSMutableArray new];
         
         [self addFakeCanvas];
     }
     return self;
 }
 
-#pragma mark - Delegates back to super
-- (void)select {
-    [self.selectedElementView select];
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageSelected:)]) {
-        [self.pageDelegate pageSelected:self];
-    }
-}
-
-- (void)setIsLocked:(BOOL)isLocked {
-    _isLocked = isLocked;
-    for (WBBaseElement *element in self.elements) {
-        [element setIsLocked:isLocked];
-    }
-}
-
 #pragma mark - Elements Handler
 - (void)addElement:(WBBaseElement *)element {
     [self addSubview:element];
-    [self.elements addObject:element];
+    self.currentElement = element;
     [element setDelegate:self];
-    [element select];
 
     [[HistoryManager sharedManager] addActionCreateElement:element
                                                    forPage:self
@@ -90,109 +71,61 @@
     }];
 }
 
+- (void)removeElement:(WBBaseElement *)element {
+    [element removeFromSuperview];
+}
+
 - (void)restoreElement:(WBBaseElement *)element {
     [self addSubview:element];
-    [self.elements addObject:element];
     [element setDelegate:self];
     [element restore];
 }
 
-- (void)removeElement:(WBBaseElement *)element {
-    BOOL isExisted = NO;
-    for (WBBaseElement *existedElement in self.elements) {
-        if ([element.uid isEqualToString:existedElement.uid]) {
-            isExisted = YES;
-        }
-    }
-    
-    if (isExisted) {
-        [self.elements removeObject:element];
-        if ([element superview]) {
-            [element removeFromSuperview];
-        }
-    }
-}
-
-- (void)focusOnTopElement {
-    if ([self.elements count]) {
-        [self focusOnCanvas];
-    } else {
-        // There's always at least 1 element
-        // And it should be the canvas view
-        GLCanvasElement *element = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-        [self addElement:element];
-    }
-}
-
-- (void)focusOnCanvas {
-    if (self.selectedElementView
-        && [self.selectedElementView isKindOfClass:[GLCanvasElement class]]
-        && ![self.selectedElementView isTransformed]) {
-        [self.selectedElementView select];
-    } else {
-        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-        [self addElement:canvasElement];
-    }
-}
-
-- (void)focusOnText {
-    if (self.selectedElementView
-        && [self.selectedElementView isKindOfClass:[TextElement class]]) {
-        [self.selectedElementView select];
-    } else {
-        TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, self.frame.size.height/8, self.frame.size.width, self.frame.size.height/2)];
-        [self addElement:textElement];
-    }
-}
-
 #pragma mark - Elements Delegate
-- (void)deselectAll {
-    for (WBBaseElement *existedElement in self.elements) {
-        if (existedElement != self.selectedElementView) {
-            [existedElement deselect];
+- (void)elementRevive:(WBBaseElement *)element {
+    for (WBBaseElement *existedElement in self.subviews) {
+        if (![existedElement.uid isEqualToString:element.uid]) {
+            [existedElement rest];
+            [existedElement stay];
         }
     }
-}
-
-- (void)elementUnlocked:(WBBaseElement *)element {
-    [self setIsLocked:NO];
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageUnlocked:)]) {
-        [self.pageDelegate pageUnlocked:self];
-    }
-}
-
-- (void)elementSelected:(WBBaseElement *)element {
-    self.selectedElementView = element;
-    [self deselectAll];
+    self.currentElement = element;
     
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(elementSelected:)]) {
-        [self.pageDelegate elementSelected:element];
+    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(elementRevived)]) {
+        [self.pageDelegate elementRevived];
     }
 }
 
-- (void)elementDeselected:(WBBaseElement *)element {
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(elementDeselected:)]) {
-        [self.pageDelegate elementDeselected:element];
+- (void)element:(WBBaseElement *)element hideKeyboard:(BOOL)hidden {
+    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(elementHideKeyboard)]) {
+        [self.pageDelegate elementHideKeyboard];
     }
 }
 
-- (void)elementCreated:(WBBaseElement *)element successful:(BOOL)successful {
-    if (successful) {
-        [[HistoryManager sharedManager] addActionCreateElement:element forPage:self
-                                                     withBlock:^(id object, NSError *error) {}];
-    } else {
-        [element removeFromSuperview];
-        [self.elements removeObject:element];
+- (void)element:(WBBaseElement *)element nowBringToFront:(BOOL)bringFront {
+    if (bringFront) {
+        self.currentElement = [self.subviews lastObject];
     }
 }
 
-- (void)elementDeleted:(WBBaseElement *)element {
-    [[HistoryManager sharedManager] addActionDeleteElement:element forPage:self
-                                                 withBlock:^(HistoryAction *history, NSError *error) {
-        if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-            [self.pageDelegate pageHistoryCreated:history];
-        }
-    }];
+- (void)element:(WBBaseElement *)element nowSendToBack:(BOOL)sendBack {
+    if (sendBack) {
+        self.currentElement = [self.subviews lastObject];
+    }
+}
+
+- (void)element:(WBBaseElement *)element nowDeleted:(BOOL)deleted {
+    if (deleted) {
+        [self removeElement:element];
+        self.currentElement = [self.subviews lastObject];
+        [[HistoryManager sharedManager] addActionDeleteElement:element forPage:self
+                                                     withBlock:^(HistoryAction *history, NSError *error) {
+                                                         if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                             [self.pageDelegate pageHistoryCreated:history];
+                                                         }
+                                                     }];
+
+    }
 }
 
 - (void)pageHistoryCreated:(HistoryAction *)history {
@@ -215,7 +148,46 @@
 - (void)addFakeCanvas {
     GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     [self addSubview:canvasElement];
+    self.currentElement = canvasElement;
+    
     [canvasElement setDelegate:self];
+    [canvasElement revive];
+    [canvasElement stay];
+}
+
+- (void)removeFakeCanvas {
+    if ([self.currentElement isKindOfClass:[GLCanvasElement class]] && [self.currentElement isFake]) {
+        [self.currentElement removeFromSuperview];
+        self.currentElement = [self.subviews lastObject];
+    }
+}
+
+- (void)addText {
+    TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, self.frame.size.height/8,
+                                                                             self.frame.size.width, self.frame.size.height/2)];
+    [self addElement:textElement];
+    
+    [textElement setDelegate:self];
+    [textElement revive];
+    [textElement stay];
+}
+
+- (void)startToMove {
+    self.isMovable = YES;
+    
+    for (WBBaseElement *element in self.subviews) {
+        [element move];
+        [element rest];
+    }
+}
+
+- (void)stopToMove {
+    self.isMovable = NO;
+    
+    for (WBBaseElement *element in self.subviews) {
+        [element stay];
+        [element rest];
+    }
 }
 
 #pragma mark - Backup/Restore Save/Load
@@ -232,7 +204,7 @@
     
     BOOL oldHidden = self.isHidden;
     [self setHidden:NO];
-    for (WBBaseElement *element in self.elements) {
+    for (WBBaseElement *element in self.subviews) {
         if ([element isKindOfClass:[GLCanvasElement class]]) {
             GLCanvasElement *canvasElement = (GLCanvasElement *) element;
             [canvasElement takeScreenshot];
@@ -245,7 +217,7 @@
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *exportedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    for (WBBaseElement *element in self.elements) {
+    for (WBBaseElement *element in self.subviews) {
         if ([element isKindOfClass:[GLCanvasElement class]]) {
             GLCanvasElement *canvasElement = (GLCanvasElement *) element;
             [canvasElement removeScreenshot];

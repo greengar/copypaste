@@ -129,8 +129,7 @@ static HistoryManager *shareManager = nil;
     HistoryElementDeleted *action = [[HistoryElementDeleted alloc] init];
     [action setPage:page];
     [action setElement:element];
-    [self addAction:action forPage:page];
-    [self activateAction:action forPage:page];
+    [self addAction:action forPage:page];    
     block(action, nil);
 }
 

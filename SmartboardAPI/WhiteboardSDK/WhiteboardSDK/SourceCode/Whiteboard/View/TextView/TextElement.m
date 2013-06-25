@@ -52,6 +52,15 @@
         [self updateWithFontName:[[SettingManager sharedManager] currentFontName]
                             size:[[SettingManager sharedManager] currentFontSize]];
         [self updateWithColor:[[SettingManager sharedManager] getCurrentColorTab].tabColor x:-50 y:-50];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWasShown:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillBeHidden:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -75,67 +84,6 @@
 
 - (UIView *)contentView {
     return self.placeHolderTextView;
-}
-
-- (void)select {
-    [super select];
-    [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
-    [self.placeHolderTextView select];
-    [self checkHistory];
-}
-
-- (void)deselect {
-    [super deselect];
-    [self.placeHolderTextView setPlaceHolderText:@""];
-    [self.placeHolderTextView deselect];
-    
-    if (self.elementCreated == NO) {
-
-    } else {
-        [[HistoryManager sharedManager] addActionTextFontChangedElement:self
-                                                     withOriginFontName:self.oldFontName
-                                                               fontSize:self.oldFontSize
-                                                    withChangedFontName:self.myFontName
-                                                               fontSize:self.myFontSize
-                                                                forPage:(WBPage *)self.superview
-                                                              withBlock:^(HistoryAction *history, NSError *error) {
-                                                                  if (history) {
-                                                                      if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                          [self.delegate pageHistoryCreated:history];
-                                                                      }
-                                                                  }
-                                                              }];
-        
-        [[HistoryManager sharedManager] addActionTextColorChangedElement:self
-                                                         withOriginColor:self.oldColor
-                                                                       x:self.oldColorX
-                                                                       y:self.oldColorY
-                                                        withChangedColor:self.myColor
-                                                                       x:self.myColorLocX
-                                                                       y:self.myColorLocY
-                                                                 forPage:(WBPage *)self.superview
-                                                               withBlock:^(HistoryAction *history, NSError *error) {
-                                                                   if (history) {
-                                                                       if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                           [self.delegate pageHistoryCreated:history];
-                                                                       }
-                                                                   }
-                                                               }];
-
-        [[HistoryManager sharedManager] addActionTextContentChangedElement:self
-                                                            withOriginText:self.oldText
-                                                           withChangedText:((UITextView *)[self contentView]).text
-                                                                   forPage:(WBPage *)self.superview
-                                                                 withBlock:^(HistoryElementTextChanged *history, NSError *error) {
-                                                                     if (history) {
-                                                                         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                             [self.delegate pageHistoryCreated:history];
-                                                                         }
-                                                                     }
-                                                                 }];
-    }
-    [self checkHistory];
-    self.elementCreated = YES;
 }
 
 - (void)restore {
@@ -186,15 +134,78 @@
 }
 
 #pragma mark - Place Holder Text View Delegate
-- (void)contentViewBecomeFirstResponder {
-    if ([[self contentView] isFirstResponder]) {
-        [self select];
-    }
+- (void)revive {
+    [super revive];
+    [[self contentView] becomeFirstResponder];
+    [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
+    [self.placeHolderTextView revive];
+    [self checkHistory];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (!self.isLocked) {
-        [[self contentView] becomeFirstResponder];
+- (void)rest {
+    [super rest];
+    [[self contentView] resignFirstResponder];
+    [self.placeHolderTextView setPlaceHolderText:@""];
+    [self.placeHolderTextView rest];
+        
+    if (self.elementCreated) {
+        [[HistoryManager sharedManager] addActionTextFontChangedElement:self
+                                                     withOriginFontName:self.oldFontName
+                                                               fontSize:self.oldFontSize
+                                                    withChangedFontName:self.myFontName
+                                                               fontSize:self.myFontSize
+                                                                forPage:(WBPage *)self.superview
+                                                              withBlock:^(HistoryAction *history, NSError *error) {
+                                                                  if (history) {
+                                                                      if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                          [self.delegate pageHistoryCreated:history];
+                                                                      }
+                                                                  }
+                                                              }];
+        
+        [[HistoryManager sharedManager] addActionTextColorChangedElement:self
+                                                         withOriginColor:self.oldColor
+                                                                       x:self.oldColorX
+                                                                       y:self.oldColorY
+                                                        withChangedColor:self.myColor
+                                                                       x:self.myColorLocX
+                                                                       y:self.myColorLocY
+                                                                 forPage:(WBPage *)self.superview
+                                                               withBlock:^(HistoryAction *history, NSError *error) {
+                                                                   if (history) {
+                                                                       if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                           [self.delegate pageHistoryCreated:history];
+                                                                       }
+                                                                   }
+                                                               }];
+        
+        [[HistoryManager sharedManager] addActionTextContentChangedElement:self
+                                                            withOriginText:self.oldText
+                                                           withChangedText:((UITextView *)[self contentView]).text
+                                                                   forPage:(WBPage *)self.superview
+                                                                 withBlock:^(HistoryElementTextChanged *history, NSError *error) {
+                                                                     if (history) {
+                                                                         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                             [self.delegate pageHistoryCreated:history];
+                                                                         }
+                                                                     }
+                                                                 }];
+    }
+    
+    [self checkHistory];
+    self.elementCreated = YES;
+
+}
+
+#pragma mark - Keyboard Delegate
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    [self rest];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(element:hideKeyboard:)]) {
+        [self.delegate element:self hideKeyboard:YES];
     }
 }
 

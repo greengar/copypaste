@@ -18,7 +18,7 @@
         self.name = @"Type Text";
     } else if ([element isKindOfClass:[GLCanvasElement class]]
                || [element isKindOfClass:[CGCanvasElement class]]) {
-        self.name = @"Brush";
+        self.name = @"Start Brush";
     } else if ([element isKindOfClass:[ImageElement class]]) {
         self.name = @"Add Image";
     } else if ([element isKindOfClass:[BackgroundElement class]]) {
@@ -75,7 +75,6 @@
     
     [element loadFromData:historyData];
     [page addSubview:element];
-    [page.elements addObject:element];
     [element setDelegate:page];
     
     [self setElement:element];

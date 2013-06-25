@@ -60,12 +60,12 @@
     self.superview.transform = ((WBBaseElement *) self.superview).currentTransform;
 }
 
-- (void)select {
+- (void)revive {
     [self textChanged];
     self.clipsToBounds = NO;
 }
 
-- (void)deselect {
+- (void)rest {
     if ([self.text length] == 0) {
         [self.placeHolderTextView setHidden:NO];
     } else {

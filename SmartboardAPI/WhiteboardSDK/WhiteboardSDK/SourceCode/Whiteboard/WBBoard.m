@@ -197,7 +197,6 @@
                                                             self.view.frame.size.width,
                                                             self.view.frame.size.height)];
     [page setPageDelegate:self];
-    [page select];
     
     [self.pageHolderView addSubview:page];
     [self.pages addObject:page];
@@ -245,8 +244,6 @@
     } else {
         [self.pageHolderView addSubview:page];
     }
-    
-    [page select];
 }
 
 - (void)pageSelected:(WBPage *)page {
@@ -645,10 +642,6 @@
 
 #pragma mark - Tool Bar Buttons
 - (void)canvasButtonTappedFrom:(UIView *)toolbar {
-    if ([[self currentPage] isLocked]) {
-        [self forceUnlock];
-    }
-    
     if (![self.view viewWithTag:kToolMonitorTag]) {
         int monitorHeight = kWBToolMonitorHeight+kOffsetForBouncing;
         WBToolMonitorView *toolMonitorView = [[WBToolMonitorView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x,
@@ -662,9 +655,9 @@
         
         [self forceHideAddMore];
 
-        if ([[[self currentPage] selectedElementView] isKindOfClass:[TextElement class]]) {
+        if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]) {
             [toolMonitorView setTextMode:YES];
-            [toolMonitorView setCurrentFont:((TextElement *) [[self currentPage] selectedElementView]).myFontName];
+            [toolMonitorView setCurrentFont:((TextElement *) [[self currentPage] currentElement]).myFontName];
         } else {
             [toolMonitorView setTextMode:NO];
         }
@@ -681,12 +674,13 @@
 }
 
 - (void)selectHistoryColor {
-    if ([[self currentPage] isLocked]) {
-        [self forceUnlock];
+    if ([[self currentPage] isMovable]) {
+        [self stopToMove];
+        [self addFakeCanvas];
     }
     
     [(WBToolMonitorView *)[self.view viewWithTag:kToolMonitorTag] enableEraser:NO];
-    WBBaseElement *element = [[self currentPage] selectedElementView];
+    WBBaseElement *element = [[self currentPage] currentElement];
     if ([element isKindOfClass:[TextElement class]]) {
         TextElement *textElement = (TextElement *) element;
         [textElement updateWithColor:[[SettingManager sharedManager] getCurrentColorTab].tabColor];
@@ -701,7 +695,7 @@
     if (select) {
         [self.toolbarView selectCanvasMode:kEraserMode];
     } else {
-        if ([[[self currentPage] selectedElementView] isKindOfClass:[TextElement class]]) {
+        if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]) {
             [self.toolbarView selectCanvasMode:kTextMode];
         } else {
             [self.toolbarView selectCanvasMode:kCanvasMode];
@@ -711,7 +705,7 @@
 
 - (void)colorPicked:(UIColor *)color {
     [self.toolbarView updateColor:color];
-    WBBaseElement *element = [[self currentPage] selectedElementView];
+    WBBaseElement *element = [[self currentPage] currentElement];
     if ([element isKindOfClass:[TextElement class]]) {
         TextElement *textElement = (TextElement *) element;
         [textElement updateWithColor:color];
@@ -727,7 +721,7 @@
 }
 
 - (void)fontChanged:(NSString *)fontName {
-    WBBaseElement *element = [[self currentPage] selectedElementView];
+    WBBaseElement *element = [[self currentPage] currentElement];
     if ([element isKindOfClass:[TextElement class]]) {
         TextElement *textElement = (TextElement *) element;
         [textElement updateWithFontName:fontName];
@@ -735,10 +729,6 @@
 }
 
 - (void)addMoreButtonTappedFrom:(UIView *)toolbar {
-    if ([[self currentPage] isLocked]) {
-        [self forceUnlock];
-    }
-    
     if (![self.view viewWithTag:kAddMoreTag]) {
         int addMoreHeight = kAddMoreViewHeight+kOffsetForBouncing;
         WBAddMoreSelectionView *addMoreView = [[WBAddMoreSelectionView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*3, toolbar.frame.origin.y-addMoreHeight, kAddMoreCellHeight*3, addMoreHeight)];
@@ -749,7 +739,7 @@
         
         [self forceHideColorSpectrum];
         
-        if ([[[self currentPage] selectedElementView] isKindOfClass:[TextElement class]]) {
+        if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]) {
             [addMoreView setIsCanvasMode:NO];
         } else {
             [addMoreView setIsCanvasMode:YES];
@@ -771,43 +761,66 @@
     [self forceHideAddMore];
     [self forceHideHistory];
     
-    if ([[self currentPage] isLocked]) {
-        [self forceUnlock];
+    if ([[self currentPage] isMovable]) {
+        [self stopToMove];
+        [self addFakeCanvas];
     } else {
-        [[self currentPage] setIsLocked:YES];
-        [self.toolbarView didActivatedMove:YES];
+        [self removeFakeCanvas];
+        [self startToMove];
     }
 }
 
-- (void)forceUnlock {
-    [[self currentPage] setIsLocked:NO];
-    [[self currentPage] focusOnTopElement];
-    [self.toolbarView selectCanvasMode:kCanvasMode];
+- (void)startToMove {
+    [[self currentPage] startToMove];
+    [self.toolbarView didActivatedMove:YES];
+}
+
+- (void)stopToMove {
+    [[self currentPage] stopToMove];
     [self.toolbarView didActivatedMove:NO];
 }
 
-- (void)addCanvasFrom:(UIView *)view {
-    [[self currentPage] focusOnCanvas];
-    [self.toolbarView didShowAddMoreView:NO];
+- (void)addFakeCanvas {
+    [[self currentPage] addFakeCanvas];
     [self.toolbarView selectCanvasMode:kCanvasMode];
     [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setTextMode:NO];
 }
 
+- (void)removeFakeCanvas {
+    [[self currentPage] removeFakeCanvas];
+}
+
+- (void)addCanvasFrom:(UIView *)view {
+    [self.toolbarView didShowAddMoreView:NO];
+    [self stopToMove];
+    [self addFakeCanvas];
+}
+
 - (void)addCameraFrom:(UIView *)view {
     [self.toolbarView didShowAddMoreView:NO];
-    UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
-    cameraController.delegate = self;
-    cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
-    cameraController.allowsEditing = NO;
-    self.addPhotoPopover = [[UIPopoverController alloc] initWithContentViewController:cameraController];
-    CGRect showRect = CGRectMake(view.frame.origin.x-3,
-                                 view.frame.origin.y+view.frame.size.height,
-                                 view.frame.size.width,
-                                 view.frame.size.height);
-    [self.addPhotoPopover presentPopoverFromRect:showRect
-                                          inView:self.view
-                        permittedArrowDirections:UIPopoverArrowDirectionDown
-                                        animated:YES];
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
+        cameraController.delegate = self;
+        cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        cameraController.allowsEditing = NO;
+        self.addPhotoPopover = [[UIPopoverController alloc] initWithContentViewController:cameraController];
+        CGRect showRect = CGRectMake(view.frame.origin.x-3,
+                                     view.frame.origin.y+view.frame.size.height,
+                                     view.frame.size.width,
+                                     view.frame.size.height);
+        [self.addPhotoPopover presentPopoverFromRect:showRect
+                                              inView:self.view
+                            permittedArrowDirections:UIPopoverArrowDirectionDown
+                                            animated:YES];
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No camera"
+                                                            message:@"Your device does not have a camera"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 
 - (void)addPhotoFrom:(UIView *)view {
@@ -847,8 +860,7 @@
                     [[self currentPage] addElement:imageElement];
                 }
             }
-            [[self currentPage] setIsLocked:YES];
-            [self.toolbarView didActivatedMove:YES];
+            [self startToMove];
         }
     };
     
@@ -893,18 +905,21 @@
 }
 
 - (void)addTextFrom:(UIView *)view {
+    [self.toolbarView didShowAddMoreView:NO];
+    
     // Back to first color, ignore using eraser color for text
     [[SettingManager sharedManager] setCurrentColorTab:0];
-    
-    [[self currentPage] focusOnText];
-    [self.toolbarView didShowAddMoreView:NO];
+
+    [self stopToMove];
+    [[self currentPage] addText];
     [self.toolbarView selectCanvasMode:kTextMode];
     [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setTextMode:YES];
-    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) scrollFontTableViewToFont:((TextElement *) [[self currentPage] selectedElementView]).myFontName];
+    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) scrollFontTableViewToFont:((TextElement *) [[self currentPage] currentElement]).myFontName];
 }
 
 - (void)addPasteFrom:(UIView *)view {
     [self.toolbarView didShowAddMoreView:NO];
+    
     NSObject *itemFromClipboard = [WBUtils getThingsFromClipboard];
     if (itemFromClipboard) {
         if ([itemFromClipboard isKindOfClass:[NSString class]]) {
@@ -916,6 +931,7 @@
             TextElement *textElement = [[TextElement alloc] initWithFrame:textRect];
             [textElement setText:text];
             [[self currentPage] addElement:textElement];
+            [self startToMove];
             
         } else if ([itemFromClipboard isKindOfClass:[UIImage class]]) {
             UIImage *image = (UIImage *) itemFromClipboard;
@@ -927,11 +943,14 @@
                                                                        image:image];
             [imageElement rotateTo:arc4random()*(M_PI_4/RAND_MAX)/4];
             [[self currentPage] addElement:imageElement];
-            [[self currentPage] setIsLocked:YES];
-            [self.toolbarView didActivatedMove:YES];
+            [self startToMove];
         }
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Empty clipboard" message:@"You have not copied anything, please try again" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Empty clipboard"
+                                                            message:@"You have not copied anything, please try again"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
         [alertView show];
     }
 }
@@ -1003,10 +1022,6 @@
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    if (![[self currentPage] isLocked]) {
-        [self addCanvasFrom:nil];
-    }
-    
     [UIView animateWithDuration:0.2f animations:^{
         CGRect frame = self.toolbarView.frame;
         frame.origin.y += kbSize.height;
@@ -1032,8 +1047,7 @@
                                                                    image:image];
         [imageElement rotateTo:arc4random()*(M_PI_4/RAND_MAX)/4];
         [[self currentPage] addElement:imageElement];
-        [[self currentPage] setIsLocked:YES];
-        [self.toolbarView didActivatedMove:YES];
+        [self startToMove];
     }
 }
 
@@ -1115,7 +1129,16 @@
     return NO;
 }
 
-#pragma mark - Memory warning
+#pragma mark - Elements
+- (void)elementRevived {
+    [self stopToMove];
+}
+
+- (void)elementHideKeyboard {
+    if (![[self currentPage] isMovable]) {
+        [self addFakeCanvas];
+    }
+}
 
 #pragma mark - Collaboration
 - (void)pageHistoryCreated:(HistoryAction *)history {
@@ -1216,7 +1239,6 @@
         page = [[WBPage alloc] initWithFrame:pageFrame];
         [page setUid:pageUid];
         [page setPageDelegate:self];
-        [page select];
         
         [self.pageHolderView addSubview:page];
         [self.pages addObject:page];
@@ -1224,10 +1246,9 @@
     }
     
     // Remove all elements
-    for (WBBaseElement *existedElement in page.elements) {
+    for (WBBaseElement *existedElement in page.subviews) {
         [existedElement removeFromSuperview];
     }
-    [page.elements removeAllObjects];
     
     // Page is finally recreated, now we need to apply all history to this page
     NSDictionary *pageHistoryData = [pageData objectForKey:@"page_history"];
@@ -1249,7 +1270,7 @@
         }
     }
     
-    if (page != nil) {
+    if (page) {
         NSString *historyType = [historyData objectForKey:@"history_type"];
         
         // History create element: now create it again
@@ -1259,11 +1280,12 @@
             [[HistoryManager sharedManager] addAction:history forPage:page];
         
         } else if ([historyType isEqualToString:@""]) {
-            
+        
+        // History draw on the canvas, now draw it again
         } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
             WBBaseElement *historyElement = nil;
-            for (WBBaseElement *element in [page elements]) {
+            for (WBBaseElement *element in [page subviews]) {
                 if ([element.uid isEqualToString:elementUid]) {
                     historyElement = element;
                     break;
