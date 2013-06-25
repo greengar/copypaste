@@ -80,7 +80,7 @@
 @property (nonatomic, strong) UIView                    *pageHolderView;
 @property (nonatomic, strong) UIView                    *exportControlView;
 @property (nonatomic, strong) UIPopoverController       *addPhotoPopover;
-@property (nonatomic, strong) dispatch_queue_t          backgroundQueue;
+@property (nonatomic)         dispatch_queue_t          backgroundQueue;
 @end
 
 @implementation WBBoard

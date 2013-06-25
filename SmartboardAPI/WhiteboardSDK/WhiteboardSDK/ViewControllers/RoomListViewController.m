@@ -73,10 +73,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     GSRoom *room = [self.rooms objectAtIndex:[indexPath row]];
-    [[GSSession activeSession] registerRoomDataChanged:room withBlock:^(GSRoom *object) {
+    [[GSSession activeSession] registerRoomDataChanged:room withBlock:^(BOOL succeed, NSError *error) {
         RoomDataViewController *controller = [[RoomDataViewController alloc] init];
-        [controller setRoom:object];
-        [controller setTitle:object.name];
+        [controller setRoom:room];
+        [controller setTitle:room.name];
         [room setDelegate:controller];
         [self.navigationController pushViewController:controller animated:YES];
     }];
