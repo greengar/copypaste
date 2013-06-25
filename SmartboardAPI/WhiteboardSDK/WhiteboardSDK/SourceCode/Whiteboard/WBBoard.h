@@ -37,8 +37,6 @@
  */
 - (int)numOfPages;
 
-- (NSDictionary *)saveToDict;
-
 - (void)updateWithDataForBoard:(NSDictionary *)data withBlock:(WBResultBlock)block;
 - (void)updateWithHistoryDataForBoard:(NSDictionary *)data;
 - (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data;

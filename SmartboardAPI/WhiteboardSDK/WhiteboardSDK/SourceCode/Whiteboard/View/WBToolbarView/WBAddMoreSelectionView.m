@@ -169,7 +169,6 @@
         default:
             break;
     }
-    [self animateDown];
 }
 
 @end

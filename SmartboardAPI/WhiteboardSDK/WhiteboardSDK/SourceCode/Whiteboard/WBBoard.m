@@ -66,7 +66,10 @@
     float pageUpSpeed;
     float pageUpTime;
     BOOL wantToTurnToPreviousPage;
-    WBMenuContentView *menuContentView;
+    WBMenuContentView       *menuContentView;
+    HistoryView             *historyView;
+    WBAddMoreSelectionView  *addMoreView;
+    WBPopoverView           *addMorePopoverView;
 }
 
 - (void)selectPage:(WBPage *)page;
@@ -116,11 +119,25 @@
         
         [self initPageCurlControl];
         
-        float kMenuViewHeight = self.view.frame.size.height / 2;
+        // Menu Content View
+        float kMenuViewHeight = self.view.frame.size.height/2;
         int menuContentHeight = kMenuViewHeight+kOffsetForBouncing;
         WBMenubarView *menubar = self.menubarView;
         menuContentView = [[WBMenuContentView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width*1.25, menuContentHeight)];
         [menuContentView setDelegate:self];
+        
+        // History Content View
+        int historyHeight = kHistoryViewHeight+kOffsetForBouncing;
+        historyView = [[HistoryView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width, historyHeight)];
+        [historyView setTag:kHistoryViewTag];
+        [historyView setCurrentPage:[self currentPage]];
+        
+        // Add More ContentView
+        int addMoreHeight = kAddMoreViewHeight+kOffsetForBouncing;
+        WBToolbarView *toolbar = self.toolbarView;
+        addMoreView = [[WBAddMoreSelectionView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*3, toolbar.frame.origin.y-addMoreHeight, kAddMoreCellHeight*3, addMoreHeight)];
+        [addMoreView setTag:kAddMoreTag];
+        [addMoreView setDelegate:self];
         
         self.backgroundQueue = dispatch_queue_create("com.greengar.WhiteboardSDK", NULL);
     }
@@ -140,9 +157,12 @@
                                                object:nil];
 }
 
-- (void)addMenuItem:(WBMenuItem *)item
-{
+- (void)addMenuItem:(WBMenuItem *)item {
     [menuContentView addMenuItem:item];
+}
+
+- (void)doneEditing {
+    [self exitBoardWithResult:NO];
 }
 
 - (int)numOfPages {
@@ -521,10 +541,7 @@
 }
 
 - (void)hideAllControl {
-    [self forceHideMenu];
-    [self forceHideHistory];
     [self forceHideColorSpectrum];
-    [self forceHideAddMore];
     [[self menubarView] setHidden:YES];
     [[self toolbarView] setHidden:YES];
     [[self pageCurlButton] setHidden:YES];
@@ -537,49 +554,19 @@
 
 #pragma mark - Menu Bar Buttons
 
-- (void)menuButtonTappedFrom:(UIView *)menubar
-{
+- (void)menuButtonTappedFrom:(UIView *)menubar {
     float centerOfMenuButton = menubar.frame.origin.x + menubar.frame.size.width / 6;
     float bottom = menubar.frame.origin.y + menubar.frame.size.height;
     CGPoint point = CGPointMake(centerOfMenuButton - 1, bottom);
     [WBPopoverView showPopoverAtPoint:point inView:self.view withContentView:menuContentView delegate:self];
-    return;
-    
-    
-    // TODO: How did this work before?
-    // I can't find any place in the code where `menuContentView` is removed from its superview.
-    // TODO: inside animationDidStop:finished: of WBMenuContent, when the animation up is done
-    // it is removed from its superview
-    if (menuContentView.superview == nil)
-    {
-        // menuContentView is not visible at all
-        [self.view addSubview:menuContentView];
-        [menuContentView animateDown];
-        
-        [self forceHideHistory];
-        
-        [self.menubarView didShowMenuView:YES];
-    }
-    else
-    {
-        // menuContentView may be animating down; visible; or animating up
-        [self forceHideMenu];
-    }
+    [self.menubarView didShowMenuView:YES];
 }
 
-- (void)forceHideMenu
-{
-    return;
-    
-    
-    [menuContentView animateUp];
+// Delegate receives this call once the popover has begun the dismissal animation
+- (void)popoverViewDidDismiss:(WBPopoverView *)popoverView {
     [self.menubarView didShowMenuView:NO];
-}
-
-//Delegate receives this call once the popover has begun the dismissal animation
-- (void)popoverViewDidDismiss:(WBPopoverView *)popoverView
-{
-    DLog();
+    [self.menubarView didShowHistoryView:NO];
+    [self.toolbarView didShowAddMoreView:NO];
 }
 
 - (void)exitBoard {
@@ -617,27 +604,11 @@
 }
 
 - (void)historyButtonTappedFrom:(UIView *)menubar {
-    if (![self.view viewWithTag:kHistoryViewTag]) {
-        int historyHeight = kHistoryViewHeight+kOffsetForBouncing;
-        HistoryView *historyView = [[HistoryView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width, historyHeight)];
-        [historyView setTag:kHistoryViewTag];
-        [historyView setCurrentPage:[self currentPage]];
-        [self.view addSubview:historyView];
-        [historyView animateDown];
-        
-        [self forceHideMenu];
-        
-        [[HistoryManager sharedManager] setDelegate:historyView];
-        [self.menubarView didShowHistoryView:YES];
-        
-    } else {
-        [self forceHideHistory];
-    }
-}
-
-- (void)forceHideHistory {
-    [((HistoryView *) [self.view viewWithTag:kHistoryViewTag]) animateUp];
-    [self.menubarView didShowHistoryView:NO];
+    float centerOfMenuButton = menubar.frame.origin.x + menubar.frame.size.width*5/6;
+    float bottom = menubar.frame.origin.y + menubar.frame.size.height;
+    CGPoint point = CGPointMake(centerOfMenuButton - 1, bottom);
+    [WBPopoverView showPopoverAtPoint:point inView:self.view withContentView:historyView delegate:self];
+    [self.menubarView didShowHistoryView:YES];
 }
 
 #pragma mark - Tool Bar Buttons
@@ -652,8 +623,6 @@
         [toolMonitorView setDelegate:self];
         [self.view addSubview:toolMonitorView];
         [toolMonitorView animateUp];
-        
-        [self forceHideAddMore];
 
         if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]) {
             [toolMonitorView setTextMode:YES];
@@ -729,37 +698,21 @@
 }
 
 - (void)addMoreButtonTappedFrom:(UIView *)toolbar {
-    if (![self.view viewWithTag:kAddMoreTag]) {
-        int addMoreHeight = kAddMoreViewHeight+kOffsetForBouncing;
-        WBAddMoreSelectionView *addMoreView = [[WBAddMoreSelectionView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*3, toolbar.frame.origin.y-addMoreHeight, kAddMoreCellHeight*3, addMoreHeight)];
-        [addMoreView setTag:kAddMoreTag];
-        [addMoreView setDelegate:self];
-        [self.view addSubview:addMoreView];
-        [addMoreView animateUp];
-        
-        [self forceHideColorSpectrum];
-        
-        if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]) {
-            [addMoreView setIsCanvasMode:NO];
-        } else {
-            [addMoreView setIsCanvasMode:YES];
-        }
-        [self.toolbarView didShowAddMoreView:YES];
-        
+    float centerOfAddMoreButton = toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*1.5;
+    float bottom = toolbar.frame.origin.y;
+    CGPoint point = CGPointMake(centerOfAddMoreButton - 1, bottom);
+    addMorePopoverView = [WBPopoverView showPopoverAtPoint:point inView:self.view withContentView:addMoreView delegate:self];
+    
+    if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]) {
+        [addMoreView setIsCanvasMode:NO];
     } else {
-        [self forceHideAddMore];
+        [addMoreView setIsCanvasMode:YES];
     }
-}
-
-- (void)forceHideAddMore {
-    [((WBAddMoreSelectionView *) [self.view viewWithTag:kAddMoreTag]) animateDown];
-    [self.toolbarView didShowAddMoreView:NO];
+    [self.toolbarView didShowAddMoreView:YES];
 }
 
 - (void)moveButtonTapped {
     [self forceHideColorSpectrum];
-    [self forceHideAddMore];
-    [self forceHideHistory];
     
     if ([[self currentPage] isMovable]) {
         [self stopToMove];
@@ -791,13 +744,13 @@
 }
 
 - (void)addCanvasFrom:(UIView *)view {
-    [self.toolbarView didShowAddMoreView:NO];
+    [addMorePopoverView dismiss];
     [self stopToMove];
     [self addFakeCanvas];
 }
 
 - (void)addCameraFrom:(UIView *)view {
-    [self.toolbarView didShowAddMoreView:NO];
+    [addMorePopoverView dismiss];
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
@@ -824,7 +777,7 @@
 }
 
 - (void)addPhotoFrom:(UIView *)view {
-    [self.toolbarView didShowAddMoreView:NO];
+    [addMorePopoverView dismiss];
     __block WBBoard *blockSelf = self;
     
     AGImagePickerController *photoPickerController = [[AGImagePickerController alloc] initWithDelegate:self];
@@ -905,7 +858,7 @@
 }
 
 - (void)addTextFrom:(UIView *)view {
-    [self.toolbarView didShowAddMoreView:NO];
+    [addMorePopoverView dismiss];
     
     // Back to first color, ignore using eraser color for text
     [[SettingManager sharedManager] setCurrentColorTab:0];
@@ -918,7 +871,7 @@
 }
 
 - (void)addPasteFrom:(UIView *)view {
-    [self.toolbarView didShowAddMoreView:NO];
+    [addMorePopoverView dismiss];
     
     NSObject *itemFromClipboard = [WBUtils getThingsFromClipboard];
     if (itemFromClipboard) {
