@@ -38,9 +38,7 @@
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
 
-#define kHistoryViewTag     888
-#define kToolMonitorTag     kHistoryViewTag+1
-#define kAddMoreTag         kHistoryViewTag+2
+#define kToolMonitorTag     888
 
 #define kPreviousButtonTag  999
 #define kNextButtonTag      kPreviousButtonTag+1
@@ -129,14 +127,11 @@
         // History Content View
         int historyHeight = kHistoryViewHeight+kOffsetForBouncing;
         historyView = [[HistoryView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width, historyHeight)];
-        [historyView setTag:kHistoryViewTag];
-        [historyView setCurrentPage:[self currentPage]];
         
         // Add More ContentView
         int addMoreHeight = kAddMoreViewHeight+kOffsetForBouncing;
         WBToolbarView *toolbar = self.toolbarView;
         addMoreView = [[WBAddMoreSelectionView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*3, toolbar.frame.origin.y-addMoreHeight, kAddMoreCellHeight*3, addMoreHeight)];
-        [addMoreView setTag:kAddMoreTag];
         [addMoreView setDelegate:self];
         
         self.backgroundQueue = dispatch_queue_create("com.greengar.WhiteboardSDK", NULL);
@@ -607,6 +602,8 @@
     float centerOfMenuButton = menubar.frame.origin.x + menubar.frame.size.width*5/6;
     float bottom = menubar.frame.origin.y + menubar.frame.size.height;
     CGPoint point = CGPointMake(centerOfMenuButton - 1, bottom);
+    [historyView setCurrentPage:[self currentPage]];
+    [historyView reloadData];
     [WBPopoverView showPopoverAtPoint:point inView:self.view withContentView:historyView delegate:self];
     [self.menubarView didShowHistoryView:YES];
 }
@@ -1226,30 +1223,70 @@
     if (page) {
         NSString *historyType = [historyData objectForKey:@"history_type"];
         
+        HistoryElement *history;
+        
         // History create element: now create it again
         if ([historyType isEqualToString:@"HistoryElementCreated"]) {
-            HistoryElementCreated *history = [[HistoryElementCreated alloc] init];
-            [history loadFromData:historyData forPage:page];
-            [[HistoryManager sharedManager] addAction:history forPage:page];
-        
-        } else if ([historyType isEqualToString:@""]) {
-        
+            history = [[HistoryElementCreated alloc] init];
+            
+        // History delete element: now delete it again
+        } else if ([historyType isEqualToString:@"HistoryElementDeleted"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementDeleted alloc] init];
+                [history setElement:historyElement];
+            }
+            
         // History draw on the canvas, now draw it again
         } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            WBBaseElement *historyElement = nil;
-            for (WBBaseElement *element in [page subviews]) {
-                if ([element.uid isEqualToString:elementUid]) {
-                    historyElement = element;
-                    break;
-                }
-            }
+            WBBaseElement *historyElement = [page elementByUid:elementUid];
             if (historyElement) {
-                HistoryElementCanvasDraw *history = [[HistoryElementCanvasDraw alloc] init];
+                history = [[HistoryElementCanvasDraw alloc] init];
                 [history setElement:historyElement];
-                [history loadFromData:historyData forPage:page];
-                [[HistoryManager sharedManager] addAction:history forPage:page];
             }
+            
+        // History text changed: now change it again
+        } else if ([historyType isEqualToString:@"HistoryElementTextChanged"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementTextChanged alloc] init];
+                [history setElement:historyElement];
+            }
+        
+        // History text font changed: now change it again
+        } else if ([historyType isEqualToString:@"HistoryElementTextFontChanged"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementTextFontChanged alloc] init];
+                [history setElement:historyElement];
+            }
+            
+        // History text color changed: now change it again
+        } else if ([historyType isEqualToString:@"HistoryElementTextColorChanged"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementTextColorChanged alloc] init];
+                [history setElement:historyElement];
+            }
+            
+        // History element transform: now transform it again
+        } else if ([historyType isEqualToString:@"HistoryElementTransform"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementTransform alloc] init];
+                [history setElement:historyElement];
+            }
+        }
+        
+        if (history) {
+            [history loadFromData:historyData forPage:page];
+            [[HistoryManager sharedManager] addAction:history forPage:page];
         }
     }
 }

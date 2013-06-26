@@ -41,4 +41,9 @@
     return dict;
 }
 
+- (void)loadFromData:(NSDictionary *)data forPage:(WBPage *)page {
+    [super loadFromData:data forPage:page];
+    self.active = [[data objectForKey:@"history_active"] boolValue];
+}
+
 @end

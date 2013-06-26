@@ -46,4 +46,11 @@
     return dict;
 }
 
+- (void)loadFromData:(NSDictionary *)data forPage:(WBPage *)page {
+    [super loadFromData:data forPage:page];
+    self.originalColor = [UIColor gsColorFromString:[data objectForKey:@"history_origin_color"]];
+    self.changedColor = [UIColor gsColorFromString:[data objectForKey:@"history_changed_color"]];
+    self.active = [[data objectForKey:@"history_active"] boolValue];
+}
+
 @end

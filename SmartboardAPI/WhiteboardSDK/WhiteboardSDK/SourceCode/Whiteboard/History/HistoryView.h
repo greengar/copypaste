@@ -19,6 +19,7 @@
 
 - (void)animateUp;
 - (void)animateDown;
+- (void)reloadData;
 
 @property (nonatomic, strong) WBPage *currentPage;
 

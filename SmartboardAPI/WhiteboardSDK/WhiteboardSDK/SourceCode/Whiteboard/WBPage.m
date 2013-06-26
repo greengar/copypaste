@@ -198,6 +198,17 @@
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 
+- (WBBaseElement *)elementByUid:(NSString *)elementUid {
+    WBBaseElement *historyElement = nil;
+    for (WBBaseElement *element in self.subviews) {
+        if ([element.uid isEqualToString:elementUid]) {
+            historyElement = element;
+            break;
+        }
+    }
+    return historyElement;
+}
+
 #pragma mark - Export
 - (UIImage *)exportPageToImage {
     // TODO: cache image so we don't re-export an image if it hasn't changed since the last export?

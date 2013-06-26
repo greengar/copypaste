@@ -43,6 +43,8 @@
 - (void)startToMove;
 - (void)stopToMove;
 
+- (WBBaseElement *)elementByUid:(NSString *)elementUid;
+
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) WBBaseElement *currentElement;
 @property (nonatomic, assign) id<WBPageDelegate> pageDelegate;

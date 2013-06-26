@@ -39,4 +39,13 @@
     return dict;
 }
 
+- (void)loadFromData:(NSDictionary *)data forPage:(WBPage *)page {
+    [super loadFromData:data forPage:page];
+    self.originalFontName = [data objectForKey:@"history_origin_font_name"];
+    self.originalFontSize = [[data objectForKey:@"history_origin_font_size"] floatValue];
+    self.changedFontName = [data objectForKey:@"history_changed_font_name"];
+    self.changedFontSize = [[data objectForKey:@"history_changed_font_size"] floatValue];
+    self.active = [[data objectForKey:@"history_active"] boolValue];
+}
+
 @end

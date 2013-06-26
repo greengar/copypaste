@@ -39,5 +39,11 @@
     return dict;
 }
 
+- (void)loadFromData:(NSDictionary *)historyData forPage:(WBPage *)page {
+    [super loadFromData:historyData forPage:page];
+    self.originalText = [historyData objectForKey:@"history_origin_text"];
+    self.changedText = [historyData objectForKey:@"history_changed_text"];
+    self.active = [[historyData objectForKey:@"history_active"] boolValue];
+}
 
 @end

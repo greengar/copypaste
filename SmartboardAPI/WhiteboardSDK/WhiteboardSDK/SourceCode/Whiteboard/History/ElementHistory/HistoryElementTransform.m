@@ -55,4 +55,10 @@
     return dict;
 }
 
+- (void)loadFromData:(NSDictionary *)data forPage:(WBPage *)page {
+    [super loadFromData:data forPage:page];
+    self.originalTransform = CGAffineTransformFromString([data objectForKey:@"history_origin_transform"]);
+    self.changedTransform = CGAffineTransformFromString([data objectForKey:@"history_changed_transform"]);
+    self.active = [[data objectForKey:@"history_active"] boolValue];
+}
 @end

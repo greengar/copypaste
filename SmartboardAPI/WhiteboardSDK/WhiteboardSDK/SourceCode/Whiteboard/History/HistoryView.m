@@ -104,6 +104,10 @@
     }
 }
 
+- (void)reloadData {
+    [historyTableView reloadData];
+}
+
 #pragma mark - UITableView Datasource
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return kHistoryCellHeight;
