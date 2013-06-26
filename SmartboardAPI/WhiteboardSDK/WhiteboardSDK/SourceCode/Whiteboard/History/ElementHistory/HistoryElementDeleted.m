@@ -43,6 +43,7 @@
 
 - (void)loadFromData:(NSDictionary *)data forPage:(WBPage *)page {
     [super loadFromData:data forPage:page];
+    self.page = page;
     self.active = [[data objectForKey:@"history_active"] boolValue];
 }
 

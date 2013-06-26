@@ -65,6 +65,7 @@
     [page addSubview:element];
     [element setDelegate:page];
     
+    [self setPage:page];
     [self setElement:element];
     [element revive];
     [element rest];

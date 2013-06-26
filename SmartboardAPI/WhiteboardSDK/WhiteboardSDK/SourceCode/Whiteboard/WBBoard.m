@@ -1174,7 +1174,7 @@
             // Reconstruct this page
             [self updateWithDataForPage:pageData pageUid:pageUid];
             
-            [[self currentPage] addFakeCanvas];
+            [self addFakeCanvas];
         }
         [GSSVProgressHUD dismiss];
         if (block) { block(YES, nil); }
