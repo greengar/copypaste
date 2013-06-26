@@ -21,6 +21,6 @@
 - (void)animateDown;
 - (void)reloadData;
 
-@property (nonatomic, strong) WBPage *currentPage;
+@property (nonatomic, weak) WBPage *currentPage;
 
 @end

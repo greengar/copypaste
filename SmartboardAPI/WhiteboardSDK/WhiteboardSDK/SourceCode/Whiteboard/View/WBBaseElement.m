@@ -366,4 +366,8 @@
     self.transform = self.currentTransform;
 }
 
+- (void)dealloc {
+    
+}
+
 @end

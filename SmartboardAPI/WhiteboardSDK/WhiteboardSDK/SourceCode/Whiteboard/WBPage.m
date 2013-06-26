@@ -242,4 +242,9 @@
     return exportedImage;
 }
 
+- (void)dealloc {
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+}
+
+
 @end

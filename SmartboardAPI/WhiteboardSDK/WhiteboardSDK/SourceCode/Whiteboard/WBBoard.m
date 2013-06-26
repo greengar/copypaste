@@ -105,6 +105,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.backgroundQueue = dispatch_queue_create("com.greengar.WhiteboardSDK", NULL);
+        
         self.view.backgroundColor = [UIColor whiteColor];
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"B_"];
         self.name = [NSString stringWithFormat:@"Whiteboard %@", [WBUtils getCurrentTime]];
@@ -133,8 +135,6 @@
         WBToolbarView *toolbar = self.toolbarView;
         addMoreView = [[WBAddMoreSelectionView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*3, toolbar.frame.origin.y-addMoreHeight, kAddMoreCellHeight*3, addMoreHeight)];
         [addMoreView setDelegate:self];
-        
-        self.backgroundQueue = dispatch_queue_create("com.greengar.WhiteboardSDK", NULL);
     }
     return self;
 }
@@ -217,9 +217,14 @@
     [self.pages addObject:page];
     [self setCurrentPageIndex:([self.pages count]-1)];
     
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:dataUpdate:)]) {
-        [self.delegate pageOfBoard:self dataUpdate:[page saveToData]];
-    }
+    dispatch_async(self.backgroundQueue, ^{
+        NSMutableString *historyURL = [NSMutableString new];
+        [historyURL appendString:@"board_pages"];
+        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:dataUpdate:atURL:)]) {
+            [self.delegate pageOfBoard:self dataUpdate:[page saveToData] atURL:historyURL];
+        }
+    });
 }
 
 - (void)removePageWithId:(NSString *)uid {
@@ -905,32 +910,30 @@
     }
 }
 
+- (void)animationCurlUpExitBoard {
+    [self dismissViewControllerAnimated:NO completion:NULL];
+    [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+                           forView:[UIApplication sharedApplication].keyWindow
+                             cache:YES];
+    [UIView setAnimationDuration:kWBSessionAnimationDuration];
+    [UIView commitAnimations];
+}
+
 - (void)exitBoardWithResult:(BOOL)showResult {
     [[HistoryManager sharedManager] clearHistoryPool];
     if (showResult) {
         dispatch_async(dispatch_get_main_queue(), ^{
             UIImage *image = [self exportBoardToUIImage];
             
-            [self dismissViewControllerAnimated:NO completion:NULL];
-            [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
-            [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
-                                   forView:[UIApplication sharedApplication].keyWindow
-                                     cache:YES];
-            [UIView setAnimationDuration:kWBSessionAnimationDuration];
-            [UIView commitAnimations];
+            [self animationCurlUpExitBoard];
             
             if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
                 [self.delegate doneEditingBoardWithResult:image];
             }
         });
     } else {
-        [self dismissViewControllerAnimated:NO completion:NULL];
-        [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
-                               forView:[UIApplication sharedApplication].keyWindow
-                                 cache:YES];
-        [UIView setAnimationDuration:kWBSessionAnimationDuration];
-        [UIView commitAnimations];
+        [self animationCurlUpExitBoard];
         
         if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
             [self.delegate doneEditingBoardWithResult:nil];
@@ -1124,14 +1127,6 @@
     [self pageHistoryCreated:history];
 }
 
-- (NSDictionary *)exportBoardMetadata {
-    NSMutableDictionary *dict = [NSMutableDictionary new];
-    [dict setObject:self.uid forKey:@"board_uid"];
-    [dict setObject:self.name forKey:@"board_name"];
-    [dict setObject:NSStringFromCGRect(self.view.frame) forKey:@"board_frame"];
-    return dict;
-}
-
 - (NSDictionary *)exportBoardData {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"board_uid"];
@@ -1172,16 +1167,22 @@
             NSDictionary *pageData = [boardPages objectForKey:pageUid];
             
             // Reconstruct this page
-            [self updateWithDataForPage:pageData pageUid:pageUid];
+            [self updateWithDataForPage:pageData withBlock:nil];
             
             [self addFakeCanvas];
         }
         [GSSVProgressHUD dismiss];
+        
         if (block) { block(YES, nil); }
     });
 }
 
-- (void)updateWithDataForPage:(NSDictionary *)pageData pageUid:(NSString *)pageUid {
+- (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data boardUid:(NSString *)boardUid {
+    // TODO: history add/remove/switch pages
+}
+
+- (void)updateWithDataForPage:(NSDictionary *)pageData withBlock:(WBResultBlock)block {
+    NSString *pageUid = [pageData objectForKey:@"page_uid"];
     WBPage *page = nil;
     for (WBPage *existedPage in self.pages) {
         if ([existedPage.uid isEqualToString:pageUid]) {
@@ -1215,6 +1216,8 @@
         NSDictionary *historyData = [pageHistoryData objectForKey:historyUid];
         [self updateWithNewHistoryDataForPage:historyData pageUid:pageUid];
     }
+    
+    if (block) { block(YES, nil); }
 }
 
 - (void)updateWithNewHistoryDataForPage:(NSDictionary *)historyData pageUid:(NSString *)pageUid {
@@ -1299,6 +1302,32 @@
             [[HistoryManager sharedManager] addAction:history forPage:page];
         }
     }
+}
+
+#pragma mark - Save/Load from Local Storage
+- (void)saveBoardDataToLocalStorageWithName:(NSString *)boardName {
+    NSString *folderPath = [WBUtils getBaseDocumentFolder];
+    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", boardName]];
+    NSDictionary *boardDict = [self exportBoardData];
+	[boardDict writeToFile:filePath atomically:NO];
+}
+
+- (WBBoard *)loadBoardDataFromLocalStorageWithName:(NSString *)boardName {
+    NSString *folderPath = [BoardManager getBaseDocumentFolder];
+    NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", boardName]];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+        WBBoard *board = [[WBBoard alloc] init];
+        [board updateWithDataForBoard:boardDict withBlock:^(BOOL succeed, NSError *error) {}];
+        return board;
+    }
+    return nil;
+}
+
+- (void)dealloc {
+    [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.pages removeAllObjects];
+    [[HistoryManager sharedManager] clearHistoryPool];
 }
 
 @end

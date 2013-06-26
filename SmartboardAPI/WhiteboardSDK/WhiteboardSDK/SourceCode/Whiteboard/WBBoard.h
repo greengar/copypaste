@@ -15,11 +15,9 @@
 @optional
 - (NSString *)facebookId;
 - (void)doneEditingBoardWithResult:(UIImage *)image;
-- (void)board:(WBBoard *)board dataUpdate:(NSDictionary *)data;
-- (void)pageOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data;
+- (void)pageOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data atURL:(NSString *)URLString;
 - (void)pageOfBoard:(WBBoard *)board addNewHistory:(NSDictionary *)data atURL:(NSString *)URLString;
 - (void)pageOfBoard:(WBBoard *)board updateHistoryCanvasDraw:(NSDictionary *)data atURL:(NSString *)URLString;
-- (void)elementOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data;
 @end
 
 @interface WBBoard : UIViewController
@@ -37,28 +35,52 @@
  */
 - (int)numOfPages;
 
+/*
+ Reconstruct the board with the data dictionary
+ @param data NSDictionary: data dictionary
+ @param block WBResultBlock: result of the reconstruct process
+ */
 - (void)updateWithDataForBoard:(NSDictionary *)data withBlock:(WBResultBlock)block;
-- (void)updateWithHistoryDataForBoard:(NSDictionary *)data;
-- (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data;
 
-- (void)updateWithDataForPage:(NSDictionary *)data pageUid:(NSString *)pageUid;
+/*
+ Reconstruct the board with the history data dictionary
+ @param data NSDictionary: history data dictionary
+ @param pageUid NSString: uid of the board which this history belongs to
+ */
+- (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data boardUid:(NSString *)boardUid;
+
+/*
+ Reconstruct the page with the data dictionary
+ @param data NSDictionary: data dictionary
+ @param block WBResultBlock: result of the reconstruct process
+ */
+- (void)updateWithDataForPage:(NSDictionary *)data withBlock:(WBResultBlock)block;
+
+/*
+ Reconstruct the page with the history data dictionary
+ @param data NSDictionary: history data dictionary
+ @param pageUid NSString: uid of the page which this history belongs to
+ */
 - (void)updateWithNewHistoryDataForPage:(NSDictionary *)data pageUid:(NSString *)pageUid;
-- (void)updateWithNewHistoryElementCanvasDrawDataForPage:(NSDictionary *)data pageUid:(NSString *)pageUid;
 
-- (NSDictionary *)exportBoardMetadata;
+/*
+ Export data of the whole board
+ @result Return NSDictionary: the board data dictionary
+ */
 - (NSDictionary *)exportBoardData;
-- (NSDictionary *)exportHistoryForBoard;
-- (NSDictionary *)exportNewHistoryActionForBoard;
 
-- (NSDictionary *)exportPageMetadata;
-- (NSDictionary *)exportPageData;
-- (NSDictionary *)exportHistoryForPage;
-- (NSDictionary *)exportNewHistoryActionForPage;
+/*
+ Save board data to local storage with name
+ @param boardName NSString: the name of the board to save
+ */
+- (void)saveBoardDataToLocalStorageWithName:(NSString *)boardName;
 
-- (NSDictionary *)exportElementMetadata;
-- (NSDictionary *)exportElementData;
-- (NSDictionary *)exportHistoryForElement;
-- (NSDictionary *)exportNewHistoryActionForElement;
+/*
+ Load board data back from local storage with name
+ @param boardName NSString: the name of the board to load
+ @result Return WBBoard: the board from the storage, will be nil if not found
+ */
+- (WBBoard *)loadBoardDataFromLocalStorageWithName:(NSString *)boardName;
 
 @property (nonatomic, strong) NSString              *uid;
 @property (nonatomic, strong) NSString              *name;

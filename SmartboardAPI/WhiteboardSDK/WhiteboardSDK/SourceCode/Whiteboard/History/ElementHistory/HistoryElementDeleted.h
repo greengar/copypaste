@@ -11,6 +11,6 @@
 
 @interface HistoryElementDeleted : HistoryElement
 
-@property (nonatomic, strong) WBPage *page;
+@property (nonatomic, weak) WBPage *page;
 
 @end

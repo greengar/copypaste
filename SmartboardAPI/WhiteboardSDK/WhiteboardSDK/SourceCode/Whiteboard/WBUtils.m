@@ -372,4 +372,11 @@
     return nil;
 }
 
++ (NSString *)getBaseDocumentFolder {
+    NSString *baseDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask,
+                                                             YES) objectAtIndex:0];
+    return [baseDir stringByAppendingPathComponent:@"Whiteboard/"];
+}
+
 @end
