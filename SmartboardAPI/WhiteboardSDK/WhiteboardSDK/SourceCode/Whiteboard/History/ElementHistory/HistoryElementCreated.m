@@ -38,30 +38,18 @@
 - (NSDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"HistoryElementCreated" forKey:@"history_type"];
-    [dict setObject:NSStringFromCGRect(self.element.defaultFrame) forKey:@"history_default_frame"];
-    [dict setObject:NSStringFromCGAffineTransform(self.element.defaultTransform) forKey:@"history_default_transform"];
-    [dict setObject:NSStringFromCGAffineTransform(self.element.currentTransform) forKey:@"history_current_transform"];
-    
-    if ([self.element isKindOfClass:[TextElement class]]) {
-        TextElement *element = (TextElement *) self.element;
-        [dict setObject:@"TextElement" forKey:@"element_type"];
-        [dict setObject:((UITextView *) element.contentView).text forKey:@"element_text"];
-        [dict setObject:element.myFontName forKey:@"element_font_name"];
-        [dict setObject:[NSNumber numberWithInt:element.myFontSize] forKey:@"element_font_size"];
-        [dict setObject:[element.myColor gsString] forKey:@"element_font_color"];
-    } else if ([self.element isKindOfClass:[GLCanvasElement class]]) {
-        [dict setObject:@"GLCanvasElement" forKey:@"element_type"];
-    } else if ([self.element isKindOfClass:[ImageElement class]]) {
-        [dict setObject:@"ImageElement" forKey:@"element_type"];
+    NSMutableDictionary *elementDict = [self.element saveToData];
+    for (NSString *key in [elementDict allKeys]) {
+        NSObject *object = [elementDict objectForKey:key];
+        [dict setObject:object forKey:key];
     }
-    
     return dict;
 }
 
 - (void)loadFromData:(NSDictionary *)historyData forPage:(WBPage *)page {
     [super loadFromData:historyData];
     NSString *elementType = [historyData objectForKey:@"element_type"];
-    CGRect elementRect = CGRectFromString([historyData objectForKey:@"history_default_frame"]);
+    CGRect elementRect = CGRectFromString([historyData objectForKey:@"element_default_frame"]);
     WBBaseElement *element;
     if ([elementType isEqualToString:@"TextElement"]) {
         element = [[TextElement alloc] initWithFrame:elementRect];
@@ -78,6 +66,8 @@
     [element setDelegate:page];
     
     [self setElement:element];
+    [element revive];
+    [element rest];
     [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
 }
 

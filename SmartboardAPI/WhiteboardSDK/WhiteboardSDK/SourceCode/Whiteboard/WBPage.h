@@ -26,6 +26,7 @@
 - (void)pageHistoryElementTransformUpdated:(HistoryAction *)history;
 - (void)elementHideKeyboard;
 - (void)elementRevived;
+- (void)textElementNowFocus;
 @end
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>

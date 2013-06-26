@@ -135,11 +135,11 @@
 
 #pragma mark - Place Holder Text View Delegate
 - (void)revive {
+    [self checkHistory];
     [super revive];
     [[self contentView] becomeFirstResponder];
     [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
     [self.placeHolderTextView revive];
-    [self checkHistory];
 }
 
 - (void)rest {
@@ -191,10 +191,8 @@
                                                                      }
                                                                  }];
     }
-    
-    [self checkHistory];
     self.elementCreated = YES;
-
+    [self checkHistory];
 }
 
 #pragma mark - Keyboard Delegate

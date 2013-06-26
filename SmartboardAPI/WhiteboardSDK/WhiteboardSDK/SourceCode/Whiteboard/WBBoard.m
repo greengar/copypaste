@@ -906,9 +906,9 @@
 }
 
 - (void)exitBoardWithResult:(BOOL)showResult {
+    [[HistoryManager sharedManager] clearHistoryPool];
     if (showResult) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[HistoryManager sharedManager] clearHistoryPool];
             UIImage *image = [self exportBoardToUIImage];
             
             [self dismissViewControllerAnimated:NO completion:NULL];
@@ -1090,6 +1090,10 @@
     }
 }
 
+- (void)textElementNowFocus {
+    [self.toolbarView selectCanvasMode:kTextMode];
+}
+
 #pragma mark - Collaboration
 - (void)pageHistoryCreated:(HistoryAction *)history {
     dispatch_async(self.backgroundQueue, ^{
@@ -1169,6 +1173,8 @@
             
             // Reconstruct this page
             [self updateWithDataForPage:pageData pageUid:pageUid];
+            
+            [[self currentPage] addFakeCanvas];
         }
         [GSSVProgressHUD dismiss];
         if (block) { block(YES, nil); }
@@ -1224,7 +1230,7 @@
         NSString *historyType = [historyData objectForKey:@"history_type"];
         
         HistoryElement *history;
-        
+        WBBaseElement *historyElement;
         // History create element: now create it again
         if ([historyType isEqualToString:@"HistoryElementCreated"]) {
             history = [[HistoryElementCreated alloc] init];
@@ -1232,7 +1238,7 @@
         // History delete element: now delete it again
         } else if ([historyType isEqualToString:@"HistoryElementDeleted"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementDeleted alloc] init];
                 [history setElement:historyElement];
@@ -1241,7 +1247,7 @@
         // History draw on the canvas, now draw it again
         } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementCanvasDraw alloc] init];
                 [history setElement:historyElement];
@@ -1250,7 +1256,7 @@
         // History text changed: now change it again
         } else if ([historyType isEqualToString:@"HistoryElementTextChanged"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementTextChanged alloc] init];
                 [history setElement:historyElement];
@@ -1259,7 +1265,7 @@
         // History text font changed: now change it again
         } else if ([historyType isEqualToString:@"HistoryElementTextFontChanged"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementTextFontChanged alloc] init];
                 [history setElement:historyElement];
@@ -1268,7 +1274,7 @@
         // History text color changed: now change it again
         } else if ([historyType isEqualToString:@"HistoryElementTextColorChanged"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementTextColorChanged alloc] init];
                 [history setElement:historyElement];
@@ -1277,7 +1283,7 @@
         // History element transform: now transform it again
         } else if ([historyType isEqualToString:@"HistoryElementTransform"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            WBBaseElement *historyElement = [page elementByUid:elementUid];
+            historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementTransform alloc] init];
                 [history setElement:historyElement];
@@ -1286,6 +1292,10 @@
         
         if (history) {
             [history loadFromData:historyData forPage:page];
+            if (historyElement) {
+                [historyElement revive];
+                [historyElement rest];
+            }
             [[HistoryManager sharedManager] addAction:history forPage:page];
         }
     }
