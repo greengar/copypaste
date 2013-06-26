@@ -260,7 +260,7 @@ static HistoryManager *shareManager = nil;
                         withChangedColor:(UIColor *)color2 x:(float)x2 y:(float)y2
                                  forPage:(WBPage *)page
                                withBlock:(WBSingleResultBlock)block {
-    if (x1 != x2 || y1 != y2) {
+    if (![color1 isEqual:color2]) {
         HistoryElementTextColorChanged *action = [[HistoryElementTextColorChanged alloc] init];
         [action setElement:element];
         [action setOriginalColor:color1];
