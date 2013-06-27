@@ -50,6 +50,7 @@
 + (void)removeSearchBarBackground:(UISearchBar *)searchBar;
 + (BOOL)isValidURL:(NSString *)urlString;
 + (int)maxValueSize;
++ (NSString *)getMacAddress;
 @end
 
 typedef void (^GSSingleResultBlock)(id object, NSError *error);

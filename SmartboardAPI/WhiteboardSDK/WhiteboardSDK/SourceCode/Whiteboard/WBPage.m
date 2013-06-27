@@ -195,11 +195,11 @@
 }
 
 #pragma mark - Backup/Restore Save/Load
-- (NSDictionary *)saveToData {
+- (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"page_uid"];
     [dict setObject:NSStringFromCGRect(self.frame) forKey:@"page_frame"];
-    return [NSDictionary dictionaryWithDictionary:dict];
+    return dict;
 }
 
 - (WBBaseElement *)elementByUid:(NSString *)elementUid {

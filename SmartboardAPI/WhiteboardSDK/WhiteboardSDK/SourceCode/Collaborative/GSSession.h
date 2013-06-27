@@ -248,6 +248,9 @@
 // Call this in your app delegate's [application:didReceiveRemoteNotification:]
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
+#pragma mark - Supports
++ (NSString *)mySecretId;
+
 // Current logged in user
 @property (nonatomic, retain) GSUser *currentUser;
 

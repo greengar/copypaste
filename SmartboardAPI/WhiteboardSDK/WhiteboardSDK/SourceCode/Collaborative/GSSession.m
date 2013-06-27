@@ -40,11 +40,13 @@ static GSSession *activeSession = nil;
 - (Firebase *)getMyBaseFirebase;
 - (Firebase *)generateFirebaseForUser:(GSUser *)user atTime:(NSString *)time;
 - (Firebase *)generateFirebaseForRoom:(GSRoom *)room;
-@property (nonatomic, retain) Firebase *firebase;
+@property (nonatomic, strong) Firebase *firebase;
+@property (nonatomic, strong) NSString *mySecretId;
 @end
 
 @implementation GSSession
 @synthesize firebase = _firebase;
+@synthesize mySecretId = _mySecretId;
 @synthesize currentUser = _currentUser;
 @synthesize delegate = _delegate;
 @synthesize msgDelegate = _msgDelegate;
@@ -725,6 +727,20 @@ static GSSession *activeSession = nil;
             return FEventTypeChildRemoved;
         default:
             return FEventTypeValue;
+    }
+}
+
+#pragma mark - Supports
++ (NSString *)mySecretId {
+    if ([[GSSession activeSession] mySecretId]) {
+        return [[GSSession activeSession] mySecretId];
+    } else  {
+        if ([GSSession isAuthenticated]) {
+            [GSSession activeSession].mySecretId = [NSString stringWithFormat:@"%@%@", [[GSSession currentUser] uid], [GSUtils getMacAddress]];
+        } else {
+            [GSSession activeSession].mySecretId = [GSUtils getMacAddress];
+        }
+        return [[GSSession activeSession] mySecretId];
     }
 }
 

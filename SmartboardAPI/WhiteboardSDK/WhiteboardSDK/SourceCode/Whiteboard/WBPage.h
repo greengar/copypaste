@@ -32,7 +32,7 @@
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
 
 - (UIImage *)exportPageToImage;
-- (NSDictionary *)saveToData;
+- (NSMutableDictionary *)saveToData;
 
 - (void)addElement:(WBBaseElement *)element;
 - (void)restoreElement:(WBBaseElement *)element;

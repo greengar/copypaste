@@ -68,6 +68,7 @@
                                  delegate:(id)delegate;
 + (NSObject *)getThingsFromClipboard;
 + (NSString *)getBaseDocumentFolder;
++ (NSString *)getMacAddress;
 
 typedef void (^WBSingleResultBlock)(id object, NSError *error);
 typedef void (^WBArrayResultBlock)(NSArray *objects, NSError *error);

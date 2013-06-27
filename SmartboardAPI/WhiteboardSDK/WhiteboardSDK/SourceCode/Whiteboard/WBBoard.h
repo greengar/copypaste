@@ -15,9 +15,9 @@
 @optional
 - (NSString *)facebookId;
 - (void)doneEditingBoardWithResult:(UIImage *)image;
-- (void)pageOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data atURL:(NSString *)URLString;
-- (void)pageOfBoard:(WBBoard *)board addNewHistory:(NSDictionary *)data atURL:(NSString *)URLString;
-- (void)pageOfBoard:(WBBoard *)board updateHistoryCanvasDraw:(NSDictionary *)data atURL:(NSString *)URLString;
+- (void)pageOfBoard:(WBBoard *)board dataUpdate:(NSMutableDictionary *)data atURL:(NSString *)URLString;
+- (void)pageOfBoard:(WBBoard *)board addNewHistory:(NSMutableDictionary *)data atURL:(NSString *)URLString;
+- (void)pageOfBoard:(WBBoard *)board updateHistoryCanvasDraw:(NSMutableDictionary *)data atURL:(NSString *)URLString;
 - (void)pageOfBoard:(WBBoard *)board saveAtURL:(NSString *)URLString;
 - (void)pageOfBoard:(WBBoard *)board saveHistoryCanvasDrawAtURL:(NSString *)URLString;
 @end
