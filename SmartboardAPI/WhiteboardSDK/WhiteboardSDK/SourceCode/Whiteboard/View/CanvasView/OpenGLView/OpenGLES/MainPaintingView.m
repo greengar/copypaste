@@ -490,6 +490,7 @@
             GSTouchData *touchData = [[GSTouchData alloc] init];
             touchData.firstTouch = YES;
             [touchDictionary setObject:touchData forKey:touch];
+            [touchData release];
         }
         
         [self releaseRedoStack];
@@ -581,6 +582,7 @@
                 GSTouchData *touchData = [[GSTouchData alloc] init];
                 touchData.firstTouch = YES;
                 [touchDictionary setObject:touchData forKey:touch];
+                [touchData release];
             }
             
             isDrawingStroke = TRUE;
@@ -704,6 +706,7 @@
                     GSTouchData *touchData = [[GSTouchData alloc] init];
                     touchData.firstTouch = YES;
                     [touchDictionary setObject:touchData forKey:touch];
+                    [touchData release];
                 }
                                 
                 isDrawingStroke = TRUE;

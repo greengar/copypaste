@@ -148,7 +148,7 @@
 
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView {
     EAGLContext *aContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1
-                                                  sharegroup:glView.context.sharegroup];
+                                                   sharegroup:glView.context.sharegroup];
     self = [self initWithFrame:frame context:aContext];
     if (self) {
     }
@@ -162,8 +162,10 @@
     
     [[PaintingManager sharedManager] removeCallback:self];
 	
-//	glDeleteFramebuffersOES(1, &drawingFramebuffer);
-//	glDeleteTextures(1, &drawingTexture);
+	glDeleteFramebuffersOES(1, &drawingFramebuffer);
+	glDeleteTextures(1, &drawingTexture);
+    
+    [super dealloc];
 }
 
 #pragma mark - Clean the Canvas
@@ -379,6 +381,7 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 	//  Third scale image to fit screen
 	
 	BOOL successful = [self loadImage:image.CGImage];
+    [image release];
 	
 	return successful;
 	

@@ -248,7 +248,7 @@ static GLfloat const textureScale = 1 /* 0.8 */;
         }        
     }
 
-    // The lowest layer needs a white background
+    // We needs a white background with zero opacity
     if (backgroundTexture == 0) {
         // prepare white background texture if not setup yet
         glGenTextures(1, &backgroundTexture);
@@ -258,21 +258,26 @@ static GLfloat const textureScale = 1 /* 0.8 */;
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         
-        unsigned char * data = (unsigned char *)malloc( kTextureSizeWidth * kTextureSizeHeight * 4 ); 
+        unsigned char * backgroundData = (unsigned char *)malloc(kTextureSizeWidth * kTextureSizeHeight * 4); 
         
-        memset(data, 0x00, kTextureSizeWidth * kTextureSizeHeight * 4);
+        memset(backgroundData, 0x00, kTextureSizeWidth * kTextureSizeHeight * 4);
         
         // each layer must have opacity = 0
         // in order not to overlap layers
         int ii; // red, green, blue, alpha are 4 elements
         for ( ii = 3; ii < kTextureSizeWidth*kTextureSizeHeight*4; ii+=4) {
             // set layer opacity to zero so that multiple layers can be rendered to final render buffer
-            data[ii] = 0x0;
+            backgroundData[ii] = 0x0;
         }
         
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);        
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, backgroundData);        
         
         glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, backgroundTexture, 0);
+        
+        // We need to free the memory for the white background, because we're not going to do anything with this
+        // If we do not do this, the app still holds 4MB memory for iPad non-retina, much more on iPad retina
+        // It's less on iPhone, but still a big memory leak
+        free(backgroundData);
     }
     
     // setup OpenGL layer, store in layerArray
@@ -299,21 +304,21 @@ static GLfloat const textureScale = 1 /* 0.8 */;
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
     // pre-fill layer with white color
-    unsigned char * data = (unsigned char *)malloc( kTextureSizeWidth * kTextureSizeHeight * 4 ); 
-    memset(data, 0xff, kTextureSizeWidth * kTextureSizeHeight * 4);
+    unsigned char * layerData = (unsigned char *)malloc( kTextureSizeWidth * kTextureSizeHeight * 4 ); 
+    memset(layerData, 0xff, kTextureSizeWidth * kTextureSizeHeight * 4);
 
     // each layer must have opacity = 0
     // in order not to overlap layers
     int ii; // red, green, blue, alpha are 4 elements
     for ( ii = 3; ii < kTextureSizeWidth*kTextureSizeHeight*4; ii+=4) {
         // set layer opacity to zero so that multiple layers can be rendered to final render buffer
-        data[ii] = 0x0;
+        layerData[ii] = 0x0;
     }
     
     layerInfo.offscreenLayerOpacity = 0.0f;
     layerInfo.offscreenLayerVisible = YES;
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, kTextureSizeWidth, kTextureSizeHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, kTextureSizeWidth, kTextureSizeHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, layerData);
     glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, layerInfo.offscreenLayerTexture, 0);
     
     GLenum status = glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES);
@@ -351,11 +356,10 @@ static GLfloat const textureScale = 1 /* 0.8 */;
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, kTextureSizeWidth, kTextureSizeHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, kTextureSizeWidth, kTextureSizeHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, layerData);
     glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, layerInfo.URTexture, 0);
     
     status = glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES);
-    
     
     if (status != GL_FRAMEBUFFER_COMPLETE_OES) {
         DLog(@"error when binding framebuffer object");
@@ -369,7 +373,7 @@ static GLfloat const textureScale = 1 /* 0.8 */;
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
-    free(data);
+    free(layerData);
 }
 
 
@@ -561,6 +565,7 @@ static GLfloat const textureScale = 1 /* 0.8 */;
 
 - (void)dealloc {
     [self removeLayer:0];
+    [super dealloc];
 }
 
 @end

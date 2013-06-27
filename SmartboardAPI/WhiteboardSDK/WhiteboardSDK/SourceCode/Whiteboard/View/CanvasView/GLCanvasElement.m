@@ -11,15 +11,15 @@
 #import "HistoryManager.h"
 #import "GSButton.h"
 
-@interface GLCanvasElement()
-@property (nonatomic, strong) MainPaintingView *drawingView;
+@interface GLCanvasElement() {
+    MainPaintingView *drawingView;
+}
 @property (nonatomic) UIView *previewAreaView;
 @property (nonatomic, strong) UIImageView *screenshotImageView;
 @property (nonatomic, strong) NSString *currentBrushId;
 @end
 
 @implementation GLCanvasElement
-@synthesize drawingView = _drawingView;
 @synthesize previewAreaView = _previewAreaView;
 @synthesize screenshotImageView = _screenshotImageView;
 @synthesize currentBrushId = _currentBrushId;
@@ -31,13 +31,13 @@
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         // OpenGL View
-        self.drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0,
-                                                                              0,
-                                                                              frame.size.width,
-                                                                              frame.size.height)];
-        [self addSubview:self.drawingView];
-        [self.drawingView setDelegate:self];
-        [self.drawingView initialDrawing];
+        drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0,
+                                                                         0,
+                                                                         frame.size.width,
+                                                                         frame.size.height)];
+        [self addSubview:drawingView];
+        [drawingView setDelegate:self];
+        [drawingView initialDrawing];
         [self initControlWithFrame:frame];
         
         self.isFake = YES;
@@ -59,7 +59,7 @@
 }
 
 - (UIView *)contentView {
-    return self.drawingView;
+    return drawingView;
 }
 
 //- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
@@ -88,8 +88,8 @@
 
 #pragma marl - Screenshot
 - (void)takeScreenshot {
-    self.screenshotImageView = [[UIImageView alloc] initWithFrame:self.drawingView.frame];
-    self.screenshotImageView.image = [self.drawingView glToUIImage];
+    self.screenshotImageView = [[UIImageView alloc] initWithFrame:drawingView.frame];
+    self.screenshotImageView.image = [drawingView glToUIImage];
     [self addSubview:self.screenshotImageView];
     [self sendSubviewToBack:self.screenshotImageView];
 }
@@ -148,7 +148,7 @@
 
 - (void)dealloc {
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    self.drawingView = nil;
+    drawingView = nil;
 }
 
 @end
