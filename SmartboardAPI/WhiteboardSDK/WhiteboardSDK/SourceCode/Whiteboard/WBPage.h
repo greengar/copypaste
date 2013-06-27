@@ -11,8 +11,6 @@
 #import "WBBaseElement.h"
 #import "GLCanvasElement.h"
 #import "CGCanvasElement.h"
-#import "ColorTabView.h"
-#import "ColorPickerView.h"
 #import "HistoryAction.h"
 
 @class WBPage;

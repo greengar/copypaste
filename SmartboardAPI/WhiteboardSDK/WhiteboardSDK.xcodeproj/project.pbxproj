@@ -131,9 +131,6 @@
 		7BCDC6E31774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */; };
 		7BCDC6E41774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */; };
 		7BCDC6E51774D10B00D851CF /* AGImagePickerController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */; };
-		7BCDC6E61774D10B00D851CF /* AGImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */; };
-		7BCDC6E71774D10B00D851CF /* AGImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */; };
-		7BCDC6E81774D10B00D851CF /* AGImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */; };
 		7BCDC6E91774D10B00D851CF /* AGImagePickerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC6D31774D10B00D851CF /* AGImagePickerController.h */; };
 		7BCDC6EA1774D10B00D851CF /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */; };
 		7BCDC6EB1774D10B00D851CF /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */; };
@@ -197,9 +194,6 @@
 		7BEA5381176687F1001BC5FE /* HistoryView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA52FD176687F0001BC5FE /* HistoryView.h */; };
 		7BEA5382176687F1001BC5FE /* HistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52FE176687F0001BC5FE /* HistoryView.m */; };
 		7BEA5383176687F1001BC5FE /* HistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52FE176687F0001BC5FE /* HistoryView.m */; };
-		7BEA5384176687F1001BC5FE /* BoardManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5301176687F0001BC5FE /* BoardManager.h */; };
-		7BEA5385176687F1001BC5FE /* BoardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5302176687F0001BC5FE /* BoardManager.m */; };
-		7BEA5386176687F1001BC5FE /* BoardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5302176687F0001BC5FE /* BoardManager.m */; };
 		7BEA5387176687F1001BC5FE /* HistoryManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5303176687F0001BC5FE /* HistoryManager.h */; };
 		7BEA5388176687F1001BC5FE /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5304176687F0001BC5FE /* HistoryManager.m */; };
 		7BEA5389176687F1001BC5FE /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5304176687F0001BC5FE /* HistoryManager.m */; };
@@ -226,12 +220,6 @@
 		7BEA53A1176687F1001BC5FE /* ColorSpectrumImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5319176687F0001BC5FE /* ColorSpectrumImageView.h */; };
 		7BEA53A2176687F1001BC5FE /* ColorSpectrumImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531A176687F0001BC5FE /* ColorSpectrumImageView.m */; };
 		7BEA53A3176687F1001BC5FE /* ColorSpectrumImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531A176687F0001BC5FE /* ColorSpectrumImageView.m */; };
-		7BEA53A4176687F1001BC5FE /* ColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA531B176687F0001BC5FE /* ColorPickerView.h */; };
-		7BEA53A5176687F1001BC5FE /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531C176687F0001BC5FE /* ColorPickerView.m */; };
-		7BEA53A6176687F1001BC5FE /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531C176687F0001BC5FE /* ColorPickerView.m */; };
-		7BEA53A7176687F1001BC5FE /* ColorTabView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA531D176687F0001BC5FE /* ColorTabView.h */; };
-		7BEA53A8176687F1001BC5FE /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531E176687F0001BC5FE /* ColorTabView.m */; };
-		7BEA53A9176687F1001BC5FE /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531E176687F0001BC5FE /* ColorTabView.m */; };
 		7BEA53AA176687F1001BC5FE /* ColorCircleView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA531F176687F0001BC5FE /* ColorCircleView.h */; };
 		7BEA53AB176687F1001BC5FE /* ColorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5320176687F0001BC5FE /* ColorCircleView.m */; };
 		7BEA53AC176687F1001BC5FE /* ColorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5320176687F0001BC5FE /* ColorCircleView.m */; };
@@ -241,9 +229,6 @@
 		7BEA53B0176687F1001BC5FE /* ColorPreviewView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5323176687F0001BC5FE /* ColorPreviewView.h */; };
 		7BEA53B1176687F1001BC5FE /* ColorPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5324176687F0001BC5FE /* ColorPreviewView.m */; };
 		7BEA53B2176687F1001BC5FE /* ColorPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5324176687F0001BC5FE /* ColorPreviewView.m */; };
-		7BEA53B3176687F1001BC5FE /* TabWrapperView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5325176687F0001BC5FE /* TabWrapperView.h */; };
-		7BEA53B4176687F1001BC5FE /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5326176687F0001BC5FE /* TabWrapperView.m */; };
-		7BEA53B5176687F1001BC5FE /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5326176687F0001BC5FE /* TabWrapperView.m */; };
 		7BEA53B6176687F1001BC5FE /* GLCanvasElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEA5327176687F0001BC5FE /* GLCanvasElement.h */; };
 		7BEA53B7176687F1001BC5FE /* GLCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5328176687F0001BC5FE /* GLCanvasElement.m */; };
 		7BEA53B8176687F1001BC5FE /* GLCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5328176687F0001BC5FE /* GLCanvasElement.m */; };
@@ -414,7 +399,6 @@
 		A90CE9C917736720006DD933 /* HistoryElementTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52FA176687F0001BC5FE /* HistoryElementTransform.m */; };
 		A90CE9CA17736720006DD933 /* HistoryAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52FC176687F0001BC5FE /* HistoryAction.m */; };
 		A90CE9CB17736720006DD933 /* HistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA52FE176687F0001BC5FE /* HistoryView.m */; };
-		A90CE9CC17736720006DD933 /* BoardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5302176687F0001BC5FE /* BoardManager.m */; };
 		A90CE9CD17736720006DD933 /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5304176687F0001BC5FE /* HistoryManager.m */; };
 		A90CE9CE17736720006DD933 /* SettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5306176687F0001BC5FE /* SettingManager.m */; };
 		A90CE9CF17736720006DD933 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA530A176687F0001BC5FE /* CGPointExtension.m */; };
@@ -423,12 +407,9 @@
 		A90CE9D217736720006DD933 /* UIColor+GSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5313176687F0001BC5FE /* UIColor+GSString.m */; };
 		A90CE9D317736720006DD933 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5315176687F0001BC5FE /* UIDevice+Hardware.m */; };
 		A90CE9D417736720006DD933 /* ColorSpectrumImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531A176687F0001BC5FE /* ColorSpectrumImageView.m */; };
-		A90CE9D517736720006DD933 /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531C176687F0001BC5FE /* ColorPickerView.m */; };
-		A90CE9D617736720006DD933 /* ColorTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA531E176687F0001BC5FE /* ColorTabView.m */; };
 		A90CE9D717736720006DD933 /* ColorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5320176687F0001BC5FE /* ColorCircleView.m */; };
 		A90CE9D817736720006DD933 /* CustomSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5322176687F0001BC5FE /* CustomSlider.m */; };
 		A90CE9D917736720006DD933 /* ColorPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5324176687F0001BC5FE /* ColorPreviewView.m */; };
-		A90CE9DA17736720006DD933 /* TabWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5326176687F0001BC5FE /* TabWrapperView.m */; };
 		A90CE9DB17736720006DD933 /* GLCanvasElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA5328176687F0001BC5FE /* GLCanvasElement.m */; };
 		A90CE9DC17736720006DD933 /* Painting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA532C176687F0001BC5FE /* Painting.m */; };
 		A90CE9DD17736720006DD933 /* PaintingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA532E176687F0001BC5FE /* PaintingManager.m */; };
@@ -599,7 +580,6 @@
 		7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementCanvasDraw.m; sourceTree = "<group>"; };
 		7BCDC6D01774D10B00D851CF /* AGImagePickerController+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AGImagePickerController+Helper.h"; sourceTree = "<group>"; };
 		7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AGImagePickerController+Helper.m"; sourceTree = "<group>"; };
-		7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AGImagePickerController.bundle; sourceTree = "<group>"; };
 		7BCDC6D31774D10B00D851CF /* AGImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGImagePickerController.h; sourceTree = "<group>"; };
 		7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGImagePickerController.m; sourceTree = "<group>"; };
 		7BCDC6D51774D10B00D851CF /* AGImagePickerControllerDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGImagePickerControllerDefines.h; sourceTree = "<group>"; };
@@ -642,8 +622,6 @@
 		7BEA52FC176687F0001BC5FE /* HistoryAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryAction.m; sourceTree = "<group>"; };
 		7BEA52FD176687F0001BC5FE /* HistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryView.h; sourceTree = "<group>"; };
 		7BEA52FE176687F0001BC5FE /* HistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryView.m; sourceTree = "<group>"; };
-		7BEA5301176687F0001BC5FE /* BoardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardManager.h; sourceTree = "<group>"; };
-		7BEA5302176687F0001BC5FE /* BoardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardManager.m; sourceTree = "<group>"; };
 		7BEA5303176687F0001BC5FE /* HistoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryManager.h; sourceTree = "<group>"; };
 		7BEA5304176687F0001BC5FE /* HistoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryManager.m; sourceTree = "<group>"; };
 		7BEA5305176687F0001BC5FE /* SettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingManager.h; sourceTree = "<group>"; };
@@ -662,18 +640,12 @@
 		7BEA5315176687F0001BC5FE /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
 		7BEA5319176687F0001BC5FE /* ColorSpectrumImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSpectrumImageView.h; sourceTree = "<group>"; };
 		7BEA531A176687F0001BC5FE /* ColorSpectrumImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSpectrumImageView.m; sourceTree = "<group>"; };
-		7BEA531B176687F0001BC5FE /* ColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerView.h; sourceTree = "<group>"; };
-		7BEA531C176687F0001BC5FE /* ColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerView.m; sourceTree = "<group>"; };
-		7BEA531D176687F0001BC5FE /* ColorTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTabView.h; sourceTree = "<group>"; };
-		7BEA531E176687F0001BC5FE /* ColorTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorTabView.m; sourceTree = "<group>"; };
 		7BEA531F176687F0001BC5FE /* ColorCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorCircleView.h; sourceTree = "<group>"; };
 		7BEA5320176687F0001BC5FE /* ColorCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorCircleView.m; sourceTree = "<group>"; };
 		7BEA5321176687F0001BC5FE /* CustomSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSlider.h; sourceTree = "<group>"; };
 		7BEA5322176687F0001BC5FE /* CustomSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSlider.m; sourceTree = "<group>"; };
 		7BEA5323176687F0001BC5FE /* ColorPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPreviewView.h; sourceTree = "<group>"; };
 		7BEA5324176687F0001BC5FE /* ColorPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPreviewView.m; sourceTree = "<group>"; };
-		7BEA5325176687F0001BC5FE /* TabWrapperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabWrapperView.h; sourceTree = "<group>"; };
-		7BEA5326176687F0001BC5FE /* TabWrapperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabWrapperView.m; sourceTree = "<group>"; };
 		7BEA5327176687F0001BC5FE /* GLCanvasElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCanvasElement.h; sourceTree = "<group>"; };
 		7BEA5328176687F0001BC5FE /* GLCanvasElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCanvasElement.m; sourceTree = "<group>"; };
 		7BEA532B176687F0001BC5FE /* Painting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painting.h; sourceTree = "<group>"; };
@@ -1058,7 +1030,6 @@
 			children = (
 				7BCDC6D01774D10B00D851CF /* AGImagePickerController+Helper.h */,
 				7BCDC6D11774D10B00D851CF /* AGImagePickerController+Helper.m */,
-				7BCDC6D21774D10B00D851CF /* AGImagePickerController.bundle */,
 				7BCDC6D31774D10B00D851CF /* AGImagePickerController.h */,
 				7BCDC6D41774D10B00D851CF /* AGImagePickerController.m */,
 				7BCDC6D51774D10B00D851CF /* AGImagePickerControllerDefines.h */,
@@ -1216,8 +1187,6 @@
 		7BEA5300176687F0001BC5FE /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				7BEA5301176687F0001BC5FE /* BoardManager.h */,
-				7BEA5302176687F0001BC5FE /* BoardManager.m */,
 				7BEA5303176687F0001BC5FE /* HistoryManager.h */,
 				7BEA5304176687F0001BC5FE /* HistoryManager.m */,
 				7BEA5305176687F0001BC5FE /* SettingManager.h */,
@@ -1281,18 +1250,12 @@
 			children = (
 				7BEA5319176687F0001BC5FE /* ColorSpectrumImageView.h */,
 				7BEA531A176687F0001BC5FE /* ColorSpectrumImageView.m */,
-				7BEA531B176687F0001BC5FE /* ColorPickerView.h */,
-				7BEA531C176687F0001BC5FE /* ColorPickerView.m */,
-				7BEA531D176687F0001BC5FE /* ColorTabView.h */,
-				7BEA531E176687F0001BC5FE /* ColorTabView.m */,
 				7BEA5323176687F0001BC5FE /* ColorPreviewView.h */,
 				7BEA5324176687F0001BC5FE /* ColorPreviewView.m */,
 				7BEA531F176687F0001BC5FE /* ColorCircleView.h */,
 				7BEA5320176687F0001BC5FE /* ColorCircleView.m */,
 				7BEA5321176687F0001BC5FE /* CustomSlider.h */,
 				7BEA5322176687F0001BC5FE /* CustomSlider.m */,
-				7BEA5325176687F0001BC5FE /* TabWrapperView.h */,
-				7BEA5326176687F0001BC5FE /* TabWrapperView.m */,
 			);
 			path = CanvasControlVIew;
 			sourceTree = "<group>";
@@ -1562,7 +1525,6 @@
 				7BEA537B176687F1001BC5FE /* HistoryElementTransform.h in Headers */,
 				7BEA537E176687F1001BC5FE /* HistoryAction.h in Headers */,
 				7BEA5381176687F1001BC5FE /* HistoryView.h in Headers */,
-				7BEA5384176687F1001BC5FE /* BoardManager.h in Headers */,
 				7BEA5387176687F1001BC5FE /* HistoryManager.h in Headers */,
 				7BEA538A176687F1001BC5FE /* SettingManager.h in Headers */,
 				7BEA538D176687F1001BC5FE /* ccMacros.h in Headers */,
@@ -1573,12 +1535,9 @@
 				7BEA539B176687F1001BC5FE /* UIColor+GSString.h in Headers */,
 				7BEA539E176687F1001BC5FE /* UIDevice+Hardware.h in Headers */,
 				7BEA53A1176687F1001BC5FE /* ColorSpectrumImageView.h in Headers */,
-				7BEA53A4176687F1001BC5FE /* ColorPickerView.h in Headers */,
-				7BEA53A7176687F1001BC5FE /* ColorTabView.h in Headers */,
 				7BEA53AA176687F1001BC5FE /* ColorCircleView.h in Headers */,
 				7BEA53AD176687F1001BC5FE /* CustomSlider.h in Headers */,
 				7BEA53B0176687F1001BC5FE /* ColorPreviewView.h in Headers */,
-				7BEA53B3176687F1001BC5FE /* TabWrapperView.h in Headers */,
 				7BEA53B6176687F1001BC5FE /* GLCanvasElement.h in Headers */,
 				7BEA53B9176687F1001BC5FE /* Painting.h in Headers */,
 				7BEA53BC176687F1001BC5FE /* PaintingManager.h in Headers */,
@@ -1783,7 +1742,6 @@
 				7BEA548617668A47001BC5FE /* LICENSE in Resources */,
 				7BEA54A017668A47001BC5FE /* README.md in Resources */,
 				7BEA54A517668A47001BC5FE /* SVProgressHUD.bundle in Resources */,
-				7BCDC6E61774D10B00D851CF /* AGImagePickerController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1793,7 +1751,6 @@
 			files = (
 				7B82E5FA175F9D3200B063D7 /* InfoPlist.strings in Resources */,
 				7B82E791175F9E4C00B063D7 /* Whiteboard.bundle in Resources */,
-				7BCDC6E81774D10B00D851CF /* AGImagePickerController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1821,7 +1778,6 @@
 				A90CEA3F17736720006DD933 /* README.md in Resources */,
 				A90CEA4017736720006DD933 /* SVProgressHUD.bundle in Resources */,
 				A90CEA4117736720006DD933 /* CollaborativeViewController.xib in Resources */,
-				7BCDC6E71774D10B00D851CF /* AGImagePickerController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1873,7 +1829,6 @@
 				7BEA537C176687F1001BC5FE /* HistoryElementTransform.m in Sources */,
 				7BEA537F176687F1001BC5FE /* HistoryAction.m in Sources */,
 				7BEA5382176687F1001BC5FE /* HistoryView.m in Sources */,
-				7BEA5385176687F1001BC5FE /* BoardManager.m in Sources */,
 				7BEA5388176687F1001BC5FE /* HistoryManager.m in Sources */,
 				7BEA538B176687F1001BC5FE /* SettingManager.m in Sources */,
 				7BEA538F176687F1001BC5FE /* CGPointExtension.m in Sources */,
@@ -1882,12 +1837,9 @@
 				7BEA539C176687F1001BC5FE /* UIColor+GSString.m in Sources */,
 				7BEA539F176687F1001BC5FE /* UIDevice+Hardware.m in Sources */,
 				7BEA53A2176687F1001BC5FE /* ColorSpectrumImageView.m in Sources */,
-				7BEA53A5176687F1001BC5FE /* ColorPickerView.m in Sources */,
-				7BEA53A8176687F1001BC5FE /* ColorTabView.m in Sources */,
 				7BEA53AB176687F1001BC5FE /* ColorCircleView.m in Sources */,
 				7BEA53AE176687F1001BC5FE /* CustomSlider.m in Sources */,
 				7BEA53B1176687F1001BC5FE /* ColorPreviewView.m in Sources */,
-				7BEA53B4176687F1001BC5FE /* TabWrapperView.m in Sources */,
 				7BEA53B7176687F1001BC5FE /* GLCanvasElement.m in Sources */,
 				7BEA53BA176687F1001BC5FE /* Painting.m in Sources */,
 				7BEA53BD176687F1001BC5FE /* PaintingManager.m in Sources */,
@@ -1980,7 +1932,6 @@
 				7BEA537D176687F1001BC5FE /* HistoryElementTransform.m in Sources */,
 				7BEA5380176687F1001BC5FE /* HistoryAction.m in Sources */,
 				7BEA5383176687F1001BC5FE /* HistoryView.m in Sources */,
-				7BEA5386176687F1001BC5FE /* BoardManager.m in Sources */,
 				7BEA5389176687F1001BC5FE /* HistoryManager.m in Sources */,
 				7BEA538C176687F1001BC5FE /* SettingManager.m in Sources */,
 				7BEA5390176687F1001BC5FE /* CGPointExtension.m in Sources */,
@@ -1989,12 +1940,9 @@
 				7BEA539D176687F1001BC5FE /* UIColor+GSString.m in Sources */,
 				7BEA53A0176687F1001BC5FE /* UIDevice+Hardware.m in Sources */,
 				7BEA53A3176687F1001BC5FE /* ColorSpectrumImageView.m in Sources */,
-				7BEA53A6176687F1001BC5FE /* ColorPickerView.m in Sources */,
-				7BEA53A9176687F1001BC5FE /* ColorTabView.m in Sources */,
 				7BEA53AC176687F1001BC5FE /* ColorCircleView.m in Sources */,
 				7BEA53AF176687F1001BC5FE /* CustomSlider.m in Sources */,
 				7BEA53B2176687F1001BC5FE /* ColorPreviewView.m in Sources */,
-				7BEA53B5176687F1001BC5FE /* TabWrapperView.m in Sources */,
 				7BEA53B8176687F1001BC5FE /* GLCanvasElement.m in Sources */,
 				7BEA53BB176687F1001BC5FE /* Painting.m in Sources */,
 				7BEA53BE176687F1001BC5FE /* PaintingManager.m in Sources */,
@@ -2096,7 +2044,6 @@
 				A90CE9C917736720006DD933 /* HistoryElementTransform.m in Sources */,
 				A90CE9CA17736720006DD933 /* HistoryAction.m in Sources */,
 				A90CE9CB17736720006DD933 /* HistoryView.m in Sources */,
-				A90CE9CC17736720006DD933 /* BoardManager.m in Sources */,
 				A90CE9CD17736720006DD933 /* HistoryManager.m in Sources */,
 				A90CE9CE17736720006DD933 /* SettingManager.m in Sources */,
 				A90CE9CF17736720006DD933 /* CGPointExtension.m in Sources */,
@@ -2105,12 +2052,9 @@
 				A90CE9D217736720006DD933 /* UIColor+GSString.m in Sources */,
 				A90CE9D317736720006DD933 /* UIDevice+Hardware.m in Sources */,
 				A90CE9D417736720006DD933 /* ColorSpectrumImageView.m in Sources */,
-				A90CE9D517736720006DD933 /* ColorPickerView.m in Sources */,
-				A90CE9D617736720006DD933 /* ColorTabView.m in Sources */,
 				A90CE9D717736720006DD933 /* ColorCircleView.m in Sources */,
 				A90CE9D817736720006DD933 /* CustomSlider.m in Sources */,
 				A90CE9D917736720006DD933 /* ColorPreviewView.m in Sources */,
-				A90CE9DA17736720006DD933 /* TabWrapperView.m in Sources */,
 				A90CE9DB17736720006DD933 /* GLCanvasElement.m in Sources */,
 				A90CE9DC17736720006DD933 /* Painting.m in Sources */,
 				A90CE9DD17736720006DD933 /* PaintingManager.m in Sources */,
