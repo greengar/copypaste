@@ -353,14 +353,15 @@ static GSSession *activeSession = nil;
 }
 
 #pragma mark - Request Rooms
-- (void)registerRoomDataChanged:(GSRoom *)room withBlock:(GSResultBlock)block {
-    [[self generateFirebaseForRoom:room] observeEventType:FEventTypeValue
+- (void)registerRoomDataChanged:(GSRoom *)room
+                           type:(GSEventType)eventType
+                      withBlock:(GSSingleResultBlock)block {
+    [[self generateFirebaseForRoom:room] observeEventType:[self firebaseEventFromGSEvent:eventType]
                                                 withBlock:^(FDataSnapshot *snapshot) {
         if (snapshot) {
-            [room setData:[snapshot value]];
-            if (block) { block(YES, nil); }
+            if (block) { block([snapshot value], nil); }
         } else {
-            if (block) { block(NO, nil); }
+            if (block) { block(nil, nil); }
         }
     }];
 }
@@ -451,13 +452,16 @@ static GSSession *activeSession = nil;
     firebase = nil;
 }
 
-- (void)registerRoomDataChanged:(GSRoom *)room atURL:(NSString *)urlString withBlock:(GSSingleResultBlock)block {
+- (void)registerRoomDataChanged:(GSRoom *)room
+                          atURL:(NSString *)urlString
+                           type:(GSEventType)eventType
+                      withBlock:(GSSingleResultBlock)block {
     NSArray *parseURL = [urlString componentsSeparatedByString:@"/"];
     Firebase *firebase = [self generateFirebaseForRoom:room];
     for (int i = 0; i < [parseURL count]; i++) {
         firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
     }
-    [firebase observeEventType:FEventTypeValue
+    [firebase observeEventType:[self firebaseEventFromGSEvent:eventType]
                      withBlock:^(FDataSnapshot *snapshot) {
                          NSDictionary *dataChangedAtURL = [snapshot value];
                          if (block) { block(dataChangedAtURL, nil); }
@@ -706,6 +710,22 @@ static GSSession *activeSession = nil;
     [push setQuery:query];
     [push setData:data];
     [push sendPushInBackground];
+}
+
+#pragma mark - Conversion
+- (FEventType)firebaseEventFromGSEvent:(GSEventType)eventType {
+    switch (eventType) {
+        case GSEventTypeChildAdded:
+            return FEventTypeChildAdded;
+        case GSEventTypeChildChanged:
+            return FEventTypeChildChanged;
+        case GSEventTypeChildMoved:
+            return FEventTypeChildMoved;
+        case GSEventTypeChildRemoved:
+            return FEventTypeChildRemoved;
+        default:
+            return FEventTypeValue;
+    }
 }
 
 + (id)allocWithZone:(NSZone *)zone {

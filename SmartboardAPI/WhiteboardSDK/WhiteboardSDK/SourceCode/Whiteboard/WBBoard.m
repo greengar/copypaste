@@ -9,7 +9,6 @@
 #import "WBBoard.h"
 #import "WBPage.h"
 #import "GLCanvasElement.h"
-#import "BoardManager.h"
 #import "HistoryManager.h"
 #import "HistoryElement.h"
 #import "SettingManager.h"
@@ -951,8 +950,16 @@
                              cache:YES];
     [UIView setAnimationDuration:kWBSessionAnimationDuration];
     [UIView commitAnimations];
-    
-    [[BoardManager sharedManager] createANewBoard:self];
+}
+
+- (void)startListeningToPageUpdate {
+    NSMutableString *historyURL = [NSMutableString new];
+    [historyURL appendString:@"board_pages"];
+    [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
+    [historyURL appendString:@"/page_history"];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:saveAtURL:)]) {
+        [self.delegate pageOfBoard:self saveAtURL:historyURL];
+    }
 }
 
 #pragma mark - Keyboard Delegate
@@ -1221,6 +1228,10 @@
 }
 
 - (void)updateWithNewHistoryDataForPage:(NSDictionary *)historyData pageUid:(NSString *)pageUid {
+    if (!pageUid) {
+        pageUid = [historyData objectForKey:@"page_uid"];
+    }
+    
     WBPage *page = nil;
     for (WBPage *existedPage in self.pages) {
         if ([existedPage.uid isEqualToString:pageUid]) {
@@ -1313,7 +1324,7 @@
 }
 
 - (WBBoard *)loadBoardDataFromLocalStorageWithName:(NSString *)boardName {
-    NSString *folderPath = [BoardManager getBaseDocumentFolder];
+    NSString *folderPath = [WBUtils getBaseDocumentFolder];
     NSString *filePath = [folderPath stringByAppendingString:[NSString stringWithFormat:@"%@.hector", boardName]];
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];

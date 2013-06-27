@@ -82,10 +82,28 @@
 
 #pragma mark - Request Rooms
 /*
- Register room data changed, from now on every time data of a room is changed on server
+ Register room data changed, from now on every time data of a room is changed on server,
  the data inside this room in client will be changed
+ @param room GSRoom: the room which will be listened
+ @param eventType GSEventType: type of triggered event
+ @param block GSSingleResultBlock: the data which will be returned when the event is triggered
  */
-- (void)registerRoomDataChanged:(GSRoom *)room withBlock:(GSResultBlock)block;
+- (void)registerRoomDataChanged:(GSRoom *)room
+                           type:(GSEventType)eventType
+                      withBlock:(GSSingleResultBlock)block;
+
+/*
+ Register room data changed at url, from now on every time data of a room at the url is changed 
+ on server, the data inside this room in client will be changed
+ @param room GSRoom: the room which will be listened
+ @param urlString NSString: the url to a part of the room which will be listened
+ @param eventType GSEventType: type of triggered event
+ @param block GSSingleResultBlock: the data which will be returned when the event is triggered
+ */
+- (void)registerRoomDataChanged:(GSRoom *)room
+                          atURL:(NSString *)urlString
+                           type:(GSEventType)eventType
+                      withBlock:(GSSingleResultBlock)block;
 
 /*
  Unregister room data changed, from now on data won't be pulled from server anymore
@@ -142,8 +160,6 @@
  @param urlString NSString: URL string to store the data under the hierarchy
  */
 - (void)sendData:(NSDictionary *)dict ofRoom:(GSRoom *)room atURL:(NSString *)urlString;
-
-- (void)registerRoomDataChanged:(GSRoom *)room atURL:(NSString *)urlString withBlock:(GSSingleResultBlock)block;
 
 #pragma mark - Access and Update Database
 /*

@@ -18,6 +18,8 @@
 - (void)pageOfBoard:(WBBoard *)board dataUpdate:(NSDictionary *)data atURL:(NSString *)URLString;
 - (void)pageOfBoard:(WBBoard *)board addNewHistory:(NSDictionary *)data atURL:(NSString *)URLString;
 - (void)pageOfBoard:(WBBoard *)board updateHistoryCanvasDraw:(NSDictionary *)data atURL:(NSString *)URLString;
+- (void)pageOfBoard:(WBBoard *)board saveAtURL:(NSString *)URLString;
+- (void)pageOfBoard:(WBBoard *)board saveHistoryCanvasDrawAtURL:(NSString *)URLString;
 @end
 
 @interface WBBoard : UIViewController
@@ -34,6 +36,11 @@
  @result Return int: number of pages
  */
 - (int)numOfPages;
+
+/*
+ Start to listen to any update to the current page
+ */
+- (void)startListeningToPageUpdate;
 
 /*
  Reconstruct the board with the data dictionary

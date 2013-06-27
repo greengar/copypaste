@@ -151,9 +151,16 @@
 
 - (void)loadDataWithBlock:(GSResultBlock)block {
     [GSSVProgressHUD showWithStatus:@"Loading..."];
-    [[GSSession activeSession] registerRoomDataChanged:self withBlock:^(BOOL succeed, NSError *error) {
+    [[GSSession activeSession] registerRoomDataChanged:self
+                                                  type:GSEventTypeValue
+                                             withBlock:^(NSDictionary *data, NSError *error) {
+        if (data) {
+            [self setData:(NSMutableDictionary *)data];
+            if (block) { block(YES, nil); }
+        } else {
+            if (block) { block(NO, nil); }
+        }
         [GSSVProgressHUD dismiss];
-        if (block) { block(succeed, nil); }
         [[GSSession activeSession] unregisterRoomDataChanged:self];
     }];
 }

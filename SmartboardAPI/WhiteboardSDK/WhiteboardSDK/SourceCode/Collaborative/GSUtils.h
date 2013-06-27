@@ -56,3 +56,11 @@ typedef void (^GSSingleResultBlock)(id object, NSError *error);
 typedef void (^GSArrayResultBlock)(NSArray *objects, NSError *error);
 typedef void (^GSResultBlock)(BOOL succeed, NSError *error);
 typedef void (^GSEmptyBlock)();
+
+typedef enum {
+    GSEventTypeChildAdded,    // 0, fired when a new child node is added to a location
+    GSEventTypeChildRemoved,  // 1, fired when a child node is removed from a location
+    GSEventTypeChildChanged,  // 2, fired when a child node at a location changes
+    GSEventTypeChildMoved,    // 3, fired when a child node moves relative to the other child nodes at a location
+    GSEventTypeValue          // 4, fired when any data changes at a location and, recursively, any children
+} GSEventType;
