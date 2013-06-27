@@ -11,7 +11,7 @@
 #import "EAGLView.h"
 #import "DrawingLayerInfo.h"
 
-#define kMaxSupportLayer 3   // maximum 3 layers
+#define kMaxSupportLayer 1   // maximum 3 layers
 
 @interface FB2GLView : EAGLView {
     

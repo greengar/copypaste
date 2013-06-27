@@ -113,6 +113,10 @@ static HistoryManager *shareManager = nil;
 }
 
 - (void)clearHistoryPool {
+    for (NSString *key in [self.historyPool allKeys]) {
+        NSMutableArray *historyForPage = [self.historyPool objectForKey:key];
+        [historyForPage removeAllObjects];
+    }
     [self.historyPool removeAllObjects];
 }
 

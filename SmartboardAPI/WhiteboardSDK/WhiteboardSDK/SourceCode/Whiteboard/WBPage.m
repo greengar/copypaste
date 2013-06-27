@@ -246,5 +246,4 @@
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
 }
 
-
 @end

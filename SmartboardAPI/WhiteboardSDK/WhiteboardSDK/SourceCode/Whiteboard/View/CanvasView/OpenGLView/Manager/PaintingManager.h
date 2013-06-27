@@ -37,6 +37,7 @@
 
 - (void)registerCallback:(id)callback;
 - (void)removeCallback:(id)callback;
+- (void)removeAllCallbacks;
 
 - (CGFloat *)getColorOf:(id)whiteboard;
 - (CGFloat)getPointSizeOf:(id)whiteboard;

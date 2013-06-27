@@ -12,6 +12,7 @@
 #import "HistoryManager.h"
 #import "HistoryElement.h"
 #import "SettingManager.h"
+#import "PaintingManager.h"
 #import "GSButton.h"
 #import "HistoryView.h"
 #import "WBMenubarView.h"
@@ -920,7 +921,6 @@
 }
 
 - (void)exitBoardWithResult:(BOOL)showResult {
-    [[HistoryManager sharedManager] clearHistoryPool];
     if (showResult) {
         dispatch_async(dispatch_get_main_queue(), ^{
             UIImage *image = [self exportBoardToUIImage];
@@ -1337,8 +1337,9 @@
 
 - (void)dealloc {
     [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self.pages removeAllObjects];
     [[HistoryManager sharedManager] clearHistoryPool];
+    [[PaintingManager sharedManager] removeAllCallbacks];
+    [self.pages removeAllObjects];
 }
 
 @end

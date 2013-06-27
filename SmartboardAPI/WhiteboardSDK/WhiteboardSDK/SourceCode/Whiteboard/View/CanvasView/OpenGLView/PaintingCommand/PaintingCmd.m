@@ -41,4 +41,9 @@
     self.uid = [paintingData objectForKey:@"paint_cmd_uid"];
     self.layerIndex = [[paintingData objectForKey:@"paint_cmd_layer"] intValue];
 }
+
+- (void)dealloc {
+    self.drawingView = nil;
+}
+
 @end

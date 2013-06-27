@@ -157,8 +157,7 @@
 }
 
 // Releases resources when they are not longer needed.
-- (void) dealloc
-{
+- (void) dealloc {
 	[self setToCurrentContext];
     
     [[PaintingManager sharedManager] removeCallback:self];

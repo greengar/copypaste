@@ -818,15 +818,7 @@
 // This is the process for removing layer
 // 1. remove strokes on layer to be removed
 // 2. change strokes.layerIndexes to the new updated layer indexs
-- (BOOL)removeLayer:(int)index {
-    if (self.numOfLayers <= 1) {
-        return NO;
-    }
-    
-    if (index == 0) {
-        return NO;
-    }
-    
+- (BOOL)removeLayer:(int)index {    
     NSMutableArray * cmdToBeRemovedArray = [NSMutableArray array];
     
     for (PaintingCmd * cmd in self.undoSequenceArray) {

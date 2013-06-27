@@ -146,4 +146,9 @@
     return YES;
 }
 
+- (void)dealloc {
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.drawingView = nil;
+}
+
 @end

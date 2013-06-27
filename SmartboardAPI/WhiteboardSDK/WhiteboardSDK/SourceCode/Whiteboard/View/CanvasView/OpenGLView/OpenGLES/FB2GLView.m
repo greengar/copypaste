@@ -374,15 +374,6 @@ static GLfloat const textureScale = 1 /* 0.8 */;
 
 
 - (BOOL)removeLayer:(int)index {
-    
-    if (self.numOfLayers <= 1) {
-        return NO;
-    }
-    
-    if (index == 0) {
-        return NO;
-    }
-    
     DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:index];
     
     // delete texture, frame buffer, render buffer
@@ -397,24 +388,19 @@ static GLfloat const textureScale = 1 /* 0.8 */;
     [layerArray removeObject:layerInfo];
 
     if (index == currentLayerIndex) {
-        
         if (currentLayerIndex != 0) {
             currentLayerIndex--;
             // remove the last layer in the array
             // we need to update currentLayerIndex because it points to last index which was already removed
-            
         } else {
             // currentLayerIndex stays the same
         }
         
     } else if (currentLayerIndex < index) {
-        
         // currentLayerIndex stays the same
         
     } else if (currentLayerIndex > index) {
-        
         currentLayerIndex--;
-        
     }
     
     return YES;
@@ -508,7 +494,7 @@ static GLfloat const textureScale = 1 /* 0.8 */;
 	};
 	
 	GLfloat textureCoord[8] = { 
-        0, 0, 
+        0, 0,
         (GLfloat)kTextureDisplaySizeWidth/kTextureOriginalSize, 0,
         0,                                              (GLfloat)kTextureDisplaySizeHeight/kTextureOriginalSize,
         (GLfloat)kTextureDisplaySizeWidth/kTextureOriginalSize, (GLfloat)kTextureDisplaySizeHeight/kTextureOriginalSize
@@ -568,10 +554,13 @@ static GLfloat const textureScale = 1 /* 0.8 */;
 }
 
 - (void)moveLayerAtIndex:(NSInteger)index1 toIndex:(NSInteger)index2 {
-
     id object = [layerArray objectAtIndex:index1];
     [layerArray removeObjectAtIndex:index1];
     [layerArray insertObject:object atIndex:index2];
+}
+
+- (void)dealloc {
+    [self removeLayer:0];
 }
 
 @end

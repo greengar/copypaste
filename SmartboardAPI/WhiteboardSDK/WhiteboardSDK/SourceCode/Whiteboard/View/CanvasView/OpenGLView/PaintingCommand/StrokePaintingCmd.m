@@ -104,4 +104,8 @@
     [self setDrawingView:((MainPaintingView *) [element contentView])];
 }
 
+- (void)dealloc {
+    self.drawingView = nil;
+}
+
 @end

@@ -95,4 +95,10 @@
                                 image:image];
 }
 
+- (void)dealloc {
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.backgroundView = nil;
+}
+
+
 @end

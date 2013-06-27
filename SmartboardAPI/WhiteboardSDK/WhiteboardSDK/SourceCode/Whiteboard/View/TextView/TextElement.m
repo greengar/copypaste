@@ -236,4 +236,11 @@
     [self updateWithColor:fontColor x:fontColorX y:fontColorY];
 }
 
+- (void)dealloc {
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.placeHolderTextView = nil;
+    self.myFontName = nil;
+    self.myColor = nil;
+}
+
 @end

@@ -66,6 +66,10 @@
     }        
 }
 
+- (void)removeAllCallbacks {
+    [_callbacks removeAllObjects];
+}
+
 - (Painting*) getPainting:(id)whiteboard {
     Painting *p = nil;
     if(whiteboard) {

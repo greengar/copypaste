@@ -57,4 +57,8 @@
     }
 }
 
+- (void)dealloc {
+    self.drawingView = nil;
+}
+
 @end

@@ -92,4 +92,9 @@
 
 }
 
+- (void)dealloc {
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.imageView = nil;
+}
+
 @end

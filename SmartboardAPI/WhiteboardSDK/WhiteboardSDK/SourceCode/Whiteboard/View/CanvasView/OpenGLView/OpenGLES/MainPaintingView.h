@@ -75,7 +75,7 @@ static const CGFloat kZoomMinScale = 0.8;
     Transforms _transforms;    
 }
 
-@property (nonatomic, retain) PaintingView            *extDrawingView;
+@property (nonatomic, strong) PaintingView            *extDrawingView;
 @property (nonatomic) Transforms                      _actualTransform;
 @property (nonatomic) Transforms                      transforms;
 @property (nonatomic) BOOL                            isDrawingStroke;

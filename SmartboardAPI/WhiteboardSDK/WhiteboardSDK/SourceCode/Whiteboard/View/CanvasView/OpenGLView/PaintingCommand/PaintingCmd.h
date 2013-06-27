@@ -17,7 +17,7 @@
 
 @property (nonatomic, strong) NSString              *uid;
 @property (nonatomic)         int                   layerIndex;
-@property (nonatomic, assign) MainPaintingView      *drawingView;
+@property (nonatomic, weak) MainPaintingView      *drawingView;
 
 - (void)doPaintingAction;
 - (NSMutableDictionary *)saveToData;
