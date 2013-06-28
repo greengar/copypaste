@@ -41,6 +41,22 @@
     return imageView;
 }
 
+- (void)revive {
+    // Image Element is not revivable
+}
+
+- (void)rest {
+    [super rest];
+}
+
+- (void)move {
+    [super move];
+}
+
+- (void)stay {
+    [super stay];
+}
+
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToData]];
     [dict setObject:@"ImageElement" forKey:@"element_type"];

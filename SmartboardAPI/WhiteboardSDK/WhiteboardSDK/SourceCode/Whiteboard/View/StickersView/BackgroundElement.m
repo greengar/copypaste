@@ -40,10 +40,26 @@
     }
 }
 
-
 - (UIView *)contentView {
     return backgroundView;
 }
+
+- (void)revive {
+    // Background Element is not revivable
+}
+
+- (void)rest {
+    [super rest];
+}
+
+- (void)move {
+    [super move];
+}
+
+- (void)stay {
+    [super stay];
+}
+
 
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];

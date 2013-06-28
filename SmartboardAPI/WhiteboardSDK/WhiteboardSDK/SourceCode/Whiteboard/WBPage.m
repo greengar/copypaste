@@ -85,8 +85,8 @@
 - (void)elementRevive:(WBBaseElement *)element {
     for (WBBaseElement *existedElement in self.subviews) {
         if (![existedElement.uid isEqualToString:element.uid]) {
-            [existedElement rest];
             [existedElement stay];
+            [existedElement rest];
         }
     }
     self.currentElement = element;
@@ -94,6 +94,7 @@
     if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(elementRevived)]) {
         [self.pageDelegate elementRevived];
     }
+    
     if ([self.currentElement isKindOfClass:[TextElement class]]) {
         if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(textElementNowFocus)]) {
             [self.pageDelegate textElementNowFocus];
@@ -198,7 +199,6 @@
     
     for (WBBaseElement *element in self.subviews) {
         [element stay];
-        [element rest];
     }
 }
 

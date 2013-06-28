@@ -1095,7 +1095,7 @@
 
 #pragma mark - Elements
 - (void)elementRevived {
-    [self stopToMove];
+    [self.toolbarView didActivatedMove:NO];
 }
 
 - (void)elementHideKeyboard {

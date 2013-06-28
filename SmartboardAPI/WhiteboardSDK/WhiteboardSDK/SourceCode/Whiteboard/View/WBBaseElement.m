@@ -69,6 +69,7 @@
 - (void)revive {
     [[self contentView] setUserInteractionEnabled:YES];
     isAlive = YES;
+    
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementRevive:)]) {
         [self.delegate elementRevive:self];
     }

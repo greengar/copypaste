@@ -62,8 +62,37 @@
                                        drawingView.frame.size.width, drawingView.frame.size.height);
         screenshotImageView.frame = drawingView.frame;
         self.frame = boundingRect;
+        self.defaultFrame = self.frame;
         isCrop = YES;
     }
+}
+
+- (void)revive {
+    if (![self isTransformed] && ![self isCropped]) {
+        [super revive];
+    } else {
+        // Transformed or cropped, it will not be revivable
+    }
+}
+
+- (void)rest {
+    [super rest];
+}
+
+- (void)move {
+    [super move];
+}
+
+- (void)stay {
+    [super stay];
+}
+
+- (void)restore {
+    self.transform = self.defaultTransform;
+    self.frame = self.defaultFrame;
+    self.transform = self.currentTransform;
+    self.isFake = YES;
+    [drawingView drawView];
 }
 
 #pragma marl - Screenshot

@@ -25,9 +25,18 @@
     MainPaintingView *paintingView = (MainPaintingView *) [canvasElement contentView];
     if (active) {
         [[paintingView undoSequenceArray] addObject:self.paintingCommand];
-        [paintingView reloadView];
+        double delayInSeconds = 0.3;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [paintingView reloadView];
+        });
+        [canvasElement setIsFake:NO];
     } else {
-        [paintingView undoStroke];
+        double delayInSeconds = 0.3;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [paintingView undoStroke];
+        });
     }
 }
 
