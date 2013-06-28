@@ -71,8 +71,6 @@
     
     [self setPage:page];
     [self setElement:element];
-    // [element revive];
-    // [element rest];
     [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
 }
 

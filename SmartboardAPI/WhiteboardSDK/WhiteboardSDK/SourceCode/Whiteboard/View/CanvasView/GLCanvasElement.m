@@ -13,9 +13,10 @@
 
 @interface GLCanvasElement() {
     MainPaintingView *drawingView;
-//    UIView *previewAreaView;
+    CGRect boundingRect;
     UIImageView *screenshotImageView;
     NSString *currentBrushId;
+    BOOL isCrop;
 }
 
 @end
@@ -36,7 +37,6 @@
         [self addSubview:drawingView];
         [drawingView setDelegate:self];
         [drawingView initialDrawing];
-        [self initControlWithFrame:frame];
         
         self.isFake = YES;
         
@@ -44,45 +44,27 @@
     return self;
 }
 
-- (void)initControlWithFrame:(CGRect)frame {
-//    self.previewAreaView = [[UIView alloc] initWithFrame:CGRectZero];
-//    [self.drawingView setTopLeftBounding:CGPointZero];
-//    [self.drawingView setBottomRightBounding:CGPointZero];
-//    [self addSubview:self.previewAreaView];
-//    
-//    [self.previewAreaView setBackgroundColor:[UIColor clearColor]];
-//    [self.previewAreaView setUserInteractionEnabled:NO];
-//    [self.previewAreaView.layer setBorderWidth:1];
-//    [self.previewAreaView.layer setBorderColor:[[UIColor blackColor] CGColor]];
-}
-
 - (UIView *)contentView {
     return drawingView;
 }
 
-//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-//    UIView *hitView = [super hitTest:point withEvent:event];
-//    if (hitView == self && CGRectContainsPoint(self.previewAreaView.frame, point)) {
-//        return hitView;
-//    }
-//    return nil;
-//}
+- (void)updateBoundingRect:(CGRect)rect {
+    boundingRect = rect;
+}
 
-//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-//    CGPoint location = [touch locationInView:self];
-//    if (CGRectContainsPoint(self.previewAreaView.frame, location)) {
-//        return YES;
-//    }
-//    return NO;
-//}
+- (BOOL)isCropped {
+    return isCrop;
+}
 
-//- (void)updateBoundingRect:(CGRect)boundingRect {
-//    self.previewAreaView.frame = boundingRect;
-//}
-
-//- (CGRect)focusFrame {
-//    return previewAreaView.frame;
-//}
+- (void)crop {
+    if (![self isCropped]) {
+        drawingView.frame = CGRectMake(-boundingRect.origin.x, -boundingRect.origin.y,
+                                       drawingView.frame.size.width, drawingView.frame.size.height);
+        screenshotImageView.frame = drawingView.frame;
+        self.frame = boundingRect;
+        isCrop = YES;
+    }
+}
 
 #pragma marl - Screenshot
 - (void)takeScreenshot {

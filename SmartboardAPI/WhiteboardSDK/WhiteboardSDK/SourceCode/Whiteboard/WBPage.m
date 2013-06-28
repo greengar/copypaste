@@ -151,13 +151,19 @@
 }
 
 - (void)addFakeCanvas {
-    GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    [self addSubview:canvasElement];
-    self.currentElement = canvasElement;
+    if ([self.currentElement isKindOfClass:[GLCanvasElement class]]
+        && ![self.currentElement isTransformed]
+        && ![self.currentElement isCropped]) {
+        
+    } else {
+        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        [self addSubview:canvasElement];
+        self.currentElement = canvasElement;
+        [self.currentElement setDelegate:self];
+    }
     
-    [canvasElement setDelegate:self];
-    [canvasElement revive];
-    [canvasElement stay];
+    [self.currentElement revive];
+    [self.currentElement stay];
 }
 
 - (void)removeFakeCanvas {
@@ -181,6 +187,7 @@
     self.isMovable = YES;
     
     for (WBBaseElement *element in self.subviews) {
+        [element crop];
         [element move];
         [element rest];
     }

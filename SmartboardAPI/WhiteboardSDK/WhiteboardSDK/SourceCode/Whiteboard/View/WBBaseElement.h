@@ -36,6 +36,7 @@
 - (void)scaleTo:(float)scale;
 - (void)restore;
 - (BOOL)isTransformed;
+- (BOOL)isCropped;
 - (void)resetTransform;
 - (CGRect)focusFrame;
 
@@ -45,6 +46,8 @@
 - (void)move;
 - (void)stay;
 - (BOOL)isMovable;
+
+- (void)crop;
 
 #pragma mark - Backup/Restore
 - (NSMutableDictionary *)saveToData;

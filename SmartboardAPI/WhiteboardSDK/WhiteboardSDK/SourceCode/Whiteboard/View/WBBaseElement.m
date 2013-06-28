@@ -47,6 +47,7 @@
         self.defaultTransform = self.transform;
         self.currentTransform = self.transform;
         self.defaultFrame = frame;
+        self.clipsToBounds = YES;
         
         self.border = [CAShapeLayer layer];
         self.border.strokeColor = [UIColor orangeColor].CGColor;
@@ -127,6 +128,10 @@
     return isMovable;
 }
 
+- (void)crop {
+    
+}
+
 - (UIView *)contentView {
     return nil; // This is a very base class, which does not have a content view inside
 }
@@ -162,6 +167,10 @@
 
 - (BOOL)isTransformed {
     return !CGAffineTransformEqualToTransform(self.currentTransform, self.defaultTransform);
+}
+
+- (BOOL)isCropped {
+    return NO;
 }
 
 - (void)showMenuAt:(CGPoint)location {
