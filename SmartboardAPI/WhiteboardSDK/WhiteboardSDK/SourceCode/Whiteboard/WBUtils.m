@@ -131,7 +131,7 @@
 }
 
 + (int)maxValueSize {
-    return 10485760;
+    return 8388608;
 }
 
 + (BOOL) isIOS5OrHigher {

@@ -14,34 +14,21 @@
 #import "HistoryManager.h"
 #import "HistoryElementTextChanged.h"
 
-@interface TextElement()
-@property (nonatomic, strong) PlaceHolderTextView *placeHolderTextView;
-
-// For History Font
-@property (nonatomic, strong) NSString *oldFontName;
-@property (nonatomic) int oldFontSize;
-
-// For History Color
-@property (nonatomic, strong) UIColor *oldColor;
-@property (nonatomic) float oldColorX;
-@property (nonatomic) float oldColorY;
-
-// For History Content
-@property (nonatomic, strong) NSString *oldText;
-
+@interface TextElement() {
+    PlaceHolderTextView *placeHolderTextView;
+    NSString *oldFontName;
+    int oldFontSize;
+    UIColor *oldColor;
+    float oldColorX;
+    float oldColorY;
+    NSString *oldText;
+}
 @end
 
 @implementation TextElement
-@synthesize placeHolderTextView = _placeHolderTextView;
 @synthesize myFontName = _myFontName;
 @synthesize myFontSize = _myFontSize;
 @synthesize myColor = _myColor;
-@synthesize oldFontName = _oldFontName;
-@synthesize oldFontSize = _oldFontSize;
-@synthesize oldColor = _oldColor;
-@synthesize oldColorX = _oldColorX;
-@synthesize oldColorY = _oldColorY;
-@synthesize oldText = _oldText;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -66,15 +53,15 @@
 }
 
 - (void)initPlaceHolderWithFrame:(CGRect)frame {
-    self.placeHolderTextView = [[PlaceHolderTextView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-    [self.placeHolderTextView setBackgroundColor:[UIColor clearColor]];
-    [self.placeHolderTextView setTextColor:[UIColor darkGrayColor]];
-    [self.placeHolderTextView setFont:[UIFont systemFontOfSize:17.0f]];
-    [self.placeHolderTextView setDelegate:self];
-    [self.placeHolderTextView setAutocorrectionType:UITextAutocorrectionTypeNo];
-    [self.placeHolderTextView setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
-    [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
-    [self addSubview:self.placeHolderTextView];
+    placeHolderTextView = [[PlaceHolderTextView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    [placeHolderTextView setBackgroundColor:[UIColor clearColor]];
+    [placeHolderTextView setTextColor:[UIColor darkGrayColor]];
+    [placeHolderTextView setFont:[UIFont systemFontOfSize:17.0f]];
+    [placeHolderTextView setDelegate:self];
+    [placeHolderTextView setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [placeHolderTextView setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
+    [placeHolderTextView setPlaceHolderText:@"Enter Text"];
+    [self addSubview:placeHolderTextView];
 }
 
 - (void)setText:(NSString *)text {
@@ -83,15 +70,15 @@
 }
 
 - (UIView *)contentView {
-    return self.placeHolderTextView;
+    return placeHolderTextView;
 }
 
 - (void)restore {
     self.transform = self.defaultTransform;
-    self.placeHolderTextView.frame = CGRectMake(self.placeHolderTextView.frame.origin.x,
-                                                self.placeHolderTextView.frame.origin.y,
-                                                self.placeHolderTextView.contentSize.width,
-                                                self.placeHolderTextView.contentSize.height);
+    placeHolderTextView.frame = CGRectMake(placeHolderTextView.frame.origin.x,
+                                           placeHolderTextView.frame.origin.y,
+                                           placeHolderTextView.contentSize.width,
+                                           placeHolderTextView.contentSize.height);
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y,
                             self.contentView.frame.size.width, self.contentView.frame.size.height);
     self.transform = self.currentTransform;
@@ -100,7 +87,7 @@
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize {
     self.myFontName = fontName;
     if (fontSize > 0) self.myFontSize = fontSize;
-    [self.placeHolderTextView setFont:[UIFont fontWithName:fontName size:self.myFontSize]];
+    [placeHolderTextView setFont:[UIFont fontWithName:fontName size:self.myFontSize]];
     [self restore];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdateFont" object:self userInfo:@{@"fontName": self.myFontName, @"fontSize": [NSNumber numberWithInt:self.myFontSize]}];
@@ -114,44 +101,60 @@
     self.myColor = color;
     self.myColorLocX = x;
     self.myColorLocY = y;
-    [self.placeHolderTextView setTextColor:color];
+    [placeHolderTextView setTextColor:color];
 }
 
 - (void)updateWithColor:(UIColor *)color {
     self.myColor = color;
-    [self.placeHolderTextView setTextColor:color];
+    [placeHolderTextView setTextColor:color];
 }
 
 - (void)checkHistory {
-    self.oldFontName = self.myFontName;
-    self.oldFontSize = self.myFontSize;
+    oldFontName = self.myFontName;
+    oldFontSize = self.myFontSize;
     
-    self.oldColor = self.myColor;
-    self.oldColorX = self.myColorLocX;
-    self.oldColorY = self.myColorLocY;
+    oldColor = self.myColor;
+    oldColorX = self.myColorLocX;
+    oldColorY = self.myColorLocY;
     
-    self.oldText = [((UITextView *)[self contentView]) text];
+    oldText = [[NSString alloc] initWithString:[((UITextView *)[self contentView]) text]];
 }
 
 #pragma mark - Place Holder Text View Delegate
 - (void)revive {
     [self checkHistory];
     [super revive];
-    [[self contentView] becomeFirstResponder];
-    [self.placeHolderTextView setPlaceHolderText:@"Enter Text"];
-    [self.placeHolderTextView revive];
+    if (![placeHolderTextView isFirstResponder]) {
+        [placeHolderTextView becomeFirstResponder];
+    }
+    [placeHolderTextView setPlaceHolderText:@"Enter Text"];
+    [placeHolderTextView revive];
 }
 
 - (void)rest {
     [super rest];
-    [[self contentView] resignFirstResponder];
-    [self.placeHolderTextView setPlaceHolderText:@""];
-    [self.placeHolderTextView rest];
+    if ([placeHolderTextView isFirstResponder]) {
+        [placeHolderTextView resignFirstResponder];
+    }
+    [placeHolderTextView setPlaceHolderText:@""];
+    [placeHolderTextView rest];
         
     if (self.elementCreated) {
+        [[HistoryManager sharedManager] addActionTextContentChangedElement:self
+                                                            withOriginText:oldText
+                                                           withChangedText:((UITextView *)[self contentView]).text
+                                                                   forPage:(WBPage *)self.superview
+                                                                 withBlock:^(HistoryElementTextChanged *history, NSError *error) {
+                                                                     if (history) {
+                                                                         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+                                                                             [self.delegate pageHistoryCreated:history];
+                                                                         }
+                                                                     }
+                                                                 }];
+        
         [[HistoryManager sharedManager] addActionTextFontChangedElement:self
-                                                     withOriginFontName:self.oldFontName
-                                                               fontSize:self.oldFontSize
+                                                     withOriginFontName:oldFontName
+                                                               fontSize:oldFontSize
                                                     withChangedFontName:self.myFontName
                                                                fontSize:self.myFontSize
                                                                 forPage:(WBPage *)self.superview
@@ -164,9 +167,9 @@
                                                               }];
         
         [[HistoryManager sharedManager] addActionTextColorChangedElement:self
-                                                         withOriginColor:self.oldColor
-                                                                       x:self.oldColorX
-                                                                       y:self.oldColorY
+                                                         withOriginColor:oldColor
+                                                                       x:oldColorX
+                                                                       y:oldColorY
                                                         withChangedColor:self.myColor
                                                                        x:self.myColorLocX
                                                                        y:self.myColorLocY
@@ -178,18 +181,6 @@
                                                                        }
                                                                    }
                                                                }];
-        
-        [[HistoryManager sharedManager] addActionTextContentChangedElement:self
-                                                            withOriginText:self.oldText
-                                                           withChangedText:((UITextView *)[self contentView]).text
-                                                                   forPage:(WBPage *)self.superview
-                                                                 withBlock:^(HistoryElementTextChanged *history, NSError *error) {
-                                                                     if (history) {
-                                                                         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                             [self.delegate pageHistoryCreated:history];
-                                                                         }
-                                                                     }
-                                                                 }];
     }
     self.elementCreated = YES;
     [self checkHistory];
@@ -211,7 +202,7 @@
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"TextElement" forKey:@"element_type"];
-    [dict setObject:self.placeHolderTextView.text forKey:@"element_text"];
+    [dict setObject:placeHolderTextView.text forKey:@"element_text"];
     [dict setObject:self.myFontName forKey:@"element_font_name"];
     [dict setObject:[NSNumber numberWithInt:self.myFontSize] forKey:@"element_font_size"];
     [dict setObject:[self.myColor gsString] forKey:@"element_font_color"];
@@ -238,7 +229,7 @@
 
 - (void)dealloc {
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    self.placeHolderTextView = nil;
+    placeHolderTextView = nil;
     self.myFontName = nil;
     self.myColor = nil;
 }

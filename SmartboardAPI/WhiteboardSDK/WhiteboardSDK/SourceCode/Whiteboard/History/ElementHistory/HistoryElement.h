@@ -16,6 +16,7 @@
 
 @interface HistoryElement : HistoryAction
 
-@property (nonatomic, weak) WBBaseElement *element;
+@property (nonatomic, strong) WBBaseElement *element;
+@property (nonatomic, weak)   WBPage        *page;
 
 @end

@@ -47,28 +47,34 @@
  @param data NSDictionary: data dictionary
  @param block WBResultBlock: result of the reconstruct process
  */
-- (void)updateWithDataForBoard:(NSDictionary *)data withBlock:(WBResultBlock)block;
+- (void)importBoardData:(NSDictionary *)data withBlock:(WBResultBlock)block;
 
 /*
  Reconstruct the board with the history data dictionary
  @param data NSDictionary: history data dictionary
  @param pageUid NSString: uid of the board which this history belongs to
  */
-- (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data boardUid:(NSString *)boardUid;
+- (void)importBoardHistoryData:(NSDictionary *)data boardUid:(NSString *)boardUid;
 
 /*
  Reconstruct the page with the data dictionary
  @param data NSDictionary: data dictionary
  @param block WBResultBlock: result of the reconstruct process
  */
-- (void)updateWithDataForPage:(NSDictionary *)data withBlock:(WBResultBlock)block;
+- (void)importPageData:(NSDictionary *)data withBlock:(WBResultBlock)block;
 
 /*
  Reconstruct the page with the history data dictionary
  @param data NSDictionary: history data dictionary
  @param pageUid NSString: uid of the page which this history belongs to
  */
-- (void)updateWithNewHistoryDataForPage:(NSDictionary *)data pageUid:(NSString *)pageUid;
+- (void)importPageHistoryData:(NSDictionary *)data pageUid:(NSString *)pageUid;
+
+/*
+ Update the page real-time with the history data dictionary
+ @param data NSDictionary: history data dictionary
+ */
+- (void)updatePageHistoryData:(NSDictionary *)data;
 
 /*
  Export data of the whole board

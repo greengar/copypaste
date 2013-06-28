@@ -94,9 +94,10 @@
     if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(elementRevived)]) {
         [self.pageDelegate elementRevived];
     }
-    
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(textElementNowFocus)]) {
-        [self.pageDelegate textElementNowFocus];
+    if ([self.currentElement isKindOfClass:[TextElement class]]) {
+        if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(textElementNowFocus)]) {
+            [self.pageDelegate textElementNowFocus];
+        }
     }
 }
 

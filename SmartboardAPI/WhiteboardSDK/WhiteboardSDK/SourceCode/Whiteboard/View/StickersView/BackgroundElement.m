@@ -11,12 +11,12 @@
 #import "NSData+WBBase64.h"
 #import "WBUtils.h"
 
-@interface BackgroundElement()
-@property (nonatomic, strong) UIImageView *backgroundView;
+@interface BackgroundElement() {
+    UIImageView *backgroundView;
+}
 @end
 
 @implementation BackgroundElement
-@synthesize backgroundView = _backgroundView;
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
@@ -32,24 +32,24 @@
 
 - (void)initBackgroundViewWithFrame:(CGRect)frame image:(UIImage *)image {
     if (image) {
-        self.backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self.backgroundView setUserInteractionEnabled:YES];
-        [self.backgroundView setContentMode:UIViewContentModeScaleToFill];
-        [self.backgroundView setImage:image];
-        [self addSubview:self.backgroundView];
+        backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [backgroundView setUserInteractionEnabled:YES];
+        [backgroundView setContentMode:UIViewContentModeScaleToFill];
+        [backgroundView setImage:image];
+        [self addSubview:backgroundView];
     }
 }
 
 
 - (UIView *)contentView {
-    return self.backgroundView;
+    return backgroundView;
 }
 
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"BackgroundElement" forKey:@"element_type"];
-    if (self.backgroundView && self.backgroundView.image) {
-        NSData *data = UIImagePNGRepresentation(self.backgroundView.image);
+    if (backgroundView && backgroundView.image) {
+        NSData *data = UIImagePNGRepresentation(backgroundView.image);
         NSString *dataString = [data wbBase64EncodedString];
         int numOfElement = round((float)[dataString length]/(float)[WBUtils maxValueSize]);
         if (numOfElement > 1) { // More than 1 element
@@ -97,7 +97,7 @@
 
 - (void)dealloc {
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    self.backgroundView = nil;
+    backgroundView = nil;
 }
 
 

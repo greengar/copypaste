@@ -8,14 +8,16 @@
 
 #import "HistoryElementCreated.h"
 #import "UIColor+GSString.h"
+#import "WBPage.h"
 
 @implementation HistoryElementCreated
-@synthesize page = _page;
+@synthesize defaultFrame = _defaultFrame;
+@synthesize defaultTransform = _defaultTransform;
 
 - (void)setElement:(WBBaseElement *)element {
     [super setElement:element];
     if ([element isKindOfClass:[TextElement class]]) {
-        self.name = @"Type Text";
+        self.name = @"Create Text Box";
     } else if ([element isKindOfClass:[GLCanvasElement class]]
                || [element isKindOfClass:[CGCanvasElement class]]) {
         self.name = @"Start Brush";
@@ -24,6 +26,8 @@
     } else if ([element isKindOfClass:[BackgroundElement class]]) {
         self.name = @"Add Background";
     }
+    self.defaultFrame = element.defaultFrame;
+    self.defaultTransform = element.defaultTransform;
 }
 
 - (void)setActive:(BOOL)active {
@@ -67,8 +71,8 @@
     
     [self setPage:page];
     [self setElement:element];
-    [element revive];
-    [element rest];
+    // [element revive];
+    // [element rest];
     [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
 }
 

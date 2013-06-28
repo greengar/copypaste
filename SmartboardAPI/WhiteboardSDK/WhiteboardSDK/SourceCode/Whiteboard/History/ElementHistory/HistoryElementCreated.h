@@ -7,10 +7,10 @@
 //
 
 #import "HistoryElement.h"
-#import "WBPage.h"
 
 @interface HistoryElementCreated : HistoryElement
 
-@property (nonatomic, weak) WBPage *page;
+@property (nonatomic) CGRect            defaultFrame;
+@property (nonatomic) CGAffineTransform defaultTransform;
 
 @end

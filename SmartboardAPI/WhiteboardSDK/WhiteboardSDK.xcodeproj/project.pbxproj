@@ -124,6 +124,10 @@
 		7B82E790175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E791175F9E4C00B063D7 /* Whiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */; };
 		7B82E792175F9E4C00B063D7 /* Whiteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B82E78F175F9E4C00B063D7 /* Whiteboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7BA5FAEA177D15D1007ECBFD /* UIImageExtras.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA5FAE8177D15D1007ECBFD /* UIImageExtras.h */; };
+		7BA5FAEB177D15D1007ECBFD /* UIImageExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA5FAE9177D15D1007ECBFD /* UIImageExtras.m */; };
+		7BA5FAEC177D15D1007ECBFD /* UIImageExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA5FAE9177D15D1007ECBFD /* UIImageExtras.m */; };
+		7BA5FAED177D15D1007ECBFD /* UIImageExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA5FAE9177D15D1007ECBFD /* UIImageExtras.m */; };
 		7BBCAC9E176F7CB000950ABA /* HistoryElementCanvasDraw.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */; };
 		7BBCAC9F176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
 		7BBCACA0176F7CB000950ABA /* HistoryElementCanvasDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */; };
@@ -576,6 +580,8 @@
 		7B82E78E175F9E4C00B063D7 /* Whiteboard.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Whiteboard.bundle; sourceTree = "<group>"; };
 		7B82E78F175F9E4C00B063D7 /* Whiteboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Whiteboard.h; sourceTree = "<group>"; };
 		7B82E8EA175FBA0700B063D7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7BA5FAE8177D15D1007ECBFD /* UIImageExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageExtras.h; sourceTree = "<group>"; };
+		7BA5FAE9177D15D1007ECBFD /* UIImageExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageExtras.m; sourceTree = "<group>"; };
 		7BBCAC9C176F7CAF00950ABA /* HistoryElementCanvasDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElementCanvasDraw.h; sourceTree = "<group>"; };
 		7BBCAC9D176F7CAF00950ABA /* HistoryElementCanvasDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElementCanvasDraw.m; sourceTree = "<group>"; };
 		7BCDC6D01774D10B00D851CF /* AGImagePickerController+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AGImagePickerController+Helper.h"; sourceTree = "<group>"; };
@@ -1211,6 +1217,8 @@
 				7BEA5313176687F0001BC5FE /* UIColor+GSString.m */,
 				7BEA5314176687F0001BC5FE /* UIDevice+Hardware.h */,
 				7BEA5315176687F0001BC5FE /* UIDevice+Hardware.m */,
+				7BA5FAE8177D15D1007ECBFD /* UIImageExtras.h */,
+				7BA5FAE9177D15D1007ECBFD /* UIImageExtras.m */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1590,6 +1598,7 @@
 				A9AEAB181775A86B0038FDCA /* WBMenuItem.h in Headers */,
 				A96ECCA41779BF3600A023FE /* WBPopoverView.h in Headers */,
 				A96ECCA81779BF3600A023FE /* WBPopoverView_Configuration.h in Headers */,
+				7BA5FAEA177D15D1007ECBFD /* UIImageExtras.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1916,6 +1925,7 @@
 				7B304CE317756CAB0037A320 /* WBUndoButton.m in Sources */,
 				A9AEAB191775A86B0038FDCA /* WBMenuItem.m in Sources */,
 				A96ECCA51779BF3600A023FE /* WBPopoverView.m in Sources */,
+				7BA5FAEB177D15D1007ECBFD /* UIImageExtras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1997,6 +2007,7 @@
 				7B304CE517756CAB0037A320 /* WBUndoButton.m in Sources */,
 				A9AEAB1B1775A86B0038FDCA /* WBMenuItem.m in Sources */,
 				A96ECCA71779BF3600A023FE /* WBPopoverView.m in Sources */,
+				7BA5FAED177D15D1007ECBFD /* UIImageExtras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2135,6 +2146,7 @@
 				7B304CE417756CAB0037A320 /* WBUndoButton.m in Sources */,
 				A9AEAB1A1775A86B0038FDCA /* WBMenuItem.m in Sources */,
 				A96ECCA61779BF3600A023FE /* WBPopoverView.m in Sources */,
+				7BA5FAEC177D15D1007ECBFD /* UIImageExtras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

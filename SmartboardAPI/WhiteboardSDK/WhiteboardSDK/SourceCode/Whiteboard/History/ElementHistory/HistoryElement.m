@@ -11,11 +11,12 @@
 
 @implementation HistoryElement
 @synthesize element = _element;
+@synthesize page = _page;
 
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];
     [dict setObject:self.element.uid forKey:@"element_uid"];
-    [dict setObject:((WBPage *) self.element.superview).uid forKey:@"page_uid"]; // Cheat, get the page uid to make the parse faster
+    [dict setObject:self.page.uid forKey:@"page_uid"];
     return dict;
 }
 

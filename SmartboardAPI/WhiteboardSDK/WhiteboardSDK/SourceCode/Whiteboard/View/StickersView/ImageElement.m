@@ -10,12 +10,12 @@
 #import "NSData+WBBase64.h"
 #import "WBUtils.h"
 
-@interface ImageElement()
-@property (nonatomic, strong) UIImageView *imageView;
+@interface ImageElement() {
+    UIImageView *imageView;
+}
 @end
 
 @implementation ImageElement
-@synthesize imageView = _imageView;
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
@@ -29,23 +29,23 @@
 
 - (void)initImageViewWithFrame:(CGRect)frame image:(UIImage *)image {
     if (image) {
-        self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self.imageView setUserInteractionEnabled:YES];
-        [self.imageView setContentMode:UIViewContentModeScaleToFill];
-        [self.imageView setImage:image];
-        [self addSubview:self.imageView];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [imageView setUserInteractionEnabled:YES];
+        [imageView setContentMode:UIViewContentModeScaleToFill];
+        [imageView setImage:image];
+        [self addSubview:imageView];
     }
 }
 
 - (UIView *)contentView {
-    return self.imageView;
+    return imageView;
 }
 
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToData]];
     [dict setObject:@"ImageElement" forKey:@"element_type"];
-    if (self.imageView && self.imageView.image) {
-        NSData *data = UIImagePNGRepresentation(self.imageView.image);
+    if (imageView && imageView.image) {
+        NSData *data = UIImagePNGRepresentation(imageView.image);
         NSString *dataString = [data wbBase64EncodedString];
         int numOfElement = round((float)[dataString length]/(float)[WBUtils maxValueSize]);
         if (numOfElement > 1) { // More than 1 element
@@ -94,7 +94,7 @@
 
 - (void)dealloc {
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    self.imageView = nil;
+    imageView = nil;
 }
 
 @end

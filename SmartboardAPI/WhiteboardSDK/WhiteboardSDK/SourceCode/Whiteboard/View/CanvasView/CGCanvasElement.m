@@ -10,29 +10,29 @@
 #import "SettingManager.h"
 #import "GSButton.h"
 
-@interface CGCanvasElement()
-@property (nonatomic, strong) CGPaintingView *drawingView;
+@interface CGCanvasElement() {
+    CGPaintingView *drawingView;
+}
 @end
 
 @implementation CGCanvasElement
-@synthesize drawingView = _drawingView;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         
-        self.drawingView = [[CGPaintingView alloc] initWithFrame:CGRectMake(0,
-                                                                            0,
-                                                                            frame.size.width,
-                                                                            frame.size.height)];
-        [self addSubview:self.drawingView];
+        drawingView = [[CGPaintingView alloc] initWithFrame:CGRectMake(0,
+                                                                       0,
+                                                                       frame.size.width,
+                                                                       frame.size.height)];
+        [self addSubview:drawingView];
     }
     return self;
 }
 
 - (UIView *)contentView {
-    return self.drawingView;
+    return drawingView;
 }
 
 #pragma mark - Backup/Restore Save/Load

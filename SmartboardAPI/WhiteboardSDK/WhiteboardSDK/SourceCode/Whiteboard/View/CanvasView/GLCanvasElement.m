@@ -13,16 +13,14 @@
 
 @interface GLCanvasElement() {
     MainPaintingView *drawingView;
+//    UIView *previewAreaView;
+    UIImageView *screenshotImageView;
+    NSString *currentBrushId;
 }
-@property (nonatomic) UIView *previewAreaView;
-@property (nonatomic, strong) UIImageView *screenshotImageView;
-@property (nonatomic, strong) NSString *currentBrushId;
+
 @end
 
 @implementation GLCanvasElement
-@synthesize previewAreaView = _previewAreaView;
-@synthesize screenshotImageView = _screenshotImageView;
-@synthesize currentBrushId = _currentBrushId;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -82,32 +80,33 @@
 //    self.previewAreaView.frame = boundingRect;
 //}
 
-- (CGRect)focusFrame {
-    return self.previewAreaView.frame;
-}
+//- (CGRect)focusFrame {
+//    return previewAreaView.frame;
+//}
 
 #pragma marl - Screenshot
 - (void)takeScreenshot {
-    self.screenshotImageView = [[UIImageView alloc] initWithFrame:drawingView.frame];
-    self.screenshotImageView.image = [drawingView glToUIImage];
-    [self addSubview:self.screenshotImageView];
-    [self sendSubviewToBack:self.screenshotImageView];
+    screenshotImageView = [[UIImageView alloc] initWithFrame:drawingView.frame];
+    screenshotImageView.image = [drawingView glToUIImage];
+    [self addSubview:screenshotImageView];
+    [self sendSubviewToBack:screenshotImageView];
 }
 
 - (void)removeScreenshot {
-    [self.screenshotImageView removeFromSuperview];
+    [screenshotImageView removeFromSuperview];
 }
 
 #pragma mark - Backup/Restore Save/Load
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"GLCanvasElement" forKey:@"element_type"];
+    [dict setObject:[NSNumber numberWithBool:self.isFake] forKey:@"element_canvas_fake"];
     return dict;
 }
 
 - (void)loadFromData:(NSDictionary *)elementData {
     [super loadFromData:elementData];
-    // Nothing to do honestly
+    self.isFake = [[elementData objectForKey:@"element_canvas_fake"] boolValue];
 }
 
 #pragma mark - Fake/Real Canvas
@@ -120,7 +119,7 @@
 
 #pragma mark - Undo/Redo
 - (void)pushedCommandToUndoStack:(PaintingCmd *)cmd {
-    self.currentBrushId = [[HistoryManager sharedManager] addActionBrushElement:self
+    currentBrushId = [[HistoryManager sharedManager] addActionBrushElement:self
                                                                         forPage:(WBPage *)self.superview
                                                             withPaintingCommand:cmd
                                                                       withBlock:^(HistoryAction *history, NSError *error) {
@@ -131,7 +130,7 @@
 }
 
 - (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd {
-    [[HistoryManager sharedManager] updateActionBrushElementWithId:self.currentBrushId
+    [[HistoryManager sharedManager] updateActionBrushElementWithId:currentBrushId
                                                withPaintingCommand:cmd
                                                            forPage:(WBPage *)self.superview
                                                 withBlock:^(HistoryAction *history, NSError *error) {

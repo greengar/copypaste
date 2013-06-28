@@ -34,6 +34,7 @@
 #import "GSSVProgressHUD.h"
 #import "UIColor+GSString.h"
 #import <dispatch/dispatch.h>
+#import "UIImageExtras.h"
 
 #define kToolBarItemWidth   (IS_IPAD ? 64 : 64)
 #define kToolBarItemHeight  (IS_IPAD ? 64 : 64)
@@ -804,7 +805,10 @@
                 ALAssetRepresentation *rep = [asset defaultRepresentation];
                 CGImageRef iref = [rep fullResolutionImage];
                 if (iref) {
-                    UIImage *image = [UIImage imageWithCGImage:iref];
+                    float scale = (IS_IPAD ? 0.5 : 1);
+                    UIImage *image = [UIImage imageWithCGImage:iref
+                                                         scale:scale
+                                                   orientation:UIImageOrientationRight];
                     CGRect imageRect = CGRectMake(self.view.frame.size.width/4,
                                                   self.view.frame.size.height/4,
                                                   self.view.frame.size.width/2,
@@ -1149,7 +1153,7 @@
     return dict;
 }
 
-- (void)updateWithDataForBoard:(NSDictionary *)data withBlock:(WBResultBlock)block {
+- (void)importBoardData:(NSDictionary *)data withBlock:(WBResultBlock)block {
     [GSSVProgressHUD showWithStatus:@"Loading..."];
     
     double delayInSeconds = 0.5;
@@ -1174,7 +1178,7 @@
             NSDictionary *pageData = [boardPages objectForKey:pageUid];
             
             // Reconstruct this page
-            [self updateWithDataForPage:pageData withBlock:nil];
+            [self importPageData:pageData withBlock:nil];
             
             [self addFakeCanvas];
         }
@@ -1184,11 +1188,11 @@
     });
 }
 
-- (void)updateWithNewHistoryDataForBoard:(NSDictionary *)data boardUid:(NSString *)boardUid {
+- (void)importBoardHistoryData:(NSDictionary *)data boardUid:(NSString *)boardUid {
     // TODO: history add/remove/switch pages
 }
 
-- (void)updateWithDataForPage:(NSDictionary *)pageData withBlock:(WBResultBlock)block {
+- (void)importPageData:(NSDictionary *)pageData withBlock:(WBResultBlock)block {
     NSString *pageUid = [pageData objectForKey:@"page_uid"];
     WBPage *page = nil;
     for (WBPage *existedPage in self.pages) {
@@ -1221,13 +1225,13 @@
     for (int j = 0; j < [allKeys count]; j++) {
         NSString *historyUid = [allKeys objectAtIndex:j];
         NSDictionary *historyData = [pageHistoryData objectForKey:historyUid];
-        [self updateWithNewHistoryDataForPage:historyData pageUid:pageUid];
+        [self importPageHistoryData:historyData pageUid:pageUid];
     }
     
     if (block) { block(YES, nil); }
 }
 
-- (void)updateWithNewHistoryDataForPage:(NSDictionary *)historyData pageUid:(NSString *)pageUid {
+- (void)importPageHistoryData:(NSDictionary *)historyData pageUid:(NSString *)pageUid {
     if (!pageUid) {
         pageUid = [historyData objectForKey:@"page_uid"];
     }
@@ -1306,10 +1310,88 @@
         
         if (history) {
             [history loadFromData:historyData forPage:page];
+            [[HistoryManager sharedManager] addAction:history forPage:page];
+        }
+    }
+}
+
+- (void)updatePageHistoryData:(NSDictionary *)historyData {
+    NSString *pageUid = [historyData objectForKey:@"page_uid"];
+    
+    WBPage *page = nil;
+    for (WBPage *existedPage in self.pages) {
+        if ([existedPage.uid isEqualToString:pageUid]) {
+            page = existedPage;
+            break;
+        }
+    }
+    
+    if (page) {
+        NSString *historyType = [historyData objectForKey:@"history_type"];
+        
+        HistoryElement *history;
+        WBBaseElement *historyElement;
+        // History create element: now create it again
+        if ([historyType isEqualToString:@"HistoryElementCreated"]) {
+            history = [[HistoryElementCreated alloc] init];
+            
+            // History delete element: now delete it again
+        } else if ([historyType isEqualToString:@"HistoryElementDeleted"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            historyElement = [page elementByUid:elementUid];
             if (historyElement) {
-                [historyElement revive];
-                [historyElement rest];
+                history = [[HistoryElementDeleted alloc] init];
+                [history setElement:historyElement];
             }
+            
+            // History draw on the canvas, now draw it again
+        } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementCanvasDraw alloc] init];
+                [history setElement:historyElement];
+            }
+            
+            // History text changed: now change it again
+        } else if ([historyType isEqualToString:@"HistoryElementTextChanged"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementTextChanged alloc] init];
+                [history setElement:historyElement];
+            }
+            
+            // History text font changed: now change it again
+        } else if ([historyType isEqualToString:@"HistoryElementTextFontChanged"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementTextFontChanged alloc] init];
+                [history setElement:historyElement];
+            }
+            
+            // History text color changed: now change it again
+        } else if ([historyType isEqualToString:@"HistoryElementTextColorChanged"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementTextColorChanged alloc] init];
+                [history setElement:historyElement];
+            }
+            
+            // History element transform: now transform it again
+        } else if ([historyType isEqualToString:@"HistoryElementTransform"]) {
+            NSString *elementUid = [historyData objectForKey:@"element_uid"];
+            historyElement = [page elementByUid:elementUid];
+            if (historyElement) {
+                history = [[HistoryElementTransform alloc] init];
+                [history setElement:historyElement];
+            }
+        }
+        
+        if (history) {
+            [history loadFromData:historyData forPage:page];
             [[HistoryManager sharedManager] addAction:history forPage:page];
         }
     }
@@ -1329,7 +1411,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         NSDictionary *boardDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
         WBBoard *board = [[WBBoard alloc] init];
-        [board updateWithDataForBoard:boardDict withBlock:^(BOOL succeed, NSError *error) {}];
+        [board importBoardData:boardDict withBlock:^(BOOL succeed, NSError *error) {}];
         return board;
     }
     return nil;

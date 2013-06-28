@@ -159,6 +159,7 @@ static HistoryManager *shareManager = nil;
     }
     
     HistoryElementTransform *action = [[HistoryElementTransform alloc] initWithName:name];
+    [action setPage:page];
     [action setElement:element];
     [action setOriginalTransform:transform];
     [self addAction:action forPage:page];
@@ -195,6 +196,7 @@ static HistoryManager *shareManager = nil;
                 withPaintingCommand:(PaintingCmd *)paintingCmd
                           withBlock:(WBSingleResultBlock)block {
     HistoryElementCanvasDraw *action = [[HistoryElementCanvasDraw alloc] init];
+    [action setPage:page];
     [action setElement:element];
     [action setPaintingCommand:paintingCmd];
     [self addAction:action forPage:page];
@@ -230,6 +232,7 @@ static HistoryManager *shareManager = nil;
                                  withBlock:(WBSingleResultBlock)block {
     if (![text1 isEqualToString:text2]) {
         HistoryElementTextChanged *action = [[HistoryElementTextChanged alloc] init];
+        [action setPage:page];
         [action setElement:element];
         [action setOriginalText:text1];
         [action setChangedText:text2];
@@ -247,6 +250,7 @@ static HistoryManager *shareManager = nil;
                               withBlock:(WBSingleResultBlock)block {
     if (![name1 isEqualToString:name2] || size1 != size2) {
         HistoryElementTextFontChanged *action = [[HistoryElementTextFontChanged alloc] init];
+        [action setPage:page];
         [action setElement:element];
         [action setOriginalFontName:name1];
         [action setOriginalFontSize:size1];
@@ -266,6 +270,7 @@ static HistoryManager *shareManager = nil;
                                withBlock:(WBSingleResultBlock)block {
     if (![color1 isEqual:color2]) {
         HistoryElementTextColorChanged *action = [[HistoryElementTextColorChanged alloc] init];
+        [action setPage:page];
         [action setElement:element];
         [action setOriginalColor:color1];
         [action setOriginalColorX:x1];
