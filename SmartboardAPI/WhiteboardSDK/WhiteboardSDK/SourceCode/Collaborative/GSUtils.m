@@ -167,7 +167,7 @@
         }
     }
     
-    // Befor going any further...
+    // Before going any further...
     if (errorFlag != NULL)
     {
         NSLog(@"Error: %@", errorFlag);
@@ -192,6 +192,17 @@
     free(msgBuffer);
     
     return macAddressString;
+}
+
+// via http://stackoverflow.com/questions/3139619/check-that-an-email-address-is-valid-on-ios
++ (BOOL)NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = YES; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
 }
 
 @end

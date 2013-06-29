@@ -1,13 +1,17 @@
 //
 //  GSUtils.h
-//  CollaborativeSDK
+//  Collaborative SDK
 //
 //  Created by Hector Zhao on 4/24/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+#define VALID_STR(x) (x && [x length] > 0)
+
+#define kDidLogInNotification @"kDidLogInNotification"
 
 #define IS_IPAD      (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
 #define IS_IPAD1    ((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()) && ([UIScreen mainScreen].scale == 1.0) && (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]))
@@ -51,6 +55,8 @@
 + (BOOL)isValidURL:(NSString *)urlString;
 + (int)maxValueSize;
 + (NSString *)getMacAddress;
++ (BOOL)NSStringIsValidEmail:(NSString *)checkString;
+
 @end
 
 typedef void (^GSSingleResultBlock)(id object, NSError *error);
@@ -65,3 +71,19 @@ typedef enum {
     GSEventTypeChildMoved,    // 3, fired when a child node moves relative to the other child nodes at a location
     GSEventTypeValue          // 4, fired when any data changes at a location and, recursively, any children
 } GSEventType;
+
+@interface NSString (alphaOnly)
+- (BOOL) isAlphaNumeric;
+@end
+
+@implementation NSString (alphaOnly)
+
+- (BOOL) isAlphaNumeric
+{
+    NSCharacterSet *unwantedCharacters =
+    [[NSCharacterSet alphanumericCharacterSet] invertedSet];
+    
+    return ([self rangeOfCharacterFromSet:unwantedCharacters].location == NSNotFound) ? YES : NO;
+}
+
+@end

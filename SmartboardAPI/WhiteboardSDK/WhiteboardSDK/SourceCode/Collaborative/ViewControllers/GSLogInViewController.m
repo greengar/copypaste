@@ -1,21 +1,26 @@
 //
 //  GSLogInViewController.m
-//  CollaborativeSDK
+//  Collaborative SDK
 //
 //  Created by Hector Zhao on 4/22/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import "GSLogInViewController.h"
-#import "UIColor+GSExpanded.h"
-#import <QuartzCore/QuartzCore.h>
+
 #import "UITextField+GSCustomPlaceholderTextColor.h"
+#import "UIColor+GSExpanded.h"
+#import "GSSVProgressHUD.h"
 #import "GSTheme.h"
+#import "GSUtils.h"
 
-@interface GSLogInViewController ()
+#import <Parse/Parse.h>
+#import <QuartzCore/QuartzCore.h>
 
-@property (nonatomic, strong) UIView *fieldsBackground;
-
+@interface GSLogInViewController () <UITextFieldDelegate>
+{
+    BOOL isRetrying;
+}
 @end
 
 @implementation GSLogInViewController
@@ -23,126 +28,147 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
-    UIColor *bgColor = [UIColor colorWithHexString:@"E1CAA7"];
+    usernameField.placeholderTextColor = [UIColor colorWithHexString:@"929395"];
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, usernameField.frame.size.height)];
+    leftView.backgroundColor = usernameField.backgroundColor;
+    usernameField.leftView = leftView;
+    usernameField.leftViewMode = UITextFieldViewModeAlways;
+    usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
     
-    // logo can be a UIImageView, but in our case it's a label
-    self.logInView.logo = [GSTheme logoWithSize:42];
+    passwordField.placeholderTextColor = [UIColor colorWithHexString:@"929395"];
+    leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, usernameField.frame.size.height)];
+    leftView.backgroundColor = passwordField.backgroundColor;
+    passwordField.leftView = leftView;
+    passwordField.leftViewMode = UITextFieldViewModeAlways;
+    passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
     
-    /**(1)** Build the NSAttributedString *******/
-//    NSMutableAttributedString* attrStr = [NSMutableAttributedString attributedStringWithString:@"Hello World!"];
-//    // for those calls we don't specify a range so it affects the whole string
-//    [attrStr setFont:[UIFont systemFontOfSize:12]];
-//    [attrStr setTextColor:[UIColor grayColor]];
-//    // now we only change the color of "Hello"
-//    [attrStr setTextColor:[UIColor redColor] range:NSMakeRange(0,5)];
-//    
-//    OHAttributedLabel *myAttributedLabel = [[OHAttributedLabel alloc] initWithFrame:CGRectMake(20, 70, 300, 54)];
-//    
-//    /**(2)** Affect the NSAttributedString to the OHAttributedLabel *******/
-//    myAttributedLabel.attributedText = attrStr;
-    // Use the "Justified" alignment
-//    myAttributedLabel.textAlignment = UITextAlignmentJustify;
-    
-//    myAttributedLabel.textAlignment = kCTJustifiedTextAlignment;
-    
-    // "Hello World!" will be displayed in the label, justified, "Hello" in red and " World!" in gray.
-    
-    
-    
-    [self.logInView setBackgroundColor:bgColor]; // beige
-    //[self.logInView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]]];
-    
-    
-
-    
-//    self.logInView.logo = myAttributedLabel;
-    
-    
-    
-    
-//    NSMutableAttributedString
-//    label.attributedText
-    
-    
-    // Set buttons appearance
-//    [self.logInView.dismissButton setImage:[UIImage imageNamed:@"exit.png"] forState:UIControlStateNormal];
-//    [self.logInView.dismissButton setImage:[UIImage imageNamed:@"exit_down.png"] forState:UIControlStateHighlighted];
-    
-//    [self.logInView.facebookButton setImage:nil forState:UIControlStateNormal];
-//    [self.logInView.facebookButton setImage:nil forState:UIControlStateHighlighted];
-//    [self.logInView.facebookButton setBackgroundImage:[UIImage imageNamed:@"facebook_down.png"] forState:UIControlStateHighlighted];
-//    [self.logInView.facebookButton setBackgroundImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateNormal];
-//    [self.logInView.facebookButton setTitle:@"" forState:UIControlStateNormal];
-//    [self.logInView.facebookButton setTitle:@"" forState:UIControlStateHighlighted];
-    
-//    [self.logInView.twitterButton setImage:nil forState:UIControlStateNormal];
-//    [self.logInView.twitterButton setImage:nil forState:UIControlStateHighlighted];
-//    [self.logInView.twitterButton setBackgroundImage:[UIImage imageNamed:@"twitter.png"] forState:UIControlStateNormal];
-//    [self.logInView.twitterButton setBackgroundImage:[UIImage imageNamed:@"twitter_down.png"] forState:UIControlStateHighlighted];
-//    [self.logInView.twitterButton setTitle:@"" forState:UIControlStateNormal];
-//    [self.logInView.twitterButton setTitle:@"" forState:UIControlStateHighlighted];
-    
-//    [self.logInView.signUpButton setBackgroundImage:[UIImage imageNamed:@"signup.png"] forState:UIControlStateNormal];
-//    [self.logInView.signUpButton setBackgroundImage:[UIImage imageNamed:@"signup_down.png"] forState:UIControlStateHighlighted];
-//    [self.logInView.signUpButton setTitle:@"" forState:UIControlStateNormal];
-//    [self.logInView.signUpButton setTitle:@"" forState:UIControlStateHighlighted];
-    
-    // Add login field background
-//    self.fieldsBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-    const float margin = 38;
-    const float width = self.logInView.frame.size.width - 2 * margin;
-    const float height = 90;
-    const float topOfTextFieldToBottomOfView = 315;
-    UIView *v = [[UIView alloc] initWithFrame:
-                 CGRectMake(0, 0,
-                            width, height)];
-    v.center = CGPointMake(320 / 2, self.logInView.frame.size.height - topOfTextFieldToBottomOfView + (100 / 2));
-//    v.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;// | UIViewAutoresizingFlexibleHeight;
-    v.backgroundColor = [UIColor colorWithHexString:@"87C2C8"]; // blue
-    v.layer.cornerRadius = 5;
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, v.frame.size.height / 2, v.frame.size.width, 1)];
-    line.backgroundColor = bgColor;
-    [v addSubview:line];
-    
-    self.fieldsBackground = v;
-    [self.logInView insertSubview:self.fieldsBackground atIndex:1];
-    
-    // Remove text shadow
-    CALayer *layer = self.logInView.usernameField.layer;
-    layer.shadowOpacity = 0.0;
-    layer = self.logInView.passwordField.layer;
-    layer.shadowOpacity = 0.0;
-    
-    // Set field text color
-//    [self.logInView.usernameField setTextColor:[UIColor colorWithRed:135.0f/255.0f green:118.0f/255.0f blue:92.0f/255.0f alpha:1.0]];
-//    [self.logInView.passwordField setTextColor:[UIColor colorWithRed:135.0f/255.0f green:118.0f/255.0f blue:92.0f/255.0f alpha:1.0]];
-//    UITextField *f =  [self.logInView.usernameField copy];
-    
-    [self.logInView.usernameField setTextColor:[UIColor colorWithHexString:@"1A3C3C"]];
-    [self.logInView.passwordField setTextColor:[UIColor colorWithHexString:@"1A3C3C"]];
-    //@"FE8C0E"
-    
-    [self.logInView.usernameField setPlaceholderTextColor:[UIColor colorWithHexString:@"419394"]];
-    [self.logInView.passwordField setPlaceholderTextColor:[UIColor colorWithHexString:@"419394"]];
-    
-    [self.logInView.externalLogInLabel removeFromSuperview];
-    [self.logInView.signUpLabel removeFromSuperview];
+    signInButton.layer.cornerRadius = 5;
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
+- (IBAction)signInHeaderTapped
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSignInHeaderTappedNotification object:self];
+}
+
+// TODO: code is duplicated in SignUpViewController
+- (IBAction)facebookButtonPressed:(id)sender {
+    [GSSVProgressHUD show];
     
-    // Set frame for elements
-//    [self.logInView.dismissButton setFrame:CGRectMake(10.0f, 10.0f, 87.5f, 45.5f)];
-    //[self.logInView.logo setFrame:CGRectMake(66.5f, 70.0f, 187.0f, 58.5f)];
-//    [self.logInView.facebookButton setFrame:CGRectMake(35.0f, 287.0f, 120.0f, 40.0f)];
-//    [self.logInView.twitterButton setFrame:CGRectMake(35.0f+130.0f, 287.0f, 120.0f, 40.0f)];
-//    [self.logInView.signUpButton setFrame:CGRectMake(35.0f, 385.0f, 250.0f, 40.0f)];
-//    [self.logInView.usernameField setFrame:CGRectMake(35.0f, 145.0f, 250.0f, 50.0f)];
-//    [self.logInView.passwordField setFrame:CGRectMake(35.0f, 195.0f, 250.0f, 50.0f)];
-//    [self.fieldsBackground setFrame:CGRectMake(35.0f, 145.0f, 250.0f, 100.0f)];
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [PFFacebookUtils logInWithPermissions: nil block:^(PFUser *user, NSError *error){
+        [GSSVProgressHUD dismiss];
+        
+        if (user && error == nil){
+            [GSSVProgressHUD show];
+            // calls -updateUserInfoAndShowOrganizerIfLoggedIn
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidLogInNotification object:self];
+        }
+        if (error) {
+            BOOL isOS6 = NO; // or higher
+            float currentVersion = 6.0;
+            
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= currentVersion)
+            {
+                isOS6 = YES; // or higher
+            }
+            if (isOS6) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Facebook Login failed. Check your settings in Settings > Facebook, please!", nil) delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Error: Facebook Login failed", nil) delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+            }
+        }
+    }];
+}
+
+- (IBAction)forgotPasswordTapped
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Enter your email address.", nil)
+                                                    message:NSLocalizedString(@"We will send an email with a link to reset your password", nil) delegate:self  cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField *t = [alert textFieldAtIndex:0];
+    t.keyboardType = UIKeyboardTypeEmailAddress;
+    [alert show];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (isRetrying){
+        [self forgotPasswordTapped];
+        isRetrying = NO;
+    }else {
+        if (buttonIndex == 1){
+            NSString *email = [alertView textFieldAtIndex:0].text;
+            if ([GSUtils NSStringIsValidEmail:email]) {
+                [GSSVProgressHUD show];
+                [PFUser requestPasswordResetForEmailInBackground: email block:^(BOOL success, NSError *error){
+                    [GSSVProgressHUD dismiss];
+                    if (success) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Email sent!", nil) message:NSLocalizedString(@"Check your mail inbox and reset your password.", nil) delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                        [alert show];
+                    } else {
+                        DLog(@"Failed %@", [error description]);
+                        NSString *errorMsg = nil;
+                        switch (error.code) {
+                            case 125:
+                                errorMsg = NSLocalizedString(@"Invalid email address. Try again!", nil);
+                                break;
+                            default:
+                                errorMsg = NSLocalizedString(@"Invalid email address. Try again!", nil);
+                                break;
+                        }
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
+                                                                        message: errorMsg delegate:self  cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
+                        [alert show];
+                        isRetrying = YES;
+                    }
+                }];
+            }
+        }
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == usernameField){
+        [passwordField becomeFirstResponder];
+    } else if (textField == passwordField){
+        [textField resignFirstResponder];
+        [self signInButtonTapped];
+    }
+    return YES;
+}
+
+- (IBAction)signInButtonTapped
+{
+    NSString *username = usernameField.text;
+    NSString *password = passwordField.text;
+    
+    if (!VALID_STR(username) || !VALID_STR(password)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Make sure you fill out all of the information!", nil) delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
+    // Username should be lowercase
+    username = [username lowercaseString];
+    
+    // Login
+    [self.view endEditing:YES];
+    [GSSVProgressHUD show];
+    [PFUser logInWithUsernameInBackground: username password:password block:^(PFUser *user, NSError *error){
+        [GSSVProgressHUD dismiss];
+        if (user) {
+            
+            // calls -updateUserInfoAndShowOrganizerIfLoggedIn
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidLogInNotification object:self];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Error", nil) message:NSLocalizedString(@"Invalid username/password. Try again!", nil) delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning

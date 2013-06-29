@@ -45,15 +45,14 @@
  */
 + (BOOL)isAuthenticated;
 
-/* 
- Perform authentication process
- @param viewController UIViewController: your root view controller
- @param delegate id: callback holder for authentication process
+/*
+ Perform authentication process.
+ 
+ @param viewController UIViewController<GSSessionDelegate>: your root view controller. It should implement the delegate protocol.
  */
-- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController
-                                           delegate:(id<GSSessionDelegate>)delegate;
+- (void)authenticateFromViewController:(UIViewController<GSSessionDelegate> *)viewController animated:(BOOL)animated;
 
-/* 
+/*
  Call to update user info
  @param block GSResultBlock: if update is successfully or failed with errors
  */

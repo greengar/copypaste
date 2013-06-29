@@ -7,14 +7,15 @@
 //
 
 #import "GSSession.h"
+
+#import "GSSignUpLogInViewController.h"
 #import "GSParseQueryHelper.h"
 #import "NSData+GSBase64.h"
 #import "GSSVProgressHUD.h"
 #import "GSObject.h"
+
 #import <Parse/Parse.h>
 #import <Firebase/Firebase.h>
-#import "GSLogInViewController.h"
-#import "GSSignUpViewController.h"
 
 #define kFireBaseBaseURL @"https://gg.firebaseio.com/"
 
@@ -92,28 +93,24 @@ static GSSession *activeSession = nil;
 }
 
 + (BOOL)isAuthenticated {
+    return ([PFUser currentUser] ? YES : NO);
+    
+    // why does this not work?:
     return ([[GSSession activeSession] currentUser] != nil);
 }
 
-#pragma mark - Authentications
-- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController
-                                           delegate:(id<GSSessionDelegate>)delegate {
-    self.delegate = delegate;
+#pragma mark - Authentication
+
+- (void)authenticateFromViewController:(UIViewController<GSSessionDelegate> *)viewController animated:(BOOL)animated
+{
+    self.delegate = viewController;
     self.authenticationController = viewController;
     
-    GSLogInViewController *logInController = [[GSLogInViewController alloc] init];\
-    logInController.delegate = self;
+    GSSignUpLogInViewController *vc = [[GSSignUpLogInViewController alloc] init];
+    [viewController presentViewController:vc animated:animated completion:NULL];
     
-    // Create the sign up view controller
-    GSSignUpViewController *signUpViewController = [[GSSignUpViewController alloc] init];
-    signUpViewController.delegate = self;
-    
-    [logInController setSignUpController:signUpViewController];
-    
-    [logInController setFacebookPermissions:@[@"user_about_me", @"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location"]];
-    [logInController setFields:PFLogInFieldsUsernameAndPassword|PFLogInFieldsFacebook|PFLogInFieldsSignUpButton];
-
-    [viewController presentViewController:logInController animated:YES completion:NULL];
+    // TODO: facebook permissions
+//    [logInController setFacebookPermissions:@[@"user_about_me", @"user_photos", @"publish_stream", @"offline_access", @"email", @"user_location"]];
 }
 
 - (void)updateUserInfoFromSmartboardAPIWithBlock:(GSResultBlock)block {
@@ -134,6 +131,8 @@ static GSSession *activeSession = nil;
 - (void)logOutWithBlock:(GSResultBlock)block {
     [[PFUser currentUser] setObject:[NSDate date] forKey:@"last_log_in"];
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        
+        // TODO: app can freeze here :(
         [PFUser logOut];
         self.currentUser = nil;
         if (block) { block(succeeded, error); }
