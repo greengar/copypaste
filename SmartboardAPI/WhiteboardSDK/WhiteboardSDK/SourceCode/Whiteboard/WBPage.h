@@ -20,7 +20,12 @@
 @protocol WBPageDelegate
 @optional
 - (void)pageHistoryCreated:(HistoryAction *)history;
-- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withPaintingCmd:(PaintingCmd *)cmd;
+- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history
+                            withPaintingCmd:(PaintingCmd *)cmd
+                              forElementUid:(NSString *)elementUid
+                                 forPageUid:(NSString *)pageUid;
+- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history
+                               withCropRect:(CGRect)cropRect;
 - (void)pageHistoryElementTransformUpdated:(HistoryAction *)history;
 - (void)elementHideKeyboard;
 - (void)elementRevived;

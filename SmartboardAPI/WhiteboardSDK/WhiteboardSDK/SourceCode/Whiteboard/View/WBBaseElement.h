@@ -17,7 +17,12 @@
 @protocol WBBaseViewDelegate
 @optional
 - (void)pageHistoryCreated:(HistoryAction *)history;
-- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history withNewPaintingCmd:(PaintingCmd *)cmd;
+- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history
+                     withNewPaintingCmd:(PaintingCmd *)cmd
+                          forElementUid:(NSString *)elementUid
+                             forPageUid:(NSString *)pageUid;
+- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history
+                           withCropRect:(CGRect)cropRect;
 - (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element;
 - (void)elementRevive:(WBBaseElement *)element;
 - (void)element:(WBBaseElement *)element nowBringToFront:(BOOL)bringFront;

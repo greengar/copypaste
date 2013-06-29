@@ -52,6 +52,11 @@
                                forPage:(WBPage *)page
                              withBlock:(WBSingleResultBlock)block;
 
+- (void)updateActionBrushElementWithId:(NSString *)uid
+                          withCropRect:(CGRect)boundingRect
+                               forPage:(WBPage *)page
+                             withBlock:(WBSingleResultBlock)block;
+
 - (void)addActionTextContentChangedElement:(TextElement *)element
                             withOriginText:(NSString *)text1
                            withChangedText:(NSString *)text2

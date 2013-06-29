@@ -20,7 +20,9 @@
 @property (nonatomic, weak) MainPaintingView      *drawingView;
 
 - (void)doPaintingAction;
-- (NSMutableDictionary *)saveToData;
+- (NSMutableDictionary *)saveToDataWithElementUid:(NSString *)elementUid
+                                          pageUid:(NSString *)pageUid
+                                       historyUid:(NSString *)historyUid;
 - (void)loadFromData:(NSDictionary *)paintingData forElement:(WBBaseElement *)element;
 
 @end

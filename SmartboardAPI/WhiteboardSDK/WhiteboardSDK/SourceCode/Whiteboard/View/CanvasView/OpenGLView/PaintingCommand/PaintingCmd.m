@@ -13,6 +13,7 @@
 #import "MultiStrokePaintingCmd.h"
 #import "WBUtils.h"
 #import "WBBaseElement.h"
+#import "SettingManager.h"
 
 @implementation PaintingCmd
 @synthesize uid = _uid;
@@ -30,16 +31,18 @@
     
 }
 
-- (NSMutableDictionary *)saveToData {
+- (NSMutableDictionary *)saveToDataWithElementUid:(NSString *)elementUid pageUid:(NSString *)pageUid historyUid:(NSString *)historyUid {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"paint_cmd_uid"];
-    [dict setObject:[NSNumber numberWithInt:self.layerIndex] forKey:@"paint_cmd_layer"];
+    [dict setObject:elementUid forKey:@"element_uid"];
+    [dict setObject:pageUid forKey:@"page_uid"];
+    [dict setObject:historyUid forKey:@"history_uid"];
+    [dict setObject:[SettingManager mySecretId] forKey:@"secret"];
     return dict;
 }
 
 - (void)loadFromData:(NSDictionary *)paintingData forElement:(WBBaseElement *)element {
     self.uid = [paintingData objectForKey:@"paint_cmd_uid"];
-    self.layerIndex = [[paintingData objectForKey:@"paint_cmd_layer"] intValue];
 }
 
 - (void)dealloc {

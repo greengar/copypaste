@@ -7,6 +7,7 @@
 //
 
 #import "WBBottomRightToolbarView.h"
+#import "SettingManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface WBBottomRightToolbarView()
@@ -50,12 +51,16 @@
 }
 
 - (void)addMore:(WBAddMoreButton *)button {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addMoreButtonTapped)]) {
         [self.delegate addMoreButtonTapped];
     }
 }
 
 - (void)enableMove:(WBMoveButton *)button {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(moveButtonTapped)]) {
         [self.delegate moveButtonTapped];
     }

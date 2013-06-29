@@ -29,6 +29,7 @@
 }
 
 - (void)loadFromData:(NSDictionary *)data forPage:(WBPage *)page {
+    [self setPage:page];
     [super loadFromData:data forPage:page];
 }
 

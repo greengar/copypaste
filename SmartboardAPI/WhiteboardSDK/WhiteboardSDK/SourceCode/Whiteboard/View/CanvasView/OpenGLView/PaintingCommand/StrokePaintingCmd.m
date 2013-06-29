@@ -82,8 +82,8 @@
     glEnable(GL_TEXTURE_2D);
 }
 
-- (NSMutableDictionary *)saveToData {
-    NSMutableDictionary *dict = [super saveToData];
+- (NSMutableDictionary *)saveToDataWithElementUid:(NSString *)elementUid pageUid:(NSString *)pageUid historyUid:(NSString *)historyUid {
+    NSMutableDictionary *dict = [super saveToDataWithElementUid:elementUid pageUid:pageUid historyUid:historyUid];
     [dict setObject:@"StrokePaintingCmd" forKey:@"paint_cmd_type"];
     [dict setObject:NSStringFromCGPoint(startPoint) forKey:@"paint_stroke_start"];
     [dict setObject:NSStringFromCGPoint(endPoint) forKey:@"paint_stroke_end"];
@@ -102,6 +102,8 @@
     CGPoint end = CGPointFromString([singlePaintCmdData objectForKey:@"paint_stroke_end"]);
     [self strokeFromPoint:start toPoint:end];
     [self setDrawingView:((MainPaintingView *) [element contentView])];
+    // Hector: need to work on this again, because the boundary require the glPoint so it can be wrong
+    // [self.drawingView calculateBounderFromPoint:start toPoint:end];
 }
 
 - (void)dealloc {

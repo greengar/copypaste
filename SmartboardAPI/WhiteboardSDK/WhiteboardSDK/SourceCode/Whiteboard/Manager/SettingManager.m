@@ -16,6 +16,7 @@ static SettingManager *shareManager = nil;
 @interface SettingManager()
 @property (nonatomic)           int             currentColorTab;
 @property (nonatomic)           CGFloat         tempOpacity;
+@property (nonatomic)           NSString        *mySecretId;
 @end
 
 @implementation SettingManager
@@ -26,6 +27,7 @@ static SettingManager *shareManager = nil;
 @synthesize currentFontName = _currentFontName;
 @synthesize currentFontSize = _currentFontSize;
 @synthesize currentFontColor = _currentFontColor;
+@synthesize viewOnly = _viewOnly;
 
 + (SettingManager *)sharedManager { 
     static SettingManager *sharedManager; 
@@ -282,6 +284,15 @@ static SettingManager *shareManager = nil;
 
 - (void)teardownRenderPoint {
     [[PaintingManager sharedManager] updateOpacity:self.tempOpacity of:nil];
+}
+
++ (NSString *)mySecretId {
+    if ([[SettingManager sharedManager] mySecretId]) {
+        return [[SettingManager sharedManager] mySecretId];
+    } else  {
+        [SettingManager sharedManager].mySecretId = [[WBUtils getMacAddress] stringByReplacingOccurrencesOfString:@":" withString:@"i"];
+        return [[SettingManager sharedManager] mySecretId];
+    }
 }
 
 + (id)allocWithZone:(NSZone *)zone {

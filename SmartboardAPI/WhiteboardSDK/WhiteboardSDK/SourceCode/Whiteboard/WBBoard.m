@@ -165,6 +165,10 @@
     return [self.pages count];
 }
 
+- (void)lockBoard {
+    [[SettingManager sharedManager] setViewOnly:YES];
+}
+
 #pragma mark - Tool/Control for Board
 - (void)initLayersWithFrame:(CGRect)frame {
     // Page Holder
@@ -527,8 +531,16 @@
     [[self exportControlView] setHidden:NO];
     [(UILabel *)[self.exportControlView viewWithTag:kPageLabelTag] setText:[NSString stringWithFormat:@"Page: %d/%d", self.currentPageIndex+1, [self.pages count]]];
     ((UIButton *) [self.exportControlView viewWithTag:kPreviousButtonTag]).enabled = ([self currentPageIndex] > 0);
-    [((UIButton *) [self.exportControlView viewWithTag:kNextButtonTag]) setTitle:(([self currentPageIndex] < [self.pages count]-1) ? @"Next" : @"New")
-                                                                        forState:UIControlStateNormal];
+    
+    if ([[SettingManager sharedManager] viewOnly]) {
+        ((UIButton *) [self.exportControlView viewWithTag:kNextButtonTag]).enabled = ([self currentPageIndex] < [self.pages count]-1);
+        [((UIButton *) [self.exportControlView viewWithTag:kNextButtonTag]) setTitle:@"Next"
+                                                                            forState:UIControlStateNormal];
+    } else {
+        ((UIButton *) [self.exportControlView viewWithTag:kNextButtonTag]).enabled = YES;
+        [((UIButton *) [self.exportControlView viewWithTag:kNextButtonTag]) setTitle:(([self currentPageIndex] < [self.pages count]-1) ? @"Next" : @"New")
+                                                                            forState:UIControlStateNormal];
+    }
 }
 
 - (void)hideExportControl {
@@ -592,6 +604,8 @@
 }
 
 - (void)performUndo {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     // Get the history for that page
     NSMutableArray *historyForPage = [[[HistoryManager sharedManager] historyPool] objectForKey:[self currentPage].uid];
     
@@ -605,6 +619,8 @@
 }
 
 - (void)historyButtonTappedFrom:(UIView *)menubar {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     float centerOfMenuButton = menubar.frame.origin.x + menubar.frame.size.width*5/6;
     float bottom = menubar.frame.origin.y + menubar.frame.size.height;
     CGPoint point = CGPointMake(centerOfMenuButton - 1, bottom);
@@ -616,6 +632,8 @@
 
 #pragma mark - Tool Bar Buttons
 - (void)canvasButtonTappedFrom:(UIView *)toolbar {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     if (![self.view viewWithTag:kToolMonitorTag]) {
         int monitorHeight = kWBToolMonitorHeight+kOffsetForBouncing;
         WBToolMonitorView *toolMonitorView = [[WBToolMonitorView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x,
@@ -646,6 +664,8 @@
 }
 
 - (void)selectHistoryColor {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     if ([[self currentPage] isMovable]) {
         [self stopToMove];
         [self addFakeCanvas];
@@ -701,6 +721,8 @@
 }
 
 - (void)addMoreButtonTappedFrom:(UIView *)toolbar {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     float centerOfAddMoreButton = toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*1.5;
     float bottom = toolbar.frame.origin.y;
     CGPoint point = CGPointMake(centerOfAddMoreButton - 1, bottom);
@@ -715,6 +737,8 @@
 }
 
 - (void)moveButtonTapped {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     [self forceHideColorSpectrum];
     
     if ([[self currentPage] isMovable]) {
@@ -1116,12 +1140,17 @@
         [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
         [historyURL appendFormat:@"/page_history/%@", [history uid]];
         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:addNewHistory:atURL:)]) {
-            [self.delegate pageOfBoard:self addNewHistory:[history saveToData] atURL:historyURL];
+            [self.delegate pageOfBoard:self
+                         addNewHistory:[history saveToData]
+                                 atURL:historyURL];
         }
     });
 }
 
-- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withPaintingCmd:(PaintingCmd *)cmd {
+- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history
+                            withPaintingCmd:(PaintingCmd *)cmd
+                              forElementUid:(NSString *)elementUid
+                                 forPageUid:(NSString *)pageUid {
     dispatch_async(self.backgroundQueue, ^{
         NSMutableString *historyURL = [NSMutableString new];
         [historyURL appendString:@"board_pages"];
@@ -1129,7 +1158,25 @@
         [historyURL appendFormat:@"/page_history/%@", [history uid]];
         [historyURL appendFormat:@"/history_painting/paint_multi_stroke_array/%@", [cmd uid]];
         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:updateHistoryCanvasDraw:atURL:)]) {
-            [self.delegate pageOfBoard:self updateHistoryCanvasDraw:[cmd saveToData] atURL:historyURL];
+            [self.delegate pageOfBoard:self
+               updateHistoryCanvasDraw:[cmd saveToDataWithElementUid:elementUid
+                                                             pageUid:pageUid
+                                                          historyUid:history.uid]
+                                 atURL:historyURL];
+        }
+    });
+}
+
+- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withCropRect:(CGRect)cropRect {
+    dispatch_async(self.backgroundQueue, ^{
+        NSMutableString *historyURL = [NSMutableString new];
+        [historyURL appendString:@"board_pages"];
+        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
+        [historyURL appendFormat:@"/page_history/%@", [history uid]];
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:updateHistoryCanvasDraw:atURL:)]) {
+            NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObject:NSStringFromCGRect(cropRect)
+                                                                           forKey:@"history_crop_rect"];
+            [self.delegate pageOfBoard:self updateHistoryCanvasDraw:data atURL:historyURL];
         }
     });
 }
@@ -1334,58 +1381,65 @@
         // History create element: now create it again
         if ([historyType isEqualToString:@"HistoryElementCreated"]) {
             history = [[HistoryElementCreated alloc] init];
+            [history setPage:page];
             
-            // History delete element: now delete it again
+        // History delete element: now delete it again
         } else if ([historyType isEqualToString:@"HistoryElementDeleted"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
             historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementDeleted alloc] init];
+                [history setPage:page];
                 [history setElement:historyElement];
             }
             
-            // History draw on the canvas, now draw it again
+        // History draw on the canvas, now draw it again
         } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
             historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementCanvasDraw alloc] init];
+                [history setPage:page];
                 [history setElement:historyElement];
             }
             
-            // History text changed: now change it again
+        // History text changed: now change it again
         } else if ([historyType isEqualToString:@"HistoryElementTextChanged"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
             historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementTextChanged alloc] init];
+                [history setPage:page];
                 [history setElement:historyElement];
             }
             
-            // History text font changed: now change it again
+        // History text font changed: now change it again
         } else if ([historyType isEqualToString:@"HistoryElementTextFontChanged"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
             historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementTextFontChanged alloc] init];
+                [history setPage:page];
                 [history setElement:historyElement];
             }
             
-            // History text color changed: now change it again
+        // History text color changed: now change it again
         } else if ([historyType isEqualToString:@"HistoryElementTextColorChanged"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
             historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementTextColorChanged alloc] init];
+                [history setPage:page];
                 [history setElement:historyElement];
             }
             
-            // History element transform: now transform it again
+        // History element transform: now transform it again
         } else if ([historyType isEqualToString:@"HistoryElementTransform"]) {
             NSString *elementUid = [historyData objectForKey:@"element_uid"];
             historyElement = [page elementByUid:elementUid];
             if (historyElement) {
                 history = [[HistoryElementTransform alloc] init];
+                [history setPage:page];
                 [history setElement:historyElement];
             }
         }
@@ -1393,6 +1447,35 @@
         if (history) {
             [history loadFromData:historyData forPage:page];
             [[HistoryManager sharedManager] addAction:history forPage:page];
+        }
+    }
+}
+
+- (void)updatePageHistoryCanvasDrawWithData:(NSDictionary *)historyData {
+    NSString *pageUid = [historyData objectForKey:@"page_uid"];
+    NSString *elementUid = [historyData objectForKey:@"element_uid"];
+    WBPage *page = nil;
+    for (WBPage *existedPage in self.pages) {
+        if ([existedPage.uid isEqualToString:pageUid]) {
+            page = existedPage;
+            break;
+        }
+    }
+    if (page) {
+        WBBaseElement *element = [page elementByUid:elementUid];
+        
+        if (element) {
+            NSString *historyUid = [historyData objectForKey:@"history_uid"];
+            NSMutableArray *historyForPage = [[[HistoryManager sharedManager] historyPool] objectForKey:pageUid];
+            for (HistoryElement *history in historyForPage) {
+                if ([history.uid isEqualToString:historyUid] && [history isKindOfClass:[HistoryElementCanvasDraw class]]) {
+                    HistoryElementCanvasDraw *historyCanvas = (HistoryElementCanvasDraw *)history;
+                    StrokePaintingCmd *singlePaintingCmd = [[StrokePaintingCmd alloc] init];
+                    [singlePaintingCmd loadFromData:historyData forElement:element];
+                    [((MultiStrokePaintingCmd *) historyCanvas.paintingCommand).strokeArray addObject:singlePaintingCmd];
+                    [((MainPaintingView *) element.contentView) reloadView];
+                }
+            }
         }
     }
 }
@@ -1415,6 +1498,10 @@
         return board;
     }
     return nil;
+}
+
++ (NSString *)mySecretId {
+    return [SettingManager mySecretId];
 }
 
 - (void)dealloc {

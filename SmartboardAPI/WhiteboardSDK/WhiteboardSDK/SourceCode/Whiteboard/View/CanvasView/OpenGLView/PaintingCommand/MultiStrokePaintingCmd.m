@@ -28,15 +28,18 @@
     }
 }
 
-- (NSMutableDictionary *)saveToData {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super saveToData]];
+- (NSMutableDictionary *)saveToDataWithElementUid:(NSString *)elementUid
+                                          pageUid:(NSString *)pageUid
+                                       historyUid:(NSString *)historyUid {
+    NSMutableDictionary *dict = [super saveToDataWithElementUid:elementUid pageUid:pageUid historyUid:historyUid];
     [dict setObject:@"MultiStrokePaintingCmd" forKey:@"paint_cmd_type"];
     
     if ([self.strokeArray count]) {
         NSMutableDictionary *strokeDicts = [NSMutableDictionary dictionaryWithCapacity:[self.strokeArray count]];
         for (int i = 0; i < [self.strokeArray count]; i++) {
             StrokePaintingCmd *cmd = [self.strokeArray objectAtIndex:i];
-            [strokeDicts setObject:[cmd saveToData] forKey:cmd.uid];
+            NSMutableDictionary *cmdDict = [cmd saveToDataWithElementUid:elementUid pageUid:pageUid historyUid:historyUid];
+            [strokeDicts setObject:cmdDict forKey:cmd.uid];
         }
         [dict setObject:strokeDicts forKey:@"paint_multi_stroke_array"];
     }

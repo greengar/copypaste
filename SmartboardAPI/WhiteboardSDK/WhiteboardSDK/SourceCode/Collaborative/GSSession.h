@@ -110,6 +110,12 @@
  */
 - (void)unregisterRoomDataChanged:(GSRoom *)room;
 
+/*
+ Unregister room data changed at url, 
+ from now on data from the url won't be pulled from server anymore
+ */
+- (void)unregisterRoomDataChanged:(GSRoom *)room atURL:(NSString *)urlString;
+
 /*  
  Create a room
  @param roomName NSString: name of your room
@@ -249,6 +255,8 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
 #pragma mark - Supports
++ (void)showLoadingIndicatorWithMessage:(NSString *)message;
++ (void)dismissLoadingIndicator;
 + (NSString *)mySecretId;
 
 // Current logged in user

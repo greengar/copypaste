@@ -38,6 +38,11 @@
 - (int)numOfPages;
 
 /*
+ Lock the board, user will not be able to modify the board
+ */
+- (void)lockBoard;
+
+/*
  Start to listen to any update to the current page
  */
 - (void)startListeningToPageUpdate;
@@ -77,6 +82,12 @@
 - (void)updatePageHistoryData:(NSDictionary *)data;
 
 /*
+ Update the page real-time with the history data dictionary for the drawing action
+ @param data NSDictionary: history data dictionary for drawing action
+ */
+- (void)updatePageHistoryCanvasDrawWithData:(NSDictionary *)data;
+
+/*
  Export data of the whole board
  @result Return NSDictionary: the board data dictionary
  */
@@ -94,6 +105,12 @@
  @result Return WBBoard: the board from the storage, will be nil if not found
  */
 - (WBBoard *)loadBoardDataFromLocalStorageWithName:(NSString *)boardName;
+
+/*
+ My Secret Id
+ @result Return NSString: a secret id for your devices
+ */
++ (NSString *)mySecretId;
 
 @property (nonatomic, strong) NSString              *uid;
 @property (nonatomic, strong) NSString              *name;

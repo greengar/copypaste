@@ -41,6 +41,8 @@
 
 #define THROW_EXCEPTION_TYPE(type) [NSException raise:type format:@"%s Line %d", __PRETTY_FUNCTION__, __LINE__];
 
+#define kNotificationNowListenToCanvasDraw @"kNotificationNowListenToCanvasDraw"
+
 @interface WBUtils : NSObject
 
 + (int)getBuildVersion;

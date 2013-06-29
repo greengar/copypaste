@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSMutableDictionary *data;
 @property (nonatomic, strong) UIImage *thumbnailImage;
 @property (nonatomic)         BOOL autoUpload;
+@property (nonatomic)         BOOL isListening;
 @property (nonatomic, assign) id<GSRoomDelegate> delegate;
 
 - (id)initWithName:(NSString *)name

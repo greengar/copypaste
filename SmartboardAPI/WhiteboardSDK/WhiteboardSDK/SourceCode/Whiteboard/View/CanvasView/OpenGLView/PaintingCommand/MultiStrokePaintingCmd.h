@@ -11,6 +11,6 @@
 
 @interface MultiStrokePaintingCmd : PaintingCmd
 
-@property(nonatomic, retain) NSMutableArray      * strokeArray;
+@property (nonatomic, strong) NSMutableArray      * strokeArray;
 
 @end

@@ -27,6 +27,7 @@
 @synthesize thumbnailImage = _thumbnailImage;
 @synthesize autoUpload = _autoUpload;
 @synthesize delegate = _delegate;
+@synthesize isListening = _isListening;
 
 - (id)init {
     return [self initWithName:@"Untitle Room"
@@ -176,40 +177,5 @@
 + (NSString *)classname {
     return @"Room";
 }
-
-/* Board on Firebase:
-    board_uid
-        board_frame
-        board_name
-        board_pages
-            page_uid
-                page_elements
-                page_frame
- 
-                    element_uid
-                        element_current_transform
-                        element_default_frame
-                        element_default_transform
-                        element_type
-                        element_uid
-                    ...
-                page_history
-                    history_uid
-                        history_active
-                        history_date
-                        history_name
-                        history_type
-                        history_uid
-                page_uid
-            ...
-        board_history
-            history_uid
-            history_active
-            history_date
-            history_name
-            history_type
-            history_uid
-        board_uid
- */
 
 @end

@@ -10,18 +10,19 @@
 #import "SettingManager.h"
 #import "HistoryManager.h"
 #import "GSButton.h"
+#import "WBPage.h"
 
 @interface GLCanvasElement() {
     MainPaintingView *drawingView;
-    CGRect boundingRect;
     UIImageView *screenshotImageView;
     NSString *currentBrushId;
-    BOOL isCrop;
 }
 
 @end
 
 @implementation GLCanvasElement
+@synthesize isCrop = _isCrop;
+@synthesize boundingRect = _boundingRect;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -49,21 +50,36 @@
 }
 
 - (void)updateBoundingRect:(CGRect)rect {
-    boundingRect = rect;
+    self.boundingRect = rect;
 }
 
 - (BOOL)isCropped {
-    return isCrop;
+    return self.isCrop;
 }
 
 - (void)crop {
     if (![self isCropped]) {
-        drawingView.frame = CGRectMake(-boundingRect.origin.x, -boundingRect.origin.y,
+        self.transform = self.defaultTransform;
+        drawingView.frame = CGRectMake(-self.boundingRect.origin.x, -self.boundingRect.origin.y,
                                        drawingView.frame.size.width, drawingView.frame.size.height);
         screenshotImageView.frame = drawingView.frame;
-        self.frame = boundingRect;
+        self.frame = self.boundingRect;
         self.defaultFrame = self.frame;
-        isCrop = YES;
+        self.isCrop = YES;
+        self.transform = self.currentTransform;
+        
+        // TODO: need to use this to update the crop boundary for the Element on Firebase
+        /*
+        [[HistoryManager sharedManager] updateActionBrushElementWithId:currentBrushId
+                                                          withCropRect:self.boundingRect
+                                                               forPage:(WBPage *)self.superview
+                                                             withBlock:^(HistoryAction *history, NSError *error) {
+                                                                 if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryElementCanvasUpdated:withCropRect:)]) {
+                                                                     [self.delegate pageHistoryElementCanvasUpdated:history
+                                                                                                       withCropRect:self.boundingRect];
+                                                                 }
+                                                             }];
+         */
     }
 }
 
@@ -118,6 +134,7 @@
 - (void)loadFromData:(NSDictionary *)elementData {
     [super loadFromData:elementData];
     self.isFake = [[elementData objectForKey:@"element_canvas_fake"] boolValue];
+    self.isCrop = YES;
 }
 
 #pragma mark - Fake/Real Canvas
@@ -131,29 +148,38 @@
 #pragma mark - Undo/Redo
 - (void)pushedCommandToUndoStack:(PaintingCmd *)cmd {
     currentBrushId = [[HistoryManager sharedManager] addActionBrushElement:self
-                                                                        forPage:(WBPage *)self.superview
-                                                            withPaintingCommand:cmd
-                                                                      withBlock:^(HistoryAction *history, NSError *error) {
-                                                                        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                            [self.delegate pageHistoryCreated:history];
-                                                                        }
-                                                                    }];
+                                                                   forPage:(WBPage *)self.superview
+                                                       withPaintingCommand:cmd
+                                                                 withBlock:^(HistoryAction *history, NSError *error) {
+        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
+            [self.delegate pageHistoryCreated:history];
+        }
+         
+        NSMutableString *historyURL = [NSMutableString new];
+        [historyURL appendString:@"board_pages"];
+        [historyURL appendFormat:@"/%@", [((WBPage *) self.superview) uid]];
+        [historyURL appendFormat:@"/page_history/%@", [history uid]];
+        [historyURL appendString:@"/history_painting/paint_multi_stroke_array"];
+        NSDictionary *data = @{@"URL_to_listen" : historyURL};
+                                                                     
+       [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationNowListenToCanvasDraw
+                                                           object:nil
+                                                         userInfo:data];
+    }];
 }
 
 - (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd {
     [[HistoryManager sharedManager] updateActionBrushElementWithId:currentBrushId
                                                withPaintingCommand:cmd
                                                            forPage:(WBPage *)self.superview
-                                                withBlock:^(HistoryAction *history, NSError *error) {
-                                                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryElementCanvasUpdated:withNewPaintingCmd:)]) {
+                                                         withBlock:^(HistoryAction *history, NSError *error) {
+                                                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryElementCanvasUpdated:withNewPaintingCmd:forElementUid:forPageUid:)]) {
                                                         [self.delegate pageHistoryElementCanvasUpdated:history
-                                                                                    withNewPaintingCmd:cmd];
+                                                                                    withNewPaintingCmd:cmd
+                                                                                         forElementUid:self.uid
+                                                                                            forPageUid:[((WBPage *) self.superview) uid]];
                                                     }
                                                 }];
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
 }
 
 - (void)dealloc {

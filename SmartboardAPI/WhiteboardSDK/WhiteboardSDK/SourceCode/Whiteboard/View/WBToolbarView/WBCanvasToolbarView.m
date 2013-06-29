@@ -43,12 +43,16 @@
 }
 
 - (void)canvasButtonTapped:(WBCanvasButton *)button {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(canvasButtonTapped)]) {
         [self.delegate canvasButtonTapped];
     }
 }
 
 - (void)selectHistoryColor:(WBHistoryColorButton *)button {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     [[SettingManager sharedManager] setCurrentColorTab:button.index];
     
     if (self.canvasButton.mode == kEraserMode) {

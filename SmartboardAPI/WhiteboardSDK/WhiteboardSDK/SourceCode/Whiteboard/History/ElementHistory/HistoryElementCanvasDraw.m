@@ -8,6 +8,8 @@
 
 #import "HistoryElementCanvasDraw.h"
 #import "MultiStrokePaintingCmd.h"
+#import "WBBaseElement.h"
+#import "WBPage.h"
 
 @implementation HistoryElementCanvasDraw
 @synthesize paintingCommand = _paintingCommand;
@@ -30,7 +32,7 @@
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [paintingView reloadView];
         });
-        [canvasElement setIsFake:NO];
+        [self.element setIsFake:NO];
     } else {
         double delayInSeconds = 0.3;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -43,7 +45,10 @@
 - (NSDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"HistoryElementCanvasDraw" forKey:@"history_type"];
-    [dict setObject:[self.paintingCommand saveToData] forKey:@"history_painting"];
+    [dict setObject:[self.paintingCommand saveToDataWithElementUid:self.element.uid
+                                                           pageUid:self.page.uid
+                                                        historyUid:self.uid]
+             forKey:@"history_painting"];
     return dict;
 }
 
@@ -58,12 +63,26 @@
         [paintCmd loadFromData:paintingCmdData forElement:self.element];
         [self setPaintingCommand:paintCmd];
         [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
+        ((GLCanvasElement *)self.element).boundingRect = paintCmd.drawingView.previewAreaRect;
+        
     } else if ([paintingType isEqualToString:@"StrokePaintingCmd"]) {
         StrokePaintingCmd *paintCmd = [[StrokePaintingCmd alloc] init];
         [paintCmd loadFromData:paintingCmdData forElement:self.element];
         [self setPaintingCommand:paintCmd];
         [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
+        ((GLCanvasElement *)self.element).boundingRect = paintCmd.drawingView.previewAreaRect;
     }
+    
+    NSMutableString *historyURL = [NSMutableString new];
+    [historyURL appendString:@"board_pages"];
+    [historyURL appendFormat:@"/%@", page.uid];
+    [historyURL appendFormat:@"/page_history/%@", self.uid];
+    [historyURL appendString:@"/history_painting/paint_multi_stroke_array"];
+    NSDictionary *data = @{@"URL_to_listen" : historyURL};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationNowListenToCanvasDraw
+                                                        object:nil
+                                                      userInfo:data];
 }
 
 @end

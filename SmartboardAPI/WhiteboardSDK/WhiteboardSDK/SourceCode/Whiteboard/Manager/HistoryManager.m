@@ -225,6 +225,25 @@ static HistoryManager *shareManager = nil;
     block(actionToUpdate, nil);
 }
 
+- (void)updateActionBrushElementWithId:(NSString *)uid
+                          withCropRect:(CGRect)boundingRect
+                               forPage:(WBPage *)page
+                             withBlock:(WBSingleResultBlock)block {
+    // Get the history for that page
+    NSMutableArray *historyForPage = [self.historyPool objectForKey:page.uid];
+    
+    HistoryElementCanvasDraw *actionToUpdate = nil;
+    // Update the desired transform action
+    for (HistoryElement *action in historyForPage) {
+        if ([action.uid isEqualToString:uid]
+            && [action isKindOfClass:[HistoryElementCanvasDraw class]]) {
+            actionToUpdate = (HistoryElementCanvasDraw *) action;
+            break;
+        }
+    }
+    block(actionToUpdate, nil);
+}
+
 - (void)addActionTextContentChangedElement:(TextElement *)element
                             withOriginText:(NSString *)text1
                            withChangedText:(NSString *)text2

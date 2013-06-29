@@ -66,10 +66,13 @@
 - (void) persistColorTabSettingAtCurrentIndex;  // Must be called to persist current Color Tab
 - (void) persistTextSetting;
 
++ (NSString *)mySecretId;
+
 @property (nonatomic)           float           textureScale;
 @property (nonatomic, strong)   NSMutableArray  *colorTabList;
 @property (nonatomic, strong)   NSString        *currentFontName;
 @property (nonatomic, strong)   UIColor         *currentFontColor;
 @property (nonatomic)           int             currentFontSize;
+@property (nonatomic)           BOOL            viewOnly;
 
 @end

@@ -140,9 +140,25 @@
     }
 }
 
-- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history withNewPaintingCmd:(PaintingCmd *)cmd {
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryElementCanvasDrawUpdated:withPaintingCmd:)]) {
-        [self.pageDelegate pageHistoryElementCanvasDrawUpdated:history withPaintingCmd:cmd];
+- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history
+                     withNewPaintingCmd:(PaintingCmd *)cmd
+                          forElementUid:(NSString *)elementUid
+                             forPageUid:(NSString *)pageUid {
+    if (self.pageDelegate
+        && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryElementCanvasDrawUpdated:withPaintingCmd:forElementUid:forPageUid:)]) {
+        [self.pageDelegate pageHistoryElementCanvasDrawUpdated:history
+                                               withPaintingCmd:cmd
+                                                 forElementUid:elementUid
+                                                    forPageUid:pageUid];
+    }
+}
+
+- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history
+                           withCropRect:(CGRect)cropRect {
+    if (self.pageDelegate
+        && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryElementCanvasDrawUpdated:withCropRect:)]) {
+        [self.pageDelegate pageHistoryElementCanvasDrawUpdated:history
+                                                  withCropRect:cropRect];
     }
 }
 
@@ -152,6 +168,8 @@
 }
 
 - (void)addFakeCanvas {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     if ([self.currentElement isKindOfClass:[GLCanvasElement class]]
         && ![self.currentElement isTransformed]
         && ![self.currentElement isCropped]) {

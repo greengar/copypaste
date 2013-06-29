@@ -85,6 +85,7 @@ static const CGFloat kZoomMinScale = 0.8;
 @property (nonatomic) CGPoint                         topLeftBounding;
 @property (nonatomic) CGPoint                         bottomRightBounding;
 @property (nonatomic, strong) NSMutableArray          *undoSequenceArray;
+@property (nonatomic) CGRect                          previewAreaRect;
 
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView;
 - (void)initialDrawing;
@@ -115,6 +116,7 @@ static const CGFloat kZoomMinScale = 0.8;
 - (int)roundUpPercent:(CGFloat)number;
 
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end;
+- (void)calculateBounderFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 - (void)addPointToUndoRedoSpaceFromPoint:(CGPoint)start toPoint:(CGPoint)end
                                 colorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
                               strokeSize:(float)size

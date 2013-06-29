@@ -48,6 +48,7 @@
 @synthesize topLeftBounding;
 @synthesize bottomRightBounding;
 @synthesize undoSequenceArray = _undoSequenceArray;
+@synthesize previewAreaRect;
 
 #pragma mark - Initialize
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView {
@@ -402,10 +403,7 @@
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end {
     not_run_when_in_background
     
-    CGRect previewAreaRect = [self getBoundingOfDrawingUpdateFromPoint:start toPoint:end];
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updateBoundingRect:)]) {
-        [self.delegate updateBoundingRect:previewAreaRect];
-    }
+    [self calculateBounderFromPoint:start toPoint:end];
     
     if(extDrawingView) {
         //NAM: Conversion to rotate 90
@@ -449,10 +447,16 @@
     }
 }
 
+- (void)calculateBounderFromPoint:(CGPoint)start toPoint:(CGPoint)end {
+    self.previewAreaRect = [self getBoundingOfDrawingUpdateFromPoint:start toPoint:end];
+    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updateBoundingRect:)]) {
+        [self.delegate updateBoundingRect:self.previewAreaRect];
+    }
+}
+
 - (void)endPotenticalConflictEvent {
 //    DLog();
 //    lastPaintingEvent = PaintingEventNone;
-
 }
 
 - (void)setPaintingEvent:(PaintingEvent)event hasPotientialConfiction:(BOOL)willConflict {
@@ -470,6 +474,8 @@
 
 #pragma mark - Touch Handlers
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     if (!self.shouldCreateNewElement) {
         self.shouldCreateNewElement = YES;
         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(fakeCanvasShouldBeReal:)]) {
@@ -539,6 +545,7 @@
 
 // Handles the continuation of a touch.
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
     
     if (IS_IPAD) {
         DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
@@ -681,7 +688,9 @@
 }
 
 // Handles the end of a touch event when the touch is a tap.
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {    
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     if (IS_IPAD) {
         DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
         

@@ -358,18 +358,56 @@ static GSSession *activeSession = nil;
 - (void)registerRoomDataChanged:(GSRoom *)room
                            type:(GSEventType)eventType
                       withBlock:(GSSingleResultBlock)block {
+    room.isListening = YES;
     [[self generateFirebaseForRoom:room] observeEventType:[self firebaseEventFromGSEvent:eventType]
                                                 withBlock:^(FDataSnapshot *snapshot) {
-        if (snapshot) {
-            if (block) { block([snapshot value], nil); }
+        if (!room.isListening) {
+            [self unregisterRoomDataChanged:room];
         } else {
-            if (block) { block(nil, nil); }
+            if (snapshot) {
+                if (block) { block([snapshot value], nil); }
+            } else {
+                if (block) { block(nil, nil); }
+            }
         }
     }];
 }
 
+- (void)registerRoomDataChanged:(GSRoom *)room
+                          atURL:(NSString *)urlString
+                           type:(GSEventType)eventType
+                      withBlock:(GSSingleResultBlock)block {
+    room.isListening = YES;
+    NSArray *parseURL = [urlString componentsSeparatedByString:@"/"];
+    Firebase *firebase = [self generateFirebaseForRoom:room];
+    for (int i = 0; i < [parseURL count]; i++) {
+        firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
+    }
+    [firebase observeEventType:[self firebaseEventFromGSEvent:eventType]
+                     withBlock:^(FDataSnapshot *snapshot) {
+                         if (!room.isListening) {
+                             [self unregisterRoomDataChanged:room atURL:urlString];
+                         } else {
+                             NSDictionary *dataChangedAtURL = [snapshot value];
+                             if (block) { block(dataChangedAtURL, nil); }
+                         }
+                     }];
+    firebase = nil;
+}
+
 - (void)unregisterRoomDataChanged:(GSRoom *)room {
+    room.isListening = NO;
     [[self generateFirebaseForRoom:room] removeAllObservers];
+}
+
+- (void)unregisterRoomDataChanged:(GSRoom *)room atURL:(NSString *)urlString {
+    room.isListening = NO;
+    NSArray *parseURL = [urlString componentsSeparatedByString:@"/"];
+    Firebase *firebase = [self generateFirebaseForRoom:room];
+    for (int i = 0; i < [parseURL count]; i++) {
+        firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
+    }
+    [firebase removeAllObservers];
 }
 
 - (void)createRoomWithName:(NSString *)roomName
@@ -451,23 +489,6 @@ static GSSession *activeSession = nil;
         firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
     }
     [firebase setValue:dict];
-    firebase = nil;
-}
-
-- (void)registerRoomDataChanged:(GSRoom *)room
-                          atURL:(NSString *)urlString
-                           type:(GSEventType)eventType
-                      withBlock:(GSSingleResultBlock)block {
-    NSArray *parseURL = [urlString componentsSeparatedByString:@"/"];
-    Firebase *firebase = [self generateFirebaseForRoom:room];
-    for (int i = 0; i < [parseURL count]; i++) {
-        firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
-    }
-    [firebase observeEventType:[self firebaseEventFromGSEvent:eventType]
-                     withBlock:^(FDataSnapshot *snapshot) {
-                         NSDictionary *dataChangedAtURL = [snapshot value];
-                         if (block) { block(dataChangedAtURL, nil); }
-                     }];
     firebase = nil;
 }
 
@@ -731,15 +752,19 @@ static GSSession *activeSession = nil;
 }
 
 #pragma mark - Supports
++ (void)showLoadingIndicatorWithMessage:(NSString *)message {
+    [GSSVProgressHUD showWithStatus:message];
+}
+
++ (void)dismissLoadingIndicator {
+    [GSSVProgressHUD dismiss];
+}
+
 + (NSString *)mySecretId {
     if ([[GSSession activeSession] mySecretId]) {
         return [[GSSession activeSession] mySecretId];
     } else  {
-        if ([GSSession isAuthenticated]) {
-            [GSSession activeSession].mySecretId = [NSString stringWithFormat:@"%@%@", [[GSSession currentUser] uid], [GSUtils getMacAddress]];
-        } else {
-            [GSSession activeSession].mySecretId = [GSUtils getMacAddress];
-        }
+        [GSSession activeSession].mySecretId = [GSUtils getMacAddress];
         return [[GSSession activeSession] mySecretId];
     }
 }

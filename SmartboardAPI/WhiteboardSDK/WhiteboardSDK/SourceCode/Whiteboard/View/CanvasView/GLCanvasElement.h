@@ -17,4 +17,7 @@
 - (void)takeScreenshot;
 - (void)removeScreenshot;
 
+@property (nonatomic) BOOL isCrop;
+@property (nonatomic) CGRect boundingRect;
+
 @end
