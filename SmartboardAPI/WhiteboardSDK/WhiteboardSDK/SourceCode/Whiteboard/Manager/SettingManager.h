@@ -66,6 +66,7 @@
 - (void) persistColorTabSettingAtCurrentIndex;  // Must be called to persist current Color Tab
 - (void) persistTextSetting;
 
++ (void)resetSecretId;
 + (NSString *)mySecretId;
 
 @property (nonatomic)           float           textureScale;

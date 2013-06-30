@@ -97,6 +97,10 @@
     [self updateWithFontName:fontName size:-1];
 }
 
+- (void)updateWithFontSize:(int)fontSize {
+    [self updateWithFontName:self.myFontName size:fontSize];
+}
+
 - (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y {
     self.myColor = color;
     self.myColorLocX = x;
@@ -144,13 +148,13 @@
                                                             withOriginText:oldText
                                                            withChangedText:((UITextView *)[self contentView]).text
                                                                    forPage:(WBPage *)self.superview
-                                                                 withBlock:^(HistoryElementTextChanged *history, NSError *error) {
-                                                                     if (history) {
-                                                                         if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                             [self.delegate pageHistoryCreated:history];
-                                                                         }
-                                                                     }
-                                                                 }];
+                                                                 withBlock:^(TextElement *element, NSError *error) {
+            if (element) {
+                oldText = ((UITextView *)[self contentView]).text;
+                [self.delegate didChangeTextContent:((UITextView *)element.contentView).text
+                                         elementUid:element.uid];
+                }
+            }];
         
         [[HistoryManager sharedManager] addActionTextFontChangedElement:self
                                                      withOriginFontName:oldFontName
@@ -158,13 +162,14 @@
                                                     withChangedFontName:self.myFontName
                                                                fontSize:self.myFontSize
                                                                 forPage:(WBPage *)self.superview
-                                                              withBlock:^(HistoryAction *history, NSError *error) {
-                                                                  if (history) {
-                                                                      if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                          [self.delegate pageHistoryCreated:history];
-                                                                      }
-                                                                  }
-                                                              }];
+                                                              withBlock:^(TextElement *element, NSError *error) {
+            if (element) {
+                oldFontName = self.myFontName;
+                oldFontSize = self.myFontSize;
+                [self.delegate didChangeTextFont:element.myFontName
+                                      elementUid:element.uid];
+                }
+            }];
         
         [[HistoryManager sharedManager] addActionTextColorChangedElement:self
                                                          withOriginColor:oldColor
@@ -174,16 +179,15 @@
                                                                        x:self.myColorLocX
                                                                        y:self.myColorLocY
                                                                  forPage:(WBPage *)self.superview
-                                                               withBlock:^(HistoryAction *history, NSError *error) {
-                                                                   if (history) {
-                                                                       if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                           [self.delegate pageHistoryCreated:history];
-                                                                       }
-                                                                   }
-                                                               }];
+                                                               withBlock:^(TextElement *element, NSError *error) {
+               if (element) {
+                   oldColor = self.myColor;
+                   [self.delegate didChangeTextColor:element.myColor
+                                          elementUid:element.uid];
+               }
+           }];
     }
     self.elementCreated = YES;
-    [self checkHistory];
 }
 
 #pragma mark - Keyboard Delegate

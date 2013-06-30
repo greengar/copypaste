@@ -114,7 +114,6 @@
         self.pages = [NSMutableArray new];
         
         [self initLayersWithFrame:self.view.frame]; // initializes self.menubarView
-        [self addNewPage];
         
         [[SettingManager sharedManager] setCurrentColorTab:0];
         
@@ -140,6 +139,13 @@
     return self;
 }
 
+- (id)initWithDelegate:(id<WBBoardDelegate>)delegate {
+    if (self = [super init]) {
+        self.delegate = delegate;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -151,6 +157,13 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (![self.pages count]) {
+        [self addNewPage];
+    }
 }
 
 - (void)addMenuItem:(WBMenuItem *)item {
@@ -222,14 +235,8 @@
     [self.pages addObject:page];
     [self setCurrentPageIndex:([self.pages count]-1)];
     
-    dispatch_async(self.backgroundQueue, ^{
-        NSMutableString *historyURL = [NSMutableString new];
-        [historyURL appendString:@"board_pages"];
-        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:dataUpdate:atURL:)]) {
-            [self.delegate pageOfBoard:self dataUpdate:[page saveToData] atURL:historyURL];
-        }
-    });
+    [self.delegate didAddNewPageWithUid:page.uid
+                               boardUid:self.uid];
 }
 
 - (void)removePageWithId:(NSString *)uid {
@@ -980,16 +987,6 @@
     [UIView commitAnimations];
 }
 
-- (void)startListeningToPageUpdate {
-    NSMutableString *historyURL = [NSMutableString new];
-    [historyURL appendString:@"board_pages"];
-    [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
-    [historyURL appendString:@"/page_history"];
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:saveAtURL:)]) {
-        [self.delegate pageOfBoard:self saveAtURL:historyURL];
-    }
-}
-
 #pragma mark - Keyboard Delegate
 - (void)keyboardWasShown:(NSNotification*)aNotification {
     NSDictionary* info = [aNotification userInfo];
@@ -1129,62 +1126,11 @@
 }
 
 - (void)textElementNowFocus {
+    [[self currentPage] stopToMove];
     [self.toolbarView selectCanvasMode:kTextMode];
 }
 
-#pragma mark - Collaboration
-- (void)pageHistoryCreated:(HistoryAction *)history {
-    dispatch_async(self.backgroundQueue, ^{
-        NSMutableString *historyURL = [NSMutableString new];
-        [historyURL appendString:@"board_pages"];
-        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
-        [historyURL appendFormat:@"/page_history/%@", [history uid]];
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:addNewHistory:atURL:)]) {
-            [self.delegate pageOfBoard:self
-                         addNewHistory:[history saveToData]
-                                 atURL:historyURL];
-        }
-    });
-}
-
-- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history
-                            withPaintingCmd:(PaintingCmd *)cmd
-                              forElementUid:(NSString *)elementUid
-                                 forPageUid:(NSString *)pageUid {
-    dispatch_async(self.backgroundQueue, ^{
-        NSMutableString *historyURL = [NSMutableString new];
-        [historyURL appendString:@"board_pages"];
-        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
-        [historyURL appendFormat:@"/page_history/%@", [history uid]];
-        [historyURL appendFormat:@"/history_painting/paint_multi_stroke_array/%@", [cmd uid]];
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:updateHistoryCanvasDraw:atURL:)]) {
-            [self.delegate pageOfBoard:self
-               updateHistoryCanvasDraw:[cmd saveToDataWithElementUid:elementUid
-                                                             pageUid:pageUid
-                                                          historyUid:history.uid]
-                                 atURL:historyURL];
-        }
-    });
-}
-
-- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history withCropRect:(CGRect)cropRect {
-    dispatch_async(self.backgroundQueue, ^{
-        NSMutableString *historyURL = [NSMutableString new];
-        [historyURL appendString:@"board_pages"];
-        [historyURL appendFormat:@"/%@", [[self currentPage] uid]];
-        [historyURL appendFormat:@"/page_history/%@", [history uid]];
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageOfBoard:updateHistoryCanvasDraw:atURL:)]) {
-            NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObject:NSStringFromCGRect(cropRect)
-                                                                           forKey:@"history_crop_rect"];
-            [self.delegate pageOfBoard:self updateHistoryCanvasDraw:data atURL:historyURL];
-        }
-    });
-}
-
-- (void)pageHistoryElementTransformUpdated:(HistoryAction *)history {
-    [self pageHistoryCreated:history];
-}
-
+#pragma mark - Import/Export Board Data
 - (NSDictionary *)exportBoardData {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:self.uid forKey:@"board_uid"];
@@ -1362,124 +1308,6 @@
     }
 }
 
-- (void)updatePageHistoryData:(NSDictionary *)historyData {
-    NSString *pageUid = [historyData objectForKey:@"page_uid"];
-    
-    WBPage *page = nil;
-    for (WBPage *existedPage in self.pages) {
-        if ([existedPage.uid isEqualToString:pageUid]) {
-            page = existedPage;
-            break;
-        }
-    }
-    
-    if (page) {
-        NSString *historyType = [historyData objectForKey:@"history_type"];
-        
-        HistoryElement *history;
-        WBBaseElement *historyElement;
-        // History create element: now create it again
-        if ([historyType isEqualToString:@"HistoryElementCreated"]) {
-            history = [[HistoryElementCreated alloc] init];
-            [history setPage:page];
-            
-        // History delete element: now delete it again
-        } else if ([historyType isEqualToString:@"HistoryElementDeleted"]) {
-            NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            historyElement = [page elementByUid:elementUid];
-            if (historyElement) {
-                history = [[HistoryElementDeleted alloc] init];
-                [history setPage:page];
-                [history setElement:historyElement];
-            }
-            
-        // History draw on the canvas, now draw it again
-        } else if ([historyType isEqualToString:@"HistoryElementCanvasDraw"]) {
-            NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            historyElement = [page elementByUid:elementUid];
-            if (historyElement) {
-                history = [[HistoryElementCanvasDraw alloc] init];
-                [history setPage:page];
-                [history setElement:historyElement];
-            }
-            
-        // History text changed: now change it again
-        } else if ([historyType isEqualToString:@"HistoryElementTextChanged"]) {
-            NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            historyElement = [page elementByUid:elementUid];
-            if (historyElement) {
-                history = [[HistoryElementTextChanged alloc] init];
-                [history setPage:page];
-                [history setElement:historyElement];
-            }
-            
-        // History text font changed: now change it again
-        } else if ([historyType isEqualToString:@"HistoryElementTextFontChanged"]) {
-            NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            historyElement = [page elementByUid:elementUid];
-            if (historyElement) {
-                history = [[HistoryElementTextFontChanged alloc] init];
-                [history setPage:page];
-                [history setElement:historyElement];
-            }
-            
-        // History text color changed: now change it again
-        } else if ([historyType isEqualToString:@"HistoryElementTextColorChanged"]) {
-            NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            historyElement = [page elementByUid:elementUid];
-            if (historyElement) {
-                history = [[HistoryElementTextColorChanged alloc] init];
-                [history setPage:page];
-                [history setElement:historyElement];
-            }
-            
-        // History element transform: now transform it again
-        } else if ([historyType isEqualToString:@"HistoryElementTransform"]) {
-            NSString *elementUid = [historyData objectForKey:@"element_uid"];
-            historyElement = [page elementByUid:elementUid];
-            if (historyElement) {
-                history = [[HistoryElementTransform alloc] init];
-                [history setPage:page];
-                [history setElement:historyElement];
-            }
-        }
-        
-        if (history) {
-            [history loadFromData:historyData forPage:page];
-            [[HistoryManager sharedManager] addAction:history forPage:page];
-        }
-    }
-}
-
-- (void)updatePageHistoryCanvasDrawWithData:(NSDictionary *)historyData {
-    NSString *pageUid = [historyData objectForKey:@"page_uid"];
-    NSString *elementUid = [historyData objectForKey:@"element_uid"];
-    WBPage *page = nil;
-    for (WBPage *existedPage in self.pages) {
-        if ([existedPage.uid isEqualToString:pageUid]) {
-            page = existedPage;
-            break;
-        }
-    }
-    if (page) {
-        WBBaseElement *element = [page elementByUid:elementUid];
-        
-        if (element) {
-            NSString *historyUid = [historyData objectForKey:@"history_uid"];
-            NSMutableArray *historyForPage = [[[HistoryManager sharedManager] historyPool] objectForKey:pageUid];
-            for (HistoryElement *history in historyForPage) {
-                if ([history.uid isEqualToString:historyUid] && [history isKindOfClass:[HistoryElementCanvasDraw class]]) {
-                    HistoryElementCanvasDraw *historyCanvas = (HistoryElementCanvasDraw *)history;
-                    StrokePaintingCmd *singlePaintingCmd = [[StrokePaintingCmd alloc] init];
-                    [singlePaintingCmd loadFromData:historyData forElement:element];
-                    [((MultiStrokePaintingCmd *) historyCanvas.paintingCommand).strokeArray addObject:singlePaintingCmd];
-                    [((MainPaintingView *) element.contentView) reloadView];
-                }
-            }
-        }
-    }
-}
-
 #pragma mark - Save/Load from Local Storage
 - (void)saveBoardDataToLocalStorageWithName:(NSString *)boardName {
     NSString *folderPath = [WBUtils getBaseDocumentFolder];
@@ -1504,11 +1332,308 @@
     return [SettingManager mySecretId];
 }
 
++ (void)resetSecretId {
+    [SettingManager resetSecretId];
+}
+
 - (void)dealloc {
     [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [[HistoryManager sharedManager] clearHistoryPool];
     [[PaintingManager sharedManager] removeAllCallbacks];
     [self.pages removeAllObjects];
+}
+
+- (WBPage *)pageByUid:(NSString *)pageUid {
+    WBPage *existedPage = nil;
+    for (WBPage *page in self.pages) {
+        if ([pageUid isEqualToString:pageUid]) {
+            existedPage = page;
+            break;
+        }
+    }
+    return existedPage;
+}
+
+#pragma mark - Collaboration Back
+- (void)didCreateCanvasElementWithUid:(NSString *)elementUid
+                              pageUid:(NSString *)pageUid {
+    [self.delegate didCreateCanvasElementWithUid:elementUid
+                                         pageUid:pageUid
+                                        boardUid:self.uid];
+}
+
+- (void)didCreateTextElementWithUid:(NSString *)elementUid
+                            pageUid:(NSString *)pageUid
+                          textFrame:(CGRect)textFrame
+                               text:(NSString *)text
+                          textColor:(UIColor *)textColor
+                           textFont:(NSString *)textFont
+                           textSize:(float)textSize {
+    float red, green, blue, alpha;
+    [textColor getRed:&red green:&green blue:&blue alpha:&alpha];
+    [self.delegate didCreateTextElementWithUid:elementUid
+                                     textFrame:textFrame
+                                          text:text
+                                  textColorRed:red
+                                textColorGreen:green
+                                 textColorBlue:blue
+                                textColorAlpha:alpha
+                                      textFont:textFont
+                                      textSize:textSize
+                                       pageUid:pageUid
+                                      boardUid:self.uid];
+}
+
+- (void)didApplyColorRed:(float)red
+                   green:(float)green
+                    blue:(float)blue
+                   alpha:(float)alpha
+              strokeSize:(float)strokeSize
+              elementUid:(NSString *)elementUid
+                 pageUid:(NSString *)pageUid {
+    [self.delegate didApplyColorRed:red
+                              green:green
+                               blue:blue
+                              alpha:alpha
+                         strokeSize:strokeSize
+                         elementUid:elementUid
+                            pageUid:pageUid
+                           boardUid:self.uid];
+}
+
+- (void)didRenderLineFromPoint:(CGPoint)start
+                       toPoint:(CGPoint)end
+                toURBackBuffer:(BOOL)toURBackBuffer
+                     isErasing:(BOOL)isErasing
+                updateBoundary:(CGRect)boundingRect
+                    elementUid:(NSString *)elementUid
+                       pageUid:(NSString *)pageUid {
+    [self.delegate didRenderLineFromPoint:start
+                                  toPoint:end
+                           toURBackBuffer:toURBackBuffer
+                                isErasing:isErasing
+                           updateBoundary:boundingRect
+                               elementUid:elementUid
+                                  pageUid:pageUid
+                                 boardUid:self.uid];
+}
+
+- (void)didChangeTextContent:(NSString *)text
+                  elementUid:(NSString *)elementUid
+                     pageUid:(NSString *)pageUid {
+    [self.delegate didChangeTextContent:text
+                             elementUid:elementUid
+                                pageUid:pageUid
+                               boardUid:self.uid];
+}
+
+- (void)didChangeTextFont:(NSString *)textFont
+               elementUid:(NSString *)elementUid
+                  pageUid:(NSString *)pageUid {
+    [self.delegate didChangeTextFont:textFont
+                          elementUid:elementUid
+                             pageUid:pageUid
+                            boardUid:self.uid];
+}
+
+- (void)didChangeTextSize:(float)textSize
+               elementUid:(NSString *)elementUid
+                  pageUid:(NSString *)pageUid {
+    [self.delegate didChangeTextSize:textSize
+                          elementUid:elementUid
+                             pageUid:pageUid
+                            boardUid:self.uid];
+}
+
+- (void)didChangeTextColor:(UIColor *)textColor
+                elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    float red, green, blue, alpha;
+    [textColor getRed:&red green:&green blue:&blue alpha:&alpha];
+    [self.delegate didChangeTextColorRed:red
+                          textColorGreen:green
+                           textColorBlue:blue
+                          textColorAlpha:alpha
+                              elementUid:elementUid
+                                 pageUid:pageUid
+                                boardUid:self.uid];
+}
+
+- (void)didMoveTo:(CGPoint)dest elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    [self.delegate didMoveTo:dest elementUid:elementUid pageUid:pageUid boardUid:self.uid];
+}
+
+- (void)didRotateTo:(float)rotation elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    [self.delegate didRotateTo:rotation elementUid:elementUid pageUid:pageUid boardUid:self.uid];
+}
+
+- (void)didScaleTo:(float)scale elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    [self.delegate didScaleTo:scale elementUid:elementUid pageUid:pageUid boardUid:self.uid];
+}
+
+- (void)didApplyFromTransform:(CGAffineTransform)from toTransform:(CGAffineTransform)to
+                transformName:(NSString *)transformName
+                   elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    [self.delegate didApplyFromTransform:from toTransform:to
+                           transformName:transformName
+                              elementUid:elementUid pageUid:pageUid boardUid:self.uid];
+}
+
+#pragma mark - Collaboration Forward
+- (void)addNewPageWithUid:(NSString *)pageUid {
+    WBPage *page = [[WBPage alloc] initWithFrame:CGRectMake(0,
+                                                            0,
+                                                            self.view.frame.size.width,
+                                                            self.view.frame.size.height)];
+    [page setUid:pageUid];
+    [page setPageDelegate:self];
+    
+    [self.pageHolderView addSubview:page];
+    [self.pages addObject:page];
+    [self setCurrentPageIndex:([self.pages count]-1)];
+}
+
+- (void)addNewCanvas {
+    [[self currentPage] addCanvas];
+}
+
+- (void)removeAllPages {
+    [self.pages removeAllObjects];
+    [[self.pageHolderView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+}
+
+- (void)createCanvasElementWithUid:(NSString *)elementUid
+                           pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page createCanvasElementWithUid:elementUid];
+    }
+}
+
+- (void)createTextElementWithUid:(NSString *)elementUid
+                         pageUid:(NSString *)pageUid
+                       textFrame:(CGRect)textFrame
+                            text:(NSString *)text
+                    textColorRed:(float)red
+                  textColorGreen:(float)green
+                   textColorBlue:(float)blue
+                  textColorAlpha:(float)alpha
+                        textFont:(NSString *)textFont
+                        textSize:(float)textSize {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        UIColor *textColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+        [page createTextElementwithUid:elementUid
+                             textFrame:textFrame
+                                  text:text
+                             textColor:textColor
+                              textFont:textFont
+                              textSize:textSize];
+    }
+}
+
+- (void)applyColorRed:(float)red
+                green:(float)green
+                 blue:(float)blue
+                alpha:(float)alpha
+           strokeSize:(float)strokeSize
+           elementUid:(NSString *)elementUid
+              pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page applyColorRed:red
+                      green:green
+                       blue:blue
+                      alpha:alpha
+                 strokeSize:strokeSize
+                 elementUid:elementUid];
+    }
+}
+
+- (void)renderLineFromPoint:(CGPoint)start
+                    toPoint:(CGPoint)end
+             toURBackBuffer:(BOOL)toURBackBuffer
+                  isErasing:(BOOL)isErasing
+             updateBoundary:(CGRect)boundingRect
+                 elementUid:(NSString *)elementUid
+                    pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page renderLineFromPoint:start
+                          toPoint:end
+                   toURBackBuffer:toURBackBuffer
+                        isErasing:isErasing
+                   updateBoundary:boundingRect
+                       elementUid:elementUid];
+    }
+}
+
+- (void)changeTextContent:(NSString *)text
+               elementUid:(NSString *)elementUid
+                  pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page changeTextContent:text
+                     elementUid:elementUid];
+    }
+}
+
+- (void)changeTextFont:(NSString *)textFont
+            elementUid:(NSString *)elementUid
+               pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page changeTextFont:textFont
+                  elementUid:elementUid];
+    }
+}
+
+- (void)changeTextSize:(float)textSize elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page changeTextSize:textSize
+                  elementUid:elementUid];
+    }
+}
+
+- (void)changeTextColorRed:(float)red textColorGreen:(float)green
+             textColorBlue:(float)blue textColorAlpha:(float)alpha
+                elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        UIColor *textColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+        [page changeTextColor:textColor
+                   elementUid:elementUid];
+    }
+}
+
+- (void)moveTo:(CGPoint)dest elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page moveTo:dest elementUid:elementUid];
+    }
+}
+
+- (void)rotateTo:(float)rotation elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page rotateTo:rotation elementUid:elementUid];
+    }
+}
+
+- (void)scaleTo:(float)scale elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page scaleTo:scale elementUid:elementUid];
+    }
+}
+
+- (void)applyFromTransform:(CGAffineTransform)from toTransform:(CGAffineTransform)to
+             transformName:(NSString *)transformName
+                elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page applyFromTransform:from toTransform:to transformName:transformName elementUid:elementUid];
+    }
 }
 
 @end

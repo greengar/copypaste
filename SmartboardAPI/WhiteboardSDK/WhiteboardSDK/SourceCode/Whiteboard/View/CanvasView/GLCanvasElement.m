@@ -9,6 +9,7 @@
 #import "GLCanvasElement.h"
 #import "SettingManager.h"
 #import "HistoryManager.h"
+#import "HistoryElementCanvasDraw.h"
 #import "GSButton.h"
 #import "WBPage.h"
 
@@ -49,38 +50,19 @@
     return drawingView;
 }
 
-- (void)updateBoundingRect:(CGRect)rect {
-    self.boundingRect = rect;
-}
-
 - (BOOL)isCropped {
     return self.isCrop;
 }
 
 - (void)crop {
-    if (![self isCropped]) {
-        self.transform = self.defaultTransform;
-        drawingView.frame = CGRectMake(-self.boundingRect.origin.x, -self.boundingRect.origin.y,
-                                       drawingView.frame.size.width, drawingView.frame.size.height);
-        screenshotImageView.frame = drawingView.frame;
-        self.frame = self.boundingRect;
-        self.defaultFrame = self.frame;
-        self.isCrop = YES;
-        self.transform = self.currentTransform;
-        
-        // TODO: need to use this to update the crop boundary for the Element on Firebase
-        /*
-        [[HistoryManager sharedManager] updateActionBrushElementWithId:currentBrushId
-                                                          withCropRect:self.boundingRect
-                                                               forPage:(WBPage *)self.superview
-                                                             withBlock:^(HistoryAction *history, NSError *error) {
-                                                                 if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryElementCanvasUpdated:withCropRect:)]) {
-                                                                     [self.delegate pageHistoryElementCanvasUpdated:history
-                                                                                                       withCropRect:self.boundingRect];
-                                                                 }
-                                                             }];
-         */
-    }
+    self.transform = self.defaultTransform;
+    drawingView.frame = CGRectMake(-self.boundingRect.origin.x, -self.boundingRect.origin.y,
+                                   drawingView.frame.size.width, drawingView.frame.size.height);
+    screenshotImageView.frame = drawingView.frame;
+    self.frame = self.boundingRect;
+    self.defaultFrame = self.frame;
+    self.isCrop = YES;
+    self.transform = self.currentTransform;
 }
 
 - (void)revive {
@@ -138,11 +120,10 @@
 }
 
 #pragma mark - Fake/Real Canvas
-- (void)fakeCanvasShouldBeReal:(UIView *)paintingView {
+- (void)didCreateRealCanvas {
     self.isFake = NO;
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(fakeCanvasFromElementShouldBeReal:)]) {
-        [self.delegate fakeCanvasFromElementShouldBeReal:self];
-    }
+    self.isCrop = YES;
+    [self.delegate didCreateRealCanvasWithUid:self.uid];
 }
 
 #pragma mark - Undo/Redo
@@ -150,41 +131,79 @@
     currentBrushId = [[HistoryManager sharedManager] addActionBrushElement:self
                                                                    forPage:(WBPage *)self.superview
                                                        withPaintingCommand:cmd
-                                                                 withBlock:^(HistoryAction *history, NSError *error) {
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-            [self.delegate pageHistoryCreated:history];
-        }
-         
-        NSMutableString *historyURL = [NSMutableString new];
-        [historyURL appendString:@"board_pages"];
-        [historyURL appendFormat:@"/%@", [((WBPage *) self.superview) uid]];
-        [historyURL appendFormat:@"/page_history/%@", [history uid]];
-        [historyURL appendString:@"/history_painting/paint_multi_stroke_array"];
-        NSDictionary *data = @{@"URL_to_listen" : historyURL};
-                                                                     
-       [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationNowListenToCanvasDraw
-                                                           object:nil
-                                                         userInfo:data];
-    }];
+                                                                 withBlock:^(HistoryElementCanvasDraw *history, NSError *error) {}];
 }
 
 - (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd {
     [[HistoryManager sharedManager] updateActionBrushElementWithId:currentBrushId
                                                withPaintingCommand:cmd
                                                            forPage:(WBPage *)self.superview
-                                                         withBlock:^(HistoryAction *history, NSError *error) {
-                                                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pageHistoryElementCanvasUpdated:withNewPaintingCmd:forElementUid:forPageUid:)]) {
-                                                        [self.delegate pageHistoryElementCanvasUpdated:history
-                                                                                    withNewPaintingCmd:cmd
-                                                                                         forElementUid:self.uid
-                                                                                            forPageUid:[((WBPage *) self.superview) uid]];
-                                                    }
-                                                }];
+                                                         withBlock:^(HistoryElementCanvasDraw *history, NSError *error) {}];
 }
 
 - (void)dealloc {
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     drawingView = nil;
+}
+
+#pragma mark - Collaboration Back
+- (void)didApplyColorRed:(float)red
+                   green:(float)green
+                    blue:(float)blue
+                   alpha:(float)alpha
+              strokeSize:(float)strokeSize {
+    [self.delegate didApplyColorRed:red
+                              green:green
+                               blue:blue
+                              alpha:alpha
+                         strokeSize:strokeSize
+                         elementUid:self.uid];
+}
+
+- (void)didRenderLineFromPoint:(CGPoint)start
+                       toPoint:(CGPoint)end
+                toURBackBuffer:(BOOL)toURBackBuffer
+                     isErasing:(BOOL)isErasing
+                updateBoundary:(CGRect)boundingRect {
+    self.boundingRect = boundingRect;
+    [self.delegate didRenderLineFromPoint:start
+                                  toPoint:end
+                           toURBackBuffer:toURBackBuffer
+                                isErasing:isErasing
+                           updateBoundary:boundingRect
+                               elementUid:self.uid];
+}
+
+#pragma mark - Collaboration Forward
+- (void)createRealCanvas {
+    self.isFake = NO;
+    [drawingView createRealCanvas];
+}
+
+- (void)applyColorRed:(float)red
+                green:(float)green
+                 blue:(float)blue
+                alpha:(float)alpha
+           strokeSize:(float)strokeSize {
+    [drawingView applyColorRed:red
+                         green:green
+                          blue:blue
+                         alpha:alpha
+                    strokeSize:strokeSize];
+}
+
+- (void)renderLineFromPoint:(CGPoint)start
+                    toPoint:(CGPoint)end
+             toURBackBuffer:(BOOL)toURBackBuffer
+                  isErasing:(BOOL)isErasing
+             updateBoundary:(CGRect)boundingRect {
+    self.boundingRect = boundingRect;
+    [drawingView renderLineFromPoint:start
+                             toPoint:end
+                      toURBackBuffer:toURBackBuffer
+                           isErasing:isErasing
+                      updateBoundary:boundingRect];
+     
 }
 
 @end

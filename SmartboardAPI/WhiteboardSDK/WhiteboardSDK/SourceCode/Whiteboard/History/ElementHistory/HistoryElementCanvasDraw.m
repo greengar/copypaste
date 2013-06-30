@@ -72,17 +72,6 @@
         [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
         ((GLCanvasElement *)self.element).boundingRect = paintCmd.drawingView.previewAreaRect;
     }
-    
-    NSMutableString *historyURL = [NSMutableString new];
-    [historyURL appendString:@"board_pages"];
-    [historyURL appendFormat:@"/%@", page.uid];
-    [historyURL appendFormat:@"/page_history/%@", self.uid];
-    [historyURL appendString:@"/history_painting/paint_multi_stroke_array"];
-    NSDictionary *data = @{@"URL_to_listen" : historyURL};
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationNowListenToCanvasDraw
-                                                        object:nil
-                                                      userInfo:data];
 }
 
 @end

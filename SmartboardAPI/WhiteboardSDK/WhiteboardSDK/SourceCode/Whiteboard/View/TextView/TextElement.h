@@ -19,6 +19,7 @@
 - (void)setText:(NSString *)text;
 - (void)updateWithFontName:(NSString *)fontName size:(int)fontSize;
 - (void)updateWithFontName:(NSString *)fontName;
+- (void)updateWithFontSize:(int)fontSize;
 - (void)updateWithColor:(UIColor *)color x:(float)x y:(float)y;
 - (void)updateWithColor:(UIColor *)color;
 

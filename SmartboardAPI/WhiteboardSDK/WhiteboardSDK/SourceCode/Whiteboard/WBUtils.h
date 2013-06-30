@@ -41,7 +41,84 @@
 
 #define THROW_EXCEPTION_TYPE(type) [NSException raise:type format:@"%s Line %d", __PRETTY_FUNCTION__, __LINE__];
 
-#define kNotificationNowListenToCanvasDraw @"kNotificationNowListenToCanvasDraw"
+@class WBBoard;
+@protocol WBBoardDelegate
+@required
+- (NSString *)facebookId;
+- (void)doneEditingBoardWithResult:(UIImage *)image;
+
+#pragma mark - Collaboration
+@optional
+- (void)didAddNewPageWithUid:(NSString *)pageUid
+                    boardUid:(NSString *)boardUid;
+- (void)didCreateCanvasElementWithUid:(NSString *)elementUid
+                              pageUid:(NSString *)pageUid
+                             boardUid:(NSString *)boardUid;
+- (void)didCreateTextElementWithUid:(NSString *)elementUid
+                          textFrame:(CGRect)textFrame
+                               text:(NSString *)text
+                       textColorRed:(float)red
+                     textColorGreen:(float)green
+                      textColorBlue:(float)blue
+                     textColorAlpha:(float)alpha
+                           textFont:(NSString *)textFont
+                           textSize:(float)textSize
+                            pageUid:(NSString *)pageUid
+                           boardUid:(NSString *)boardUid;
+- (void)didApplyColorRed:(float)red
+                   green:(float)green
+                    blue:(float)blue
+                   alpha:(float)alpha
+              strokeSize:(float)strokeSize
+              elementUid:(NSString *)elementUid
+                 pageUid:(NSString *)pageUid
+                boardUid:(NSString *)boardUid;
+- (void)didRenderLineFromPoint:(CGPoint)start
+                       toPoint:(CGPoint)end
+                toURBackBuffer:(BOOL)toURBackBuffer
+                     isErasing:(BOOL)isErasing
+                updateBoundary:(CGRect)boundingRect
+                    elementUid:(NSString *)elementUid
+                       pageUid:(NSString *)pageUid
+                      boardUid:(NSString *)boardUid;
+- (void)didChangeTextContent:(NSString *)text
+                  elementUid:(NSString *)elementUid
+                     pageUid:(NSString *)pageUid
+                    boardUid:(NSString *)boardUid;
+- (void)didChangeTextFont:(NSString *)textFont
+               elementUid:(NSString *)elementUid
+                  pageUid:(NSString *)pageUid
+                 boardUid:(NSString *)boardUid;
+- (void)didChangeTextSize:(float)textSize
+               elementUid:(NSString *)elementUid
+                  pageUid:(NSString *)pageUid
+                 boardUid:(NSString *)boardUid;
+- (void)didChangeTextColorRed:(float)red
+               textColorGreen:(float)green
+                textColorBlue:(float)blue
+               textColorAlpha:(float)alpha
+                   elementUid:(NSString *)elementUid
+                      pageUid:(NSString *)pageUid
+                     boardUid:(NSString *)boardUid;
+- (void)didMoveTo:(CGPoint)dest
+       elementUid:(NSString *)elementUid
+          pageUid:(NSString *)pageUid
+         boardUid:(NSString *)boardUid;
+- (void)didRotateTo:(float)rotation
+         elementUid:(NSString *)elementUid
+            pageUid:(NSString *)pageUid
+           boardUid:(NSString *)boardUid;
+- (void)didScaleTo:(float)scale
+        elementUid:(NSString *)elementUid
+           pageUid:(NSString *)pageUid
+          boardUid:(NSString *)boardUid;
+- (void)didApplyFromTransform:(CGAffineTransform)from
+                  toTransform:(CGAffineTransform)to
+                transformName:(NSString *)transformName
+                   elementUid:(NSString *)elementUid
+                      pageUid:(NSString *)pageUid
+                     boardUid:(NSString *)boardUid;
+@end
 
 @interface WBUtils : NSObject
 

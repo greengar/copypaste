@@ -286,11 +286,16 @@ static SettingManager *shareManager = nil;
     [[PaintingManager sharedManager] updateOpacity:self.tempOpacity of:nil];
 }
 
++ (void)resetSecretId {
+    NSString *mac = [[WBUtils getMacAddress] stringByReplacingOccurrencesOfString:@":" withString:@"i"];
+    [SettingManager sharedManager].mySecretId = [NSString stringWithFormat:@"%@%@", mac, [WBUtils generateUniqueId]];
+}
+
 + (NSString *)mySecretId {
     if ([[SettingManager sharedManager] mySecretId]) {
         return [[SettingManager sharedManager] mySecretId];
     } else  {
-        [SettingManager sharedManager].mySecretId = [[WBUtils getMacAddress] stringByReplacingOccurrencesOfString:@":" withString:@"i"];
+        [SettingManager resetSecretId];
         return [[SettingManager sharedManager] mySecretId];
     }
 }

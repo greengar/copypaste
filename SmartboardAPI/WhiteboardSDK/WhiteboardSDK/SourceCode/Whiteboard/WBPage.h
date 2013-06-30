@@ -19,17 +19,61 @@
 @class PaintingCmd;
 @protocol WBPageDelegate
 @optional
-- (void)pageHistoryCreated:(HistoryAction *)history;
-- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history
-                            withPaintingCmd:(PaintingCmd *)cmd
-                              forElementUid:(NSString *)elementUid
-                                 forPageUid:(NSString *)pageUid;
-- (void)pageHistoryElementCanvasDrawUpdated:(HistoryAction *)history
-                               withCropRect:(CGRect)cropRect;
-- (void)pageHistoryElementTransformUpdated:(HistoryAction *)history;
 - (void)elementHideKeyboard;
 - (void)elementRevived;
 - (void)textElementNowFocus;
+
+#pragma mark - Collaboration
+@required
+- (void)didCreateCanvasElementWithUid:(NSString *)elementUid
+                              pageUid:(NSString *)pageUid;
+- (void)didCreateTextElementWithUid:(NSString *)elementUid
+                            pageUid:(NSString *)pageUid
+                          textFrame:(CGRect)textFrame
+                               text:(NSString *)text
+                          textColor:(UIColor *)textColor
+                           textFont:(NSString *)textFont
+                           textSize:(float)textSize;
+- (void)didApplyColorRed:(float)red
+                   green:(float)green
+                    blue:(float)blue
+                   alpha:(float)alpha
+              strokeSize:(float)strokeSize
+              elementUid:(NSString *)elementUid
+                 pageUid:(NSString *)pageUid;
+- (void)didRenderLineFromPoint:(CGPoint)start
+                       toPoint:(CGPoint)end
+                toURBackBuffer:(BOOL)toURBackBuffer
+                     isErasing:(BOOL)isErasing
+                updateBoundary:(CGRect)boundingRect
+                    elementUid:(NSString *)elementUid
+                       pageUid:(NSString *)pageUid;
+- (void)didChangeTextContent:(NSString *)text
+                  elementUid:(NSString *)elementUid
+                     pageUid:(NSString *)pageUid;
+- (void)didChangeTextFont:(NSString *)textFont
+               elementUid:(NSString *)elementUid
+                  pageUid:(NSString *)pageUid;
+- (void)didChangeTextSize:(float)textSize
+               elementUid:(NSString *)elementUid
+                  pageUid:(NSString *)pageUid;
+- (void)didChangeTextColor:(UIColor *)textColor
+                elementUid:(NSString *)elementUid
+                   pageUid:(NSString *)pageUid;
+- (void)didMoveTo:(CGPoint)dest
+       elementUid:(NSString *)elementUid
+          pageUid:(NSString *)pageUid;
+- (void)didRotateTo:(float)rotation
+         elementUid:(NSString *)elementUid
+            pageUid:(NSString *)pageUid;
+- (void)didScaleTo:(float)scale
+        elementUid:(NSString *)elementUid
+           pageUid:(NSString *)pageUid;
+- (void)didApplyFromTransform:(CGAffineTransform)from
+                  toTransform:(CGAffineTransform)to
+                transformName:(NSString *)transformName
+                   elementUid:(NSString *)elementUid
+                      pageUid:(NSString *)pageUid;
 @end
 
 @interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
@@ -41,6 +85,7 @@
 - (void)restoreElement:(WBBaseElement *)element;
 - (void)removeElement:(WBBaseElement *)element;
 
+- (void)addCanvas;
 - (void)addFakeCanvas;
 - (void)removeFakeCanvas;
 - (void)addText;
@@ -53,5 +98,44 @@
 @property (nonatomic, strong) WBBaseElement *currentElement;
 @property (nonatomic, assign) id<WBPageDelegate> pageDelegate;
 @property (nonatomic) BOOL isMovable;
+
+#pragma mark - Collaboration
+- (void)createCanvasElementWithUid:(NSString *)elementUid;
+- (void)createTextElementwithUid:(NSString *)elementUid
+                       textFrame:(CGRect)textFrame
+                            text:(NSString *)text
+                       textColor:(UIColor *)textColor
+                        textFont:(NSString *)textFont
+                        textSize:(float)textSize;
+- (void)applyColorRed:(float)red
+                green:(float)green
+                 blue:(float)blue
+                alpha:(float)alpha
+           strokeSize:(float)strokeSize
+           elementUid:(NSString *)elementUid;
+- (void)renderLineFromPoint:(CGPoint)start
+                    toPoint:(CGPoint)end
+             toURBackBuffer:(BOOL)toURBackBuffer
+                  isErasing:(BOOL)isErasing
+             updateBoundary:(CGRect)rect
+                 elementUid:(NSString *)elementUid;
+- (void)changeTextContent:(NSString *)text
+               elementUid:(NSString *)elementUid;
+- (void)changeTextFont:(NSString *)textFont
+            elementUid:(NSString *)elementUid;
+- (void)changeTextSize:(float)textSize
+            elementUid:(NSString *)elementUid;
+- (void)changeTextColor:(UIColor *)textColor
+             elementUid:(NSString *)elementUid;
+- (void)moveTo:(CGPoint)dest
+    elementUid:(NSString *)elementUid;
+- (void)rotateTo:(float)rotation
+      elementUid:(NSString *)elementUid;
+- (void)scaleTo:(float)scale
+     elementUid:(NSString *)elementUid;
+- (void)applyFromTransform:(CGAffineTransform)from
+               toTransform:(CGAffineTransform)to
+             transformName:(NSString *)transformName
+                elementUid:(NSString *)elementUid;
 
 @end

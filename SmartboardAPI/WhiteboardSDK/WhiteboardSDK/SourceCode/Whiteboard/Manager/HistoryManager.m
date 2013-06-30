@@ -126,7 +126,7 @@ static HistoryManager *shareManager = nil;
     [action setPage:page];
     [action setElement:element];
     [self addAction:action forPage:page];
-    block(action, nil);
+    if (block) { block(action, nil); }
 }
 
 - (void)addActionDeleteElement:(WBBaseElement *)element forPage:(WBPage *)page withBlock:(WBSingleResultBlock)block {
@@ -134,7 +134,7 @@ static HistoryManager *shareManager = nil;
     [action setPage:page];
     [action setElement:element];
     [self addAction:action forPage:page];    
-    block(action, nil);
+    if (block) { block(action, nil); }
 }
 
 - (NSString *)addActionTransformElement:(WBBaseElement *)element
@@ -163,8 +163,11 @@ static HistoryManager *shareManager = nil;
     [action setElement:element];
     [action setOriginalTransform:transform];
     [self addAction:action forPage:page];
+    
     [historyToUpdates addObject:action];
-    block(historyToUpdates, nil);
+    
+    if (block) { block(historyToUpdates, nil); }
+    
     return [action uid];
 }
 
@@ -188,7 +191,7 @@ static HistoryManager *shareManager = nil;
             [historyToUpdates addObject:action];
         }
     }
-    block(historyToUpdates, nil);
+    if (block) { block(historyToUpdates, nil); }
 }
 
 - (NSString *)addActionBrushElement:(WBBaseElement *)element
@@ -200,7 +203,9 @@ static HistoryManager *shareManager = nil;
     [action setElement:element];
     [action setPaintingCommand:paintingCmd];
     [self addAction:action forPage:page];
-    block(action, nil);
+    
+    if (block) { block(action, nil); }
+    
     return [action uid];
 }
 
@@ -222,7 +227,7 @@ static HistoryManager *shareManager = nil;
             break;
         }
     }
-    block(actionToUpdate, nil);
+    if (block) { block(actionToUpdate, nil); }
 }
 
 - (void)updateActionBrushElementWithId:(NSString *)uid
@@ -241,7 +246,7 @@ static HistoryManager *shareManager = nil;
             break;
         }
     }
-    block(actionToUpdate, nil);
+    if (block) { block(actionToUpdate, nil); }
 }
 
 - (void)addActionTextContentChangedElement:(TextElement *)element
@@ -256,9 +261,9 @@ static HistoryManager *shareManager = nil;
         [action setOriginalText:text1];
         [action setChangedText:text2];
         [self addAction:action forPage:page];
-        block(action, nil);
+        if (block) { block(element, nil); }
     } else {
-        block(nil, nil);
+        if (block) { block(nil, nil); }
     }
 }
 
@@ -276,9 +281,9 @@ static HistoryManager *shareManager = nil;
         [action setChangedFontName:name2];
         [action setChangedFontSize:size2];
         [self addAction:action forPage:page];
-        block(action, nil);
+        if (block) { block(element, nil); }
     } else {
-        block(nil, nil);
+        if (block) { block(nil, nil); }
     }
 }
 
@@ -298,9 +303,9 @@ static HistoryManager *shareManager = nil;
         [action setChangedColorX:x2];
         [action setChangedColorY:y2];
         [self addAction:action forPage:page];
-        block(action, nil);
+        if (block) { block(element, nil); }
     } else {
-        block(nil, nil);
+        if (block) { block(nil, nil); }
     }
 }
 

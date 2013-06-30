@@ -20,6 +20,9 @@
 @synthesize isExternal;
 @synthesize internal_transforms;
 @synthesize isImageSent;
+@synthesize topLeftBounding;
+@synthesize bottomRightBounding;
+@synthesize previewAreaRect;
 
 #pragma mark - Painting Manager delegates
 - (void) colorChanged:(CGFloat *)color isSelf:(BOOL)is {
@@ -889,6 +892,11 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     }
 }
 
+- (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing updateBoundary:(CGRect)rect {
+    self.previewAreaRect = rect;
+    [self renderLineFromPoint:start toPoint:end toURBackBuffer:toURBackBuffer isErasing:isErasing];
+}
+
 //KONG: this method is used for testing
 - (void)drawSomethingToOffscreenBuffer {
     [self setOffscreenFramebuffer];
@@ -1018,6 +1026,68 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 
 - (void)willEnterForeground {
     _isInBackground = NO;    
+}
+
+- (void)calculateBounderFromPoint:(CGPoint)start toPoint:(CGPoint)end {
+    self.previewAreaRect = [self getBoundingOfDrawingUpdateFromPoint:start toPoint:end];
+}
+
+#pragma mark - Supports
+- (CGRect)getBoundingOfDrawingUpdateFromPoint:(CGPoint)start toPoint:(CGPoint)end {
+    CGPoint touchStart = CGPointMake(start.x, self.bounds.size.height-start.y);
+    CGPoint touchEnd = CGPointMake(end.x, self.bounds.size.height-end.y);
+    
+    if (CGPointEqualToPoint(self.topLeftBounding, CGPointZero)) {
+        self.topLeftBounding = touchStart;
+    }
+    
+    if (CGPointEqualToPoint(self.bottomRightBounding, CGPointZero)) {
+        self.bottomRightBounding = touchStart;
+    }
+    
+    CGPoint topLeft = self.topLeftBounding;
+    CGPoint bottomRight = self.bottomRightBounding;
+    
+    float pointSize = 0;
+    glGetFloatv(GL_POINT_SIZE, &pointSize);
+    float scale = [[UIScreen mainScreen] respondsToSelector:@selector(scale)]?[[UIScreen mainScreen] scale]:1;
+    pointSize = pointSize/scale;
+    
+    if (touchStart.x-pointSize/2 < self.topLeftBounding.x) {
+        topLeft.x = touchStart.x-pointSize/2;
+    }
+    
+    if (touchStart.x+pointSize/2 > self.bottomRightBounding.x) {
+        bottomRight.x = touchStart.x+pointSize/2;
+    }
+    
+    if (touchStart.y-pointSize/2 < self.topLeftBounding.y) {
+        topLeft.y = touchStart.y-pointSize/2;
+    }
+    
+    if (touchStart.y+pointSize/2 > self.bottomRightBounding.y) {
+        bottomRight.y = touchStart.y+pointSize/2;
+    }
+    
+    if (touchEnd.x-pointSize/2 < self.topLeftBounding.x) {
+        topLeft.x = touchEnd.x-pointSize/2;
+    }
+    
+    if (touchEnd.x+pointSize/2 > self.bottomRightBounding.x) {
+        bottomRight.x = touchEnd.x+pointSize/2;
+    }
+    
+    if (touchEnd.y-pointSize/2 < self.topLeftBounding.y) {
+        topLeft.y = touchEnd.y-pointSize/2;
+    }
+    
+    if (touchEnd.y+pointSize/2 > self.bottomRightBounding.y) {
+        bottomRight.y = touchEnd.y+pointSize/2;
+    }
+    self.topLeftBounding = topLeft;
+    self.bottomRightBounding = bottomRight;
+    
+    return CGRectMake(topLeft.x, topLeft.y, bottomRight.x-topLeft.x, bottomRight.y-topLeft.y);
 }
 
 @end

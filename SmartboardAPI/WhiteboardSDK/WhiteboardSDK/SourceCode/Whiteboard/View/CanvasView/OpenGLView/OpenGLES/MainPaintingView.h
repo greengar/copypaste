@@ -37,8 +37,16 @@ static const CGFloat kZoomMinScale = 0.8;
 - (void)endLineAtPoint:(CGPoint)end;
 - (void)pushedCommandToUndoStack:(PaintingCmd *)cmd;
 - (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd;
-- (void)updateBoundingRect:(CGRect)boundingRect;
 - (void)fakeCanvasShouldBeReal:(UIView *)paintingView;
+
+#pragma mark - Collaboration
+- (void)didCreateRealCanvas;
+- (void)didApplyColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
+              strokeSize:(float)strokeSize;
+- (void)didRenderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end
+                toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing
+                updateBoundary:(CGRect)boundingRect;
+
 @end
 
 @interface MainPaintingView : PaintingView <UIGestureRecognizerDelegate> {
@@ -75,17 +83,14 @@ static const CGFloat kZoomMinScale = 0.8;
     Transforms _transforms;    
 }
 
-@property (nonatomic, strong) PaintingView            *extDrawingView;
+@property (nonatomic, retain) PaintingView            *extDrawingView;
 @property (nonatomic) Transforms                      _actualTransform;
 @property (nonatomic) Transforms                      transforms;
 @property (nonatomic) BOOL                            isDrawingStroke;
 @property (nonatomic) int                             extRotation;
 @property (nonatomic) int                             _zoomOffsetFromTop;
 @property (nonatomic, assign) id<MainPaintViewDelegate> delegate;
-@property (nonatomic) CGPoint                         topLeftBounding;
-@property (nonatomic) CGPoint                         bottomRightBounding;
 @property (nonatomic, strong) NSMutableArray          *undoSequenceArray;
-@property (nonatomic) CGRect                          previewAreaRect;
 
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView;
 - (void)initialDrawing;
@@ -116,7 +121,6 @@ static const CGFloat kZoomMinScale = 0.8;
 - (int)roundUpPercent:(CGFloat)number;
 
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end;
-- (void)calculateBounderFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 - (void)addPointToUndoRedoSpaceFromPoint:(CGPoint)start toPoint:(CGPoint)end
                                 colorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
                               strokeSize:(float)size
@@ -130,6 +134,7 @@ static const CGFloat kZoomMinScale = 0.8;
 - (BOOL)removeLayer:(int)index;
 - (void)clearLayer:(int)layerIndex;
 - (void)moveLayerAtIndex:(NSInteger)index1 toIndex:(NSInteger)index2;
+- (void)createRealCanvas;
 
 @end
 

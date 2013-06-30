@@ -232,13 +232,13 @@
                                                                   withOriginTransform:self.transform
                                                                               forPage:(WBPage *)self.superview
                                                                             withBlock:^(NSArray *objects, NSError *error) {
-                                                                                for (HistoryAction *action in objects) {
-                                                                                    if (self.delegate &&
-                                                                                        [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                                        [self.delegate pageHistoryCreated:action];
-                                                                                    }
-                                                                                }
-                                                                            }];
+            for (HistoryElementTransform *action in objects) {
+                [self.delegate didApplyFromTransform:action.originalTransform
+                                         toTransform:action.changedTransform
+                                       transformName:action.name
+                                          elementUid:action.element.uid];
+            }
+        }];
     }
     
     if ([panGesture state] == UIGestureRecognizerStateEnded) {
@@ -246,19 +246,21 @@
                                                 withChangedTransform:self.transform
                                                              forPage:(WBPage *)self.superview
                                                            withBlock:^(NSArray *objects, NSError *error) {
-                                                               for (HistoryAction *action in objects) {
-                                                                   if (self.delegate &&
-                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                       [self.delegate pageHistoryCreated:action];
-                                                                   }
-                                                               }
-                                                           }];
+            for (HistoryElementTransform *action in objects) {
+                [self.delegate didApplyFromTransform:action.originalTransform
+                                         toTransform:action.changedTransform
+                                       transformName:action.name
+                                          elementUid:action.element.uid];
+            }
+        }];
     }
     
     if ([panGesture state] == UIGestureRecognizerStateBegan
         || [panGesture state] == UIGestureRecognizerStateChanged) {
         CGPoint translation = [panGesture translationInView:self];
         [self moveTo:translation];
+        [self.delegate didMoveTo:translation
+                      elementUid:self.uid];
         [panGesture setTranslation:CGPointZero inView:self];
     }
 }
@@ -271,13 +273,13 @@
                                                                      withOriginTransform:self.transform
                                                                                  forPage:(WBPage *)self.superview
                                                                                withBlock:^(NSArray *objects, NSError *error) {
-                                                                                   for (HistoryAction *action in objects) {
-                                                                                       if (self.delegate &&
-                                                                                           [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                                           [self.delegate pageHistoryCreated:action];
-                                                                                       }
-                                                                                   }
-                                                                               }];
+            for (HistoryElementTransform *action in objects) {
+                [self.delegate didApplyFromTransform:action.originalTransform
+                                         toTransform:action.changedTransform
+                                       transformName:action.name
+                                          elementUid:action.element.uid];
+            }
+        }];
     }
     
     if ([rotationGesture state] == UIGestureRecognizerStateEnded) {
@@ -285,19 +287,23 @@
                                                 withChangedTransform:self.transform
                                                              forPage:(WBPage *)self.superview
                                                            withBlock:^(NSArray *objects, NSError *error) {
-                                                               for (HistoryAction *action in objects) {
-                                                                   if (self.delegate &&
-                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                       [self.delegate pageHistoryCreated:action];
-                                                                   }
-                                                               }
-                                                           }];
+            for (HistoryElementTransform *action in objects) {
+                for (HistoryElementTransform *action in objects) {
+                    [self.delegate didApplyFromTransform:action.originalTransform
+                                             toTransform:action.changedTransform
+                                           transformName:action.name
+                                              elementUid:action.element.uid];
+                }
+            }
+        }];
     }
     
     if ([rotationGesture state] == UIGestureRecognizerStateBegan
         || [rotationGesture state] == UIGestureRecognizerStateChanged) {
         float rotation = [rotationGesture rotation];
         [self rotateTo:rotation];
+        [self.delegate didRotateTo:rotation
+                        elementUid:self.uid];
         [rotationGesture setRotation:0];
     }
 }
@@ -310,13 +316,13 @@
                                                                     withOriginTransform:self.transform
                                                                                 forPage:(WBPage *)self.superview
                                                                               withBlock:^(NSArray *objects, NSError *error) {
-                                                                                  for (HistoryAction *action in objects) {
-                                                                                      if (self.delegate &&
-                                                                                          [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                                          [self.delegate pageHistoryCreated:action];
-                                                                                      }
-                                                                                  }
-                                                                              }];
+            for (HistoryElementTransform *action in objects) {
+                [self.delegate didApplyFromTransform:action.originalTransform
+                                         toTransform:action.changedTransform
+                                       transformName:action.name
+                                          elementUid:action.element.uid];
+            }
+        }];
     }
     
     if ([pinchGesture state] == UIGestureRecognizerStateEnded) {
@@ -324,19 +330,21 @@
                                                 withChangedTransform:self.transform
                                                              forPage:(WBPage *)self.superview
                                                            withBlock:^(NSArray *objects, NSError *error) {
-                                                               for (HistoryAction *action in objects) {
-                                                                   if (self.delegate &&
-                                                                       [((id) self.delegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                                       [self.delegate pageHistoryCreated:action];
-                                                                   }
-                                                               }
-                                                           }];
+            for (HistoryElementTransform *action in objects) {
+                [self.delegate didApplyFromTransform:action.originalTransform
+                                         toTransform:action.changedTransform
+                                       transformName:action.name
+                                          elementUid:action.element.uid];
+            }
+        }];
     }
     
     if ([pinchGesture state] == UIGestureRecognizerStateBegan
         || [pinchGesture state] == UIGestureRecognizerStateChanged) {
         float scale = pinchGesture.scale;
         [self scaleTo:scale];
+        [self.delegate didScaleTo:scale
+                       elementUid:self.uid];
         [pinchGesture setScale:1.0f];
     }
 }
@@ -352,9 +360,11 @@
     return [[self contentView] frame];
 }
 
-#pragma mark - Machine State
-- (void)create {
-    
+- (void)applyFromTransform:(CGAffineTransform)from
+               toTransform:(CGAffineTransform)to
+             transformName:(NSString *)transformName {
+    self.transform = from;
+    self.transform = to;
 }
 
 #pragma mark - Backup/Restore Save/Load

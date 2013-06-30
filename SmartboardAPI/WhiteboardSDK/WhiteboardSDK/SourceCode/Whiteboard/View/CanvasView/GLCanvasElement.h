@@ -20,4 +20,13 @@
 @property (nonatomic) BOOL isCrop;
 @property (nonatomic) CGRect boundingRect;
 
+#pragma mark - Collaboration
+- (void)createRealCanvas;
+- (void)applyColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
+           strokeSize:(float)strokeSize;
+- (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end
+             toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing
+             updateBoundary:(CGRect)boundingRect;
+
+
 @end

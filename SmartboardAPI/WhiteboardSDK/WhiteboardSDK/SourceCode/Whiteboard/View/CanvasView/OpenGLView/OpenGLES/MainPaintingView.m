@@ -45,10 +45,7 @@
 @synthesize transforms;
 @synthesize isDrawingStroke;
 @synthesize _zoomOffsetFromTop;
-@synthesize topLeftBounding;
-@synthesize bottomRightBounding;
 @synthesize undoSequenceArray = _undoSequenceArray;
-@synthesize previewAreaRect;
 
 #pragma mark - Initialize
 - (id)initWithFrame:(CGRect)frame sharegroupView:(EAGLView *)glView {
@@ -231,9 +228,8 @@
                     [multiCmd.strokeArray addObject:newCmd];
                     paintingIdExisted = YES;
                     
-                    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updatedCommandOnUndoStack:)]) {
-                        [self.delegate updatedCommandOnUndoStack:newCmd];
-                    }
+                    [self.delegate updatedCommandOnUndoStack:newCmd];
+                    
                     break;
                 }
             }
@@ -256,6 +252,12 @@
                    blue:components[2]
                   alpha:components[3]
              strokeSize:radius];
+    
+    [self.delegate didApplyColorRed:components[0]
+                              green:components[1]
+                               blue:components[2]
+                              alpha:components[3]
+                         strokeSize:radius];
 }
 
 - (void)applyColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
@@ -402,7 +404,7 @@
 // Cannot assume this line is supposed to be in my color (may be remote color)
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end {
     not_run_when_in_background
-    
+
     [self calculateBounderFromPoint:start toPoint:end];
     
     if(extDrawingView) {
@@ -442,15 +444,10 @@
     
     if ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) {
         [super renderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
+        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES updateBoundary:self.previewAreaRect];
     } else {
         [super renderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
-    }
-}
-
-- (void)calculateBounderFromPoint:(CGPoint)start toPoint:(CGPoint)end {
-    self.previewAreaRect = [self getBoundingOfDrawingUpdateFromPoint:start toPoint:end];
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(updateBoundingRect:)]) {
-        [self.delegate updateBoundingRect:self.previewAreaRect];
+        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO updateBoundary:self.previewAreaRect];
     }
 }
 
@@ -478,9 +475,7 @@
     
     if (!self.shouldCreateNewElement) {
         self.shouldCreateNewElement = YES;
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(fakeCanvasShouldBeReal:)]) {
-            [self.delegate fakeCanvasShouldBeReal:self];
-        }
+        [self.delegate didCreateRealCanvas];
     }
     
     if (IS_IPAD) {
@@ -1033,9 +1028,7 @@
         [self.undoSequenceArray removeObjectAtIndex:0];
 	}
     
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(pushedCommandToUndoStack:)]) {
-        [self.delegate pushedCommandToUndoStack:cmd];
-    }
+    [self.delegate pushedCommandToUndoStack:cmd];
 }
 
 #pragma mark - Redo Stroke
@@ -1509,64 +1502,6 @@
     return internal_transforms;
 }
 
-#pragma mark - Supports
-- (CGRect)getBoundingOfDrawingUpdateFromPoint:(CGPoint)start toPoint:(CGPoint)end {
-    CGPoint touchStart = CGPointMake(start.x, self.bounds.size.height-start.y);
-    CGPoint touchEnd = CGPointMake(end.x, self.bounds.size.height-end.y);
-    
-    if (CGPointEqualToPoint(self.topLeftBounding, CGPointZero)) {
-        self.topLeftBounding = touchStart;
-    }
-    
-    if (CGPointEqualToPoint(self.bottomRightBounding, CGPointZero)) {
-        self.bottomRightBounding = touchStart;
-    }
-    
-    CGPoint topLeft = self.topLeftBounding;
-    CGPoint bottomRight = self.bottomRightBounding;
-    
-    float pointSize = 0;
-    glGetFloatv(GL_POINT_SIZE, &pointSize);
-    float scale = [[UIScreen mainScreen] respondsToSelector:@selector(scale)]?[[UIScreen mainScreen] scale]:1;
-    pointSize = pointSize/scale;
-    
-    if (touchStart.x-pointSize/2 < self.topLeftBounding.x) {
-        topLeft.x = touchStart.x-pointSize/2;
-    }
-    
-    if (touchStart.x+pointSize/2 > self.bottomRightBounding.x) {
-        bottomRight.x = touchStart.x+pointSize/2;
-    }
-    
-    if (touchStart.y-pointSize/2 < self.topLeftBounding.y) {
-        topLeft.y = touchStart.y-pointSize/2;
-    }
-    
-    if (touchStart.y+pointSize/2 > self.bottomRightBounding.y) {
-        bottomRight.y = touchStart.y+pointSize/2;
-    }
-    
-    if (touchEnd.x-pointSize/2 < self.topLeftBounding.x) {
-        topLeft.x = touchEnd.x-pointSize/2;
-    }
-    
-    if (touchEnd.x+pointSize/2 > self.bottomRightBounding.x) {
-        bottomRight.x = touchEnd.x+pointSize/2;
-    }
-    
-    if (touchEnd.y-pointSize/2 < self.topLeftBounding.y) {
-        topLeft.y = touchEnd.y-pointSize/2;
-    }
-    
-    if (touchEnd.y+pointSize/2 > self.bottomRightBounding.y) {
-        bottomRight.y = touchEnd.y+pointSize/2;
-    }
-    self.topLeftBounding = topLeft;
-    self.bottomRightBounding = bottomRight;
-    
-    return CGRectMake(topLeft.x, topLeft.y, bottomRight.x-topLeft.x, bottomRight.y-topLeft.y);
-}
-
 void CGAffineToGL2(const CGAffineTransform *t, GLfloat *m)
 {
     // | m[0] m[4] m[8]  m[12] |     | m11 m21 m31 m41 |     | a c 0 tx |
@@ -1623,6 +1558,10 @@ void CGAffineToGL2(const CGAffineTransform *t, GLfloat *m)
     [self transferToPaintingView:self.extDrawingView];
 	
     [self applyLocalDrawingCmd];
+}
+
+- (void)createRealCanvas {
+    self.shouldCreateNewElement = YES;
 }
 
 @end

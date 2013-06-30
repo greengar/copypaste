@@ -88,12 +88,19 @@ typedef struct {
 @property (nonatomic) BOOL isExternal;
 @property (nonatomic) Transforms internal_transforms;
 @property (nonatomic) BOOL isImageSent;
+@property (nonatomic) CGPoint topLeftBounding;
+@property (nonatomic) CGPoint bottomRightBounding;
+@property (nonatomic) CGRect previewAreaRect;
 
 - (void)erase;
 - (void)applyColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
            strokeSize:(float)strokeSize;
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end
              toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing;
+- (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end
+             toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing
+             updateBoundary:(CGRect)rect;
+- (void)calculateBounderFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 - (GLuint)loadTextureFromBuffer:(void*)buffer width:(int)width height:(int)height;
 
 - (BOOL)loadImage:(CGImageRef)image;

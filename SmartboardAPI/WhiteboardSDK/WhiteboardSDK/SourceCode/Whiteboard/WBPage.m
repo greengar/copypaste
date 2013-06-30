@@ -16,6 +16,7 @@
 #import "HistoryView.h"
 #import "HistoryManager.h"
 #import "HistoryElementCreated.h"
+#import "HistoryElementDeleted.h"
 
 #define kUndoPickerWidth 69
 #define kURButtonWidthHeight 64
@@ -65,9 +66,6 @@
     [[HistoryManager sharedManager] addActionCreateElement:element
                                                    forPage:self
                                                  withBlock:^(HistoryElementCreated *history, NSError *error) {
-         if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-             [self.pageDelegate pageHistoryCreated:history];
-         }
     }];
 }
 
@@ -125,46 +123,23 @@
         [self removeElement:element];
         self.currentElement = [self.subviews lastObject];
         [[HistoryManager sharedManager] addActionDeleteElement:element forPage:self
-                                                     withBlock:^(HistoryAction *history, NSError *error) {
-                                                         if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-                                                             [self.pageDelegate pageHistoryCreated:history];
-                                                         }
-                                                     }];
+                                                     withBlock:^(HistoryElement *history, NSError *error) {}];
 
-    }
-}
-
-- (void)pageHistoryCreated:(HistoryAction *)history {
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryCreated:)]) {
-        [self.pageDelegate pageHistoryCreated:history];
-    }
-}
-
-- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history
-                     withNewPaintingCmd:(PaintingCmd *)cmd
-                          forElementUid:(NSString *)elementUid
-                             forPageUid:(NSString *)pageUid {
-    if (self.pageDelegate
-        && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryElementCanvasDrawUpdated:withPaintingCmd:forElementUid:forPageUid:)]) {
-        [self.pageDelegate pageHistoryElementCanvasDrawUpdated:history
-                                               withPaintingCmd:cmd
-                                                 forElementUid:elementUid
-                                                    forPageUid:pageUid];
-    }
-}
-
-- (void)pageHistoryElementCanvasUpdated:(HistoryAction *)history
-                           withCropRect:(CGRect)cropRect {
-    if (self.pageDelegate
-        && [((id) self.pageDelegate) respondsToSelector:@selector(pageHistoryElementCanvasDrawUpdated:withCropRect:)]) {
-        [self.pageDelegate pageHistoryElementCanvasDrawUpdated:history
-                                                  withCropRect:cropRect];
     }
 }
 
 #pragma mark - Fake/Real Canvas
 - (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element {
     [self addElement:element];
+}
+
+- (void)addCanvas {
+    GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    [self addSubview:canvasElement];
+    self.currentElement = canvasElement;
+    [self.currentElement setDelegate:self];
+    [self.currentElement revive];
+    [self.currentElement stay];
 }
 
 - (void)addFakeCanvas {
@@ -200,6 +175,14 @@
     [textElement setDelegate:self];
     [textElement revive];
     [textElement stay];
+    
+    [self.pageDelegate didCreateTextElementWithUid:textElement.uid
+                                           pageUid:self.uid
+                                         textFrame:textElement.frame
+                                              text:((UITextView *)textElement.contentView).text
+                                         textColor:textElement.myColor
+                                          textFont:textElement.myFontName
+                                          textSize:textElement.myFontSize];
 }
 
 - (void)startToMove {
@@ -270,6 +253,216 @@
 
 - (void)dealloc {
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+}
+
+#pragma mark - Collaboration Back
+- (void)didCreateRealCanvasWithUid:(NSString *)elementUid {
+    [self.pageDelegate didCreateCanvasElementWithUid:elementUid
+                                             pageUid:self.uid];
+}
+
+- (void)didApplyColorRed:(float)red
+                   green:(float)green
+                    blue:(float)blue
+                   alpha:(float)alpha
+              strokeSize:(float)strokeSize
+              elementUid:(NSString *)elementUid {
+    [self.pageDelegate didApplyColorRed:red
+                                  green:green
+                                   blue:blue
+                                  alpha:alpha
+                             strokeSize:strokeSize
+                             elementUid:elementUid
+                                pageUid:self.uid];
+}
+
+- (void)didRenderLineFromPoint:(CGPoint)start
+                       toPoint:(CGPoint)end
+                toURBackBuffer:(BOOL)toURBackBuffer
+                     isErasing:(BOOL)isErasing
+                updateBoundary:(CGRect)boundingRect
+                    elementUid:(NSString *)elementUid {
+    [self.pageDelegate didRenderLineFromPoint:start
+                                      toPoint:end
+                               toURBackBuffer:toURBackBuffer
+                                    isErasing:isErasing
+                               updateBoundary:boundingRect
+                                   elementUid:elementUid
+                                      pageUid:self.uid];
+}
+
+- (void)didChangeTextContent:(NSString *)text
+                  elementUid:(NSString *)elementUid {
+    [self.pageDelegate didChangeTextContent:text
+                                 elementUid:elementUid
+                                    pageUid:self.uid];
+}
+
+- (void)didChangeTextFont:(NSString *)textFont
+               elementUid:(NSString *)elementUid {
+    [self.pageDelegate didChangeTextFont:textFont
+                              elementUid:elementUid
+                                 pageUid:self.uid];
+}
+
+- (void)didChangeTextSize:(float)textSize
+               elementUid:(NSString *)elementUid {
+    [self.pageDelegate didChangeTextSize:textSize
+                              elementUid:elementUid
+                                 pageUid:self.uid];
+}
+
+- (void)didChangeTextColor:(UIColor *)textColor
+                elementUid:(NSString *)elementUid {
+    [self.pageDelegate didChangeTextColor:textColor
+                               elementUid:elementUid
+                                  pageUid:self.uid];
+}
+
+- (void)didMoveTo:(CGPoint)dest elementUid:(NSString *)elementUid {
+    [self.pageDelegate didMoveTo:dest elementUid:elementUid pageUid:self.uid];
+}
+
+- (void)didRotateTo:(float)rotation elementUid:(NSString *)elementUid {
+    [self.pageDelegate didRotateTo:rotation elementUid:elementUid pageUid:self.uid];
+}
+
+- (void)didScaleTo:(float)scale elementUid:(NSString *)elementUid {
+    [self.pageDelegate didScaleTo:scale elementUid:elementUid pageUid:self.uid];
+}
+
+- (void)didApplyFromTransform:(CGAffineTransform)from toTransform:(CGAffineTransform)to
+                transformName:(NSString *)transformName elementUid:(NSString *)elementUid {
+    [self.pageDelegate didApplyFromTransform:from
+                                 toTransform:to
+                               transformName:transformName
+                                  elementUid:elementUid
+                                     pageUid:self.uid];
+}
+
+#pragma mark - Collaboration Forward
+- (void)createCanvasElementWithUid:(NSString *)elementUid {
+    GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    [canvasElement setUid:elementUid];
+    [canvasElement setDelegate:self];
+    [self addSubview:canvasElement];
+    [canvasElement createRealCanvas];
+    [canvasElement rest];
+    [canvasElement stay];
+}
+
+- (void)createTextElementwithUid:(NSString *)elementUid
+                       textFrame:(CGRect)textFrame
+                            text:(NSString *)text
+                       textColor:(UIColor *)textColor
+                        textFont:(NSString *)textFont
+                        textSize:(float)textSize {
+    TextElement *textElement = [[TextElement alloc] initWithFrame:textFrame];
+    [textElement setUid:elementUid];
+    [textElement setDelegate:self];
+    [textElement setMyFontName:textFont];
+    [textElement setMyColor:textColor];
+    [textElement setMyFontSize:textSize];
+    [self addSubview:textElement];
+    [textElement rest];
+    [textElement stay];
+}
+
+- (void)applyColorRed:(float)red
+                green:(float)green
+                 blue:(float)blue
+                alpha:(float)alpha
+           strokeSize:(float)strokeSize
+           elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if ([element isKindOfClass:[GLCanvasElement class]]) {
+        [((GLCanvasElement *) element) applyColorRed:red
+                                               green:green
+                                                blue:blue
+                                               alpha:alpha
+                                          strokeSize:strokeSize];
+    }
+}
+
+- (void)renderLineFromPoint:(CGPoint)start
+                    toPoint:(CGPoint)end
+             toURBackBuffer:(BOOL)toURBackBuffer
+                  isErasing:(BOOL)isErasing
+             updateBoundary:(CGRect)rect
+                 elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if ([element isKindOfClass:[GLCanvasElement class]]) {
+        [((GLCanvasElement *) element) renderLineFromPoint:start
+                                                   toPoint:end
+                                            toURBackBuffer:toURBackBuffer
+                                                 isErasing:isErasing
+                                            updateBoundary:rect];
+    }
+}
+
+- (void)changeTextContent:(NSString *)text
+               elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if ([element isKindOfClass:[TextElement class]]) {
+        [((TextElement *) element) setText:text];
+    }
+}
+
+- (void)changeTextFont:(NSString *)textFont
+            elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if ([element isKindOfClass:[TextElement class]]) {
+        [((TextElement *) element) updateWithFontName:textFont];
+    }
+}
+
+- (void)changeTextSize:(float)textSize
+            elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if ([element isKindOfClass:[TextElement class]]) {
+        [((TextElement *) element) updateWithFontSize:textSize];
+    }
+}
+
+- (void)changeTextColor:(UIColor *)textColor
+             elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if ([element isKindOfClass:[TextElement class]]) {
+        [((TextElement *) element) updateWithColor:textColor];
+    }
+}
+
+- (void)moveTo:(CGPoint)dest
+    elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if (element) {
+        [element moveTo:dest];
+    }
+}
+
+- (void)rotateTo:(float)rotation
+      elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if (element) {
+        [element rotateTo:rotation];
+    }
+}
+
+- (void)scaleTo:(float)scale
+     elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if (element) {
+        [element scaleTo:scale];
+    }
+}
+
+- (void)applyFromTransform:(CGAffineTransform)from toTransform:(CGAffineTransform)to
+             transformName:(NSString *)transformName
+                elementUid:(NSString *)elementUid {
+    WBBaseElement *element = [self elementByUid:elementUid];
+    if (element) {
+        [element applyFromTransform:from toTransform:to transformName:transformName];
+    }
 }
 
 @end

@@ -10,19 +10,14 @@
 #import "WBUtils.h"
 #import "WBMenuItem.h"
 
-@class WBBoard;
-@protocol WBBoardDelegate
-@optional
-- (NSString *)facebookId;
-- (void)doneEditingBoardWithResult:(UIImage *)image;
-- (void)pageOfBoard:(WBBoard *)board dataUpdate:(NSMutableDictionary *)data atURL:(NSString *)URLString;
-- (void)pageOfBoard:(WBBoard *)board addNewHistory:(NSMutableDictionary *)data atURL:(NSString *)URLString;
-- (void)pageOfBoard:(WBBoard *)board updateHistoryCanvasDraw:(NSMutableDictionary *)data atURL:(NSString *)URLString;
-- (void)pageOfBoard:(WBBoard *)board saveAtURL:(NSString *)URLString;
-- (void)pageOfBoard:(WBBoard *)board saveHistoryCanvasDrawAtURL:(NSString *)URLString;
-@end
-
 @interface WBBoard : UIViewController
+
+/*
+ Init the board with a delegate callback
+ The purpose is to receive board update notification via callback
+ @param delegate id<WBBoardDelegate>: the delegate that implement the WBBoardDelegate protocol
+ */
+- (id)initWithDelegate:(id<WBBoardDelegate>)delegate;
 
 /*
  Show the board with default animation
@@ -41,11 +36,6 @@
  Lock the board, user will not be able to modify the board
  */
 - (void)lockBoard;
-
-/*
- Start to listen to any update to the current page
- */
-- (void)startListeningToPageUpdate;
 
 /*
  Reconstruct the board with the data dictionary
@@ -76,18 +66,6 @@
 - (void)importPageHistoryData:(NSDictionary *)data pageUid:(NSString *)pageUid;
 
 /*
- Update the page real-time with the history data dictionary
- @param data NSDictionary: history data dictionary
- */
-- (void)updatePageHistoryData:(NSDictionary *)data;
-
-/*
- Update the page real-time with the history data dictionary for the drawing action
- @param data NSDictionary: history data dictionary for drawing action
- */
-- (void)updatePageHistoryCanvasDrawWithData:(NSDictionary *)data;
-
-/*
  Export data of the whole board
  @result Return NSDictionary: the board data dictionary
  */
@@ -112,6 +90,11 @@
  */
 + (NSString *)mySecretId;
 
+/*
+ Reset the current Secret Id
+ */
++ (void)resetSecretId;
+
 @property (nonatomic, strong) NSString              *uid;
 @property (nonatomic, strong) NSString              *name;
 @property (nonatomic, strong) UIImage               *previewImage;
@@ -120,5 +103,65 @@
 
 - (void)addMenuItem:(WBMenuItem *)item;
 - (void)doneEditing;
+
+#pragma mark - Collaboration
+- (void)addNewPageWithUid:(NSString *)pageUid;
+- (void)addNewCanvas;
+- (void)removeAllPages;
+- (void)createCanvasElementWithUid:(NSString *)elementUid
+                           pageUid:(NSString *)pageUid;
+- (void)createTextElementWithUid:(NSString *)elementUid
+                         pageUid:(NSString *)pageUid
+                       textFrame:(CGRect)textFrame
+                            text:(NSString *)text
+                    textColorRed:(float)red
+                  textColorGreen:(float)green
+                   textColorBlue:(float)blue
+                  textColorAlpha:(float)alpha
+                        textFont:(NSString *)textFont
+                        textSize:(float)textSize;
+- (void)applyColorRed:(float)red
+                green:(float)green
+                 blue:(float)blue
+                alpha:(float)alpha
+           strokeSize:(float)strokeSize
+           elementUid:(NSString *)elementUid
+              pageUid:(NSString *)pageUid;
+- (void)renderLineFromPoint:(CGPoint)start
+                    toPoint:(CGPoint)end
+             toURBackBuffer:(BOOL)toURBackBuffer
+                  isErasing:(BOOL)isErasing
+             updateBoundary:(CGRect)boundingRect
+                 elementUid:(NSString *)elementUid
+                    pageUid:(NSString *)pageUid;
+- (void)changeTextContent:(NSString *)text
+               elementUid:(NSString *)elementUid
+                  pageUid:(NSString *)pageUid;
+- (void)changeTextFont:(NSString *)textFont
+            elementUid:(NSString *)elementUid
+               pageUid:(NSString *)pageUid;
+- (void)changeTextSize:(float)textSize
+            elementUid:(NSString *)elementUid
+               pageUid:(NSString *)pageUid;
+- (void)changeTextColorRed:(float)red
+            textColorGreen:(float)green
+             textColorBlue:(float)blue
+            textColorAlpha:(float)alpha
+                elementUid:(NSString *)elementUid
+                   pageUid:(NSString *)pageUid;
+- (void)moveTo:(CGPoint)dest
+    elementUid:(NSString *)elementUid
+       pageUid:(NSString *)pageUid;
+- (void)rotateTo:(float)rotation
+      elementUid:(NSString *)elementUid
+         pageUid:(NSString *)pageUid;
+- (void)scaleTo:(float)scale
+     elementUid:(NSString *)elementUid
+        pageUid:(NSString *)pageUid;
+- (void)applyFromTransform:(CGAffineTransform)from
+               toTransform:(CGAffineTransform)to
+             transformName:(NSString *)transformName
+                elementUid:(NSString *)elementUid
+                   pageUid:(NSString *)pageUid;
 
 @end
