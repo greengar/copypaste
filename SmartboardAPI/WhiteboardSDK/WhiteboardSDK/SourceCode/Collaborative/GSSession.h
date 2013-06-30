@@ -167,6 +167,16 @@
  */
 - (void)sendData:(NSDictionary *)dict ofRoom:(GSRoom *)room atURL:(NSString *)urlString;
 
+/*
+ Send data directly to the URL under the hierarchy
+ Make sure you specify the correct URL
+ @param dict NSDictionary: data dictionary
+ @param roomUid NSString: the room uid that contains the data to send
+ @param urlString NSString: URL string to store the data under the hierarchy
+ */
+- (void)sendData:(NSDictionary *)dict ofRoomUid:(NSString *)roomUid atURL:(NSString *)urlString;
+
+
 #pragma mark - Access and Update Database
 /*
  Perform query to the server to get data

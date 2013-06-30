@@ -365,7 +365,15 @@ static GSSession *activeSession = nil;
             [self unregisterRoomDataChanged:room];
         } else {
             if (snapshot) {
-                if (block) { block([snapshot value], nil); }
+                if ([[snapshot value] isKindOfClass:[NSArray class]]) {
+                    NSMutableDictionary *data = [NSMutableDictionary new];
+                    for (FDataSnapshot *child in [snapshot children]) {
+                        [data setObject:[child value] forKey:[child name]];
+                    }
+                    if (block) { block(@{[snapshot name]: data}, nil); }
+                } else {
+                    if (block) { block(@{[snapshot name]: [snapshot value]}, nil); }
+                }
             } else {
                 if (block) { block(nil, nil); }
             }
@@ -483,11 +491,13 @@ static GSSession *activeSession = nil;
 }
 
 - (void)sendData:(NSDictionary *)dict ofRoom:(GSRoom *)room atURL:(NSString *)urlString {
-    NSArray *parseURL = [urlString componentsSeparatedByString:@"/"];
-    Firebase *firebase = [self generateFirebaseForRoom:room];
-    for (int i = 0; i < [parseURL count]; i++) {
-        firebase = [firebase childByAppendingPath:[parseURL objectAtIndex:i]];
-    }
+    Firebase *firebase = [[self generateFirebaseForRoom:room] childByAppendingPath:urlString];
+    [firebase setValue:dict];
+    firebase = nil;
+}
+
+- (void)sendData:(NSDictionary *)dict ofRoomUid:(NSString *)roomUid atURL:(NSString *)urlString {
+    Firebase *firebase = [[self generateFirebaseForURL:roomUid] childByAppendingPath:urlString];
     [firebase setValue:dict];
     firebase = nil;
 }
@@ -716,6 +726,10 @@ static GSSession *activeSession = nil;
 
 - (Firebase *)generateFirebaseForRoom:(GSRoom *)room {
     return [self.firebase childByAppendingPath:[room uid]];
+}
+
+- (Firebase *)generateFirebaseForURL:(NSString *)URL {
+    return [self.firebase childByAppendingPath:URL];
 }
 
 #pragma mark - Push Notifications
