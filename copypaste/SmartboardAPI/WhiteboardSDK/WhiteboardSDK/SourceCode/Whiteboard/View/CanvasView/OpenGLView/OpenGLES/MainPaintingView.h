@@ -30,7 +30,7 @@ typedef enum {
 static const CGFloat kZoomMaxScale = 5;
 static const CGFloat kZoomMinScale = 0.8;
 
-@protocol MainPaintViewDelegate
+@protocol MainPaintViewDelegate <NSObject>
 @optional
 - (void)pushedCommandToUndoStack:(PaintingCmd *)cmd;
 - (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd;

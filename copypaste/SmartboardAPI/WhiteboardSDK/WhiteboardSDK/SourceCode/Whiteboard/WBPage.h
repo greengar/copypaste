@@ -17,7 +17,7 @@
 @class WBBaseElement;
 @class HistoryAction;
 @class PaintingCmd;
-@protocol WBPageDelegate
+@protocol WBPageDelegate <NSObject>
 @optional
 - (void)element:(WBBaseElement *)element hideKeyboard:(BOOL)hidden;
 
