@@ -1427,13 +1427,15 @@
                      isErasing:(BOOL)isErasing
                     elementUid:(NSString *)elementUid
                        pageUid:(NSString *)pageUid {
-    [self.delegate didRenderLineFromPoint:start
-                                  toPoint:end
-                           toURBackBuffer:toURBackBuffer
-                                isErasing:isErasing
-                               elementUid:elementUid
-                                  pageUid:pageUid
-                                 boardUid:self.uid];
+    if ([self.delegate respondsToSelector:@selector(didRenderLineFromPoint:toPoint:toURBackBuffer:isErasing:elementUid:pageUid:boardUid:)]) {
+        [self.delegate didRenderLineFromPoint:start
+                                      toPoint:end
+                               toURBackBuffer:toURBackBuffer
+                                    isErasing:isErasing
+                                   elementUid:elementUid
+                                      pageUid:pageUid
+                                     boardUid:self.uid];
+    }
 }
 
 - (void)didChangeTextContent:(NSString *)text

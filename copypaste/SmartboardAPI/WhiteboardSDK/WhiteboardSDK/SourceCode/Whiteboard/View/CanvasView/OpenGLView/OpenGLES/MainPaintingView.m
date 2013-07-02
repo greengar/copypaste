@@ -436,10 +436,14 @@
     
     if ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) {
         [super renderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
-        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
+        if ([self.delegate respondsToSelector:@selector(didRenderLineFromPoint:toPoint:toURBackBuffer:isErasing:)]) {
+            [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
+        }
     } else {
         [super renderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
-        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
+        if ([self.delegate respondsToSelector:@selector(didRenderLineFromPoint:toPoint:toURBackBuffer:isErasing:)]) {
+            [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
+        }
     }
 }
 

@@ -355,12 +355,14 @@
                 toURBackBuffer:(BOOL)toURBackBuffer
                      isErasing:(BOOL)isErasing
                     elementUid:(NSString *)elementUid {
-    [self.pageDelegate didRenderLineFromPoint:start
-                                      toPoint:end
-                               toURBackBuffer:toURBackBuffer
-                                    isErasing:isErasing
-                                   elementUid:elementUid
-                                      pageUid:self.uid];
+    if ([self.pageDelegate respondsToSelector:@selector(didRenderLineFromPoint:toPoint:toURBackBuffer:isErasing:elementUid:pageUid:)]) {
+        [self.pageDelegate didRenderLineFromPoint:start
+                                          toPoint:end
+                                   toURBackBuffer:toURBackBuffer
+                                        isErasing:isErasing
+                                       elementUid:elementUid
+                                          pageUid:self.uid];
+    }
 }
 
 - (void)didChangeTextContent:(NSString *)text
