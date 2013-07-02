@@ -339,13 +339,15 @@
                    alpha:(float)alpha
               strokeSize:(float)strokeSize
               elementUid:(NSString *)elementUid {
-    [self.pageDelegate didApplyColorRed:red
-                                  green:green
-                                   blue:blue
-                                  alpha:alpha
-                             strokeSize:strokeSize
-                             elementUid:elementUid
-                                pageUid:self.uid];
+    if ([self.pageDelegate respondsToSelector:@selector(didApplyColorRed:green:blue:alpha:strokeSize:elementUid:pageUid:)]) {
+        [self.pageDelegate didApplyColorRed:red
+                                      green:green
+                                       blue:blue
+                                      alpha:alpha
+                                 strokeSize:strokeSize
+                                 elementUid:elementUid
+                                    pageUid:self.uid];
+    }
 }
 
 - (void)didRenderLineFromPoint:(CGPoint)start
@@ -353,12 +355,14 @@
                 toURBackBuffer:(BOOL)toURBackBuffer
                      isErasing:(BOOL)isErasing
                     elementUid:(NSString *)elementUid {
-    [self.pageDelegate didRenderLineFromPoint:start
-                                      toPoint:end
-                               toURBackBuffer:toURBackBuffer
-                                    isErasing:isErasing
-                                   elementUid:elementUid
-                                      pageUid:self.uid];
+    if ([self.pageDelegate respondsToSelector:@selector(didRenderLineFromPoint:toPoint:toURBackBuffer:isErasing:elementUid:pageUid:)]) {
+        [self.pageDelegate didRenderLineFromPoint:start
+                                          toPoint:end
+                                   toURBackBuffer:toURBackBuffer
+                                        isErasing:isErasing
+                                       elementUid:elementUid
+                                          pageUid:self.uid];
+    }
 }
 
 - (void)didChangeTextContent:(NSString *)text

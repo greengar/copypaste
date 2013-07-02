@@ -181,23 +181,27 @@
                     blue:(float)blue
                    alpha:(float)alpha
               strokeSize:(float)strokeSize {
-    [self.delegate didApplyColorRed:red
-                              green:green
-                               blue:blue
-                              alpha:alpha
-                         strokeSize:strokeSize
-                         elementUid:self.uid];
+    if ([self.delegate respondsToSelector:@selector(didApplyColorRed:green:blue:alpha:strokeSize:elementUid:)]) {
+        [self.delegate didApplyColorRed:red
+                                  green:green
+                                   blue:blue
+                                  alpha:alpha
+                             strokeSize:strokeSize
+                             elementUid:self.uid];
+    }
 }
 
 - (void)didRenderLineFromPoint:(CGPoint)start
                        toPoint:(CGPoint)end
                 toURBackBuffer:(BOOL)toURBackBuffer
                      isErasing:(BOOL)isErasing {
-    [self.delegate didRenderLineFromPoint:start
-                                  toPoint:end
-                           toURBackBuffer:toURBackBuffer
-                                isErasing:isErasing
-                               elementUid:self.uid];
+    if ([self.delegate respondsToSelector:@selector(didRenderLineFromPoint:toPoint:toURBackBuffer:isErasing:elementUid:)]) {
+        [self.delegate didRenderLineFromPoint:start
+                                      toPoint:end
+                               toURBackBuffer:toURBackBuffer
+                                    isErasing:isErasing
+                                   elementUid:self.uid];
+    }
 }
 
 #pragma mark - Collaboration Forward

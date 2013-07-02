@@ -252,12 +252,13 @@
                    blue:components[2]
                   alpha:components[3]
              strokeSize:radius];
-    
-    [self.delegate didApplyColorRed:components[0]
-                              green:components[1]
-                               blue:components[2]
-                              alpha:components[3]
-                         strokeSize:radius];
+    if ([self.delegate respondsToSelector:@selector(didApplyColorRed:green:blue:alpha:strokeSize:)]) {
+        [self.delegate didApplyColorRed:components[0]
+                                  green:components[1]
+                                   blue:components[2]
+                                  alpha:components[3]
+                             strokeSize:radius];
+    }
 }
 
 - (void)applyColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
@@ -435,10 +436,14 @@
     
     if ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) {
         [super renderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
-        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
+        if ([self.delegate respondsToSelector:@selector(didRenderLineFromPoint:toPoint:toURBackBuffer:isErasing:)]) {
+            [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
+        }
     } else {
         [super renderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
-        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
+        if ([self.delegate respondsToSelector:@selector(didRenderLineFromPoint:toPoint:toURBackBuffer:isErasing:)]) {
+            [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
+        }
     }
 }
 
