@@ -14,7 +14,7 @@
 @class HistoryAction;
 @class PaintingCmd;
 
-@protocol WBBaseViewDelegate
+@protocol WBBaseViewDelegate <NSObject>
 @optional
 - (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element;
 - (void)element:(WBBaseElement *)element nowBringToFront:(BOOL)bringFront;

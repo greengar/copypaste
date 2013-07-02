@@ -181,12 +181,14 @@
                     blue:(float)blue
                    alpha:(float)alpha
               strokeSize:(float)strokeSize {
-    [self.delegate didApplyColorRed:red
-                              green:green
-                               blue:blue
-                              alpha:alpha
-                         strokeSize:strokeSize
-                         elementUid:self.uid];
+    if ([self.delegate respondsToSelector:@selector(didApplyColorRed:green:blue:alpha:strokeSize:elementUid:)]) {
+        [self.delegate didApplyColorRed:red
+                                  green:green
+                                   blue:blue
+                                  alpha:alpha
+                             strokeSize:strokeSize
+                             elementUid:self.uid];
+    }
 }
 
 - (void)didRenderLineFromPoint:(CGPoint)start

@@ -1409,14 +1409,16 @@
               strokeSize:(float)strokeSize
               elementUid:(NSString *)elementUid
                  pageUid:(NSString *)pageUid {
-    [self.delegate didApplyColorRed:red
-                              green:green
-                               blue:blue
-                              alpha:alpha
-                         strokeSize:strokeSize
-                         elementUid:elementUid
-                            pageUid:pageUid
-                           boardUid:self.uid];
+    if ([self.delegate respondsToSelector:@selector(didApplyColorRed:green:blue:alpha:strokeSize:elementUid:pageUid:boardUid:)]) {
+        [self.delegate didApplyColorRed:red
+                                  green:green
+                                   blue:blue
+                                  alpha:alpha
+                             strokeSize:strokeSize
+                             elementUid:elementUid
+                                pageUid:pageUid
+                               boardUid:self.uid];
+    }
 }
 
 - (void)didRenderLineFromPoint:(CGPoint)start

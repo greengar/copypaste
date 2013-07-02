@@ -1,6 +1,6 @@
 //
 //  GSSignUpLogInViewController.m
-//  Smartboard2
+//  Collaborative SDK
 //
 //  Created by Elliot Lee on 6/28/13.
 //  Copyright (c) 2013 GreenGar. All rights reserved.

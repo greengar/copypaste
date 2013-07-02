@@ -339,13 +339,15 @@
                    alpha:(float)alpha
               strokeSize:(float)strokeSize
               elementUid:(NSString *)elementUid {
-    [self.pageDelegate didApplyColorRed:red
-                                  green:green
-                                   blue:blue
-                                  alpha:alpha
-                             strokeSize:strokeSize
-                             elementUid:elementUid
-                                pageUid:self.uid];
+    if ([self.pageDelegate respondsToSelector:@selector(didApplyColorRed:green:blue:alpha:strokeSize:elementUid:pageUid:)]) {
+        [self.pageDelegate didApplyColorRed:red
+                                      green:green
+                                       blue:blue
+                                      alpha:alpha
+                                 strokeSize:strokeSize
+                                 elementUid:elementUid
+                                    pageUid:self.uid];
+    }
 }
 
 - (void)didRenderLineFromPoint:(CGPoint)start
