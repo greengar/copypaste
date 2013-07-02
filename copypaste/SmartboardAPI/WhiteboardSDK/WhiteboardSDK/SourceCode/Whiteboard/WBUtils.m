@@ -448,4 +448,20 @@
     return macAddressString;
 }
 
++ (CGPoint)centerPointOfPoint:(CGPoint)point1 andPoint:(CGPoint)point2 {
+    return CGPointMake((point1.x+point2.x)/2, (point1.y+point2.y)/2);
+}
+
++ (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        UIView *piece = gestureRecognizer.view;
+        CGPoint locationInView = [gestureRecognizer locationInView:piece];
+        CGPoint locationInSuperview = [gestureRecognizer locationInView:piece.superview];
+        
+        piece.layer.anchorPoint = CGPointMake(locationInView.x / piece.bounds.size.width, locationInView.y / piece.bounds.size.height);
+        piece.center = locationInSuperview;
+    }
+}
+
+
 @end

@@ -9,7 +9,10 @@
 #import "PlaceHolderTextView.h"
 #import "TextElement.h"
 
-@interface PlaceHolderTextView()
+@interface PlaceHolderTextView() {
+    BOOL allowToBecomeFirstResponder;
+}
+
 @property (nonatomic, strong) UITextView *placeHolderTextView;
 @property (nonatomic) CGSize minTextSize;
 @end
@@ -25,6 +28,8 @@
         self.contentOffset = CGPointZero;
         self.contentInset = UIEdgeInsetsZero;
         self.scrollEnabled = NO;
+        self.userInteractionEnabled = NO;
+        allowToBecomeFirstResponder = YES;
         
         self.placeHolderTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.placeHolderTextView setTextColor:[UIColor lightGrayColor]];
@@ -63,6 +68,7 @@
 - (void)revive {
     [self textChanged];
     self.clipsToBounds = NO;
+    allowToBecomeFirstResponder = YES;
 }
 
 - (void)rest {
@@ -72,6 +78,7 @@
         [self.placeHolderTextView setHidden:YES];
     }
     self.clipsToBounds = YES;
+    allowToBecomeFirstResponder = NO;
 }
 
 - (CGPoint)contentOffset {
@@ -98,6 +105,10 @@
     self.minTextSize = [self.placeHolderTextView.text sizeWithFont:self.placeHolderTextView.font
                                                  constrainedToSize:CGSizeMake(kTextViewMaxWidth, 100000)
                                                      lineBreakMode:NSLineBreakByWordWrapping];
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return allowToBecomeFirstResponder;
 }
 
 @end

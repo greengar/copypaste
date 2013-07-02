@@ -18,14 +18,16 @@
 
 @implementation BackgroundElement
 
-- (id)initWithFrame:(CGRect)frame image:(UIImage *)image
-{
+- (id)initWithFrame:(CGRect)frame image:(UIImage *)image {
     self = [super initWithFrame:frame];
     if (self) {
         self.userInteractionEnabled = YES;
         
         [self initBackgroundViewWithFrame:frame
                                     image:image];
+        
+        self.isAlive = YES;
+        self.isMovable = NO;
     }
     return self;
 }
@@ -44,22 +46,25 @@
     return backgroundView;
 }
 
-- (void)revive {
-    // Background Element is not revivable
-}
-
-- (void)rest {
-    [super rest];
+- (UIView *)contentDrawingView {
+    return nil;
 }
 
 - (void)move {
-    [super move];
+    // We don't allow move the GLCanvasElement
 }
 
 - (void)stay {
-    [super stay];
+    // We don't allow to move, so it will always stay
 }
 
+- (void)showMenuAt:(CGPoint)location {
+    // We don't show the menu for the base canvas element
+}
+
+- (void)revive {
+    // Background Element is not revivable
+}
 
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];

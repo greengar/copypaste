@@ -20,7 +20,7 @@
         self.name = @"Create Text Box";
     } else if ([element isKindOfClass:[GLCanvasElement class]]
                || [element isKindOfClass:[CGCanvasElement class]]) {
-        self.name = @"Start Brush";
+        self.name = @"Start Drawing";
     } else if ([element isKindOfClass:[ImageElement class]]) {
         self.name = @"Add Image";
     } else if ([element isKindOfClass:[BackgroundElement class]]) {

@@ -21,6 +21,9 @@
 - (void)saveInBackground;
 - (void)saveInBackgroundWithBlock:(GSResultBlock)block;
 
+- (void)deleteInBackground;
+- (void)deleteInBackgroundWithBlock:(GSResultBlock)block;
+
 - (NSString *)classname;
 + (NSString *)classname;
 

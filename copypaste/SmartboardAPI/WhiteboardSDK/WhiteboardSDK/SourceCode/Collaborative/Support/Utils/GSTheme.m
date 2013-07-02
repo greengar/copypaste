@@ -1,6 +1,6 @@
 //
 //  GSTheme.m
-//  CollaborativeSDK
+//  Collaborative SDK
 //
 //  Created by Elliot Lee on 4/29/13.
 //  Copyright (c) 2013 Greengar. All rights reserved.
@@ -10,6 +10,19 @@
 #import "NSAttributedString+Attributes.h"
 
 @implementation GSTheme
+
++ (UIColor *)textFieldTextColor
+{
+    return [UIColor colorWithHexString:@"262627"];
+}
+
++ (UIFont *)textFieldFont
+{
+    if (IS_IPAD) {
+        return [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:30];
+    }
+    return [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:18];
+}
 
 + (OHAttributedLabel *)logoWithSize:(CGFloat)size
 {

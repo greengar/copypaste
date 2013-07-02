@@ -34,6 +34,7 @@
     float scale = self.drawingView.kTextureScale;
     
 	GLfloat radius = pointSize * scale * 2;
+    radius /= self.drawingView.scaleFact;
     
     glPointSize(radius);
     

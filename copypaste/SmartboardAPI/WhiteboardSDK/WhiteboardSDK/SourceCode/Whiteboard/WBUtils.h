@@ -10,6 +10,11 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
+#define X(a) (a.frame.origin.x)
+#define Y(a) (a.frame.origin.y)
+#define W(a) (a.frame.size.width)
+#define H(a) (a.frame.size.height)
+
 #define IS_IPAD      (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
 #define IS_IPAD1    ((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()) && ([UIScreen mainScreen].scale == 1.0) && (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]))
 #define IS_IPAD2    ((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()) && ([UIScreen mainScreen].scale == 1.0) &&([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]))
@@ -21,6 +26,8 @@
 #else
 #       define DLog(...)
 #endif
+
+#define CRITTERCISM_BREADCRUMB(fmt, ...) [Crittercism leaveBreadcrumb:[NSString stringWithFormat:@"%s [Line %d] " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__]];
 
 #define NSDEF [NSUserDefaults standardUserDefaults]
 
@@ -41,11 +48,15 @@
 
 #define THROW_EXCEPTION_TYPE(type) [NSException raise:type format:@"%s Line %d", __PRETTY_FUNCTION__, __LINE__];
 
+#define kNotificationNowListenToCanvasDraw @"kNotificationNowListenToCanvasDraw"
+
+#define kThumbnailSize 208
+
 @class WBBoard;
-@protocol WBBoardDelegate
+@protocol WBBoardDelegate <NSObject>
 @required
 - (NSString *)facebookId;
-- (void)doneEditingBoardWithResult:(UIImage *)image;
+- (void)doneEditingBoard:(WBBoard *)board withResult:(UIImage *)image;
 
 #pragma mark - Collaboration
 @optional
@@ -77,7 +88,6 @@
                        toPoint:(CGPoint)end
                 toURBackBuffer:(BOOL)toURBackBuffer
                      isErasing:(BOOL)isErasing
-                updateBoundary:(CGRect)boundingRect
                     elementUid:(NSString *)elementUid
                        pageUid:(NSString *)pageUid
                       boardUid:(NSString *)boardUid;
@@ -110,6 +120,12 @@
            boardUid:(NSString *)boardUid;
 - (void)didScaleTo:(float)scale
         elementUid:(NSString *)elementUid
+           pageUid:(NSString *)pageUid
+          boardUid:(NSString *)boardUid;
+- (void)didMoveTo:(CGPoint)dest
+          pageUid:(NSString *)pageUid
+         boardUid:(NSString *)boardUid;
+- (void)didScaleTo:(float)scale
            pageUid:(NSString *)pageUid
           boardUid:(NSString *)boardUid;
 - (void)didApplyFromTransform:(CGAffineTransform)from
@@ -148,6 +164,8 @@
 + (NSObject *)getThingsFromClipboard;
 + (NSString *)getBaseDocumentFolder;
 + (NSString *)getMacAddress;
++ (CGPoint)centerPointOfPoint:(CGPoint)point1 andPoint:(CGPoint)point2;
++ (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer;
 
 typedef void (^WBSingleResultBlock)(id object, NSError *error);
 typedef void (^WBArrayResultBlock)(NSArray *objects, NSError *error);

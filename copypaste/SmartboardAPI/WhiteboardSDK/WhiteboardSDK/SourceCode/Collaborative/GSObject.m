@@ -35,6 +35,7 @@
 
 - (id)initWithPFObject:(PFObject *)object {
     if ((self = [super init])) {
+        self.parseObject = object;
         self.parseUid = [object objectId];
         self.createdAt = [object createdAt];
         self.updatedAt = [object updatedAt];
@@ -94,6 +95,18 @@
     [self.parseObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (block) {
             block(succeeded, error);
+        }
+    }];
+}
+
+- (void)deleteInBackground {
+    [self.parseObject deleteInBackground];
+}
+
+- (void)deleteInBackgroundWithBlock:(GSResultBlock)block {
+    [self.parseObject deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (block) {
+            block (succeeded, error);
         }
     }];
 }

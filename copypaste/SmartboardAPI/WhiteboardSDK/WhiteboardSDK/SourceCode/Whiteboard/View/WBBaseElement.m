@@ -17,10 +17,7 @@
 #import "HistoryElementTransform.h"
 #import "KxMenu.h"
 
-@interface WBBaseElement() {
-    BOOL isAlive;
-    BOOL isMovable;
-}
+@interface WBBaseElement()
 @property (nonatomic, strong) NSString *currentPanId;
 @property (nonatomic, strong) NSString *currentRotateId;
 @property (nonatomic, strong) NSString *currentScaleId;
@@ -32,12 +29,12 @@
 @synthesize defaultFrame = _defaultFrame;
 @synthesize defaultTransform = _defaultTransform;
 @synthesize currentTransform = _currentTransform;
-@synthesize elementCreated = _elementCreated;
 @synthesize border = _border;
 @synthesize currentPanId = _currentPanId;
 @synthesize currentRotateId = _currentRotateId;
 @synthesize currentScaleId = _currentScaleId;
-@synthesize isFake = _isFake;
+@synthesize isAlive = _isAlive;
+@synthesize isMovable = _isMovable;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -48,6 +45,7 @@
         self.currentTransform = self.transform;
         self.defaultFrame = frame;
         self.clipsToBounds = YES;
+        self.userInteractionEnabled = NO;
         
         self.border = [CAShapeLayer layer];
         self.border.strokeColor = [UIColor orangeColor].CGColor;
@@ -56,7 +54,8 @@
         [self.layer addSublayer:self.border];
         [self.border setHidden:YES];
         
-        self.isFake = NO;
+        self.isAlive = YES;
+        self.isMovable = NO;
     }
     return self;
 }
@@ -67,79 +66,85 @@
 }
 
 - (void)revive {
-    [[self contentView] setUserInteractionEnabled:YES];
-    isAlive = YES;
-    
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(elementRevive:)]) {
-        [self.delegate elementRevive:self];
-    }
+    self.isAlive = YES;
 }
 
 - (void)rest {
-    [[self contentView] setUserInteractionEnabled:NO];
-    isAlive = NO;
+    self.isAlive = NO;
 }
 
-- (BOOL)isAlive {
-    return isAlive;
+- (void)restore {
+    
 }
 
 - (void)move {
-    UITapGestureRecognizer *tapGesture;
-    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(elementTap:)];
-    tapGesture.delegate = self;
-    
-    UIPanGestureRecognizer *panGesture;
-    panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(elementPan:)];
-    panGesture.maximumNumberOfTouches = 2;
-    panGesture.delegate = self;
-    
-    UIRotationGestureRecognizer *rotateGesture;
-    rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(elementRotate:)];
-    rotateGesture.delegate = self;
-    
-    UIPinchGestureRecognizer *pinchGesture;
-    pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(elementScale:)];
-    pinchGesture.delegate = self;
-    
-    UILongPressGestureRecognizer *pressGesture;
-    pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(elementPress:)];
-    pressGesture.delegate = self;
-    
-    [self addGestureRecognizer:tapGesture];
-    [self addGestureRecognizer:panGesture];
-    [self addGestureRecognizer:rotateGesture];
-    [self addGestureRecognizer:pinchGesture];
-    [self addGestureRecognizer:pressGesture];
-    
-    [[self contentView] setUserInteractionEnabled:NO];
-    [self.border setHidden:NO];
+    if (!self.isMovable) {
+        self.isMovable = YES;
+        
+        UITapGestureRecognizer *tapGesture;
+        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(elementTap:)];
+        tapGesture.delegate = self;
+        
+        UIPanGestureRecognizer *panGesture;
+        panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(elementPan:)];
+        panGesture.maximumNumberOfTouches = 2;
+        panGesture.delegate = self;
+        
+        UIRotationGestureRecognizer *rotateGesture;
+        rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(elementRotate:)];
+        rotateGesture.delegate = self;
+        
+        UIPinchGestureRecognizer *pinchGesture;
+        pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(elementScale:)];
+        pinchGesture.delegate = self;
+        
+        UILongPressGestureRecognizer *pressGesture;
+        pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(elementPress:)];
+        pressGesture.delegate = self;
+        
+        [self addGestureRecognizer:tapGesture];
+        [self addGestureRecognizer:panGesture];
+        [self addGestureRecognizer:rotateGesture];
+        [self addGestureRecognizer:pinchGesture];
+        [self addGestureRecognizer:pressGesture];
+        
+        [self setUserInteractionEnabled:YES];
+        [self.border setHidden:NO];
+    }
 }
 
 - (void)stay {
-    for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
-        [self removeGestureRecognizer:gesture];
+    if (self.isMovable) {
+        self.isMovable = NO;
+        
+        for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
+            [self removeGestureRecognizer:gesture];
+        }
+        
+        [self setUserInteractionEnabled:NO];
+        [self.border setHidden:YES];
     }
-    
-    [[self contentView] setUserInteractionEnabled:YES];
-    [self.border setHidden:YES];
-}
-
-- (BOOL)isMovable {
-    return isMovable;
-}
-
-- (void)crop {
-    
 }
 
 - (UIView *)contentView {
-    return nil; // This is a very base class, which does not have a content view inside
+    return self; // This is a very base class, which does not have a content view inside
+}
+
+- (UIView *)contentDrawingView {
+    return nil; // This is a very base class, which does not have a content drawing view inside
+}
+
+- (void)takeScreenshot {
+    
+}
+
+- (void)removeScreenshot {
+    
 }
 
 #pragma mark - Transform
 - (void)moveTo:(CGPoint)dest {
-    [self setTransform:CGAffineTransformTranslate(self.transform, dest.x, dest.y)];
+    self.center = CGPointMake(self.center.x+dest.x, self.center.y+dest.y);
 }
 
 - (void)rotateTo:(float)rotation {
@@ -162,18 +167,6 @@
 }
 
 #pragma mark - Actions on Content View
-- (void)restore {
-    
-}
-
-- (BOOL)isTransformed {
-    return !CGAffineTransformEqualToTransform(self.currentTransform, self.defaultTransform);
-}
-
-- (BOOL)isCropped {
-    return NO;
-}
-
 - (void)showMenuAt:(CGPoint)location {
     NSArray *menuItems = @[[KxMenuItem menuItem:@"Send to back"
                                           image:nil
@@ -219,12 +212,13 @@
 
 - (void)elementTap:(UITapGestureRecognizer *)tapGesture {
     if ([self isKindOfClass:[TextElement class]] && [tapGesture state] == UIGestureRecognizerStateEnded) {
-        [self stay];
         [self revive];
     }
 }
 
 - (void)elementPan:(UIPanGestureRecognizer *)panGesture {
+    [WBUtils adjustAnchorPointForGestureRecognizer:panGesture];
+    
     // Add to History
     if ([panGesture state] == UIGestureRecognizerStateBegan) {
         self.currentPanId = [[HistoryManager sharedManager] addActionTransformElement:self
@@ -257,15 +251,17 @@
     
     if ([panGesture state] == UIGestureRecognizerStateBegan
         || [panGesture state] == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [panGesture translationInView:self];
+        CGPoint translation = [panGesture translationInView:[self superview]];
         [self moveTo:translation];
         [self.delegate didMoveTo:translation
                       elementUid:self.uid];
-        [panGesture setTranslation:CGPointZero inView:self];
+        [panGesture setTranslation:CGPointZero inView:[self superview]];
     }
 }
 
 - (void)elementRotate:(UIRotationGestureRecognizer *)rotationGesture {
+    [WBUtils adjustAnchorPointForGestureRecognizer:rotationGesture];
+    
     // Add to History
     if ([rotationGesture state] == UIGestureRecognizerStateBegan) {
         self.currentRotateId = [[HistoryManager sharedManager] addActionTransformElement:self
@@ -309,6 +305,8 @@
 }
 
 - (void)elementScale:(UIPinchGestureRecognizer *)pinchGesture {
+    [WBUtils adjustAnchorPointForGestureRecognizer:pinchGesture];
+    
     // Add to History
     if ([pinchGesture state] == UIGestureRecognizerStateBegan) {
         self.currentScaleId = [[HistoryManager sharedManager] addActionTransformElement:self
@@ -365,6 +363,10 @@
              transformName:(NSString *)transformName {
     self.transform = from;
     self.transform = to;
+}
+
+- (void)resetDrawingViewTouches {
+    // Only Element with drawing will handle this
 }
 
 #pragma mark - Backup/Restore Save/Load

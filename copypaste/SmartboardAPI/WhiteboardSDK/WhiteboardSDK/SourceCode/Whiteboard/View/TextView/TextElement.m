@@ -48,6 +48,7 @@
                                                  selector:@selector(keyboardWillBeHidden:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
+        [self checkHistory];
     }
     return self;
 }
@@ -71,6 +72,10 @@
 
 - (UIView *)contentView {
     return placeHolderTextView;
+}
+
+- (UIView *)contentDrawingView {
+    return nil;
 }
 
 - (void)restore {
@@ -126,80 +131,78 @@
 
 #pragma mark - Place Holder Text View Delegate
 - (void)revive {
-    [self checkHistory];
     [super revive];
+    [self checkHistory];
+    [placeHolderTextView setPlaceHolderText:@"Enter Text"];
+    [placeHolderTextView revive];
     if (![placeHolderTextView isFirstResponder]) {
         [placeHolderTextView becomeFirstResponder];
     }
-    [placeHolderTextView setPlaceHolderText:@"Enter Text"];
-    [placeHolderTextView revive];
 }
 
 - (void)rest {
     [super rest];
+    [placeHolderTextView setPlaceHolderText:@""];
+    [placeHolderTextView rest];
     if ([placeHolderTextView isFirstResponder]) {
         [placeHolderTextView resignFirstResponder];
     }
-    [placeHolderTextView setPlaceHolderText:@""];
-    [placeHolderTextView rest];
         
-    if (self.elementCreated) {
-        [[HistoryManager sharedManager] addActionTextContentChangedElement:self
-                                                            withOriginText:oldText
-                                                           withChangedText:((UITextView *)[self contentView]).text
-                                                                   forPage:(WBPage *)self.superview
-                                                                 withBlock:^(TextElement *element, NSError *error) {
-            if (element) {
-                oldText = ((UITextView *)[self contentView]).text;
-                [self.delegate didChangeTextContent:((UITextView *)element.contentView).text
-                                         elementUid:element.uid];
-                }
-            }];
-        
-        [[HistoryManager sharedManager] addActionTextFontChangedElement:self
-                                                     withOriginFontName:oldFontName
-                                                               fontSize:oldFontSize
-                                                    withChangedFontName:self.myFontName
-                                                               fontSize:self.myFontSize
-                                                                forPage:(WBPage *)self.superview
-                                                              withBlock:^(TextElement *element, NSError *error) {
-            if (element) {
-                oldFontName = self.myFontName;
-                oldFontSize = self.myFontSize;
-                [self.delegate didChangeTextFont:element.myFontName
+    [[HistoryManager sharedManager] addActionTextContentChangedElement:self
+                                                        withOriginText:oldText
+                                                       withChangedText:((UITextView *)[self contentView]).text
+                                                               forPage:(WBPage *)self.superview
+                                                             withBlock:^(TextElement *element, NSError *error) {
+        if (element) {
+            oldText = ((UITextView *)[self contentView]).text;
+            [self.delegate didChangeTextContent:((UITextView *)element.contentView).text
+                                     elementUid:element.uid];
+            }
+        }];
+    
+    [[HistoryManager sharedManager] addActionTextFontChangedElement:self
+                                                 withOriginFontName:oldFontName
+                                                           fontSize:oldFontSize
+                                                withChangedFontName:self.myFontName
+                                                           fontSize:self.myFontSize
+                                                            forPage:(WBPage *)self.superview
+                                                          withBlock:^(TextElement *element, NSError *error) {
+        if (element) {
+            oldFontName = self.myFontName;
+            oldFontSize = self.myFontSize;
+            [self.delegate didChangeTextFont:element.myFontName
+                                  elementUid:element.uid];
+            }
+        }];
+    
+    [[HistoryManager sharedManager] addActionTextColorChangedElement:self
+                                                     withOriginColor:oldColor
+                                                                   x:oldColorX
+                                                                   y:oldColorY
+                                                    withChangedColor:self.myColor
+                                                                   x:self.myColorLocX
+                                                                   y:self.myColorLocY
+                                                             forPage:(WBPage *)self.superview
+                                                           withBlock:^(TextElement *element, NSError *error) {
+           if (element) {
+               oldColor = self.myColor;
+               [self.delegate didChangeTextColor:element.myColor
                                       elementUid:element.uid];
-                }
-            }];
-        
-        [[HistoryManager sharedManager] addActionTextColorChangedElement:self
-                                                         withOriginColor:oldColor
-                                                                       x:oldColorX
-                                                                       y:oldColorY
-                                                        withChangedColor:self.myColor
-                                                                       x:self.myColorLocX
-                                                                       y:self.myColorLocY
-                                                                 forPage:(WBPage *)self.superview
-                                                               withBlock:^(TextElement *element, NSError *error) {
-               if (element) {
-                   oldColor = self.myColor;
-                   [self.delegate didChangeTextColor:element.myColor
-                                          elementUid:element.uid];
-               }
-           }];
-    }
-    self.elementCreated = YES;
+           }
+       }];
 }
 
 #pragma mark - Keyboard Delegate
 - (void)keyboardWasShown:(NSNotification*)aNotification {
-    
+    [self checkHistory];
+    self.isAlive = YES;
+    [self.delegate element:self hideKeyboard:NO];
 }
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
     [self rest];
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(element:hideKeyboard:)]) {
-        [self.delegate element:self hideKeyboard:YES];
-    }
+    [self stay];
+    [self.delegate element:self hideKeyboard:YES];
 }
 
 #pragma mark - Backup/Restore Save/Load
@@ -236,6 +239,10 @@
     placeHolderTextView = nil;
     self.myFontName = nil;
     self.myColor = nil;
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return NO;
 }
 
 @end

@@ -46,6 +46,11 @@
         self.sharedEmails = [object objectForKey:@"shared_emails"];
         self.firebaseUid = [object objectForKey:@"uid"];
         self.data = [NSMutableDictionary new];
+        
+        PFFile *thumbnailFile = [object objectForKey:@"thumbnail"];
+        if (thumbnailFile) {
+            [self cacheThumbnailFromFile:thumbnailFile];
+        }
     }
     return self;
 }
@@ -59,6 +64,11 @@
     self.sharedEmails = [object objectForKey:@"shared_emails"];
     self.firebaseUid = [object objectForKey:@"uid"];
     self.data = [NSMutableDictionary new];
+    
+    PFFile *thumbnailFile = [object objectForKey:@"thumbnail"];
+    if (thumbnailFile) {
+        [self cacheThumbnailFromFile:thumbnailFile];
+    }
 }
 
 - (id)initWithName:(NSString *)name
@@ -90,6 +100,13 @@
     return self;
 }
 
+- (void)cacheThumbnailFromFile:(PFFile *)thumbnailFile {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        self.thumbnailImage = [UIImage imageWithData:[thumbnailFile getData]];
+    });
+}
+
+
 - (void)saveInBackground {
     if (self.codeToEnter) {
         PFQuery *query = [PFQuery queryWithClassName:[self classname]];
@@ -98,14 +115,14 @@
             if ([objects count]) {
                 return;
             } else {
+                [self saveThumbnailInBackground];
                 [super saveInBackground];
             }
         }];
     } else {
+        [self saveThumbnailInBackground];
         [super saveInBackground];
     }
-    
-    [self saveInBackground];
 }
 
 - (void)saveInBackgroundWithBlock:(GSResultBlock)block {
@@ -120,29 +137,62 @@
                 NSError *error = [NSError errorWithDomain:@"Existed Room Code"
                                                      code:404
                                                  userInfo:details];
-                block(NO, error);
+                if (block) { block(NO, error); }
             } else {
-                [super saveInBackgroundWithBlock:block];
+                [self saveThumbnailInBackgroundWithBlock:^(BOOL succeed, NSError *error) {
+                    [super saveInBackgroundWithBlock:block];
+                }];
             }
         }];
     } else {
-        [super saveInBackgroundWithBlock:block];
+        [self saveThumbnailInBackgroundWithBlock:^(BOOL succeed, NSError *error) {
+            [super saveInBackgroundWithBlock:block];
+        }];
     }
-    
-    [self saveDataInBackground];
 }
 
-- (void)saveDataInBackground {
-    if (self.data) {
-        [[GSSession activeSession] sendRoomData:self];
+- (void)saveThumbnailInBackground {
+    if (self.thumbnailImage) {
+        NSData *imageData = UIImagePNGRepresentation(self.thumbnailImage);
+        PFFile *imageFile = [PFFile fileWithName:[NSString stringWithFormat:@"%@.png", self.uid] data:imageData];
+        [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (!error) {
+                [self setObject:imageFile forKey:@"thumbnail"];
+                [super saveInBackground];
+            }
+        }];
     }
+}
+
+- (void)saveThumbnailInBackgroundWithBlock:(GSResultBlock)block {
+    if (self.thumbnailImage) {
+        NSData *imageData = UIImagePNGRepresentation(self.thumbnailImage);
+        PFFile *imageFile = [PFFile fileWithName:[NSString stringWithFormat:@"%@.png", self.uid] data:imageData];
+        [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (!error) {
+                [self setObject:imageFile forKey:@"thumbnail"];
+                if (block) { block(succeeded, error); }
+            }
+        }];
+    }
+    if (block) { block(NO, nil); }
+}
+
+- (void)deleteInBackground {
+    [super deleteInBackground];
+    [[GSSession activeSession] removeRoomData:self];
+}
+
+- (void)deleteInBackgroundWithBlock:(GSResultBlock)block {
+    [super deleteInBackgroundWithBlock:block];
+    [[GSSession activeSession] removeRoomData:self];
 }
 
 - (void)setData:(NSMutableDictionary *)data {
     _data = data;
     
     if (self.autoUpload) {
-        [self saveDataInBackground];
+        [self saveInBackground];
     }
     
     if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(dataDidChanged:)]) {
@@ -164,6 +214,36 @@
         [GSSVProgressHUD dismiss];
         [[GSSession activeSession] unregisterRoomDataChanged:self];
     }];
+}
+
+- (void)setName:(NSString *)name {
+    _name = name;
+    [self setObject:name forKey:@"name"];
+}
+
+- (void)setOwnerId:(NSString *)ownerId {
+    _ownerId = ownerId;
+    [self setObject:ownerId forKey:@"owner_id"];
+}
+
+- (void)setIsPrivate:(BOOL)isPrivate {
+    _isPrivate = isPrivate;
+    [self setObject:[NSNumber numberWithBool:isPrivate] forKey:@"private"];
+}
+
+- (void)setCodeToEnter:(NSString *)codeToEnter {
+    _codeToEnter = codeToEnter;
+    [self setObject:codeToEnter forKey:@"code"];
+}
+
+- (void)setSharedEmails:(NSArray *)sharedEmails {
+    _sharedEmails = sharedEmails;
+    [self setObject:sharedEmails forKey:@"shared_emails"];
+}
+
+- (void)setFirebaseUid:(NSString *)firebaseUid {
+    _firebaseUid = firebaseUid;
+    [self setObject:firebaseUid forKey:@"uid"];
 }
 
 - (NSString *)uid {

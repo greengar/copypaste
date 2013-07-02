@@ -35,6 +35,10 @@
     return drawingView;
 }
 
+- (UIView *)contentDrawingView {
+    return drawingView;
+}
+
 #pragma mark - Backup/Restore Save/Load
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];

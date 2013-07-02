@@ -1,152 +1,217 @@
 //
 //  GSSignUpViewController.m
-//  CollaborativeSDK
+//  Collaborative SDK
 //
 //  Created by Elliot Lee on 4/27/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
 #import "GSSignUpViewController.h"
-#import "UIColor+GSExpanded.h"
-#import <QuartzCore/QuartzCore.h>
+
 #import "UITextField+GSCustomPlaceholderTextColor.h"
+#import "UIColor+GSExpanded.h"
+#import "GSSVProgressHUD.h"
+#import "GSTheme.h"
+#import "GSUtils.h"
 
-#define kSignUpFieldsBackgroundHeight (135)
+#import <QuartzCore/QuartzCore.h>
+#import <Parse/Parse.h>
 
-@interface GSSignUpViewController ()
-@property (nonatomic, strong) UIView *fieldsBackground;
+#define MIN_PASSWORD_LENGTH 6
+
+@interface GSSignUpViewController () <UITextFieldDelegate>
+
 @end
 
 @implementation GSSignUpViewController
 
-@synthesize fieldsBackground;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIColor *bgColor = [UIColor colorWithHexString:@"E1CAA7"];
+//    self.navigationController.navigationBarHidden = YES;
     
-    [self.signUpView setBackgroundColor:bgColor];
-    [self.signUpView setLogo:nil];
-
-    // Change button apperance
-//    [self.signUpView.dismissButton setImage:[UIImage imageNamed:@"Exit.png"] forState:UIControlStateNormal];
-//    [self.signUpView.dismissButton setImage:[UIImage imageNamed:@"ExitDown.png"] forState:UIControlStateHighlighted];
-//    
-//    [self.signUpView.signUpButton setBackgroundImage:[UIImage imageNamed:@"SignUp.png"] forState:UIControlStateNormal];
-//    [self.signUpView.signUpButton setBackgroundImage:[UIImage imageNamed:@"SignUpDown.png"] forState:UIControlStateHighlighted];
-//    [self.signUpView.signUpButton setTitle:@"" forState:UIControlStateNormal];
-//    [self.signUpView.signUpButton setTitle:@"" forState:UIControlStateHighlighted];
+    // unda doesn't do this here
+//    self.facebookPermissions = @[@"read_friendlists", @"user_about_me"];
     
-    // Add background for fields
+    usernameField.placeholderTextColor = [UIColor colorWithHexString:@"929395"];
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, usernameField.frame.size.height)];
+    leftView.backgroundColor = usernameField.backgroundColor;
+    usernameField.leftView = leftView;
+    usernameField.textColor = [GSTheme textFieldTextColor];
+    usernameField.font = [GSTheme textFieldFont];
+    usernameField.leftViewMode = UITextFieldViewModeAlways;
+    usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
+    // There's a strange bug where this does not work on the placeholder text:
+//    usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     
-    // Move all fields down on smaller screen sizes
-    float yOffset = 0.0f; //[UIScreen mainScreen].bounds.size.height <= 480.0f ? 30.0f : 0.0f;
+    passwordField.placeholderTextColor = [UIColor colorWithHexString:@"929395"];
+    leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, usernameField.frame.size.height)];
+    leftView.backgroundColor = passwordField.backgroundColor;
+    passwordField.leftView = leftView;
+    passwordField.textColor = [GSTheme textFieldTextColor];
+    passwordField.font = [GSTheme textFieldFont];
+    passwordField.leftViewMode = UITextFieldViewModeAlways;
+    passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
     
-    CGRect fieldFrame = self.signUpView.usernameField.frame;
+    emailField.placeholderTextColor = [UIColor colorWithHexString:@"929395"];
+    leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, usernameField.frame.size.height)];
+    leftView.backgroundColor = emailField.backgroundColor;
+    emailField.leftView = leftView;
+    emailField.textColor = [GSTheme textFieldTextColor];
+    emailField.font = [GSTheme textFieldFont];
+    emailField.leftViewMode = UITextFieldViewModeAlways;
+    emailField.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
     
-    const float margin = 37;
-    const float width = self.signUpView.frame.size.width - 2 * margin - 2; // fudge
-    
-    const float centerY = fieldFrame.origin.y + yOffset + (kSignUpFieldsBackgroundHeight / 2);
-    
-    UIView *v = [[UIView alloc] initWithFrame:
-                 CGRectMake(0.0f, 0.0f,
-                            width, kSignUpFieldsBackgroundHeight)];
-    v.center = CGPointMake(320.0f / 2.0f, centerY);
-    
-    v.backgroundColor = [UIColor colorWithHexString:@"87C2C8"]; // blue
-    v.layer.cornerRadius = 5;
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, v.frame.size.height / 3, v.frame.size.width, 1)];
-    line.backgroundColor = bgColor;
-    [v addSubview:line];
-    
-    line = [[UIView alloc] initWithFrame:CGRectMake(0, v.frame.size.height * 2 / 3, v.frame.size.width, 1)];
-    line.backgroundColor = bgColor;
-    [v addSubview:line];
-    
-    self.fieldsBackground = v;
-    
-    [self.signUpView insertSubview:fieldsBackground atIndex:1];
-    
-    // Remove text shadow
-    CALayer *layer = self.signUpView.usernameField.layer;
-    layer.shadowOpacity = 0.0f;
-    layer = self.signUpView.passwordField.layer;
-    layer.shadowOpacity = 0.0f;
-    layer = self.signUpView.emailField.layer;
-    layer.shadowOpacity = 0.0f;
-    layer = self.signUpView.additionalField.layer;
-    layer.shadowOpacity = 0.0f;
-    
-    // Set text color
-    UIColor *textColor = [UIColor colorWithHexString:@"1A3C3C"];
-    
-    [self.signUpView.usernameField setTextColor:textColor];
-    // [UIColor colorWithRed:135.0f/255.0f green:118.0f/255.0f blue:92.0f/255.0f alpha:1.0]];
-    
-    [self.signUpView.passwordField setTextColor:textColor];
-    [self.signUpView.emailField setTextColor:textColor];
-    
-//    [self.signUpView.additionalField setTextColor:[UIColor colorWithRed:135.0f/255.0f green:118.0f/255.0f blue:92.0f/255.0f alpha:1.0]];
-    
-    UIColor *placeholderTextColor = [UIColor colorWithHexString:@"419394"];
-    [self.signUpView.usernameField setPlaceholderTextColor:placeholderTextColor];
-    [self.signUpView.passwordField setPlaceholderTextColor:placeholderTextColor];
-    [self.signUpView.emailField setPlaceholderTextColor:placeholderTextColor];
-    
-    // Change "Additional" to match our use
-//    [self.signUpView.additionalField setPlaceholder:@"Phone number"];
-    
+    signUpButton.layer.cornerRadius = 5;
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    float yOffset = 0.0f; //[UIScreen mainScreen].bounds.size.height <= 480.0f ? 30.0f : 0.0f;
-    CGRect fieldFrame = self.signUpView.usernameField.frame;
-    
-    const float centerY = fieldFrame.origin.y + yOffset + (kSignUpFieldsBackgroundHeight / 2);
-    self.fieldsBackground.center = CGPointMake(320.0f / 2.0f, centerY);
-    
-    // Move all fields down on smaller screen sizes
-//    float yOffset = [UIScreen mainScreen].bounds.size.height <= 480.0f ? 30.0f : 0.0f;
-    
-//    CGRect fieldFrame = self.signUpView.usernameField.frame;
-//
-//    [self.signUpView.dismissButton setFrame:CGRectMake(10.0f, 10.0f, 87.5f, 45.5f)];
-//    [self.signUpView.logo setFrame:CGRectMake(66.5f, 70.0f, 187.0f, 58.5f)];
-//    [self.signUpView.signUpButton setFrame:CGRectMake(35.0f, 385.0f, 250.0f, 40.0f)];
-    
-//    [self.fieldsBackground setFrame:CGRectMake(35.0f, fieldFrame.origin.y + yOffset, 250.0f, 174.0f)];
-    
-//
-//    [self.signUpView.usernameField setFrame:CGRectMake(fieldFrame.origin.x + 5.0f,
-//                                                       fieldFrame.origin.y + yOffset,
-//                                                       fieldFrame.size.width - 10.0f,
-//                                                       fieldFrame.size.height)];
-//    yOffset += fieldFrame.size.height;
-//    
-//    [self.signUpView.passwordField setFrame:CGRectMake(fieldFrame.origin.x + 5.0f,
-//                                                       fieldFrame.origin.y + yOffset,
-//                                                       fieldFrame.size.width - 10.0f,
-//                                                       fieldFrame.size.height)];
-//    yOffset += fieldFrame.size.height;
-//    
-//    [self.signUpView.emailField setFrame:CGRectMake(fieldFrame.origin.x + 5.0f,
-//                                                    fieldFrame.origin.y + yOffset,
-//                                                    fieldFrame.size.width - 10.0f,
-//                                                    fieldFrame.size.height)];
-//    yOffset += fieldFrame.size.height;
-//    
-//    [self.signUpView.additionalField setFrame:CGRectMake(fieldFrame.origin.x + 5.0f,
-//                                                         fieldFrame.origin.y + yOffset,
-//                                                         fieldFrame.size.width - 10.0f,
-//                                                         fieldFrame.size.height)];
+//- (void) viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear: animated];
+//    self.navigationController.navigationBarHidden = YES;
+//}
+
+- (void)showPasswordTooShortAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Password too short" message:nil delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    [alert show];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+- (void)showInvalidEmailAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email" message:@"We need your email in case you forget your password" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    [alert show];
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == usernameField) {
+        [passwordField becomeFirstResponder];
+    } else if (textField == passwordField) {
+        if (passwordField.text.length < MIN_PASSWORD_LENGTH) {
+            [self showPasswordTooShortAlert];
+        } else {
+            [emailField becomeFirstResponder];
+        }
+    } else if (textField == emailField) {
+        if ([GSUtils NSStringIsValidEmail:emailField.text] == NO) {
+            [self showInvalidEmailAlert];
+        } else {
+            [self signUpButtonTapped];
+        }
+    }
+    return YES;
+}
+
+- (IBAction)signUpButtonTapped
+{
+    // make all usernames lowercase
+    NSString *username = [usernameField.text lowercaseString];
+    NSString *password = passwordField.text;
+    NSString *email = emailField.text;
+    
+    if (!username || username.length == 0 || [username isAlphaNumeric] == NO) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Username missing or invalid" message:@"Letters and numbers only" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
+    if (!password || password.length < MIN_PASSWORD_LENGTH) {
+        [self showPasswordTooShortAlert];
+        return;
+    }
+    
+    if (!email || email.length < 5 || [GSUtils NSStringIsValidEmail:email] == NO) {
+        [self showInvalidEmailAlert];
+        return;
+    }
+    
+    [GSSVProgressHUD show];
+    PFUser *user = [PFUser user];
+    user.username = username;
+    user.password = password;
+    user.email = email;
+    [user signUpInBackgroundWithBlock:^(BOOL success, NSError *error) {
+        [GSSVProgressHUD dismiss];
+        if (success) {
+            
+            [PFCloud callFunctionInBackground:@"sendConfirmation"
+                               withParameters:@{@"toAddress": user.email}
+                                        block:^(id result, NSError *error) {
+                                            if (!error) {
+                                                DLog(@"%@", result);
+                                            } else {
+                                                DLog(@"error = %@", error);
+                                                #if CRITTERCISM
+                                                    NSException *exception = [NSException exceptionWithName:@"sendConfirmation" reason:@"error" userInfo:@{@"error":error}];
+                                                    [Crittercism logHandledException:exception];
+                                                #endif
+                                            }
+                                        }];
+            
+            [GSSVProgressHUD showSuccessWithStatus:@"Sign Up Done"];
+            
+            // Start login
+            [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser *user, NSError *error) {
+                [GSSVProgressHUD dismiss];
+                if (user) {
+                    // calls -updateUserInfoAndShowOrganizerIfLoggedIn
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kDidLogInNotification object:self];
+                } else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sign in failed" message:@"Invalid username or password. Try again!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alert show];
+                }
+            }];
+        } else {
+            NSString *reason = [[error userInfo] objectForKey:@"error"];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sign Up Failed" message:reason delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+        }
+    }];
+}
+
+- (IBAction)signUpHeaderTapped {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSignUpHeaderTappedNotification object:self];
+}
+
+- (IBAction)facebookButtonPressed:(id)sender {
+    [GSSVProgressHUD show];
+    
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [PFFacebookUtils logInWithPermissions: nil block:^(PFUser *user, NSError *error){
+        [GSSVProgressHUD dismiss];
+        
+        if (user && error == nil){
+            [GSSVProgressHUD show];
+            // calls -updateUserInfoAndShowOrganizerIfLoggedIn
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidLogInNotification object:self];
+        }
+        if (error) {
+            BOOL isOS6 = NO; // or higher
+            float currentVersion = 6.0;
+            
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= currentVersion)
+            {
+                isOS6 = YES; // or higher
+            }
+            if (isOS6) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Facebook Login failed. Check your settings in Settings > Facebook, please!", nil) delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Error: Facebook Login failed", nil) delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+            }
+        }
+    }];
+}
+
+//- (IBAction) dismissButtonPressed:(id)sender
+//{
+//    [self.navigationController popToRootViewControllerAnimated: YES];
+//}
+
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+//}
 
 @end

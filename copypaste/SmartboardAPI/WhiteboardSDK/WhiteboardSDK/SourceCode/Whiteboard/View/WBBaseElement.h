@@ -17,7 +17,6 @@
 @protocol WBBaseViewDelegate
 @optional
 - (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element;
-- (void)elementRevive:(WBBaseElement *)element;
 - (void)element:(WBBaseElement *)element nowBringToFront:(BOOL)bringFront;
 - (void)element:(WBBaseElement *)element nowSendToBack:(BOOL)sendBack;
 - (void)element:(WBBaseElement *)element nowDeleted:(BOOL)deleted;
@@ -38,7 +37,6 @@
               elementUid:(NSString *)elementUid;
 - (void)didRenderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end
                 toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing
-                updateBoundary:(CGRect)boundingRect
                     elementUid:(NSString *)elementUid;
 - (void)didMoveTo:(CGPoint)dest
        elementUid:(NSString *)elementUid;
@@ -55,29 +53,30 @@
 @interface WBBaseElement : UIView <UIGestureRecognizerDelegate>
 
 - (UIView *)contentView;
+- (UIView *)contentDrawingView;
 
 #pragma mark - Transform
 - (void)moveTo:(CGPoint)dest;
 - (void)rotateTo:(float)rotation;
 - (void)scaleTo:(float)scale;
-- (void)restore;
-- (BOOL)isTransformed;
-- (BOOL)isCropped;
+- (void)showMenuAt:(CGPoint)location;
+
 - (void)resetTransform;
-- (CGRect)focusFrame;
 
 - (void)revive;
 - (void)rest;
-- (BOOL)isAlive;
+- (void)restore;
+
 - (void)move;
 - (void)stay;
-- (BOOL)isMovable;
-
-- (void)crop;
 
 - (void)applyFromTransform:(CGAffineTransform)from
                toTransform:(CGAffineTransform)to
              transformName:(NSString *)transformName;
+- (void)resetDrawingViewTouches;
+
+- (void)takeScreenshot;
+- (void)removeScreenshot;
 
 #pragma mark - Backup/Restore
 - (NSMutableDictionary *)saveToData;
@@ -89,9 +88,7 @@
 @property (nonatomic) CGAffineTransform defaultTransform;
 @property (nonatomic) CGAffineTransform currentTransform;
 @property (nonatomic, strong) CAShapeLayer *border;
-
-// For History Created
-@property (nonatomic) BOOL elementCreated;
-@property (nonatomic) BOOL isFake;
+@property (nonatomic) BOOL isAlive;
+@property (nonatomic) BOOL isMovable;
 
 @end

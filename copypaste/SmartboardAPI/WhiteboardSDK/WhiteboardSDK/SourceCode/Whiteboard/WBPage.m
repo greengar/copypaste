@@ -37,11 +37,15 @@
 #define kFontColorPickerHeight (IS_IPAD ? 264 : 288)
 
 @interface WBPage ()
+@property (nonatomic, strong) GLCanvasElement *baseCanvasElement;
+@property (nonatomic, strong) BackgroundElement *baseBackgroundElement;
 @end
 
 @implementation WBPage
 @synthesize uid = _uid;
 @synthesize currentElement = _currentElement;
+@synthesize baseCanvasElement = _baseCanvasElement;
+@synthesize baseBackgroundElement = _baseBackgroundElement;
 @synthesize pageDelegate = _pageDelegate;
 
 - (id)initWithFrame:(CGRect)frame
@@ -50,9 +54,8 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.userInteractionEnabled = YES;
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"P_"];
-        
-        [self addFakeCanvas];
     }
     return self;
 }
@@ -77,33 +80,15 @@
     [self addSubview:element];
     [element setDelegate:self];
     [element restore];
+    if ([element isKindOfClass:[BackgroundElement class]]) {
+        [self sendSubviewToBack:element];
+    }
 }
 
 #pragma mark - Elements Delegate
-- (void)elementRevive:(WBBaseElement *)element {
-    for (WBBaseElement *existedElement in self.subviews) {
-        if (![existedElement.uid isEqualToString:element.uid]) {
-            [existedElement stay];
-            [existedElement rest];
-        }
-    }
-    self.currentElement = element;
-    
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(elementRevived)]) {
-        [self.pageDelegate elementRevived];
-    }
-    
-    if ([self.currentElement isKindOfClass:[TextElement class]]) {
-        if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(textElementNowFocus)]) {
-            [self.pageDelegate textElementNowFocus];
-        }
-    }
-}
-
 - (void)element:(WBBaseElement *)element hideKeyboard:(BOOL)hidden {
-    if (self.pageDelegate && [((id) self.pageDelegate) respondsToSelector:@selector(elementHideKeyboard)]) {
-        [self.pageDelegate elementHideKeyboard];
-    }
+    self.currentElement = element;
+    [self.pageDelegate element:element hideKeyboard:hidden];
 }
 
 - (void)element:(WBBaseElement *)element nowBringToFront:(BOOL)bringFront {
@@ -128,54 +113,27 @@
     }
 }
 
-#pragma mark - Fake/Real Canvas
-- (void)fakeCanvasFromElementShouldBeReal:(WBBaseElement *)element {
-    [self addElement:element];
-}
-
 - (void)addCanvas {
     GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     [self addSubview:canvasElement];
     self.currentElement = canvasElement;
     [self.currentElement setDelegate:self];
-    [self.currentElement revive];
-    [self.currentElement stay];
 }
 
-- (void)addFakeCanvas {
+- (void)initBaseCanvasElement {
     if ([[SettingManager sharedManager] viewOnly]) { return; }
     
-    if ([self.currentElement isKindOfClass:[GLCanvasElement class]]
-        && ![self.currentElement isTransformed]
-        && ![self.currentElement isCropped]) {
-        
-    } else {
-        GLCanvasElement *canvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-        [self addSubview:canvasElement];
-        self.currentElement = canvasElement;
-        [self.currentElement setDelegate:self];
-    }
-    
-    [self.currentElement revive];
-    [self.currentElement stay];
-}
-
-- (void)removeFakeCanvas {
-    if ([self.currentElement isKindOfClass:[GLCanvasElement class]] && [self.currentElement isFake]) {
-        [self.currentElement removeFromSuperview];
-        self.currentElement = [self.subviews lastObject];
-    }
+    self.baseCanvasElement = [[GLCanvasElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    [self addElement:self.baseCanvasElement];
 }
 
 - (void)addText {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
     TextElement *textElement = [[TextElement alloc] initWithFrame:CGRectMake(0, self.frame.size.height/8,
                                                                              self.frame.size.width, self.frame.size.height/2)];
     [self addElement:textElement];
-    
-    [textElement setDelegate:self];
     [textElement revive];
-    [textElement stay];
-    
     [self.pageDelegate didCreateTextElementWithUid:textElement.uid
                                            pageUid:self.uid
                                          textFrame:textElement.frame
@@ -185,13 +143,24 @@
                                           textSize:textElement.myFontSize];
 }
 
+- (void)addBackgroundElementWithImage:(UIImage *)image {
+    if ([[SettingManager sharedManager] viewOnly]) { return; }
+    
+    if ([self.baseBackgroundElement superview]) {
+        [self.baseBackgroundElement removeFromSuperview];
+    }
+    
+    self.baseBackgroundElement = [[BackgroundElement alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)
+                                                                    image:image];
+    [self addElement:self.baseBackgroundElement];
+    [self sendSubviewToBack:self.baseBackgroundElement];
+}
+
 - (void)startToMove {
     self.isMovable = YES;
     
     for (WBBaseElement *element in self.subviews) {
-        [element crop];
         [element move];
-        [element rest];
     }
 }
 
@@ -201,6 +170,70 @@
     for (WBBaseElement *element in self.subviews) {
         [element stay];
     }
+    
+    self.currentElement = self.baseCanvasElement;
+}
+
+- (void)startToPanZoom {
+    UIPanGestureRecognizer *panGesture;
+    panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pagePan:)];
+    panGesture.maximumNumberOfTouches = 2;
+    panGesture.delegate = self;
+
+    [self addGestureRecognizer:panGesture];
+
+    UIPinchGestureRecognizer *pinchGesture;
+    pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pageScale:)];
+    pinchGesture.delegate = self;
+
+    [self addGestureRecognizer:pinchGesture];
+}
+
+- (void)stopToPanZoom {
+    [[self layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
+    [self setCenter:self.superview.center];
+    
+    [UIView beginAnimations:nil context:nil];
+    [self setTransform:CGAffineTransformIdentity];
+    [UIView commitAnimations];
+    
+    for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
+        [self removeGestureRecognizer:gesture];
+    }
+}
+
+#pragma mark - Pan/Zoom Page
+- (void)pagePan:(UIPanGestureRecognizer *)panGesture {
+    [WBUtils adjustAnchorPointForGestureRecognizer:panGesture];
+    if ([panGesture state] == UIGestureRecognizerStateBegan
+        || [panGesture state] == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [panGesture translationInView:[self superview]];
+        [self moveTo:translation];
+        [self.pageDelegate didMoveTo:translation
+                             pageUid:self.uid];
+        [panGesture setTranslation:CGPointZero inView:self];
+    }
+}
+
+- (void)pageScale:(UIPinchGestureRecognizer *)pinchGesture {
+    [WBUtils adjustAnchorPointForGestureRecognizer:pinchGesture];
+    if ([pinchGesture state] == UIGestureRecognizerStateBegan
+        || [pinchGesture state] == UIGestureRecognizerStateChanged) {
+        float scale = pinchGesture.scale;
+        [self scaleTo:scale];
+        [self.pageDelegate didScaleTo:scale
+                              pageUid:self.uid];
+        [pinchGesture setScale:1.0f];
+    }
+}
+
+#pragma mark - Transform
+- (void)moveTo:(CGPoint)dest {
+    self.center = CGPointMake(self.center.x+dest.x, self.center.y+dest.y);
+}
+
+- (void)scaleTo:(float)scale {
+    [self setTransform:CGAffineTransformScale(self.transform, scale, scale)];
 }
 
 #pragma mark - Backup/Restore Save/Load
@@ -229,10 +262,8 @@
     BOOL oldHidden = self.isHidden;
     [self setHidden:NO];
     for (WBBaseElement *element in self.subviews) {
-        if ([element isKindOfClass:[GLCanvasElement class]]) {
-            GLCanvasElement *canvasElement = (GLCanvasElement *) element;
-            [canvasElement takeScreenshot];
-        }
+        [element takeScreenshot];
+        
     }
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
         UIGraphicsBeginImageContextWithOptions(self.window.bounds.size, NO, [UIScreen mainScreen].scale);
@@ -242,10 +273,7 @@
     UIImage *exportedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     for (WBBaseElement *element in self.subviews) {
-        if ([element isKindOfClass:[GLCanvasElement class]]) {
-            GLCanvasElement *canvasElement = (GLCanvasElement *) element;
-            [canvasElement removeScreenshot];
-        }
+        [element removeScreenshot];
     }
     [self setHidden:oldHidden];
     return exportedImage;
@@ -253,6 +281,50 @@
 
 - (void)dealloc {
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        for (int i = [self.subviews count]-1; i >= 0; i--) {
+            WBBaseElement *subview = [self.subviews objectAtIndex:i];
+            if ([subview contentDrawingView]) {
+                [subview touchesBegan:touches withEvent:event];
+            }
+        }
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        for (int i = [self.subviews count]-1; i >= 0; i--) {
+            WBBaseElement *subview = [self.subviews objectAtIndex:i];
+            if ([subview contentDrawingView]) {
+                [subview touchesMoved:touches withEvent:event];
+            }
+        }
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        for (int i = [self.subviews count]-1; i >= 0; i--) {
+            WBBaseElement *subview = [self.subviews objectAtIndex:i];
+            if ([subview contentDrawingView]) {
+                [subview touchesEnded:touches withEvent:event];
+            }
+        }
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        for (int i = [self.subviews count]-1; i >= 0; i--) {
+            WBBaseElement *subview = [self.subviews objectAtIndex:i];
+            if ([subview contentDrawingView]) {
+                [subview touchesCancelled:touches withEvent:event];
+            }
+        }
+    }
 }
 
 #pragma mark - Collaboration Back
@@ -280,13 +352,11 @@
                        toPoint:(CGPoint)end
                 toURBackBuffer:(BOOL)toURBackBuffer
                      isErasing:(BOOL)isErasing
-                updateBoundary:(CGRect)boundingRect
                     elementUid:(NSString *)elementUid {
     [self.pageDelegate didRenderLineFromPoint:start
                                       toPoint:end
                                toURBackBuffer:toURBackBuffer
                                     isErasing:isErasing
-                               updateBoundary:boundingRect
                                    elementUid:elementUid
                                       pageUid:self.uid];
 }
@@ -346,7 +416,6 @@
     [canvasElement setUid:elementUid];
     [canvasElement setDelegate:self];
     [self addSubview:canvasElement];
-    [canvasElement createRealCanvas];
     [canvasElement rest];
     [canvasElement stay];
 }
@@ -388,15 +457,13 @@
                     toPoint:(CGPoint)end
              toURBackBuffer:(BOOL)toURBackBuffer
                   isErasing:(BOOL)isErasing
-             updateBoundary:(CGRect)rect
                  elementUid:(NSString *)elementUid {
     WBBaseElement *element = [self elementByUid:elementUid];
     if ([element isKindOfClass:[GLCanvasElement class]]) {
         [((GLCanvasElement *) element) renderLineFromPoint:start
                                                    toPoint:end
                                             toURBackBuffer:toURBackBuffer
-                                                 isErasing:isErasing
-                                            updateBoundary:rect];
+                                                 isErasing:isErasing];
     }
 }
 

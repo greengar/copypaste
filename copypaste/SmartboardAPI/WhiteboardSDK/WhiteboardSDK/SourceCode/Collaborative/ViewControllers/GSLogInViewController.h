@@ -1,13 +1,30 @@
 //
 //  GSLogInViewController.h
-//  CollaborativeSDK
+//  Collaborative SDK
 //
 //  Created by Hector Zhao on 4/22/13.
-//  Copyright (c) 2013 Greengar. All rights reserved.
+//  Copyright (c) 2013 GreenGar. All rights reserved.
 //
 
-#import <Parse/Parse.h>
+#define kSignInHeaderTappedNotification @"kSignInHeaderTappedNotification"
 
-@interface GSLogInViewController : PFLogInViewController
+@interface GSLogInViewController : UIViewController
+{
+    IBOutlet UIView *topLineView;
+    IBOutlet UIButton *signInHeaderButton;
+    IBOutlet UIView *logoView;
+    IBOutlet UIButton *facebookButton;
+    IBOutlet UITextField *usernameField;
+    IBOutlet UITextField *passwordField;
+    IBOutlet UIButton *forgotPasswordButton;
+    IBOutlet UIButton *signInButton;
+}
+
+@property (weak, nonatomic) IBOutlet UIView *bottomLineView;
+
+- (IBAction)signInHeaderTapped;
+- (IBAction)facebookButtonPressed:(id)sender;
+- (IBAction)forgotPasswordTapped;
+- (IBAction)signInButtonTapped;
 
 @end

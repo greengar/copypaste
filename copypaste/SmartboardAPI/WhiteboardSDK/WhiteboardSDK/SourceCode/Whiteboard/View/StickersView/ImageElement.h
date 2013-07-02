@@ -7,8 +7,9 @@
 //
 
 #import "WBBaseElement.h"
+#import "MainPaintingView.h"
 
-@interface ImageElement : WBBaseElement
+@interface ImageElement : WBBaseElement <MainPaintViewDelegate>
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
 

@@ -20,9 +20,7 @@
 @synthesize isExternal;
 @synthesize internal_transforms;
 @synthesize isImageSent;
-@synthesize topLeftBounding;
-@synthesize bottomRightBounding;
-@synthesize previewAreaRect;
+@synthesize scaleFact;
 
 #pragma mark - Painting Manager delegates
 - (void) colorChanged:(CGFloat *)color isSelf:(BOOL)is {
@@ -120,6 +118,7 @@
 		
 		// Fix ratio from iPhone to iPad
 		isImageSent = FALSE;
+        scaleFact = 1.0f;
         
 		// Set size
 		screenSize_ = [self bounds].size;
@@ -143,7 +142,7 @@
     
     self = [self initWithFrame:frame context:aContext];
     if (self) {
-        
+        scaleFact = 1.0f;
     }
     
     return self;
@@ -154,6 +153,7 @@
                                                    sharegroup:glView.context.sharegroup];
     self = [self initWithFrame:frame context:aContext];
     if (self) {
+        scaleFact = 1.0f;
     }
     
     return self;
@@ -892,11 +892,6 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     }
 }
 
-- (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing updateBoundary:(CGRect)rect {
-    self.previewAreaRect = rect;
-    [self renderLineFromPoint:start toPoint:end toURBackBuffer:toURBackBuffer isErasing:isErasing];
-}
-
 //KONG: this method is used for testing
 - (void)drawSomethingToOffscreenBuffer {
     [self setOffscreenFramebuffer];
@@ -1028,11 +1023,12 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     _isInBackground = NO;    
 }
 
+#pragma mark - Supports
+/* Hector: use this if you want to calculate the bounding of your touches
 - (void)calculateBounderFromPoint:(CGPoint)start toPoint:(CGPoint)end {
     self.previewAreaRect = [self getBoundingOfDrawingUpdateFromPoint:start toPoint:end];
 }
 
-#pragma mark - Supports
 - (CGRect)getBoundingOfDrawingUpdateFromPoint:(CGPoint)start toPoint:(CGPoint)end {
     CGPoint touchStart = CGPointMake(start.x, self.bounds.size.height-start.y);
     CGPoint touchEnd = CGPointMake(end.x, self.bounds.size.height-end.y);
@@ -1089,5 +1085,5 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
     
     return CGRectMake(topLeft.x, topLeft.y, bottomRight.x-topLeft.x, bottomRight.y-topLeft.y);
 }
-
+*/
 @end

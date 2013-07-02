@@ -23,22 +23,22 @@
 
 - (void)setActive:(BOOL)active {
     [super setActive:active];
-    GLCanvasElement *canvasElement = (GLCanvasElement *) self.element;
-    MainPaintingView *paintingView = (MainPaintingView *) [canvasElement contentView];
-    if (active) {
-        [[paintingView undoSequenceArray] addObject:self.paintingCommand];
-        double delayInSeconds = 0.3;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [paintingView reloadView];
-        });
-        [self.element setIsFake:NO];
-    } else {
-        double delayInSeconds = 0.3;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [paintingView undoStroke];
-        });
+    MainPaintingView *paintingView = (MainPaintingView *) [self.element contentDrawingView];
+    if (paintingView) {
+        if (active) {
+            [[paintingView undoSequenceArray] addObject:self.paintingCommand];
+            double delayInSeconds = 0.3;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [paintingView reloadView];
+            });
+        } else {
+            double delayInSeconds = 0.3;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [paintingView undoStroke];
+            });
+        }
     }
 }
 
@@ -63,14 +63,12 @@
         [paintCmd loadFromData:paintingCmdData forElement:self.element];
         [self setPaintingCommand:paintCmd];
         [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
-        ((GLCanvasElement *)self.element).boundingRect = paintCmd.drawingView.previewAreaRect;
         
     } else if ([paintingType isEqualToString:@"StrokePaintingCmd"]) {
         StrokePaintingCmd *paintCmd = [[StrokePaintingCmd alloc] init];
         [paintCmd loadFromData:paintingCmdData forElement:self.element];
         [self setPaintingCommand:paintCmd];
         [self setActive:[[historyData objectForKey:@"history_active"] boolValue]];
-        ((GLCanvasElement *)self.element).boundingRect = paintCmd.drawingView.previewAreaRect;
     }
 }
 

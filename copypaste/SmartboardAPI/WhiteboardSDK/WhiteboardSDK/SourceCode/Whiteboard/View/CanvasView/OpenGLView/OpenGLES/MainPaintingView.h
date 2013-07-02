@@ -32,20 +32,14 @@ static const CGFloat kZoomMinScale = 0.8;
 
 @protocol MainPaintViewDelegate
 @optional
-- (void)startLineAtPoint:(CGPoint)start;
-- (void)drawLineFromPoint:(CGPoint)start toPoint:(CGPoint)end;
-- (void)endLineAtPoint:(CGPoint)end;
 - (void)pushedCommandToUndoStack:(PaintingCmd *)cmd;
 - (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd;
-- (void)fakeCanvasShouldBeReal:(UIView *)paintingView;
 
 #pragma mark - Collaboration
-- (void)didCreateRealCanvas;
 - (void)didApplyColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
               strokeSize:(float)strokeSize;
 - (void)didRenderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end
-                toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing
-                updateBoundary:(CGRect)boundingRect;
+                toURBackBuffer:(BOOL)toURBackBuffer isErasing:(BOOL)isErasing;
 
 @end
 
@@ -134,7 +128,6 @@ static const CGFloat kZoomMinScale = 0.8;
 - (BOOL)removeLayer:(int)index;
 - (void)clearLayer:(int)layerIndex;
 - (void)moveLayerAtIndex:(NSInteger)index1 toIndex:(NSInteger)index2;
-- (void)createRealCanvas;
-
+- (void)resetDrawingViewTouches;
 @end
 

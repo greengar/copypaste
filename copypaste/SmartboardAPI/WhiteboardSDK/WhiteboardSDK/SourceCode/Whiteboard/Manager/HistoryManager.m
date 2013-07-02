@@ -15,6 +15,7 @@
 #import "HistoryElementCanvasDraw.h"
 #import "HistoryElementTransform.h"
 #import "MultiStrokePaintingCmd.h"
+#import "SettingManager.h"
 
 #define kHistoryMaxBuffer 50
 
@@ -199,6 +200,9 @@ static HistoryManager *shareManager = nil;
                 withPaintingCommand:(PaintingCmd *)paintingCmd
                           withBlock:(WBSingleResultBlock)block {
     HistoryElementCanvasDraw *action = [[HistoryElementCanvasDraw alloc] init];
+    if ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) {
+        [action setName:@"Erase"];
+    }
     [action setPage:page];
     [action setElement:element];
     [action setPaintingCommand:paintingCmd];

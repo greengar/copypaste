@@ -9,9 +9,14 @@
 #import "ImageElement.h"
 #import "NSData+WBBase64.h"
 #import "WBUtils.h"
+#import "HistoryManager.h"
+#import "HistoryElementCanvasDraw.h"
 
 @interface ImageElement() {
     UIImageView *imageView;
+    MainPaintingView *drawingView;
+    UIImageView *screenshotImageView;
+    NSString *currentBrushId;
 }
 @end
 
@@ -21,8 +26,19 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.userInteractionEnabled = YES;
-        [self initImageViewWithFrame:frame image:image];
+        self.backgroundColor = [UIColor clearColor];
+        self.userInteractionEnabled = NO;
+        [self initImageViewWithFrame:frame
+                               image:image];
+        
+        // OpenGL View
+        drawingView = [[MainPaintingView alloc] initWithFrame:CGRectMake(0,
+                                                                         0,
+                                                                         frame.size.width,
+                                                                         frame.size.height)];
+        [self addSubview:drawingView];
+        [drawingView setDelegate:self];
+        [drawingView initialDrawing];
     }
     return self;
 }
@@ -41,20 +57,51 @@
     return imageView;
 }
 
-- (void)revive {
-    // Image Element is not revivable
+- (UIView *)contentDrawingView {
+    return drawingView;
 }
 
-- (void)rest {
-    [super rest];
+- (void)scaleTo:(float)scale {
+    [super scaleTo:scale];
+    drawingView.scaleFact *= scale;
+}
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        [drawingView touchesBegan:touches withEvent:event];
+    }
 }
 
-- (void)move {
-    [super move];
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        [drawingView touchesMoved:touches withEvent:event];
+    }
 }
 
-- (void)stay {
-    [super stay];
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        [drawingView touchesEnded:touches withEvent:event];
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        [drawingView touchesCancelled:touches withEvent:event];
+    }
+}
+
+- (void)resetDrawingViewTouches {
+    [drawingView resetDrawingViewTouches];
+}
+
+#pragma marl - Screenshot
+- (void)takeScreenshot {
+    screenshotImageView = [[UIImageView alloc] initWithFrame:drawingView.frame];
+    screenshotImageView.image = [drawingView glToUIImage];
+    [self addSubview:screenshotImageView];
+}
+
+- (void)removeScreenshot {
+    [screenshotImageView removeFromSuperview];
 }
 
 - (NSMutableDictionary *)saveToData {
@@ -108,9 +155,73 @@
 
 }
 
+#pragma mark - Undo/Redo
+- (void)pushedCommandToUndoStack:(PaintingCmd *)cmd {
+    currentBrushId = [[HistoryManager sharedManager] addActionBrushElement:self
+                                                                   forPage:(WBPage *)self.superview
+                                                       withPaintingCommand:cmd
+                                                                 withBlock:^(HistoryElementCanvasDraw *history, NSError *error) {}];
+}
+
+- (void)updatedCommandOnUndoStack:(PaintingCmd *)cmd {
+    [[HistoryManager sharedManager] updateActionBrushElementWithId:currentBrushId
+                                               withPaintingCommand:cmd
+                                                           forPage:(WBPage *)self.superview
+                                                         withBlock:^(HistoryElementCanvasDraw *history, NSError *error) {}];
+}
+
 - (void)dealloc {
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    imageView = nil;
+    drawingView = nil;
+}
+
+#pragma mark - Collaboration Back
+- (void)didApplyColorRed:(float)red
+                   green:(float)green
+                    blue:(float)blue
+                   alpha:(float)alpha
+              strokeSize:(float)strokeSize {
+    [self.delegate didApplyColorRed:red
+                              green:green
+                               blue:blue
+                              alpha:alpha
+                         strokeSize:strokeSize
+                         elementUid:self.uid];
+}
+
+- (void)didRenderLineFromPoint:(CGPoint)start
+                       toPoint:(CGPoint)end
+                toURBackBuffer:(BOOL)toURBackBuffer
+                     isErasing:(BOOL)isErasing {
+    [self.delegate didRenderLineFromPoint:start
+                                  toPoint:end
+                           toURBackBuffer:toURBackBuffer
+                                isErasing:isErasing
+                               elementUid:self.uid];
+}
+
+#pragma mark - Collaboration Forward
+- (void)applyColorRed:(float)red
+                green:(float)green
+                 blue:(float)blue
+                alpha:(float)alpha
+           strokeSize:(float)strokeSize {
+    [drawingView applyColorRed:red
+                         green:green
+                          blue:blue
+                         alpha:alpha
+                    strokeSize:strokeSize];
+}
+
+- (void)renderLineFromPoint:(CGPoint)start
+                    toPoint:(CGPoint)end
+             toURBackBuffer:(BOOL)toURBackBuffer
+                  isErasing:(BOOL)isErasing {
+    [drawingView renderLineFromPoint:start
+                             toPoint:end
+                      toURBackBuffer:toURBackBuffer
+                           isErasing:isErasing];
+    
 }
 
 @end

@@ -45,15 +45,14 @@
  */
 + (BOOL)isAuthenticated;
 
-/* 
- Perform authentication process
- @param viewController UIViewController: your root view controller
- @param delegate id: callback holder for authentication process
+/*
+ Perform authentication process.
+ 
+ @param viewController UIViewController<GSSessionDelegate>: your root view controller. It should implement the delegate protocol.
  */
-- (void)authenticateSmartboardAPIFromViewController:(UIViewController *)viewController
-                                           delegate:(id<GSSessionDelegate>)delegate;
+- (void)authenticateFromViewController:(UIViewController<GSSessionDelegate> *)viewController animated:(BOOL)animated;
 
-/* 
+/*
  Call to update user info
  @param block GSResultBlock: if update is successfully or failed with errors
  */
@@ -132,6 +131,13 @@
                      block:(GSSingleResultBlock)block;
 
 /*
+ Delete a room
+ @param room GSRoom: the room to delete
+ @param block GSResultBlock: return if delete successfully
+ */
+- (void)deleteRoom:(GSRoom *)room block:(GSResultBlock)block;
+
+/*
  Get all public rooms
  @param block GSArrayResultBlock: return array (NSArray) of public available room (GSRoom)
  */
@@ -159,6 +165,12 @@
 - (void)sendRoomData:(GSRoom *)room;
 
 /*
+ Remove the data of the room from server
+ @param room GSRoom: the room whose data will be removed
+ */
+- (void)removeRoomData:(GSRoom *)room;
+
+/*
  Send data directly to the URL under the hierarchy
  Make sure you specify the correct URL
  @param dict NSDictionary: data dictionary
@@ -175,7 +187,6 @@
  @param urlString NSString: URL string to store the data under the hierarchy
  */
 - (void)sendData:(NSDictionary *)dict ofRoomUid:(NSString *)roomUid atURL:(NSString *)urlString;
-
 
 #pragma mark - Access and Update Database
 /*

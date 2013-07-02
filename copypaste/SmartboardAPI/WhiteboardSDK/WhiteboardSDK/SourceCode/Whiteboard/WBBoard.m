@@ -9,6 +9,7 @@
 #import "WBBoard.h"
 #import "WBPage.h"
 #import "GLCanvasElement.h"
+#import "BackgroundElement.h"
 #import "HistoryManager.h"
 #import "HistoryElement.h"
 #import "SettingManager.h"
@@ -108,7 +109,7 @@
     if (self) {
         self.backgroundQueue = dispatch_queue_create("com.greengar.WhiteboardSDK", NULL);
         
-        self.view.backgroundColor = [UIColor whiteColor];
+        self.view.backgroundColor = [UIColor darkGrayColor];
         self.uid = [WBUtils generateUniqueIdWithPrefix:@"B_"];
         self.name = [NSString stringWithFormat:@"Whiteboard %@", [WBUtils getCurrentTime]];
         self.pages = [NSMutableArray new];
@@ -117,21 +118,22 @@
         
         [[SettingManager sharedManager] setCurrentColorTab:0];
         
-        [self initPageCurlControl];
+        // TODO: Implement the Right Side Panel
+        // [self initPageCurlControlWithFrame:self.view.frame];
         
         // Menu Content View
         float kMenuViewHeight = self.view.frame.size.height/2;
-        int menuContentHeight = kMenuViewHeight+kOffsetForBouncing;
+        int menuContentHeight = kMenuViewHeight;
         WBMenubarView *menubar = self.menubarView;
         menuContentView = [[WBMenuContentView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width*1.25, menuContentHeight)];
         [menuContentView setDelegate:self];
         
         // History Content View
-        int historyHeight = kHistoryViewHeight+kOffsetForBouncing;
+        int historyHeight = kHistoryViewHeight;
         historyView = [[HistoryView alloc] initWithFrame:CGRectMake(menubar.frame.origin.x, menubar.frame.origin.y+menubar.frame.size.height, menubar.frame.size.width, historyHeight)];
         
         // Add More ContentView
-        int addMoreHeight = kAddMoreViewHeight+kOffsetForBouncing;
+        int addMoreHeight = kAddMoreViewHeight;
         WBToolbarView *toolbar = self.toolbarView;
         addMoreView = [[WBAddMoreSelectionView alloc] initWithFrame:CGRectMake(toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*3, toolbar.frame.origin.y-addMoreHeight, kAddMoreCellHeight*3, addMoreHeight)];
         [addMoreView setDelegate:self];
@@ -171,7 +173,7 @@
 }
 
 - (void)doneEditing {
-    [self exitBoardWithResult:NO];
+    [self exitBoardWithResult:YES];
 }
 
 - (int)numOfPages {
@@ -186,7 +188,7 @@
 - (void)initLayersWithFrame:(CGRect)frame {
     // Page Holder
     self.pageHolderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-    self.pageHolderView.backgroundColor = [UIColor clearColor];
+    self.pageHolderView.backgroundColor = [UIColor darkGrayColor];
     [self.view addSubview:self.pageHolderView];
     
     // Menubar (Menu/Undo/History)
@@ -208,19 +210,6 @@
     self.toolbarView.delegate = self;
     self.toolbarView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [self.view addSubview:self.toolbarView];
-    
-    // Page Curl Button
-    float pageCurlWidth = 50;
-    float pageCurlHeight = 74;
-    self.pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
-    [self.pageCurlButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
-                         forState:UIControlStateNormal];
-    [self.pageCurlButton setFrame:CGRectMake(frame.size.width-pageCurlWidth, frame.size.height-pageCurlHeight,
-                                             pageCurlWidth, pageCurlHeight)];
-    [self.pageCurlButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin];
-    [self.pageCurlButton addTarget:self action:@selector(performPageCurlUp:)
-                  forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.pageCurlButton];
 }
 
 #pragma mark - Pages Handler
@@ -235,8 +224,12 @@
     [self.pages addObject:page];
     [self setCurrentPageIndex:([self.pages count]-1)];
     
-    [self.delegate didAddNewPageWithUid:page.uid
+    if ([self.delegate respondsToSelector:@selector(didAddNewPageWithUid:boardUid:)]) {
+        [self.delegate didAddNewPageWithUid:page.uid
                                boardUid:self.uid];
+    }
+    
+    [self initBaseCanvasElement];
 }
 
 - (void)removePageWithId:(NSString *)uid {
@@ -307,12 +300,24 @@
 }
 
 #pragma mark - Export output data
-- (void)initPageCurlControl {
+- (void)initPageCurlControlWithFrame:(CGRect)frame {
+    // Page Curl Button
+    float pageCurlWidth = 50;
+    float pageCurlHeight = 74;
+    self.pageCurlButton = [GSButton buttonWithType:UIButtonTypeCustom];
+    [self.pageCurlButton setImage:[UIImage imageNamed:@"Whiteboard.bundle/PageCurl.png"]
+                         forState:UIControlStateNormal];
+    [self.pageCurlButton setFrame:CGRectMake(frame.size.width-pageCurlWidth, frame.size.height-pageCurlHeight,
+                                             pageCurlWidth, pageCurlHeight)];
+    [self.pageCurlButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin];
+    [self.pageCurlButton addTarget:self action:@selector(performPageCurlUp:)
+                  forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.pageCurlButton];
+    
     float exportButtonSize = 79;
     float exportPageLabelHeight = 30;
     float rightMargin = 26;
     float bottomMargin = 26;
-    
     self.exportControlView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-3*exportButtonSize-rightMargin, self.view.frame.size.height-exportButtonSize-exportPageLabelHeight-bottomMargin, exportButtonSize*3, exportButtonSize+exportPageLabelHeight)];
     self.exportControlView.layer.cornerRadius = 5;
     self.exportControlView.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -569,7 +574,9 @@
 
 #pragma mark - Export output data
 - (UIImage *)exportBoardToUIImage {
-    return [[self currentPage] exportPageToImage];
+    UIImage *fullresolutionImage = [[self currentPage] exportPageToImage];
+    self.previewImage = [fullresolutionImage cropCenterAndScaleImageToSize:CGSizeMake(kThumbnailSize, kThumbnailSize)];
+    return fullresolutionImage;
 }
 
 #pragma mark - Menu Bar Buttons
@@ -673,16 +680,25 @@
 - (void)selectHistoryColor {
     if ([[SettingManager sharedManager] viewOnly]) { return; }
     
-    if ([[self currentPage] isMovable]) {
-        [self stopToMove];
-        [self addFakeCanvas];
-    }
+    [self exitMoveModeIfNeeded];
     
     [(WBToolMonitorView *)[self.view viewWithTag:kToolMonitorTag] enableEraser:NO];
     WBBaseElement *element = [[self currentPage] currentElement];
     if ([element isKindOfClass:[TextElement class]]) {
         TextElement *textElement = (TextElement *) element;
         [textElement updateWithColor:[[SettingManager sharedManager] getCurrentColorTab].tabColor];
+    }
+}
+
+- (void)exitMoveModeIfNeeded {
+    if ([[self currentPage] isMovable]) {
+        if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]
+            && [[[[self currentPage] currentElement] contentView] isFirstResponder]) {
+            // Text Element is keeping the keyboard
+            // So don't exit the Move mode
+        } else {
+            [self stopToMove];
+        }
     }
 }
 
@@ -695,9 +711,9 @@
         [self.toolbarView selectCanvasMode:kEraserMode];
     } else {
         if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]) {
-            [self.toolbarView selectCanvasMode:kTextMode];
+            [self focusControlOnText];
         } else {
-            [self.toolbarView selectCanvasMode:kCanvasMode];
+            [self focusControlOnCanvas];
         }
     }
 }
@@ -733,13 +749,7 @@
     float centerOfAddMoreButton = toolbar.frame.origin.x+toolbar.frame.size.width-kAddMoreCellHeight*1.5;
     float bottom = toolbar.frame.origin.y;
     CGPoint point = CGPointMake(centerOfAddMoreButton - 1, bottom);
-    addMorePopoverView = [WBPopoverView showPopoverAtPoint:point inView:self.view withContentView:addMoreView delegate:self];
-    
-    if ([[[self currentPage] currentElement] isKindOfClass:[TextElement class]]) {
-        [addMoreView setIsCanvasMode:NO];
-    } else {
-        [addMoreView setIsCanvasMode:YES];
-    }
+    addMorePopoverView = [WBPopoverView showPopoverAtPoint:point inView:self.view withContentView:addMoreView delegate:self];    
     [self.toolbarView didShowAddMoreView:YES];
 }
 
@@ -750,9 +760,7 @@
     
     if ([[self currentPage] isMovable]) {
         [self stopToMove];
-        [self addFakeCanvas];
     } else {
-        [self removeFakeCanvas];
         [self startToMove];
     }
 }
@@ -767,20 +775,14 @@
     [self.toolbarView didActivatedMove:NO];
 }
 
-- (void)addFakeCanvas {
-    [[self currentPage] addFakeCanvas];
-    [self.toolbarView selectCanvasMode:kCanvasMode];
-    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setTextMode:NO];
-}
-
-- (void)removeFakeCanvas {
-    [[self currentPage] removeFakeCanvas];
+- (void)initBaseCanvasElement {
+    [[self currentPage] initBaseCanvasElement];
+    [self focusControlOnCanvas];
 }
 
 - (void)addCanvasFrom:(UIView *)view {
     [addMorePopoverView dismiss];
     [self stopToMove];
-    [self addFakeCanvas];
 }
 
 - (void)addCameraFrom:(UIView *)view {
@@ -846,7 +848,10 @@
                                                   self.view.frame.size.height/2);
                     ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
                                                                                image:image];
-                    [imageElement rotateTo:arc4random()*(M_PI_4/RAND_MAX)/4];
+                    if ([info count] > 1) {
+                        [imageElement rotateTo:arc4random()*(M_PI_4/RAND_MAX)/4];
+                    }
+                    
                     [[self currentPage] addElement:imageElement];
                 }
             }
@@ -857,31 +862,8 @@
     // Show saved photos on top
     photoPickerController.shouldShowSavedPhotosOnTop = NO;
     photoPickerController.shouldChangeStatusBarStyle = NO;
+    photoPickerController.maximumNumberOfPhotosToBeSelected = 3;
     
-    // Custom toolbar items
-    UIBarButtonItem *selectAllBtnItem = [[UIBarButtonItem alloc] initWithTitle:@"Select All"
-                                                                         style:UIBarButtonItemStylePlain
-                                                                        target:nil
-                                                                        action:nil];
-    UIBarButtonItem *flexibleBtnItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                     target:nil
-                                                                                     action:nil];
-    UIBarButtonItem *deselectAllBtnItem = [[UIBarButtonItem alloc] initWithTitle:@"Select All"
-                                                                           style:UIBarButtonItemStylePlain
-                                                                          target:nil
-                                                                          action:nil];
-    AGIPCToolbarItem *selectAll = [[AGIPCToolbarItem alloc] initWithBarButtonItem:selectAllBtnItem
-                                                                andSelectionBlock:^BOOL(NSUInteger index, ALAsset *asset) {
-                                                                    return YES;
-                                                                }];
-    AGIPCToolbarItem *flexible = [[AGIPCToolbarItem alloc] initWithBarButtonItem:flexibleBtnItem
-                                                               andSelectionBlock:nil];
-    
-    AGIPCToolbarItem *deselectAll = [[AGIPCToolbarItem alloc] initWithBarButtonItem:deselectAllBtnItem
-                                                                  andSelectionBlock:^BOOL(NSUInteger index, ALAsset *asset) {
-                                                                      return NO;
-                                                                  }];
-    photoPickerController.toolbarItemsForManagingTheSelection = @[selectAll, flexible, flexible, deselectAll];
     self.addPhotoPopover = [[UIPopoverController alloc] initWithContentViewController:photoPickerController];
     CGRect showRect = CGRectMake(view.frame.origin.x-3,
                                  view.frame.origin.y+view.frame.size.height,
@@ -897,14 +879,13 @@
 - (void)addTextFrom:(UIView *)view {
     [addMorePopoverView dismiss];
     
-    // Back to first color, ignore using eraser color for text
-    [[SettingManager sharedManager] setCurrentColorTab:0];
+    if ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) {
+        [[SettingManager sharedManager] setCurrentColorTab:0];
+    }
 
-    [self stopToMove];
     [[self currentPage] addText];
-    [self.toolbarView selectCanvasMode:kTextMode];
-    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setTextMode:YES];
-    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) scrollFontTableViewToFont:((TextElement *) [[self currentPage] currentElement]).myFontName];
+    [self focusControlOnText];
+    [self startToMove];
 }
 
 - (void)addPasteFrom:(UIView *)view {
@@ -945,6 +926,35 @@
     }
 }
 
+- (void)addBackgroundFrom:(UIView *)view {
+    [addMorePopoverView dismiss];
+    
+    UIImagePickerController *photoController = [[UIImagePickerController alloc] init];
+    photoController.delegate = self;
+    photoController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    photoController.allowsEditing = NO;
+    self.addPhotoPopover = [[UIPopoverController alloc] initWithContentViewController:photoController];
+    CGRect showRect = CGRectMake(view.frame.origin.x-3,
+                                 view.frame.origin.y+view.frame.size.height,
+                                 view.frame.size.width,
+                                 view.frame.size.height);
+    [self.addPhotoPopover presentPopoverFromRect:showRect
+                                          inView:self.view
+                        permittedArrowDirections:UIPopoverArrowDirectionDown
+                                        animated:YES];
+}
+
+- (void)focusControlOnCanvas {
+    [self.toolbarView selectCanvasMode:kCanvasMode];
+    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setTextMode:NO];
+}
+
+- (void)focusControlOnText {
+    [self.toolbarView selectCanvasMode:kTextMode];
+    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) setTextMode:YES];
+    [((WBToolMonitorView *) [self.view viewWithTag:kToolMonitorTag]) scrollFontTableViewToFont:((TextElement *) [[self currentPage] currentElement]).myFontName];
+}
+
 - (void)animationCurlUpExitBoard {
     [self dismissViewControllerAnimated:NO completion:NULL];
     [UIView beginAnimations:[NSString stringWithFormat:kCurlUpAndDownAnimationKey, -1] context:nil];
@@ -962,15 +972,15 @@
             
             [self animationCurlUpExitBoard];
             
-            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-                [self.delegate doneEditingBoardWithResult:image];
+            if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoard:withResult:)]) {
+                [self.delegate doneEditingBoard:self withResult:image];
             }
         });
     } else {
         [self animationCurlUpExitBoard];
         
-        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoardWithResult:)]) {
-            [self.delegate doneEditingBoardWithResult:nil];
+        if (self.delegate && [((id)self.delegate) respondsToSelector:@selector(doneEditingBoard:withResult:)]) {
+            [self.delegate doneEditingBoard:self withResult:nil];
         }
     }
 }
@@ -1022,17 +1032,23 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self.addPhotoPopover dismissPopoverAnimated:NO];
     
-    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    if (image) {
-        CGRect imageRect = CGRectMake(self.view.frame.size.width/4,
-                                      self.view.frame.size.height/4,
-                                      self.view.frame.size.width/2,
-                                      self.view.frame.size.height/2);
-        ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
-                                                                   image:image];
-        [imageElement rotateTo:arc4random()*(M_PI_4/RAND_MAX)/4];
-        [[self currentPage] addElement:imageElement];
-        [self startToMove];
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        if (image) {
+            CGRect imageRect = CGRectMake(self.view.frame.size.width/4,
+                                          self.view.frame.size.height/4,
+                                          self.view.frame.size.width/2,
+                                          self.view.frame.size.height/2);
+            ImageElement *imageElement = [[ImageElement alloc] initWithFrame:imageRect
+                                                                       image:image];
+            [[self currentPage] addElement:imageElement];
+            [self startToMove];
+        }
+    } else {
+        UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        if (image) {
+            [[self currentPage] addBackgroundElementWithImage:image];
+        }
     }
 }
 
@@ -1119,15 +1135,17 @@
     [self.toolbarView didActivatedMove:NO];
 }
 
-- (void)elementHideKeyboard {
-    if (![[self currentPage] isMovable]) {
-        [self addFakeCanvas];
+- (void)element:(WBBaseElement *)element hideKeyboard:(BOOL)hidden {
+    if (hidden) {
+        [self stopToMove];
+        [self focusControlOnCanvas];
+    } else {
+        if ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) {
+            [[SettingManager sharedManager] setCurrentColorTab:0];
+        }
+        [self startToMove];
+        [self focusControlOnText];
     }
-}
-
-- (void)textElementNowFocus {
-    [[self currentPage] stopToMove];
-    [self.toolbarView selectCanvasMode:kTextMode];
 }
 
 #pragma mark - Import/Export Board Data
@@ -1173,7 +1191,7 @@
             // Reconstruct this page
             [self importPageData:pageData withBlock:nil];
             
-            [self addFakeCanvas];
+            [self initBaseCanvasElement];
         }
         [GSSVProgressHUD dismiss];
         
@@ -1405,14 +1423,12 @@
                        toPoint:(CGPoint)end
                 toURBackBuffer:(BOOL)toURBackBuffer
                      isErasing:(BOOL)isErasing
-                updateBoundary:(CGRect)boundingRect
                     elementUid:(NSString *)elementUid
                        pageUid:(NSString *)pageUid {
     [self.delegate didRenderLineFromPoint:start
                                   toPoint:end
                            toURBackBuffer:toURBackBuffer
                                 isErasing:isErasing
-                           updateBoundary:boundingRect
                                elementUid:elementUid
                                   pageUid:pageUid
                                  boardUid:self.uid];
@@ -1470,6 +1486,14 @@
     [self.delegate didScaleTo:scale elementUid:elementUid pageUid:pageUid boardUid:self.uid];
 }
 
+- (void)didMoveTo:(CGPoint)dest pageUid:(NSString *)pageUid {
+    [self.delegate didMoveTo:dest pageUid:pageUid boardUid:self.uid];
+}
+
+- (void)didScaleTo:(float)scale pageUid:(NSString *)pageUid {
+    [self.delegate didScaleTo:scale pageUid:pageUid boardUid:self.uid];
+}
+
 - (void)didApplyFromTransform:(CGAffineTransform)from toTransform:(CGAffineTransform)to
                 transformName:(NSString *)transformName
                    elementUid:(NSString *)elementUid pageUid:(NSString *)pageUid {
@@ -1490,10 +1514,6 @@
     [self.pageHolderView addSubview:page];
     [self.pages addObject:page];
     [self setCurrentPageIndex:([self.pages count]-1)];
-}
-
-- (void)addNewCanvas {
-    [[self currentPage] addCanvas];
 }
 
 - (void)removeAllPages {
@@ -1553,7 +1573,6 @@
                     toPoint:(CGPoint)end
              toURBackBuffer:(BOOL)toURBackBuffer
                   isErasing:(BOOL)isErasing
-             updateBoundary:(CGRect)boundingRect
                  elementUid:(NSString *)elementUid
                     pageUid:(NSString *)pageUid {
     WBPage *page = [self pageByUid:pageUid];
@@ -1562,7 +1581,6 @@
                           toPoint:end
                    toURBackBuffer:toURBackBuffer
                         isErasing:isErasing
-                   updateBoundary:boundingRect
                        elementUid:elementUid];
     }
 }
@@ -1624,6 +1642,20 @@
     WBPage *page = [self pageByUid:pageUid];
     if (page) {
         [page scaleTo:scale elementUid:elementUid];
+    }
+}
+
+- (void)moveTo:(CGPoint)dest pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page moveTo:dest];
+    }
+}
+
+- (void)scaleTo:(float)scale pageUid:(NSString *)pageUid {
+    WBPage *page = [self pageByUid:pageUid];
+    if (page) {
+        [page scaleTo:scale];
     }
 }
 

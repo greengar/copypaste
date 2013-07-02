@@ -33,7 +33,6 @@
        codeToEnter:(NSString *)codeToEnter
       sharedEmails:(NSArray *)sharedEmails;
 
-- (void)saveDataInBackground;
 - (void)loadDataWithBlock:(GSResultBlock)block;
 
 @end

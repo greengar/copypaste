@@ -22,13 +22,12 @@
 @end
 
 @implementation GLCanvasElement
-@synthesize isCrop = _isCrop;
-@synthesize boundingRect = _boundingRect;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+        self.userInteractionEnabled = NO;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         // OpenGL View
@@ -40,8 +39,8 @@
         [drawingView setDelegate:self];
         [drawingView initialDrawing];
         
-        self.isFake = YES;
-        
+        self.isAlive = YES;
+        self.isMovable = NO;
     }
     return self;
 }
@@ -50,47 +49,55 @@
     return drawingView;
 }
 
-- (BOOL)isCropped {
-    return self.isCrop;
-}
-
-- (void)crop {
-    self.transform = self.defaultTransform;
-    drawingView.frame = CGRectMake(-self.boundingRect.origin.x, -self.boundingRect.origin.y,
-                                   drawingView.frame.size.width, drawingView.frame.size.height);
-    screenshotImageView.frame = drawingView.frame;
-    self.frame = self.boundingRect;
-    self.defaultFrame = self.frame;
-    self.isCrop = YES;
-    self.transform = self.currentTransform;
-}
-
-- (void)revive {
-    if (![self isTransformed] && ![self isCropped]) {
-        [super revive];
-    } else {
-        // Transformed or cropped, it will not be revivable
-    }
-}
-
-- (void)rest {
-    [super rest];
+- (UIView *)contentDrawingView {
+    return drawingView;
 }
 
 - (void)move {
-    [super move];
+    // We don't allow move the GLCanvasElement
 }
 
 - (void)stay {
-    [super stay];
+    // We don't allow to move, so it will always stay
+}
+
+- (void)showMenuAt:(CGPoint)location {
+    // We don't show the menu for the base canvas element
 }
 
 - (void)restore {
     self.transform = self.defaultTransform;
     self.frame = self.defaultFrame;
     self.transform = self.currentTransform;
-    self.isFake = YES;
     [drawingView drawView];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        [drawingView touchesBegan:touches withEvent:event];
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        [drawingView touchesMoved:touches withEvent:event];
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        [drawingView touchesEnded:touches withEvent:event];
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.isMovable) {
+        [drawingView touchesCancelled:touches withEvent:event];
+    }
+}
+
+- (void)resetDrawingViewTouches {
+    [drawingView resetDrawingViewTouches];
 }
 
 #pragma marl - Screenshot
@@ -109,21 +116,11 @@
 - (NSMutableDictionary *)saveToData {
     NSMutableDictionary *dict = [super saveToData];
     [dict setObject:@"GLCanvasElement" forKey:@"element_type"];
-    [dict setObject:[NSNumber numberWithBool:self.isFake] forKey:@"element_canvas_fake"];
     return dict;
 }
 
 - (void)loadFromData:(NSDictionary *)elementData {
     [super loadFromData:elementData];
-    self.isFake = [[elementData objectForKey:@"element_canvas_fake"] boolValue];
-    self.isCrop = YES;
-}
-
-#pragma mark - Fake/Real Canvas
-- (void)didCreateRealCanvas {
-    self.isFake = NO;
-    self.isCrop = YES;
-    [self.delegate didCreateRealCanvasWithUid:self.uid];
 }
 
 #pragma mark - Undo/Redo
@@ -163,23 +160,15 @@
 - (void)didRenderLineFromPoint:(CGPoint)start
                        toPoint:(CGPoint)end
                 toURBackBuffer:(BOOL)toURBackBuffer
-                     isErasing:(BOOL)isErasing
-                updateBoundary:(CGRect)boundingRect {
-    self.boundingRect = boundingRect;
+                     isErasing:(BOOL)isErasing {
     [self.delegate didRenderLineFromPoint:start
                                   toPoint:end
                            toURBackBuffer:toURBackBuffer
                                 isErasing:isErasing
-                           updateBoundary:boundingRect
                                elementUid:self.uid];
 }
 
 #pragma mark - Collaboration Forward
-- (void)createRealCanvas {
-    self.isFake = NO;
-    [drawingView createRealCanvas];
-}
-
 - (void)applyColorRed:(float)red
                 green:(float)green
                  blue:(float)blue
@@ -195,14 +184,11 @@
 - (void)renderLineFromPoint:(CGPoint)start
                     toPoint:(CGPoint)end
              toURBackBuffer:(BOOL)toURBackBuffer
-                  isErasing:(BOOL)isErasing
-             updateBoundary:(CGRect)boundingRect {
-    self.boundingRect = boundingRect;
+                  isErasing:(BOOL)isErasing {
     [drawingView renderLineFromPoint:start
                              toPoint:end
                       toURBackBuffer:toURBackBuffer
-                           isErasing:isErasing
-                      updateBoundary:boundingRect];
+                           isErasing:isErasing];
      
 }
 

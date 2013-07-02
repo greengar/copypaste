@@ -106,7 +106,6 @@
 
 #pragma mark - Collaboration
 - (void)addNewPageWithUid:(NSString *)pageUid;
-- (void)addNewCanvas;
 - (void)removeAllPages;
 - (void)createCanvasElementWithUid:(NSString *)elementUid
                            pageUid:(NSString *)pageUid;
@@ -131,7 +130,6 @@
                     toPoint:(CGPoint)end
              toURBackBuffer:(BOOL)toURBackBuffer
                   isErasing:(BOOL)isErasing
-             updateBoundary:(CGRect)boundingRect
                  elementUid:(NSString *)elementUid
                     pageUid:(NSString *)pageUid;
 - (void)changeTextContent:(NSString *)text
@@ -157,6 +155,10 @@
          pageUid:(NSString *)pageUid;
 - (void)scaleTo:(float)scale
      elementUid:(NSString *)elementUid
+        pageUid:(NSString *)pageUid;
+- (void)moveTo:(CGPoint)dest
+       pageUid:(NSString *)pageUid;
+- (void)scaleTo:(float)scale
         pageUid:(NSString *)pageUid;
 - (void)applyFromTransform:(CGAffineTransform)from
                toTransform:(CGAffineTransform)to

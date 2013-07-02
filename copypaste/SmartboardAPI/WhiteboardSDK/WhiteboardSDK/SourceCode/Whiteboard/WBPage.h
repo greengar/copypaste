@@ -19,9 +19,7 @@
 @class PaintingCmd;
 @protocol WBPageDelegate
 @optional
-- (void)elementHideKeyboard;
-- (void)elementRevived;
-- (void)textElementNowFocus;
+- (void)element:(WBBaseElement *)element hideKeyboard:(BOOL)hidden;
 
 #pragma mark - Collaboration
 @required
@@ -45,7 +43,6 @@
                        toPoint:(CGPoint)end
                 toURBackBuffer:(BOOL)toURBackBuffer
                      isErasing:(BOOL)isErasing
-                updateBoundary:(CGRect)boundingRect
                     elementUid:(NSString *)elementUid
                        pageUid:(NSString *)pageUid;
 - (void)didChangeTextContent:(NSString *)text
@@ -69,6 +66,10 @@
 - (void)didScaleTo:(float)scale
         elementUid:(NSString *)elementUid
            pageUid:(NSString *)pageUid;
+- (void)didMoveTo:(CGPoint)dest
+          pageUid:(NSString *)pageUid;
+- (void)didScaleTo:(float)scale
+           pageUid:(NSString *)pageUid;
 - (void)didApplyFromTransform:(CGAffineTransform)from
                   toTransform:(CGAffineTransform)to
                 transformName:(NSString *)transformName
@@ -76,7 +77,7 @@
                       pageUid:(NSString *)pageUid;
 @end
 
-@interface WBPage : UIView <UIScrollViewDelegate, UIAlertViewDelegate, WBBaseViewDelegate>
+@interface WBPage : UIView <WBBaseViewDelegate, UIGestureRecognizerDelegate>
 
 - (UIImage *)exportPageToImage;
 - (NSMutableDictionary *)saveToData;
@@ -86,9 +87,9 @@
 - (void)removeElement:(WBBaseElement *)element;
 
 - (void)addCanvas;
-- (void)addFakeCanvas;
-- (void)removeFakeCanvas;
+- (void)initBaseCanvasElement;
 - (void)addText;
+- (void)addBackgroundElementWithImage:(UIImage *)image;
 - (void)startToMove;
 - (void)stopToMove;
 
@@ -117,7 +118,6 @@
                     toPoint:(CGPoint)end
              toURBackBuffer:(BOOL)toURBackBuffer
                   isErasing:(BOOL)isErasing
-             updateBoundary:(CGRect)rect
                  elementUid:(NSString *)elementUid;
 - (void)changeTextContent:(NSString *)text
                elementUid:(NSString *)elementUid;
@@ -133,6 +133,8 @@
       elementUid:(NSString *)elementUid;
 - (void)scaleTo:(float)scale
      elementUid:(NSString *)elementUid;
+- (void)moveTo:(CGPoint)dest;
+- (void)scaleTo:(float)scale;
 - (void)applyFromTransform:(CGAffineTransform)from
                toTransform:(CGAffineTransform)to
              transformName:(NSString *)transformName

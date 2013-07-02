@@ -26,7 +26,6 @@
     BOOL isReal;
     Transforms viewTransform;
 }
-@property (nonatomic) BOOL shouldCreateNewElement;
 @property (nonatomic, strong) NSString *currentPaintingId;
 @property (nonatomic, strong) NSTimer *lastEventInterval;
 - (void)showZoomingLabel;
@@ -36,7 +35,6 @@
 @end
 
 @implementation MainPaintingView
-@synthesize shouldCreateNewElement = _shouldCreateNewElement;
 @synthesize delegate = _delegate;
 @synthesize extDrawingView;
 @synthesize extRotation;
@@ -52,6 +50,7 @@
     if ((self = [super initWithFrame:frame sharegroupView:glView])) {
         // You might think this is necessary for showing the tools, but it's not.
 		self.multipleTouchEnabled = YES;
+        self.userInteractionEnabled = NO;
 
 		touchDictionary = [[GSMutableDictionary alloc] initWithCapacity:3];
 		
@@ -69,6 +68,7 @@
 	if ((self = [super initWithFrame:frame])) {
 		// You might think this is necessary for showing the tools, but it's not.
 		self.multipleTouchEnabled = YES;
+        self.userInteractionEnabled = NO;
 		
 		touchDictionary = [[GSMutableDictionary alloc] initWithCapacity:3];
 		
@@ -246,7 +246,7 @@
 
 - (void)applyLocalDrawingCmd {
     CGFloat *components = [[PaintingManager sharedManager] getColorOf:nil];
-    GLfloat radius = [[PaintingManager sharedManager] getPointSizeOf:nil];
+    GLfloat radius = [[PaintingManager sharedManager] getPointSizeOf:nil]/self.scaleFact;
     [self applyColorRed:components[0]
                   green:components[1]
                    blue:components[2]
@@ -319,10 +319,6 @@
 		CGPoint previousLocation = [touch previousLocationInView:self];
         
         [self drawLineFromTouchPoint:previousLocation toTouchPoint:location paintId:paintId];
-        
-        if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(drawLineFromPoint:toPoint:)]) {
-            [self.delegate drawLineFromPoint:previousLocation toPoint:location];
-        }
     }
 }
 
@@ -366,13 +362,6 @@
 	}
 	
 	isDrawingStroke = NO;
-
-    CGPoint location = [[touches anyObject] locationInView:self];
-    CGPoint end = CGPointMake(location.x, self.bounds.size.height - location.y);
-    
-    if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(endLineAtPoint:)]) {
-        [self.delegate endLineAtPoint:end];
-    }
 }
 
 - (void)drawLineFromTouchPoint:(CGPoint)previousLocation toTouchPoint:(CGPoint)location paintId:(NSString *)paintId {
@@ -404,8 +393,10 @@
 // Cannot assume this line is supposed to be in my color (may be remote color)
 - (void)renderLineFromPoint:(CGPoint)start toPoint:(CGPoint)end {
     not_run_when_in_background
-
+    
+    /* Hector: use this if you want to calculate the bounding of your touches
     [self calculateBounderFromPoint:start toPoint:end];
+     */
     
     if(extDrawingView) {
         //NAM: Conversion to rotate 90
@@ -444,10 +435,10 @@
     
     if ([[SettingManager sharedManager] getCurrentColorTabIndex] == kEraserTabIndex) {
         [super renderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
-        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES updateBoundary:self.previewAreaRect];
+        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:YES];
     } else {
         [super renderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
-        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO updateBoundary:self.previewAreaRect];
+        [self.delegate didRenderLineFromPoint:start toPoint:end toURBackBuffer:NO isErasing:NO];
     }
 }
 
@@ -472,11 +463,6 @@
 #pragma mark - Touch Handlers
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     if ([[SettingManager sharedManager] viewOnly]) { return; }
-    
-    if (!self.shouldCreateNewElement) {
-        self.shouldCreateNewElement = YES;
-        [self.delegate didCreateRealCanvas];
-    }
     
     if (IS_IPAD) {
         DrawingLayerInfo * layerInfo = [layerArray objectAtIndex:currentLayerIndex];
@@ -556,7 +542,7 @@
         return;
     } */
 	
-    if (numOfFingerOn == 1 && lastPaintingEvent != PaintingEventPan && lastPaintingEvent != PaintingEventZoom) {
+    if (/*numOfFingerOn == 1 &&*/ lastPaintingEvent != PaintingEventPan && lastPaintingEvent != PaintingEventZoom) {
         if (!gotMovement) {
             UITouch *touch1 = [[touches allObjects] objectAtIndex:0];
             CGPoint p1 = [touch1 locationInView:self];
@@ -588,13 +574,6 @@
             }
             
             isDrawingStroke = TRUE;
-            
-            CGPoint location = [[touches anyObject] locationInView:self];
-            CGPoint start = CGPointMake(location.x, self.bounds.size.height - location.y);
-            
-            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(startLineAtPoint:)]) {
-                [self.delegate startLineAtPoint:start];
-            }
             
             lastPaintingEvent = PaintingEventDrawStart;
             
@@ -714,13 +693,6 @@
                 }
                                 
                 isDrawingStroke = TRUE;
-                
-                CGPoint location = [[touches anyObject] locationInView:self];
-                CGPoint start = CGPointMake(location.x, self.bounds.size.height - location.y);
-                
-                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(startLineAtPoint:)]) {
-                    [self.delegate startLineAtPoint:start];
-                }
             
                 lastPaintingEvent = PaintingEventDrawStart;
             }
@@ -776,12 +748,17 @@
         } break;
         */
         default:
-            numOfFingerOn = 0;
-            gotMovement = NO;
-            lastPaintingEvent = PaintingEventNone;
-            firstUITouch = nil;
+            [self resetDrawingViewTouches];
             break;
 	}    
+}
+
+- (void)resetDrawingViewTouches {
+    firstDrawingPoint = NO;
+    numOfFingerOn = 0;
+    gotMovement = NO;
+    lastPaintingEvent = PaintingEventNone;
+    firstUITouch = nil;
 }
 
 // Handles the end of a touch event.
@@ -798,11 +775,7 @@
     
     // just want to be save
     // this event happens when something pops up during drawing
-    lastPaintingEvent = PaintingEventNone;
-    numOfFingerOn = 0; 
-    gotMovement = NO;
-    firstUITouch = nil;
-    isDrawingStroke = NO;
+    [self resetDrawingViewTouches];
 }
 
 #pragma mark - Draw View
@@ -1558,10 +1531,6 @@ void CGAffineToGL2(const CGAffineTransform *t, GLfloat *m)
     [self transferToPaintingView:self.extDrawingView];
 	
     [self applyLocalDrawingCmd];
-}
-
-- (void)createRealCanvas {
-    self.shouldCreateNewElement = YES;
 }
 
 @end

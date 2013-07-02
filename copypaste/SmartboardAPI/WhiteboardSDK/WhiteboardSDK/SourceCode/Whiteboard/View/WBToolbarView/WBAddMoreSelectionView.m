@@ -10,8 +10,6 @@
 #import "SettingManager.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define ADD_MORE_ARRAY @[@"Use Camera", @"Add Photo", @"Add Text", @"Paste"]
-
 @interface WBAddMoreSelectionView() {
     UIView                 *addMoreView;
     UITableView            *addMoreTableView;
@@ -22,7 +20,6 @@
 
 @implementation WBAddMoreSelectionView
 @synthesize delegate = _delegate;
-@synthesize isCanvasMode = _isCanvasMode;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -40,7 +37,7 @@
         [addMoreView setClipsToBounds:YES];
         [self addSubview:addMoreView];
         
-        addMoreTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, addMoreView.frame.size.width, kAddMoreCellHeight*4)];
+        addMoreTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, addMoreView.frame.size.width, kAddMoreCellHeight*[ADD_MORE_ARRAY count])];
         [addMoreTableView setBackgroundColor:[UIColor clearColor]];
         [addMoreTableView setDelegate:self];
         [addMoreTableView setDataSource:self];
@@ -94,11 +91,6 @@
     }
 }
 
-- (void)setIsCanvasMode:(BOOL)isCanvasMode {
-    _isCanvasMode = isCanvasMode;
-    [addMoreTableView reloadData];
-}
-
 #pragma mark - UITableView Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -128,11 +120,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
-    if ([indexPath row] == 2 && !self.isCanvasMode) {
-        cell.textLabel.text = @"Brush";
-    } else {
-        cell.textLabel.text = [ADD_MORE_ARRAY objectAtIndex:[indexPath row]];
-    }
+    cell.textLabel.text = [ADD_MORE_ARRAY objectAtIndex:[indexPath row]];
     
     return cell;
 }
@@ -151,19 +139,18 @@
             }
             break;
         case 2:
-            if (!self.isCanvasMode) {
-                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addCanvasFrom:)]) {
-                    [self.delegate addCanvasFrom:self];
-                }
-            } else {
-                if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addTextFrom:)]) {
-                    [self.delegate addTextFrom:self];
-                }
+            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addTextFrom:)]) {
+                [self.delegate addTextFrom:self];
             }
             break;
         case 3:
             if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addPasteFrom:)]) {
                 [self.delegate addPasteFrom:self];
+            }
+            break;
+        case 4:
+            if (self.delegate && [((id) self.delegate) respondsToSelector:@selector(addBackgroundFrom:)]) {
+                [self.delegate addBackgroundFrom:self];
             }
             break;
         default:
